@@ -1,0 +1,59 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "license": "AGPL-version-3.0",
+  "private": false,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": "",
+  "keywords": [],
+  "author": {
+    "name": "Team Friendship",
+    "email": "",
+    "url": "https://github.com/ashleybhandari/team-friendship"
+  },
+  "contributors": [
+    {
+      "name": "Rachel Lahav",
+      "email": "rlahav@umass.edu",
+      "github": "rachlahav"
+    },
+    {
+      "name": "Gauri Arvind",
+      "email": "garvind@umass.edu",
+      "github": "G-Arv"
+    },
+    {
+      "name": "Kshama Kolur",
+      "email": "kkolur@umass.edu",
+      "github": "kkolur5"
+    },
+    {
+      "name": "Ashley Bhandari",
+      "email": "ashleybhanda@umass.edu",
+      "github": "ashleybhandari"
+    }
+  ],
+  "scripts": {
+    "dev": "",
+    "test": "",
+    "milestone-01": "http-server src/docs/milestone-01 -p 3000 -c-1 -o -s",
+    "validate-html": "html-validate 'src/**/*.html'",
+    "prettier": "prettier src —write"
+  },
+  "devDependencies": {
+    "html-validate": "^8.11.1",
+    "http-server": "^14.1.1",
+    "prettier": "^3.2.5"
+  }
+}
