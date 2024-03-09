@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- TODO -->
-    <title>Document Title</title>
+    <link rel="icon" href="../../assets/favicon.ico">
+    <title>KeyMate</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script type="module" src="script.js" defer></script>
 </head>
 <body>
     <header id="vision">
-        <!-- TODO -->
-        <h1>Title text</h1>
+        <img id="logo" src="../../assets/logo.png" width="50px" height="50px">
+        <h1>KeyMate: Find Your Next Home</h1>
     </header>
 
     <nav>
-        <a href="#vision">Vision</a>
         <a href="#team">Team Members</a>
         <a href="#overview">Project Overview</a>
-        <a href="#application-parts">Parts of the Application</a>
+        <a href="#application-parts">Application Highlights</a>
         <a href="#data-requirements">Data Requirements</a>
         <a href="#wire-frames">Wire Frames</a>
         <a href="#real-world">Real-World Connection</a>
@@ -27,38 +27,42 @@
     </nav>
 
     <main>
+        <div id="overlay"></div>
+        <div id="popup">
+            <i id=popup-close class="material-icons">close</i>
+            <div id="popup-content">
+                <div id="popup-name">Name</div>
+                <div id="popup-role">Role</div>
+                <div id="popup-bio">Bio</div>
+            </div>
+        </div>
+
         <section id="team">
-            <!-- TODO -->
             <h2>Team Members</h2>
+            <div id="team-container"></div>
         </section>
 
         <section id="overview">
-            <!-- TODO -->
             <h2>Project Overview</h2>
         </section>
 
         <section id="application-parts">
-            <!-- TODO -->
-            <h2>Parts of the Application</h2>
+            <h2>Application Highlights</h2>
         </section>
 
         <section id="data-requirements">
-            <!-- TODO -->
             <h2>Data Requirements</h2>
         </section>
 
         <section id="wire-frames">
-            <!-- TODO -->
             <h2>Wire Frames</h2>
         </section>
 
         <section id="real-world">
-            <!-- TODO -->
             <h2>Real-World Connection</h2>
         </section>
 
         <section id="integrative-experience">
-            <!-- TODO -->
             <h2>Integrative Experience</h2>
         </section>
     </main>
