@@ -21,7 +21,7 @@ section h2 {
 header {
     display: flex;
     align-items: center;
-    margin: 20px 250px;
+    margin: 20px 20%;
 }
 
 header img {
@@ -95,6 +95,10 @@ nav a:active {
     font-weight: bold;
 }
 
+.role {
+    color: rgb(113, 93, 4);
+}
+
 /* * * * * * * * Bio Popup * * * * * * * */
 
 #overlay {
@@ -108,7 +112,7 @@ nav a:active {
     bottom: 0;
     background-color: rgba(0,0,0,0.5);
     cursor: pointer;
-  }
+}
 
 #popup {
     display: none;
@@ -132,6 +136,7 @@ nav a:active {
 
 #popup-role {
     font-size: 20px;
+    color: rgb(113, 93, 4);
 }
 
 #popup-bio {
