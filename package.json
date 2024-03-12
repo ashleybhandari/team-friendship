@@ -24,14 +24,14 @@
   },
   "contributors": [
     {
-      "name": "Rachel Lahav",
-      "email": "rlahav@umass.edu",
-      "github": "rachlahav"
-    },
-    {
       "name": "Gauri Arvind",
       "email": "garvind@umass.edu",
       "github": "G-Arv"
+    },
+    {
+      "name": "Ashley Bhandari",
+      "email": "ashleybhanda@umass.edu",
+      "github": "ashleybhandari"
     },
     {
       "name": "Kshama Kolur",
@@ -39,9 +39,9 @@
       "github": "kkolur5"
     },
     {
-      "name": "Ashley Bhandari",
-      "email": "ashleybhanda@umass.edu",
-      "github": "ashleybhandari"
+      "name": "Rachel Lahav",
+      "email": "rlahav@umass.edu",
+      "github": "rachlahav"
     }
   ],
   "scripts": {
@@ -52,7 +52,7 @@
     "prettier": "prettier src —write"
   },
   "devDependencies": {
-    "html-validate": "^8.11.1",
+    "html-validate": "^8.15.0",
     "http-server": "^14.1.1",
     "prettier": "^3.2.5"
   }
