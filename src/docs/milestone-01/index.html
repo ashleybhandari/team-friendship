@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" href="../../assets/favicon.ico">
+    <link rel="icon" href="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/favicon.ico">
     <title>KeyMate</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -12,7 +12,10 @@
 </head>
 <body>
     <header id="vision">
-        <img id="logo" src="../../assets/logo.png" width="50px" height="50px">
+        <img
+            id="logo"
+            src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png"
+            alt="Golden key logo">
         <h1>KeyMate: Find Your Next Home</h1>
     </header>
 
@@ -29,7 +32,7 @@
     <main>
         <div id="overlay"></div>
         <div id="popup">
-            <i id=popup-close class="material-icons">close</i>
+            <i id="popup-close" class="material-icons">close</i>
             <div id="popup-content">
                 <div id="popup-name"></div>
                 <div id="popup-role"></div>
@@ -39,7 +42,9 @@
 
         <section id="team">
             <h2>Team Members</h2>
-            <div id="team-container"></div>
+            <div id="team-container">
+                <!-- content generated in members.js/script.js -->
+            </div>
         </section>
 
         <section id="overview">
@@ -48,6 +53,40 @@
 
         <section id="application-parts">
             <h2>Application Highlights</h2>
+            <p>
+                One critical component of our web application is providing users with the ability
+                to tailor their profiles to accurately reflect their preferences and requirements
+                for housing and roommates. This feature enables students to input specific
+                criteria, such as budget, location preferences, lifestyle habits, and personality
+                traits, to match them with suitable housing options and potential roommates. With
+                this feature, we ensure that they receive personalized recommendations that align
+                with their unique needs and preferences. This not only streamlines the search
+                process but also increases the likelihood of finding an ideal housing situation
+                that meets their expectations.
+            </p>
+            <p>
+                The second critical feature is a feed that is filtered based on one's preferences.
+                A filtering system curates an individual's feed based on their specified roommate
+                and housing preferences. This functionality ensures that users are presented with
+                listings and roommate profiles that closely match their desired criteria, thereby
+                saving time and effort in sorting through irrelevant options. Users can apply
+                filters such as location, budget, move-in/move-out dates, listing attributes,
+                housing amenities, and roommate preferences to narrow down their options. The
+                filtering logic would then process these user-inputted parameters and match them
+                against the attributes and details of the available listings and roommate profiles
+                in the database.
+            </p>
+            <p>
+                The last critical feature is a messaging system for communication. Effective
+                communication is essential for facilitating connections between students seeking
+                housing and roommates. Therefore, we have integrated a messaging system into our
+                application that allows users to safely express their interest in potential
+                roommates or housing listings and initiate further contact. This feature allows
+                seamless communication between roommates, allowing them to discuss details, arrange
+                viewings, and establish compatibility before making any commitments. Additionally,
+                the messaging system incorporates safety measures like reporting and blocking
+                functionalities to ensure a secure and respectful environment for all users.
+            </p>
         </section>
 
         <section id="data-requirements">

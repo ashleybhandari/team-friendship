@@ -1,13 +1,13 @@
-// pseudo enum used to index of each member in 
-// document.getElementsByClassName('team-member') and 'bios'
+// pseudo enum used to index of each member in 'bios' and
+// document.getElementsByClassName('team-member')
 const members = {
-    Gauri: 0,
+    Gauri:  0,
     Ashley: 1,
     Kshama: 2,
     Rachel: 3
 };
 
-// list of each member's info
+// member pics and bios
 const bios = [
     {
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/gauri.jpg',
@@ -25,7 +25,25 @@ const bios = [
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/kshama.jpg',
         name: 'Kshama Kolur',
         role: 'Documentation Lead',
-        bio:  'Kshama is a junior at the University of Massachusetts-Amherst who is majoring in computer science. So far, she has completed a rigorous CS curriculum that are the foundations of software engineering and has mastered how to efficiently apply them to code. She has not only learned Python proactively on her own, but also has many impressive school projects under her belt that have utilized many different programming languages such as Java, C, Javascript, and Typescript which have molded her into an excellent programmer with great problem-solving abilities. Kshama recently completed her first Software Developer Internship at AWS during Summer 2023 where she worked on improving developer productivity by automating performance tests, while enhancing reliability and cost-effectiveness with her knowledge of CI/CD DevOps tools like Jenkins, and optimizing resource utilization using various AWS services. With an extensive education background in Public Interest Technology, Kshama wants to harness technology to create impactful products that will promote sustainability and create a better world for future generations.'
+        bio:  'Kshama Kolur is a junior at the University of Massachusetts      \
+               Amherst who is majoring in computer science. So far, she has     \
+               completed a rigorous CS curriculum that covers the foundations   \
+               of software engineering and has mastered how to efficiently      \
+               apply them to code. She has not only learned Python proactively  \
+               on her own, but also has many impressive school projects under   \
+               her belt that have utilized many different programming           \
+               languages—such as Java, C, Javascript, and Typescript—which have \
+               molded her into an excellent programmer with great               \
+               problem-solving abilities. Kshama recently completed her first   \
+               Software Developer Internship at AWS during Summer 2023, where   \
+               she worked on improving developer productivity by automating     \
+               performance tests, enhancing reliability and cost-effectiveness  \
+               with her knowledge of CI/CD DevOps tools like Jenkins, and       \
+               optimizing resource utilization using various AWS services. With \
+               an extensive education background in Public Interest Technology, \
+               Kshama wants to harness technology to create impactful products  \
+               that will promote sustainability and create a better world for   \
+               future generations.'
     },
     {
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/rachel.png',
@@ -33,9 +51,9 @@ const bios = [
         role: 'Data Lead',
         bio:  'Rachel Lahav is a Junior studying Computer Science with an interdisciplinary concentration in virtual design at the University of Massachusetts, Amherst. Rachel is currently working at the Berthiaume Center of Entrepreneurship at UMass, and is working to enhance data functionality and a more efficient data management system, as well as focusing on front end design for the website and creating social content. Throughout this experience, Rachel has become proficient in Javascript and HTML/CSS. Rachel also works part time at Xpertesy, a startup currently in beta testing, helping in testing various website features and applications. Rachel has participated in multiple start-ups, and through this has developed knowledge in Python and C++.'
     }
-]
+];
 
-// build elements to display members
+// used to append each member's info to the Team Members section
 function displayMembers(container) {
     for (let i = 0; i < 4; ++i) {
         let member, img, profile, name, role;
@@ -45,6 +63,7 @@ function displayMembers(container) {
         
         img = document.createElement('img');
         img.src = bios[i].pic;
+        img.alt = `Portrait of ${bios[i].name}`;
         
         profile = document.createElement('div');
         profile.classList.add('profile');
