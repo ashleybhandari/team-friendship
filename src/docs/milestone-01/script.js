@@ -15,22 +15,22 @@ const closePopup = () => {
     document.getElementById('popup').style.display = 'none';
 }
 
-// add elements to Team Members section
+// add member info to Team Members section in DOM
 displayMembers(document.getElementById('team-container'));
 
-const rachel  = document.getElementsByClassName('team-member')[members.Rachel],
-      gauri   = document.getElementsByClassName('team-member')[members.Gauri],
-      kshama  = document.getElementsByClassName('team-member')[members.Kshama],
+const gauri   = document.getElementsByClassName('team-member')[members.Gauri],
       ashley  = document.getElementsByClassName('team-member')[members.Ashley],
+      kshama  = document.getElementsByClassName('team-member')[members.Kshama],
+      rachel  = document.getElementsByClassName('team-member')[members.Rachel],
       overlay = document.getElementById('overlay'),
       popupClose = document.getElementById('popup-close');
 
-// event listeners to open member bio popup
-rachel.addEventListener('click', () => openPopup(members.Rachel));
+// open member bio popup when you click on that member
 gauri.addEventListener('click',  () => openPopup(members.Gauri));
-kshama.addEventListener('click', () => openPopup(members.Kshama));
 ashley.addEventListener('click', () => openPopup(members.Ashley));
+kshama.addEventListener('click', () => openPopup(members.Kshama));
+rachel.addEventListener('click', () => openPopup(members.Rachel));
 
-// event listeners to close member bio popup
+// close member bio popup when you click the close button or anywhere outside the popup
 overlay.addEventListener('click',  () => closePopup());
 popupClose.addEventListener('click',  () => closePopup());

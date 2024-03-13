@@ -1,7 +1,8 @@
 /* * * * * * * * General * * * * * * * */
 
 body {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+        'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 main {
@@ -9,7 +10,7 @@ main {
 }
 
 section {
-    margin-bottom: 70px;
+    margin: 0px 10% 70px;
 }
 
 section h2 {
@@ -26,6 +27,8 @@ header {
 
 header img {
     margin-right: 20px;
+    height: 50px;
+    width: 50px;
 }
 
 /* * * * * * * Navigation bar * * * * * * */
