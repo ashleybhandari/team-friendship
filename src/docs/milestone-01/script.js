@@ -1,36 +1,72 @@
-import { members, bios, displayMembers } from './members.js';
+import { displayMembers, BIOS } from './members.js';
 
-// open member bio popup
-const openPopup = (member) => {
+
+/* * * * * * * * * *  * * Team Members * * * * * * * * *  * * */
+
+// open member popup
+function openPopup(event, member) {
+    event.preventDefault();
     document.getElementById('overlay').style.display = 'block';
-    document.getElementById('popup').style.display = 'block';
-    document.getElementById('popup-name').innerText = bios[member].name;
-    document.getElementById('popup-role').innerText = bios[member].role;
-    document.getElementById('popup-bio').innerText = bios[member].bio;
+    document.getElementById('popup').style.display   = 'block';
+    document.getElementById('popup-name').innerText = BIOS[member].name;
+    document.getElementById('popup-role').innerText = BIOS[member].role;
+    document.getElementById('popup-bio').innerText  = BIOS[member].bio;
 }
 
-// close member bio popup
-const closePopup = () => {
+// close member popup
+function closePopup(event) {
+    event.preventDefault();
     document.getElementById('overlay').style.display = 'none';
-    document.getElementById('popup').style.display = 'none';
+    document.getElementById('popup').style.display   = 'none';
 }
 
-// add member info to Team Members section in DOM
+// add member pics/roles to Team Members section
 displayMembers(document.getElementById('team-container'));
 
-const gauri   = document.getElementsByClassName('team-member')[members.Gauri],
-      ashley  = document.getElementsByClassName('team-member')[members.Ashley],
-      kshama  = document.getElementsByClassName('team-member')[members.Kshama],
-      rachel  = document.getElementsByClassName('team-member')[members.Rachel],
-      overlay = document.getElementById('overlay'),
-      popupClose = document.getElementById('popup-close');
+// open member popup when you click on a team member
+Array
+    .from(document.getElementsByClassName('team-member'))
+    .forEach((member) => member.addEventListener(
+        'click',
+        (e) => openPopup(e, member.getAttribute('data-member-index'))
+    )
+);
 
-// open member bio popup when you click on that member
-gauri.addEventListener('click',  () => openPopup(members.Gauri));
-ashley.addEventListener('click', () => openPopup(members.Ashley));
-kshama.addEventListener('click', () => openPopup(members.Kshama));
-rachel.addEventListener('click', () => openPopup(members.Rachel));
+// close member popup when you click the close button or outside of popup
+['overlay', 'popup-close'].forEach((id) => 
+    document
+        .getElementById(id)
+        .addEventListener('click', (e) => closePopup(e))
+);
 
-// close member bio popup when you click the close button or anywhere outside the popup
-overlay.addEventListener('click',  () => closePopup());
-popupClose.addEventListener('click',  () => closePopup());
+
+/* * * * * * * * * *  * * * Scrolling * * * * * * * * * *  * * */
+
+const toTopButton = document.getElementById('to-top');
+
+// show 'to top' button when you start scrolling
+window.onscroll = () => {
+    let atTop = document.body.scrollTop < 20 &&
+                document.documentElement.scrollTop < 20;
+    toTopButton.style.display = atTop ? 'none' : 'flex'
+};
+
+// scroll to top when you click the 'to top' button
+toTopButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+});
+
+// scroll when you click on a link in the navbar
+document
+    .querySelectorAll('nav a')
+    .forEach((anchor) => {
+        let id = anchor.getAttribute('href').slice(1) + '-hr'
+        anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            document
+                .getElementById(id)
+                .scrollIntoView({ behavior: 'smooth' })
+        })
+    });
+

@@ -1,14 +1,37 @@
-// pseudo enum used to index of each member in 'bios' and
-// document.getElementsByClassName('team-member')
-const members = {
-    Gauri:  0,
-    Ashley: 1,
-    Kshama: 2,
-    Rachel: 3
-};
+// used to add each member's pic/name/role to the Team Members section
+function displayMembers(container) {
+    BIOS.forEach((bio, i) => {
+        let member, img, profile, name, role;
+
+        member = document.createElement('div');
+        member.classList.add('team-member');
+        // member's index in BIOS and getElementsByClassName('team-member')
+        member.setAttribute('data-member-index', i);
+        
+        img = document.createElement('img');
+        img.src = bio.pic;
+        img.alt = `Portrait of ${bio.name}`;
+        
+        profile = document.createElement('div');
+        profile.classList.add('profile');
+        
+        name = document.createElement('div');
+        name.classList.add('name');
+        name.textContent = bio.name;
+        
+        role = document.createElement('div');
+        role.textContent = bio.role;
+
+        member.appendChild(img);
+        member.appendChild(profile);
+        profile.appendChild(name);
+        profile.appendChild(role);
+        container.appendChild(member);
+    });
+}
 
 // member pics and bios
-const bios = [
+const BIOS = [
     {
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/gauri.jpg',
         name: 'Gauri Arvind',
@@ -53,38 +76,6 @@ const bios = [
     }
 ];
 
-// used to append each member's info to the Team Members section
-function displayMembers(container) {
-    for (let i = 0; i < 4; ++i) {
-        let member, img, profile, name, role;
+Object.freeze(BIOS);
 
-        member = document.createElement('div');
-        member.classList.add('team-member');
-        
-        img = document.createElement('img');
-        img.src = bios[i].pic;
-        img.alt = `Portrait of ${bios[i].name}`;
-        
-        profile = document.createElement('div');
-        profile.classList.add('profile');
-        
-        name = document.createElement('div');
-        name.classList.add('name');
-        name.textContent = bios[i].name;
-        
-        role = document.createElement('div');
-        role.classList.add('role');
-        role.textContent = bios[i].role;
-
-        member.appendChild(img);
-        member.appendChild(profile);
-        profile.appendChild(name);
-        profile.appendChild(role);
-        container.appendChild(member);
-    }
-}
-
-Object.freeze(members);
-Object.freeze(bios);
-
-export { members, bios, displayMembers };
+export { displayMembers, BIOS };

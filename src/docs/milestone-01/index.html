@@ -11,6 +11,10 @@
     <script type="module" src="script.js" defer></script>
 </head>
 <body>
+    <button id="to-top" title="Go to top">
+        <i class="material-icons">vertical_align_top</i>
+    </button>
+
     <header id="vision">
         <img
             id="logo"
@@ -20,13 +24,15 @@
     </header>
 
     <nav>
-        <a href="#team">Team Members</a>
-        <a href="#overview">Project Overview</a>
-        <a href="#application-parts">Application Highlights</a>
-        <a href="#data-requirements">Data Requirements</a>
-        <a href="#wire-frames">Wire Frames</a>
-        <a href="#real-world">Real-World Connection</a>
-        <a href="#integrative-experience">Integrative Experience</a>
+        <ul>
+            <li><a href="#team">Team Members</a></li>
+            <li><a href="#overview">Project Overview</a></li>
+            <li><a href="#application-parts">Application Highlights</a></li>
+            <li><a href="#data-requirements">Data Requirements</a></li>
+            <li><a href="#wire-frames">Wire Frames</a></li>
+            <li><a href="#real-world">Real-World Connection</a></li>
+            <li><a href="#integrative-experience">Integrative Experience</a></li>
+        </ul>
     </nav>
 
     <main>
@@ -42,14 +48,16 @@
 
         <section id="team">
             <h2>Team Members</h2>
-            <div id="team-container">
-                <!-- content generated in members.js/script.js -->
-            </div>
+            <div id="team-container"></div>
         </section>
+
+        <hr id="overview-hr">
 
         <section id="overview">
             <h2>Project Overview</h2>
         </section>
+
+        <hr id="application-parts-hr">
 
         <section id="application-parts">
             <h2>Application Highlights</h2>
@@ -89,17 +97,25 @@
             </p>
         </section>
 
+        <hr id="data-requirements-hr">
+
         <section id="data-requirements">
             <h2>Data Requirements</h2>
         </section>
+
+        <hr id="wire-frames-hr">
 
         <section id="wire-frames">
             <h2>Wire Frames</h2>
         </section>
 
+        <hr id="real-world-hr">
+
         <section id="real-world">
             <h2>Real-World Connection</h2>
         </section>
+
+        <hr id="integrative-experience-hr">
 
         <section id="integrative-experience">
             <h2>Integrative Experience</h2>
@@ -107,7 +123,8 @@
     </main>
 
     <footer>
-        © Team Friendship. All rights reserved.
+        <a href="https://www.flaticon.com/free-icons/magic">Icon created by Freepik - Flaticon</a>
+        <div>© Team Friendship. All rights reserved.</div>
     </footer>
 </body>
 </html>
