@@ -42,31 +42,38 @@ Array
 
 /* * * * * * * * * *  * * * Scrolling * * * * * * * * * *  * * */
 
-const toTopButton = document.getElementById('to-top');
+const navbar = document.getElementsByTagName('nav')[0],
+      backToTop = document.getElementById('to-top'),
+      top = navbar.offsetTop;
 
-// show 'to top' button when you start scrolling
+// when you scroll, make navbar sticky and show 'to top' button
 window.onscroll = () => {
-    let atTop = document.body.scrollTop < 20 &&
-                document.documentElement.scrollTop < 20;
-    toTopButton.style.display = atTop ? 'none' : 'flex'
+    const scrolled = window.scrollY >= top;
+    
+    scrolled
+        ? navbar.classList.add('sticky')
+        : navbar.classList.remove('sticky');
+    
+    backToTop.style.display = scrolled ? 'flex' : 'none';
 };
-
-// scroll to top when you click the 'to top' button
-toTopButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-});
 
 // scroll when you click on a link in the navbar
 document
     .querySelectorAll('nav a')
     .forEach((anchor) => {
-        let id = anchor.getAttribute('href').slice(1) + '-hr'
         anchor.addEventListener('click', (e) => {
             e.preventDefault();
             document
-                .getElementById(id)
-                .scrollIntoView({ behavior: 'smooth' })
-        })
+                .getElementById(anchor.getAttribute('href').slice(1))
+                .scrollIntoView()
+        });
     });
+
+// scroll to top when you click the 'to top' button
+backToTop.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+});
+
+
 

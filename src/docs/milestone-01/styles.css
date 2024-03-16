@@ -1,12 +1,19 @@
 /* * * * * * * * General * * * * * * * */
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
         'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: #FFF8F0;
 }
 
 section {
-    margin: 70px 20%;
+    margin: 60px 20% 70px;
+    scroll-margin-top: 80px;
 }
 
 section h2 {
@@ -20,8 +27,8 @@ section p {
 
 hr {
     border: 0;
-    border-bottom: 5px dotted #f56d6d;
-    margin: 0 20px;
+    border-bottom: 5px dotted #FF715B;
+    width: 35%;
 }
 
 
@@ -41,77 +48,43 @@ header img {
 
 /* * * * * * * Navigation bar * * * * * * */
 
-nav ul {
-    list-style-type: none;
+nav {
     display: flex;
     justify-content: center;
-    padding: 13px;
-    border-radius: 6px;
-    background-color: #86e6e2;
+    overflow: hidden;
+    padding: 5px;
+    background-color: #4C5454;
 }
 
-nav li {
-    display: inline;
-}
-
-nav a:link, nav a:visited {
-    color: black;
+nav a {
     text-decoration: none;
     font-size: 14px;
     padding: 10px 12px;
     border-radius: 6px;
+    color: #FFF8F0;
 }
 
 nav a:hover {
-    background-color: #f7da69;
+    color: #000000;
+    background-color: #7DD2AE;
 }
 
 nav a:active {
-    background-color: #e9ce64;
+    background-color: #70C7A3;
 }
 
-/* * * * * * * Team Members * * * * * * */
-
-#team-container {
-    display: flex;
-    justify-content: space-evenly;
-    margin: auto;
-    width: 70%;
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 99%;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
-#team-container img {
-    height: 200px;
-    width: 200px;
-    border-radius: 6px;
+.sticky + main {
+    padding-top: 60px;
 }
 
-.team-member {
-    text-align: center;
-    margin: 5px;
-    padding: 10px;
-    border-radius: 6px;
-    background-color: #f7da69;
-}
-
-.team-member:hover {
-    cursor: pointer;
-    background-color: #e2c862;
-}
-
-.team-member:active {
-    background-color: #d8bf5d;
-}
-
-.profile div {
-    margin: 8px 0px;
-}
-
-.profile .name {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-/* * * * * * * * Bio Popup * * * * * * * */
+/* * * * * * * * Bio popup * * * * * * * */
 
 #overlay {
     position: fixed;
@@ -128,13 +101,13 @@ nav a:active {
 
 #popup {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 40%;
     border-radius: 6px;
-    background-color: white;
+    background-color: #FFF8F0;
 }
 
 #popup-content {
@@ -144,12 +117,12 @@ nav a:active {
 #popup-name {
     font-size: 25px;
     font-weight: bold;
-    color: #e05757;
+    color: #F05C46;
 }
 
 #popup-role {
     font-size: 20px;
-    color: #f56d6d;
+    color: #FA6C56;
 }
 
 #popup-bio {
@@ -163,7 +136,48 @@ nav a:active {
     cursor: pointer;
 }
 
-/* * * * * * * To Top Button * * * * * * */
+/* * * * * * * Team Members * * * * * * */
+
+#team-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    width: 85%;
+}
+
+#team-container img {
+    height: 200px;
+    width: 200px;
+    border-radius: 6px;
+}
+
+.team-member {
+    text-align: center;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #F4D06F;
+}
+
+.team-member:hover {
+    cursor: pointer;
+    background-color: #7DD2AE;
+}
+
+.team-member:active {
+    background-color: #70C7A3;
+}
+
+.profile div {
+    margin: 8px 0;
+}
+
+.profile .name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* * * * * * Back to top button * * * * * */
 
 #to-top {
     display: none;
@@ -177,21 +191,21 @@ nav a:active {
     width: 50px;
     border: none;
     border-radius: 50%;
-    background-color: #f56d6d;
+    background-color: #FF715B;
     cursor: pointer;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 #to-top:hover {
-    background-color: #e46262;
+    background-color: #7DD2AE;
 }
 
 #to-top:active {
-    background-color: #da5c5c;
+    background-color: #70C7A3;
 }
 
 #to-top i {
-    color: white;
+    color: #FFF8F0;
 }
 
 /* * * * * * * * * Footer * * * * * * * * */
@@ -199,13 +213,13 @@ nav a:active {
 footer {
     display: flex;
     justify-content: space-evenly;
-    padding: 10px 0px;
-    border-radius: 6px;
-    color: #397471;
-    background-color: #86e6e2;
+    margin-top: 100px;
+    padding: 10px 0;
+    color: #FFF8F0;
+    background-color: #4C5454;
 }
 
 footer a:link, footer a:visited {
     text-decoration: none;
-    color: #397471;
+    color: #FFF8F0;
 }
