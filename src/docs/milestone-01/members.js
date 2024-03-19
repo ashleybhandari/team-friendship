@@ -42,7 +42,18 @@ const BIOS = [
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/ashley.jpg',
         name: 'Ashley Bhandari',
         role: 'Front-End Developer',
-        bio:  'Ashley Bhandari is a junior at UMass Amherst studying Computer Science. UMass\'s academically rigorous program has given her extensive knowledge of the many facets of Computer Science. She spent a semester at Candor Technology as a Software Engineering Intern, where she used full stack development with Angular and C#/.NET to upgrade a heavily-used administrative web application. Ashley hopes to use her skills and love of coding to create more applications that will make people\'s lives easier.'
+        bio:  'Ashley Bhandari is a junior at UMass Amherst studying computer   \
+        science. UMass\'s academically rigorous program has given her extensive \
+        knowledge of the many facets of the discipline. She spent a semester at \
+        Candor Technology as a Software Engineering Intern, where she learned   \
+        about full stack development and demonstrated her adaptability and      \
+        great capacity for self-guidance in an environment with limited         \
+        support. Ashley is a quick learner, proficient in functional and        \
+        object-oriented programming, frameworks, database management, and       \
+        standard industry technologies. She specializes in web development but  \
+        aims to expand her capabilities to other fields of study, as well as    \
+        use her skills and love of coding to find new ways of making people\'s  \
+        lives easier and happier.'
     },
     {
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/kshama.jpg',

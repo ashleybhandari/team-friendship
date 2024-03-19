@@ -76,7 +76,7 @@ nav a:active {
 .sticky {
     position: fixed;
     top: 0;
-    width: 99%;
+    width: 100%;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
