@@ -140,9 +140,7 @@ nav a:active {
 
 #team-container {
     display: flex;
-    justify-content: space-evenly;
-    margin: auto;
-    width: 85%;
+    justify-content: center;
 }
 
 #team-container img {
@@ -153,7 +151,7 @@ nav a:active {
 
 .team-member {
     text-align: center;
-    margin: 5px;
+    margin: 8px;
     padding: 10px;
     border-radius: 6px;
     background-color: #F4D06F;

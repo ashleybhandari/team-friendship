@@ -49,11 +49,9 @@ const navbar = document.getElementsByTagName('nav')[0],
 // when you scroll, make navbar sticky and show 'to top' button
 window.onscroll = () => {
     const scrolled = window.scrollY >= top;
-    
     scrolled
         ? navbar.classList.add('sticky')
         : navbar.classList.remove('sticky');
-    
     backToTop.style.display = scrolled ? 'flex' : 'none';
 };
 
@@ -63,9 +61,11 @@ document
     .forEach((anchor) => {
         anchor.addEventListener('click', (e) => {
             e.preventDefault();
+            const id = anchor.getAttribute('href').slice(1);
             document
-                .getElementById(anchor.getAttribute('href').slice(1))
-                .scrollIntoView()
+                .getElementById(id)
+                .scrollIntoView();
+            window.location.hash = id;
         });
     });
 
@@ -73,6 +73,8 @@ document
 backToTop.addEventListener('click', (e) => {
     e.preventDefault();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
+    history.pushState("", document.title, window.location.pathname
+        + window.location.search);
 });
 
 
