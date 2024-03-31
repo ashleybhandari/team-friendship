@@ -33,11 +33,8 @@ Array
 );
 
 // close member popup when you click the close button or outside of popup
-['overlay', 'popup-close'].forEach((id) => 
-    document
-        .getElementById(id)
-        .addEventListener('click', (e) => closePopup(e))
-);
+document.getElementById('overlay').addEventListener('click', (e) => closePopup(e));
+document.getElementById('popup-close').addEventListener('click', (e) => closePopup(e));
 
 
 /* * * * * * * * * *  * * * Scrolling * * * * * * * * * *  * * */
