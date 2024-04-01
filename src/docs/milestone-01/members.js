@@ -33,7 +33,7 @@ function displayMembers(container) {
 // member pics and bios
 const BIOS = [
     {
-        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/gauri.jpg',
+        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_gauri.jpg',
         name: 'Gauri Arvind',
         role: 'Back-End Developer',
         bio:  'Gauri Arvind is a junior at the University of Massachusetts      \
@@ -53,7 +53,7 @@ const BIOS = [
                to create social change with technology and entrepreneurship.'
     },
     {
-        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/ashley.jpg',
+        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_ashley.jpg',
         name: 'Ashley Bhandari',
         role: 'Front-End Developer',
         bio:  'Ashley Bhandari is a junior at UMass Amherst studying computer  \
@@ -71,7 +71,7 @@ const BIOS = [
                making people\'s lives easier and happier.'
     },
     {
-        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/kshama.jpg',
+        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_kshama.jpg',
         name: 'Kshama Kolur',
         role: 'Documentation Lead',
         bio:  'Kshama Kolur is a junior at the University of Massachusetts      \
@@ -95,7 +95,7 @@ const BIOS = [
                future generations.'
     },
     {
-        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/rachel.png',
+        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_rachel.png',
         name: 'Rachel Lahav',
         role: 'Data Lead',
         bio:  'Rachel Lahav is a junior studying computer science with an       \
