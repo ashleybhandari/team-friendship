@@ -53,6 +53,12 @@ const BIOS = [
                to create social change with technology and entrepreneurship.'
     },
     {
+        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png', // TODO
+        name: 'Isha Bang',
+        role: 'All-Rounder',
+        bio:  'TBD' // TODO
+    },
+    {
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_ashley.jpg',
         name: 'Ashley Bhandari',
         role: 'Front-End Developer',
