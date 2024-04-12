@@ -28,6 +28,60 @@
     background-color: #f4d16fde;
 }
 
+/* Footer.js */
+
+.footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    color: white;
+    background-color: #4C5454;
+}
+
+.footer .center {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: center;
+}
+
+.footer .center h2 {
+    margin: 15px 0 10px;
+}
+
+.footer .center p, .footer .center a {
+    margin: 0;
+    font-size: 10px;
+}
+
+.footer .left {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: start;
+}
+
+.footer .right {
+    grid-column: 3;
+    grid-row: 2;
+    text-align: end;
+}
+
+.footer a {
+    text-decoration: none;
+    color: white;
+}
+
+.footer ul {
+    list-style-type: none;
+    margin: 0 0 15px;
+    padding: 0 20px;
+}
+
+.footer li {
+    display: inline-block;
+    margin: 0 15px;
+    font-size: 12px;
+}
+
 /* SliderInput.js */
 
 .slider-input {
