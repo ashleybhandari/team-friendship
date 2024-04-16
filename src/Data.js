@@ -13,6 +13,8 @@ class HousingListing {
     this.id = id;
     this.address = address;
     this.price = price;
+    this.amenities = amenities;
+    this.photos = photos;
   }
 }
 
@@ -25,6 +27,6 @@ const users = [
 
 // Housing mock data
 const housingListings = [
-  new HousingListing(1, '123 Main St', 900, {"in-unit washer and dyer"},{}),
-  new HousingListing(2, '456 Elm St', 1100, {"tennis courts"}, {})
+  new HousingListing(1, '123 Main St', 900, {laundry: 'in-unit washer and dyer'},{}),
+  new HousingListing(2, '456 Elm St', 1100, {misc: 'tennis courts'}, {})
 ];
