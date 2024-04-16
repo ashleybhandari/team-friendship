@@ -9,7 +9,7 @@ class User {
 
 // Housing listing data structure
 class HousingListing {
-  constructor(id, address, price) {
+  constructor(id, address, price, amenities, photos) {
     this.id = id;
     this.address = address;
     this.price = price;
@@ -25,6 +25,6 @@ const users = [
 
 // Housing mock data
 const housingListings = [
-  new HousingListing(1, '123 Main St', 900),
-  new HousingListing(2, '456 Elm St', 1100)
+  new HousingListing(1, '123 Main St', 900, {"in-unit washer and dyer"},{}),
+  new HousingListing(2, '456 Elm St', 1100, {"tennis courts"}, {})
 ];
