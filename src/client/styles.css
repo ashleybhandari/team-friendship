@@ -82,6 +82,45 @@
     font-size: 12px;
 }
 
+/* Navbar2.js */
+
+.navbar2 nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.navbar2 a {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.navbar2 a:hover {
+    color: black;
+}
+
+.navbar2 .text-links {
+    grid-column: 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar2 .text-links a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar2 .text-links a:hover {
+    border-bottom: 3.5px solid #7DD2AE;
+}
+
+.navbar2 .settings {
+    text-align: end;
+}
+
+.navbar2 hr {
+    margin: 0;
+    border-top: 1.5px solid rgba(0, 0, 0, 0.6);
+}
+
 /* SliderInput.js */
 
 .slider-input {
