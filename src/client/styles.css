@@ -34,7 +34,7 @@
     display: block;
     position: relative;
     padding: 2px 32px 5px;
-    margin-bottom: 12px;
+    margin: 5px 0 14px;
     cursor: pointer;
     font-size: 14px;
     -webkit-user-select: none; /* Safari */
@@ -271,6 +271,18 @@
 .progress-bar .completed {
     background-color: #7DD2AE;
 }
+
+/* RadioInput.js */
+
+.radio-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.radio-input label {
+    font-size: 14px;
+}
+/* TODO: RadioInput styling */
 
 /* SliderInput.js */
 
