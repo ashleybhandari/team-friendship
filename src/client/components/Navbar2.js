@@ -1,4 +1,4 @@
-import { Events } from './Events.js';
+import { Events } from '../Events.js';
 
 export class Navbar2 {
     #events = null;
