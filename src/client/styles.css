@@ -121,6 +121,27 @@
     border-top: 1.5px solid rgba(0, 0, 0, 0.6);
 }
 
+/* ProgressBar.js */
+
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 129px;
+    margin: auto;
+    padding: 15px
+}
+
+.progress-bar div {
+    width: 30px;
+    height: 4px;
+    border-radius: 10px;
+    background-color: #7dd2afa1;
+}
+
+.progress-bar .completed {
+    background-color: #7DD2AE;
+}
+
 /* SliderInput.js */
 
 .slider-input {
