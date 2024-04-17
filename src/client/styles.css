@@ -28,12 +28,12 @@
     background-color: #f4d16fde;
 }
 
-/* Checkbox.js */
+/* CheckboxInput.js */
 
 .custom-checkbox {
     display: block;
     position: relative;
-    padding-left: 35px; /* space for the checkmark */
+    padding: 2px 32px 5px;
     margin-bottom: 12px;
     cursor: pointer;
     font-size: 14px;
@@ -57,17 +57,16 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
+    height: 20px;
+    width: 20px;
     border-radius: 4px;
-    border: 2px solid #7D7D7D; /* Grey border */
+    border: 3px solid #ff715bce;
 }
 
 /* When the checkbox is checked */
 .custom-checkbox input:checked ~ .checkmark {
     background-color: #FF715B; /* Red background */
-    border: none; /* Remove border if you want */
+    border-color: #FF715B;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -84,8 +83,8 @@
 
 /* Style the checkmark/indicator */
 .custom-checkbox .checkmark:after {
-    left: 9px;
-    top: 5px;
+    left: 6px;
+    top: 3px;
     width: 5px;
     height: 10px;
     border: solid white;
