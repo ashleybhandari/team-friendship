@@ -1,3 +1,5 @@
+import { createElementId } from '../createElementId.js';
+
 export class TextInput {
     constructor(name, type = 'text', width = 275) {
         this.name = name;
@@ -6,17 +8,19 @@ export class TextInput {
     }
     
     async render() {
+        const id = createElementId(this.name, 'Input');
+
         const elm = document.createElement('div');
         elm.classList.add('text-input');
 
         const label = document.createElement('label');
-        label.htmlFor = this.name;
+        label.htmlFor = id;
         label.innerText = this.name;
 
         const input = document.createElement('input');
         input.classList.add('be-vietnam');
-        input.id = this.name;
-        input.name = this.name;
+        input.id = id;
+        input.name = id;
         input.type = this.type;
         input.style.width = this.width;
 
