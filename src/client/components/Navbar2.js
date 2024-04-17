@@ -1,5 +1,9 @@
 import { Events } from '../Events.js';
 
+/**
+ * UI component: Navbar for screens when the user is logged in. Only used in
+ * SignedInView.js.
+ */
 export class Navbar2 {
     #events = null;
 

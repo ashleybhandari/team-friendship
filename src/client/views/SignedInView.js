@@ -2,6 +2,13 @@ import { Header } from '../components/Header.js';
 import { Navbar2 } from '../components/Navbar2.js';
 import { Footer } from '../components/Footer.js';
 
+/**
+ * Injected into App.js. Contains a container that may be injected with:
+ *   - Discover - Profile with housing
+ *   - Discover - Profile without housing
+ *   - Matches
+ *   - Settings
+ */
 export class SignedInView {
     async render() {
         const signedInViewElm = document.createElement('div');
@@ -12,12 +19,6 @@ export class SignedInView {
 
         const signedInContainerElm = document.createElement('div');
         signedInContainerElm.id = 'signed-in-container';
-        /* can inject the following into signedInContainerElm:
-         * Discover - Profile with housing
-         * Discover - Profile without housing
-         * Matches
-         * Settings
-        */
 
         const footerElm = new Footer();
 

@@ -1,6 +1,12 @@
 import { createElementId } from '../createElementId.js';
 
 export class SliderInput {
+    /**
+     * UI component: Slider with 3 options
+     * @param {string} name Slider label
+     * @param {string} min Label for the leftmost value of the slider
+     * @param {string} max Label for the rightmost value of the slider
+     */
     constructor(name, min, max) {
         this.name = name;
         this.min = min;

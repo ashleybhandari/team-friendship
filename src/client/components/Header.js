@@ -1,3 +1,6 @@
+/**
+ * UI component: Logo + "KeyMate" centered at the top of the screen.
+ */
 export class Header {
     async render() {
         const header = document.createElement('header');
