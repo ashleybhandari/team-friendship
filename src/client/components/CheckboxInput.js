@@ -1,3 +1,5 @@
+import { createElementId } from '../createElementId.js';
+
 export class CheckboxInput {
     constructor(name, checked = false) {
         this.name = name;
@@ -5,13 +7,15 @@ export class CheckboxInput {
     }
   
     async render() {
+        const id = createElementId(this.name, 'Box');
+
         const container = document.createElement('label');
         container.className = 'custom-checkbox';
-        container.setAttribute('for', this.name);
+        container.htmlFor = id;
 
         const input = document.createElement('input');
         input.type = 'checkbox';
-        input.id = this.name;
+        input.id = id;
         input.checked = this.checked;
 
         const checkmark = document.createElement('span');

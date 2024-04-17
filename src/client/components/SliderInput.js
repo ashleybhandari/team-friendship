@@ -1,3 +1,5 @@
+import { createElementId } from '../createElementId.js';
+
 export class SliderInput {
     constructor(name, min, max) {
         this.name = name;
@@ -14,7 +16,7 @@ export class SliderInput {
         title.innerText = this.name;
 
         const input = document.createElement('input');
-        input.id = this.name;
+        input.id = createElementId(this.name, 'Sldr');
         input.type = 'range';
         input.min = 1;
         input.max = 3;

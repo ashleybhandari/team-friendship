@@ -14,11 +14,11 @@ export class Navbar2 {
         elm.innerHTML = `
         <nav>
             <div class="text-links">
-                <a href="#discover">Discover</a>
-                <a href="#matches">Matches</a>
+                <a href="#discover" id="discover">Discover</a>
+                <a href="#matches" id="matches">Matches</a>
             </div>
             <div class="settings">
-                <a href="#settings">
+                <a href="#settings" id="settings">
                     <i class="material-symbols-outlined">settings</i>
                 </a>
             </div>
@@ -31,7 +31,7 @@ export class Navbar2 {
             .forEach(link =>
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    const view = e.currentTarget.getAttribute('href').replace('#', '');
+                    const view = e.currentTarget.getAttribute('id');
                     window.location.hash = view;
                     await this.#events.publish('navigateTo', view);
                 })
