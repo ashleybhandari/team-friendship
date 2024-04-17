@@ -1,6 +1,12 @@
 import { createElementId } from '../createElementId.js';
 
 export class TextInput {
+    /**
+     * UI component: Standard text input
+     * @param {string} name Label for the input element
+     * @param {string} [type="text"] Input type (text/password)
+     * @param {number} [width=275] Input width
+     */
     constructor(name, type = 'text', width = 275) {
         this.name = name;
         this.type = type;

@@ -1,6 +1,11 @@
 import { Navbar1 } from '../components/Navbar1.js';
 import { Footer } from '../components/Footer.js';
 
+/**
+ * Injected into App.js. Contains a container that may be injected with:
+ *   - Landing
+ *   - About
+ */
 export class SignedOutView {
     async render() {
         const signedOutViewElm = document.createElement('div');
@@ -10,10 +15,6 @@ export class SignedOutView {
 
         const signedOutContainerElm = document.createElement('div');
         signedOutContainerElm.id = 'signed-out-container';
-        /* can inject the following into signedOutContainerElm:
-         * Landing
-         * About
-        */
 
         const footerElm = new Footer();
 

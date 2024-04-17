@@ -1,5 +1,9 @@
 import { Events } from '../Events.js';
 
+/**
+ * UI component: Navbar for screens when the user is logged out. Only used in
+ * SignedOutView.js.
+ */
 export class Navbar1 {
     #events = null;
 

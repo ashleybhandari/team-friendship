@@ -1,6 +1,12 @@
 import { createElementId } from '../createElementId.js';
 
 export class DropdownInput {
+    /**
+     * UI component: Dropdown with predefined options.
+     * @param {string} name Dropdown label
+     * @param {string[]} elements Options to select from
+     * @param {number} [width=306.2] Dropdown width (default matches TextInput)
+     */
     constructor(name, elements, width = 306.2) {
         this.name = name;
         this.elements = elements;

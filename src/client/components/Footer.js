@@ -1,5 +1,9 @@
 import { Events } from '../Events.js';
 
+/**
+ * UI component: Footer with acknowledgements and navigation links. Goes at the
+ * bottom of every page.
+ */
 export class Footer {
     #events = null;
 
