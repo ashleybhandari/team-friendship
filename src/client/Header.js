@@ -1,25 +1,19 @@
 export class Header {
-  constructor(logoSrc, title) {
-    this.logoSrc = logoSrc;
-    this.title = title;
-  }
+    async render() {
+        const header = document.createElement('header');
+        header.classList.add('header');
 
-  render() {
-    const header = document.createElement('header');
-    header.classList.add('app-header');
+        const logo = document.createElement('img');
+        logo.src = 'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png';
+        logo.alt = 'KeyMate logo';
 
-    const logoImg = document.createElement('img');
-    logoImg.setAttribute('src', this.logoSrc);
-    logoImg.setAttribute('alt', `${this.title} Logo`);
-    logoImg.classList.add('header-logo');
+        const title = document.createElement('h1');
+        title.classList.add('battambang');
+        title.innerText = 'KeyMate';
 
-    const titleDiv = document.createElement('div');
-    titleDiv.classList.add('header-title');
-    titleDiv.textContent = this.title;
+        header.appendChild(logo);
+        header.appendChild(title);
 
-    header.appendChild(logoImg);
-    header.appendChild(titleDiv);
-
-    return header;
-  }
+        return header;
+    }
 }
