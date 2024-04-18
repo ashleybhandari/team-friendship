@@ -18,11 +18,11 @@ export class Navbar2 {
         elm.innerHTML = `
         <nav>
             <div class="text-links">
-                <a href="#discover" id="discover">Discover</a>
-                <a href="#matches" id="matches">Matches</a>
+                <a href="#discover" id="nav2-discover">Discover</a>
+                <a href="#matches" id="nav2-matches">Matches</a>
             </div>
             <div class="settings">
-                <a href="#settings" id="settings">
+                <a href="#settings" id="nav2-settings">
                     <i class="material-symbols-outlined">settings</i>
                 </a>
             </div>
@@ -35,12 +35,12 @@ export class Navbar2 {
             .forEach(link =>
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    const view = e.currentTarget.getAttribute('id');
+                    const view = e.currentTarget.getAttribute('href').replace('#', '');
                     window.location.hash = view;
                     await this.#events.publish('navigateTo', view);
                 })
             );
-        
+
         return elm;
     }
 }
