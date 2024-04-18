@@ -4,7 +4,7 @@ import { Button } from '../components/Button.js';
 
 /**
  * Displays the user's matches as a list of abbreviated profiles (can click on
- * a profile to view more details)
+ * a profile to view more details). Injected into SignedInView.
  */
 export class MatchesView {
     #usersViewElm = null;

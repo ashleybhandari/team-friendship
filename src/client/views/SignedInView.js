@@ -6,11 +6,8 @@ import { SettingsView } from './SettingsView.js';
 import { Events } from '../Events.js';
 
 /**
- * Injected into App.js. Contains a container that may be injected with:
- *   - Discover - Profile with housing
- *   - Discover - Profile without housing
- *   - Matches
- *   - Settings
+ * Sets up header, navbar, and footer for Discover, Matches, and Settings
+ * views. Injected into App.
  */
 export class SignedInView {
     #signedInViewElm = null;
@@ -34,7 +31,7 @@ export class SignedInView {
         this.#signedInViewElm.appendChild(this.#viewContainer);
         this.#signedInViewElm.appendChild(await new Footer().render());
 
-        // renders views
+        // renders views to be injected into viewContainer
         this.#matchesViewElm = await new MatchesView().render();
         this.#settingsViewElm = await new SettingsView().render();
 
@@ -55,18 +52,24 @@ export class SignedInView {
 
         if (view === 'matches') {
             this.#viewContainer.appendChild(this.#matchesViewElm);
+            this.#updateNavbar(view);
         }
         else if (view === 'settings') {
             this.#viewContainer.appendChild(this.#settingsViewElm);
+            this.#updateNavbar(view);
         }
         else {
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
         }
         
         window.location.hash = view;
+    }
 
-        // apply the "selected" class only to the link associated with the
-        // current view
+    /**
+     * Applies the "selected" class only to the link associated with the
+     * current view.
+     */
+    #updateNavbar(view) {
         Array
             .from(this.#signedInViewElm.querySelectorAll('nav a'))
             .forEach((elm) => elm.classList.remove('selected'));

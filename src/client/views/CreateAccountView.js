@@ -1,5 +1,6 @@
 import { Header } from '../components/Header.js';
 import { Footer } from '../components/Footer.js';
+import { Events } from '../Events.js';
 
 /**
  * Injected into App.js. Contains a container that may be injected with:
@@ -12,6 +13,11 @@ import { Footer } from '../components/Footer.js';
  */
 export class CreateAccountView {
     #viewContainer = null;
+    #events = null;
+
+    constructor() {
+        this.#events = Events.events();
+    }
 
     async render() {
         const createAcctViewElm = document.createElement('div');
@@ -23,6 +29,22 @@ export class CreateAccountView {
         createAcctViewElm.appendChild(this.#viewContainer);
         createAcctViewElm.appendChild(await new Footer().render());
 
+        // TODO: render views
+        
+        // initializes container
+        this.#navigateTo(''); // TODO
+        this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
+
         return createAcctViewElm;
+    }
+
+    /**
+     * Called when navigateTo is published. Injects a new view into
+     * viewContainer.
+     * @param {string} view
+     */
+    #navigateTo(view) {
+        this.#viewContainer.innerHTML = '';
+        // TODO
     }
 }
