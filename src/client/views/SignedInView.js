@@ -25,26 +25,18 @@ export class SignedInView {
 
     async render() {
         this.#signedInViewElm = document.createElement('div');
-        this.#signedInViewElm.id = 'signed-in-view';
-
-        const headerElm = new Header();
-        const navbarElm = new Navbar2();
+        this.#signedInViewElm.id = 'signedInView';
 
         this.#viewContainer = document.createElement('div');
-        this.#viewContainer.id = 'signed-in-container';
 
-        const footerElm = new Footer();
-
-        this.#signedInViewElm.appendChild(await headerElm.render());
-        this.#signedInViewElm.appendChild(await navbarElm.render());
+        this.#signedInViewElm.appendChild(await new Header().render());
+        this.#signedInViewElm.appendChild(await new Navbar2().render());
         this.#signedInViewElm.appendChild(this.#viewContainer);
-        this.#signedInViewElm.appendChild(await footerElm.render());
+        this.#signedInViewElm.appendChild(await new Footer().render());
 
         // renders views
-        const matchesView = new MatchesView();
-        const settingsView = new SettingsView();
-        this.#matchesViewElm = await matchesView.render();
-        this.#settingsViewElm = await settingsView.render();
+        this.#matchesViewElm = await new MatchesView().render();
+        this.#settingsViewElm = await new SettingsView().render();
 
         // initializes container
         this.#navigateTo('discover');
@@ -56,7 +48,7 @@ export class SignedInView {
     /**
      * Called when navigateTo is published (by navbar or footer). Injects a new
      * view into viewContainer and styles the navbar accordingly.
-     * @param {string} view - "matches", "settings"
+     * @param {string} view "matches", "settings"
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';

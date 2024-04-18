@@ -19,7 +19,7 @@ export class Button {
 
         elm.id = createElementId(this.value, 'Btn');
         elm.type = this.type;
-        elm.innerText = this.value;
+        elm.innerHTML = this.value;
         elm.style.width = this.width;
 
         return elm;

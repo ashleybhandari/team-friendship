@@ -7,20 +7,17 @@ import { Footer } from '../components/Footer.js';
  *   - About
  */
 export class SignedOutView {
+    #viewContainer = null;
+
     async render() {
         const signedOutViewElm = document.createElement('div');
-        signedOutViewElm.id = 'signed-out-view';
+        signedOutViewElm.id = 'signedOutView';
 
-        const navbarElm = new Navbar1();
+        this.#viewContainer = document.createElement('div');
 
-        const signedOutContainerElm = document.createElement('div');
-        signedOutContainerElm.id = 'signed-out-container';
-
-        const footerElm = new Footer();
-
-        signedOutViewElm.appendChild(await navbarElm.render());
-        signedOutViewElm.appendChild(signedOutContainerElm);
-        signedOutViewElm.appendChild(await footerElm.render());
+        signedOutViewElm.appendChild(await new Navbar1().render());
+        signedOutViewElm.appendChild(this.#viewContainer);
+        signedOutViewElm.appendChild(await new Footer().render());
 
         return signedOutViewElm;
     }

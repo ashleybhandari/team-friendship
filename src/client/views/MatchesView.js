@@ -1,17 +1,27 @@
 import { User } from '../DataStructures.js';
 import { getUser, getMatches } from '../Data.js';
+import { Button } from '../components/Button.js';
 
 /**
  * Displays the user's matches as a list of abbreviated profiles (can click on
  * a profile to view more details)
  */
 export class MatchesView {
+    #usersViewElm = null;
+    #profileViewElm = null;
+    #profileViewContainer = null;
+
     async render() {
         const matchesViewElm = document.createElement('div');
-        matchesViewElm.id = 'matches-view';
+        matchesViewElm.id = 'matchesView';
 
         await this.#renderUsers(matchesViewElm);
-        await this.#renderPopup(matchesViewElm);
+        await this.#renderProfile(matchesViewElm);
+        matchesViewElm
+            .querySelector('#toMatchesBtn')
+            .addEventListener('click', () => this.#switchView());
+
+        this.#switchView();
 
         return matchesViewElm;
     }
@@ -20,9 +30,12 @@ export class MatchesView {
      * Renders a list of the user's matches. Each entry consists of the match's
      * profile picture, name, location (if applicable), and self-written
      * description
-     * @param {string} container 
+     * @param {HTMLDivElement} container 
      */
     async #renderUsers(container) {
+        this.#usersViewElm = document.createElement('div');
+        this.#usersViewElm.id = 'usersView';
+
         for (const match of await getMatches()) {
             const user = await getUser(match);
             
@@ -47,6 +60,7 @@ export class MatchesView {
                     + `$${user.housing.rent.price}/${user.housing.rent.period}`;
                 elm.getElementsByClassName('bio')[0].appendChild(housing);
             }
+            
             if (user.description) {
                 const description = document.createElement('p');
                 description.innerText = user.description
@@ -55,74 +69,63 @@ export class MatchesView {
                 elm.getElementsByClassName('bio')[0].appendChild(description);
             }
 
-            elm.addEventListener('click', (e) => this.#openPopup(e, user, elm.id));
-            container.appendChild(elm);
+            elm.addEventListener('click', () => this.#switchView(user));
+            this.#usersViewElm.appendChild(elm);
         }
+
+        container.appendChild(this.#usersViewElm);
     }
 
     /**
-     * Renders the popup that appears when a match is clicked on. Initially
-     * hidden.
-     * @param {string} container 
-     */
-    async #renderPopup(container) {
-        const elm = document.createElement('div');
-
-        elm.innerHTML = `
-        <div id="overlay"></div>
-        <div id="popup">
-            <i id="popup-close" class="material-symbols-outlined">close</i>
-            <div id="popup-content"></div>
-        </div>
-        `;
-
-        // TODO: inject Discover profile into popup-content
-
-        elm.querySelector('#overlay')
-           .addEventListener('click', (e) => this.#closePopup(e));
-
-        elm.querySelector('#popup-close')
-           .addEventListener('click', (e) => this.#closePopup(e));
-
-        container.appendChild(elm);
-    }
-
-    /**
-     * Opens a popup with the selected match's information, and styles the
-     * match's entry in the Match list
-     * @param {Event} event 
+     * Renders the selected match's profile.
+     * @param {HTMLDivElement} container 
      * @param {User} user 
-     * @param {string} elmId - id of the match's HTML element in the Matches list
      */
-    #openPopup(event, user, elmId) {
-        event.preventDefault();
+    async #renderProfile(container) {
+        this.#profileViewElm = document.createElement('div');
+        this.#profileViewElm.id = 'profileView';
 
-        const popup = document.getElementById('popup');
-        popup['data-selected'] = elmId;
+        const toMatchesBtn = await new Button(
+            '<i class="material-symbols-outlined">arrow_back</i>Back to Matches',
+            200
+            ).render();
+        toMatchesBtn.id = 'toMatchesBtn';
 
-        popup.style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('popup-content').innerText = `Inject ${user.name.fname}'s profile`;
-        // TODO: inject user's Discover profile, add contact information
+        this.#profileViewContainer = document.createElement('div');
+        this.#profileViewContainer.id = 'profileViewContainer';
 
-        document.getElementById(elmId).classList.add('selected');
+        this.#profileViewElm.appendChild(toMatchesBtn);
+        this.#profileViewElm.appendChild(this.#profileViewContainer);
+
+        container.appendChild(this.#profileViewElm);
     }
-    
+
     /**
-     * Closes the popup and removes styling from the match's entry in the
-     * Matches list.
-     * @param {Event} event 
+     * Injects the page with the selected match's Discover profile
+     * @param {User} user 
      */
-    #closePopup(event) {
-        event.preventDefault();
+    #injectProfile(user) {
+        this.#profileViewContainer.innerText = `Inject ${user.name.fname}'s profile`;
+        // TODO: inject profile from DIscover page
+    }
 
-        const popup = document.getElementById('popup');
-        
-        popup.style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-
-        document
-            .getElementById(popup['data-selected'])
-            .classList.remove('selected');
+    /**
+     * Switches between viewing all matches and a selected match's profile
+     * @param {User} user 
+     */
+    #switchView(user = null) {
+        if (user) {
+            // view user's profile
+            this.#usersViewElm.classList.add('hidden');
+            this.#profileViewElm.classList.remove('hidden');
+            this.#injectProfile(user);
+            window.location.hash = `matches/${user.id}`;
+        }
+        else {
+            // view all matches
+            this.#usersViewElm.classList.remove('hidden');
+            this.#profileViewElm.classList.add('hidden');
+            window.location.hash = 'matches';
+        }
     }
 }

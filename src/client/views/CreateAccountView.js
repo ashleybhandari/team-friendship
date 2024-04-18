@@ -11,20 +11,17 @@ import { Footer } from '../components/Footer.js';
  *   - Create Account - Have housing
  */
 export class CreateAccountView {
+    #viewContainer = null;
+
     async render() {
         const createAcctViewElm = document.createElement('div');
-        createAcctViewElm.id = 'create-acct-view';
+        createAcctViewElm.id = 'createAcctView';
 
-        const headerElm = new Header();
+        this.#viewContainer = document.createElement('div');
 
-        const createAcctContainerElm = document.createElement('div');
-        createAcctContainerElm.id = 'create-acct-container';
-
-        const footerElm = new Footer();
-
-        createAcctViewElm.appendChild(await headerElm.render());
-        createAcctViewElm.appendChild(createAcctContainerElm);
-        createAcctViewElm.appendChild(await footerElm.render());
+        createAcctViewElm.appendChild(await new Header().render());
+        createAcctViewElm.appendChild(this.#viewContainer);
+        createAcctViewElm.appendChild(await new Footer().render());
 
         return createAcctViewElm;
     }
