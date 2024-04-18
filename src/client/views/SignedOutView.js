@@ -1,9 +1,8 @@
 import { Navbar1 } from '../components/Navbar1.js';
-import { Footer } from '../components/Footer.js';
 import { Events } from '../Events.js';
 
 /**
- * Sets up navbar and footer for Landing and About views. Injected into App.
+ * Sets up navbar for Landing and About views. Injected into App.
  */
 export class SignedOutView {
     #viewContainer = null;
@@ -21,7 +20,6 @@ export class SignedOutView {
 
         signedOutViewElm.appendChild(await new Navbar1().render());
         signedOutViewElm.appendChild(this.#viewContainer);
-        signedOutViewElm.appendChild(await new Footer().render());
 
         // TODO: render views
 

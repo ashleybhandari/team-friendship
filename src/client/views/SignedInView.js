@@ -1,13 +1,12 @@
 import { Header } from '../components/Header.js';
 import { Navbar2 } from '../components/Navbar2.js';
-import { Footer } from '../components/Footer.js';
 import { MatchesView } from './MatchesView.js';
 import { SettingsView } from './SettingsView.js';
 import { Events } from '../Events.js';
 
 /**
- * Sets up header, navbar, and footer for Discover, Matches, and Settings
- * views. Injected into App.
+ * Sets up header and navbar for Discover, Matches, and Settings views.
+ * Injected into App.
  */
 export class SignedInView {
     #signedInViewElm = null;
@@ -29,7 +28,6 @@ export class SignedInView {
         this.#signedInViewElm.appendChild(await new Header().render());
         this.#signedInViewElm.appendChild(await new Navbar2().render());
         this.#signedInViewElm.appendChild(this.#viewContainer);
-        this.#signedInViewElm.appendChild(await new Footer().render());
 
         // renders views to be injected into viewContainer
         this.#matchesViewElm = await new MatchesView().render();

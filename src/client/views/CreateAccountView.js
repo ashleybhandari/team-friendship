@@ -1,5 +1,4 @@
 import { Header } from '../components/Header.js';
-import { Footer } from '../components/Footer.js';
 import { Events } from '../Events.js';
 
 /**
@@ -27,7 +26,6 @@ export class CreateAccountView {
 
         createAcctViewElm.appendChild(await new Header().render());
         createAcctViewElm.appendChild(this.#viewContainer);
-        createAcctViewElm.appendChild(await new Footer().render());
 
         // TODO: render views
         

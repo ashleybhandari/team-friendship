@@ -1,3 +1,4 @@
+import { Footer } from './components/Footer.js';
 import { CreateAccountView } from "./views/CreateAccountView.js";
 import { SignedInView } from "./views/SignedInView.js";
 import { SignedOutView } from "./views/SignedOutView.js";
@@ -34,6 +35,7 @@ export class App {
         await this.#events.publish('navigateTo', 'landing');
 
         rootElm.appendChild(this.#viewContainer);
+        rootElm.appendChild(await new Footer().render());
     }
 
     #navigateTo(view) {

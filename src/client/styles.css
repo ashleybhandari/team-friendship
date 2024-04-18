@@ -1,5 +1,11 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
-    margin: 0;
+    /* room for footer */
+    margin: 0 0 140px;
 }
 
 /* fonts */
@@ -163,6 +169,10 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     color: white;
     background-color: #4C5454;
 }
