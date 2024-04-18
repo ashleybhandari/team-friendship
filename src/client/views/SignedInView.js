@@ -60,6 +60,7 @@ export class SignedInView {
         }
         else {
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
+            this.#updateNavbar(view);
         }
         
         window.location.hash = view;

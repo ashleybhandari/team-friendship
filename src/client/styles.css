@@ -36,6 +36,18 @@ body {
     background-color: #e5c15e;
 }
 
+.button.danger {
+    background-color: #FF715B;
+}
+
+.button.danger:hover {
+    background-color: #f4634d;
+}
+
+.button.danger:active {
+    background-color: #ec5b45;
+}
+
 /* CheckboxInput.js */
 
 .custom-checkbox {
@@ -236,24 +248,65 @@ body {
     color: black;
 }
 
-.navbar2 .text-links {
+.navbar2 .main-links {
     grid-column: 2;
     display: flex;
     justify-content: space-between;
 }
 
-.navbar2 .text-links a {
+.navbar2 .main-links a {
     font-weight: bold;
     text-decoration: none;
 }
 
-.navbar2 .text-links a:hover, .navbar2 .text-links .selected {
+.navbar2 .main-links a:hover, .navbar2 .main-links .selected {
     border-bottom: 3.5px solid #7DD2AE;
 }
 
-.navbar2 .settings {
-    text-align: end;
-    margin-right: 10px;
+.navbar2 .dropdown-button {
+    float: right;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.navbar2 .dropdown-button:hover {
+    color: #7DD2AE;
+}
+
+.navbar2 .dropdown-content {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 123px;
+    right: 4px;
+    z-index: 1;
+    border-radius: 10px;
+    background-color: #ececec;
+}
+
+.navbar2 .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.navbar2 .dropdown-content a:hover {
+    color: white;
+    background-color: #7DD2AE;
+}
+
+.navbar2 .dropdown-content a:first-child {
+    border-radius: 10px 10px 0 0;
+}
+
+.navbar2 .dropdown-content a:last-child {
+    border-radius: 0 0 10px 10px;
+}
+
+.navbar2 .show {
+    display: flex;
 }
 
 .navbar2 hr {
@@ -410,4 +463,26 @@ body {
 
 #matchesView #profileView #toMatchesBtn i {
     margin-right: 5px;
+}
+
+/* SettingsView.js */
+
+#settingsView {
+    padding: 50px 20%;
+}
+
+#settingsView h2 {
+}
+
+#settingsView h3 {
+}
+
+#settingsView .buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#settingsView .buttons button {
+    margin: 0 5px;
 }

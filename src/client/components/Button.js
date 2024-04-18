@@ -18,9 +18,16 @@ export class Button {
         elm.classList.add('be-vietnam', 'button');
 
         elm.id = createElementId(this.value, 'Btn');
-        elm.type = this.type;
         elm.innerHTML = this.value;
         elm.style.width = this.width;
+
+        if (this.type === 'danger') {
+            elm.type = 'button';
+            elm.classList.add('danger');
+        }
+        else {
+            elm.type = this.type;
+        }
 
         return elm;
     }

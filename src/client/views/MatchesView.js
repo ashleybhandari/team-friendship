@@ -1,5 +1,5 @@
-import { User } from '../DataStructures.js';
-import { getUser, getMatches } from '../Data.js';
+import { User } from '../data/User.js';
+import { getUser, getMatches } from '../data/Backend.js';
 import { Button } from '../components/Button.js';
 
 /**

@@ -1,5 +1,6 @@
-import { User, Preferences, Housing } from './DataStructures.js';
-
+import { User } from './User.js';
+import { Preferences } from './Preferences.js';
+import { Housing } from './Housing.js';
 
 const u0 = new User(
     0,
@@ -104,23 +105,7 @@ const u4 = new User(
 );
 
 const users = [ u0, u1, u2, u3, u4 ];
-const matches = [ 0, 1, 2, 3, 4 ];
+const roommateMatches = [ 0, 1, 4 ];
+const housingMatches = [ 2, 3 ];
 
-async function getUsers() {
-    return users;
-}
-
-async function getUser(id) {
-    for (const user of await getUsers()) {
-        if (user.id === id) {
-            return user;
-        }
-    }
-    return null;
-}
-
-async function getMatches() {
-    return matches;
-}
-
-export { getUsers, getUser, getMatches };
+export { users, roommateMatches, housingMatches };
