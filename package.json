@@ -60,6 +60,7 @@
   "devDependencies": {
     "html-validate": "^8.15.0",
     "http-server": "^14.1.1",
+    "jsdoc": "^4.0.2",
     "prettier": "^3.2.5"
   }
 }
