@@ -1,3 +1,13 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* room for footer */
+    margin: 0 0 140px;
+}
+
 /* fonts */
 
 .be-vietnam {
@@ -24,8 +34,24 @@
     background-color: #F4D06F;
 }
 
+.button:hover {
+    background-color: #ebc765;
+}
+
 .button:active {
-    background-color: #f4d16fde;
+    background-color: #e5c15e;
+}
+
+.button.danger {
+    background-color: #FF715B;
+}
+
+.button.danger:hover {
+    background-color: #f4634d;
+}
+
+.button.danger:active {
+    background-color: #ec5b45;
 }
 
 /* CheckboxInput.js */
@@ -143,6 +169,10 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     color: white;
     background-color: #4C5454;
 }
@@ -224,28 +254,69 @@
     color: rgba(0, 0, 0, 0.6);
 }
 
-.navbar2 a:hover {
+.navbar2 a:hover, .navbar2 .selected {
     color: black;
 }
 
-.navbar2 .text-links {
+.navbar2 .main-links {
     grid-column: 2;
     display: flex;
     justify-content: space-between;
 }
 
-.navbar2 .text-links a {
+.navbar2 .main-links a {
     font-weight: bold;
     text-decoration: none;
 }
 
-.navbar2 .text-links a:hover {
+.navbar2 .main-links a:hover, .navbar2 .main-links .selected {
     border-bottom: 3.5px solid #7DD2AE;
 }
 
-.navbar2 .settings {
-    text-align: end;
-    margin-right: 10px;
+.navbar2 .dropdown-button {
+    float: right;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.navbar2 .dropdown-button:hover {
+    color: #7DD2AE;
+}
+
+.navbar2 .dropdown-content {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 123px;
+    right: 4px;
+    z-index: 1;
+    border-radius: 10px;
+    background-color: #ececec;
+}
+
+.navbar2 .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.navbar2 .dropdown-content a:hover {
+    color: white;
+    background-color: #7DD2AE;
+}
+
+.navbar2 .dropdown-content a:first-child {
+    border-radius: 10px 10px 0 0;
+}
+
+.navbar2 .dropdown-content a:last-child {
+    border-radius: 0 0 10px 10px;
+}
+
+.navbar2 .show {
+    display: flex;
 }
 
 .navbar2 hr {
@@ -330,4 +401,98 @@
     justify-content: space-between;
     margin-top: 3px;
     font-size: 12px;
+}
+
+/* MatchesView.js */
+
+#matchesView {
+    padding: 50px 20%;
+}
+
+#matchesView .hidden {
+    display: none !important;
+}
+
+#matchesView #usersView {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+#matchesView #usersView .user {
+    display: grid;
+    grid-template-columns: 160px auto;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    border: 3px solid #F4D06F;
+    cursor: pointer;
+}
+
+#matchesView #usersView .user:hover,
+#matchesView #usersView .selected {
+    background-color: #F4D06F;
+}
+
+#matchesView #usersView .user:active {
+    background-color: #e5c15e;
+}
+
+#matchesView #usersView img {
+    width: 150px;
+    border: 5px solid white;
+    border-radius: 50%;
+    margin: auto;
+}
+
+#matchesView #usersView .bio {
+    margin: auto;
+}
+
+#matchesView #usersView h2 {
+    margin: 0 0 5px;
+}
+
+#matchesView #usersView h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#matchesView #usersView p {
+    margin: 10px 0 0;
+    word-break: break-all;
+    font-size: 14px;
+}
+
+#matchesView #profileView #toMatchesBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#matchesView #profileView #toMatchesBtn i {
+    margin-right: 5px;
+}
+
+/* SettingsView.js */
+
+#settingsView {
+    padding: 50px 20%;
+}
+
+#settingsView h2 {
+}
+
+#settingsView h3 {
+}
+
+#settingsView .buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#settingsView .buttons button {
+    margin: 0 5px;
 }

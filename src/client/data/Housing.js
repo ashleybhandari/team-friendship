@@ -1,7 +1,7 @@
-class Housing {
+export class Housing {
     /**
      * Describes a housing accommodation. Parameters in brackets are optional.
-     * @param {string} city
+     * @param {string} city 
      * @param {Object} rent
      *   @param {number} price
      *   @param {string} period - "semester", "month", "year"
@@ -52,6 +52,3 @@ class Housing {
         this.notes = notes;
     }
 }
-
-
-export { User, Preferences, Housing };
