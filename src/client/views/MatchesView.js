@@ -35,7 +35,19 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        for (const match of await getMatches()) {
+        const matches = await getMatches();
+
+        // show message if user has no matches
+        if (matches.length === 0) {
+            const noMatches = document.createElement('div');
+            noMatches.id = 'noMatches';
+            noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
+            container.appendChild(noMatches);
+            return;
+        }
+
+        // show list if user has matches
+        for (const match of matches) {
             const user = await getUser(match);
             
             // match's entry in list

@@ -415,6 +415,10 @@ body {
     display: none !important;
 }
 
+#matchesView #noMatches {
+    text-align: center;
+}
+
 #matchesView #listView {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
