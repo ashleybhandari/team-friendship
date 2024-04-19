@@ -43,7 +43,7 @@ export class SignedInView {
     /**
      * Called when navigateTo is published (by navbar or footer). Injects a new
      * view into viewContainer and styles the navbar accordingly.
-     * @param {string} view "matches", "settings"
+     * @param {string} view - "matches", "settings"
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
@@ -72,9 +72,10 @@ export class SignedInView {
         Array
             .from(this.#signedInViewElm.querySelectorAll('nav a'))
             .forEach((elm) => elm.classList.remove('selected'));
-            
-        this.#signedInViewElm
-            .querySelector(`#nav2-${view}`)
-            .classList.add('selected');
+        
+        const elm = this.#signedInViewElm.querySelector(`#nav-${view}`);
+        if (elm) {
+            elm.classList.add('selected');
+        }
     }
 }

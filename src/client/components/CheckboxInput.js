@@ -3,8 +3,8 @@ import { createElementId } from '../createElementId.js';
 export class CheckboxInput {
     /**
      * UI component: Checkbox with label.
-     * @param {string} name Checkbox label
-     * @param {boolean} [checked=false] Whether the box is checked
+     * @param {string} name - Checkbox label
+     * @param {boolean} [checked=false] - Whether the box is checked
      */
     constructor(name, checked = false) {
         this.name = name;

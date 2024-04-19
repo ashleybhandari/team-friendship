@@ -3,8 +3,8 @@ import { createElementId } from '../createElementId.js';
 export class RadioInput {
     /**
      * UI component: Group of radio buttons
-     * @param {string} name Name representing the group of options (not displayed)
-     * @param {string[]} elements Options to select from
+     * @param {string} name - Name representing the group of options (not displayed)
+     * @param {string[]} elements - Options to select from
      */
     constructor(name, elements) {
         this.name = name;

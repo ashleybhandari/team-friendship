@@ -33,7 +33,7 @@ export class SignedOutView {
     /**
      * Called when navigateTo is published (by navbar or footer). Injects a new
      * view into viewContainer and styles the navbar accordingly.
-     * @param {string} view "landing", "about"
+     * @param {string} view - "landing", "about"
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
