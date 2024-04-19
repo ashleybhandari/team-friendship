@@ -234,12 +234,14 @@ body {
 .header img {
     width: 32px;
     height: 32px;
+    cursor: pointer;
 }
 
 .header h1 {
     font-size: 26px;
     margin: 0;
     padding: 6px 5px 0;
+    cursor: pointer;
 }
 
 /* Navbar2.js */
@@ -413,13 +415,13 @@ body {
     display: none !important;
 }
 
-#matchesView #usersView {
+#matchesView #listView {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
 }
 
-#matchesView #usersView .user {
+#matchesView #listView .user {
     display: grid;
     grid-template-columns: 160px auto;
     gap: 20px;
@@ -429,36 +431,36 @@ body {
     cursor: pointer;
 }
 
-#matchesView #usersView .user:hover,
-#matchesView #usersView .selected {
+#matchesView #listView .user:hover,
+#matchesView #listView .selected {
     background-color: #F4D06F;
 }
 
-#matchesView #usersView .user:active {
+#matchesView #listView .user:active {
     background-color: #e5c15e;
 }
 
-#matchesView #usersView img {
+#matchesView #listView img {
     width: 150px;
     border: 5px solid white;
     border-radius: 50%;
     margin: auto;
 }
 
-#matchesView #usersView .bio {
+#matchesView #listView .bio {
     margin: auto;
 }
 
-#matchesView #usersView h2 {
+#matchesView #listView h2 {
     margin: 0 0 5px;
 }
 
-#matchesView #usersView h3 {
+#matchesView #listView h3 {
     margin: 0;
     font-size: 18px;
 }
 
-#matchesView #usersView p {
+#matchesView #listView p {
     margin: 10px 0 0;
     word-break: break-all;
     font-size: 14px;

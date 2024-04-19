@@ -21,6 +21,7 @@ export class Button {
         elm.innerHTML = this.value;
         elm.style.width = this.width;
 
+        // makes elm red with type "button"
         if (this.type === 'danger') {
             elm.type = 'button';
             elm.classList.add('danger');

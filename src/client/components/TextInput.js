@@ -19,10 +19,12 @@ export class TextInput {
         const elm = document.createElement('div');
         elm.classList.add('text-input');
 
+        // input label
         const label = document.createElement('label');
         label.htmlFor = id;
         label.innerText = this.name;
 
+        // input
         const input = document.createElement('input');
         input.classList.add('be-vietnam');
         input.id = id;
@@ -33,14 +35,18 @@ export class TextInput {
         elm.appendChild(label);
         elm.appendChild(input);
 
+        // if input type is password, adds a "show" button that toggles
+        // showing/hiding the inputted text.
         if (this.type === 'password') {
             const container = document.createElement('div');
             const show = document.createElement('span');
             show.id = 'showPassword'
             show.innerText = 'show';
-            show.addEventListener('click', () =>
-                this.#toggleShowPassword(input.id, show.id)
-            );
+
+            show.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.#toggleShowPassword(input.id, show.id);
+            });
 
             container.appendChild(input);
             container.appendChild(show);
@@ -50,6 +56,11 @@ export class TextInput {
         return elm;
     }
 
+    /**
+     * Toggles showing/hiding input text (for "password" inputs).
+     * @param {string} inputId 
+     * @param {string} showId 
+     */
     #toggleShowPassword(inputId, showId) {
         const input = document.getElementById(inputId);
         const show = document.getElementById(showId);

@@ -8,8 +8,8 @@ import { Events } from '../Events.js';
  * Sets up header and navbar for Discover, Matches, and Settings views.
  * Injected into App.
  */
-export class SignedInView {
-    #signedInViewElm = null;
+export class SignedInContainer {
+    #signedInCntrElm = null;
     #viewContainer = null;
     #matchesViewElm = null;
     #settingsViewElm = null;
@@ -20,34 +20,37 @@ export class SignedInView {
     }
 
     async render() {
-        this.#signedInViewElm = document.createElement('div');
-        this.#signedInViewElm.id = 'signedInView';
+        this.#signedInCntrElm = document.createElement('div');
+        this.#signedInCntrElm.id = 'signedInCntr';
 
         this.#viewContainer = document.createElement('div');
 
-        this.#signedInViewElm.appendChild(await new Header().render());
-        this.#signedInViewElm.appendChild(await new Navbar2().render());
-        this.#signedInViewElm.appendChild(this.#viewContainer);
+        // header, navbar, and view container
+        this.#signedInCntrElm.appendChild(await new Header().render());
+        this.#signedInCntrElm.appendChild(await new Navbar2().render());
+        this.#signedInCntrElm.appendChild(this.#viewContainer);
 
         // renders views to be injected into viewContainer
+        // TODO: discover views
         this.#matchesViewElm = await new MatchesView().render();
         this.#settingsViewElm = await new SettingsView().render();
 
-        // initializes container
+        // initializes view container
         this.#navigateTo('discover');
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
 
-        return this.#signedInViewElm;
+        return this.#signedInCntrElm;
     }
 
     /**
-     * Called when navigateTo is published (by navbar or footer). Injects a new
-     * view into viewContainer and styles the navbar accordingly.
+     * Called when navigateTo is published. Injects view into viewContainer and
+     * styles the navbar accordingly.
      * @param {string} view - "matches", "settings"
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
+        // TODO: discover views
         if (view === 'matches') {
             this.#viewContainer.appendChild(this.#matchesViewElm);
             this.#updateNavbar(view);
@@ -67,15 +70,14 @@ export class SignedInView {
     /**
      * Applies the "selected" class only to the link associated with the
      * current view.
+     * @param {string} view 
      */
     #updateNavbar(view) {
         Array
-            .from(this.#signedInViewElm.querySelectorAll('nav a'))
+            .from(this.#signedInCntrElm.querySelectorAll('nav a'))
             .forEach((elm) => elm.classList.remove('selected'));
         
-        const elm = this.#signedInViewElm.querySelector(`#nav-${view}`);
-        if (elm) {
-            elm.classList.add('selected');
-        }
+        const elm = this.#signedInCntrElm.querySelector(`#nav-${view}`);
+        if (elm) elm.classList.add('selected');
     }
 }

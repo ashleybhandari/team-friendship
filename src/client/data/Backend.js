@@ -1,9 +1,13 @@
-import { users, roommateMatches, housingMatches } from './Data.js';
+import { users } from './Data.js';
 
+// TODO: PouchDB stuff, data mocking
+
+// temp
 async function getUsers() {
     return users;
 }
 
+// temp
 async function getUser(id) {
     for (const user of await getUsers()) {
         if (user.id === id) {
@@ -13,8 +17,11 @@ async function getUser(id) {
     return null;
 }
 
+// temp
 async function getMatches() {
-    return housingMatches;
+    const roommateMatches = users.filter((u) => !u.hasHousing);
+    const housingMatches = users.filter((u) => u.hasHousing);
+    return roommateMatches.map((u) => u.id);
 }
 
 export { getUsers, getUser, getMatches };
