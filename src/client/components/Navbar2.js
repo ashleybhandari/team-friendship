@@ -61,6 +61,10 @@ export class Navbar2 {
         btn.querySelector('button').addEventListener('click', () => {
             dropdown.classList.toggle('show')
         });
+
+        btn.querySelector('nav2-landing').addEventListener('click', () => {
+            localStorage.removeItem('authToken');
+        });
           
         window.onclick = (e) => {
             const btnClicked = e.target.matches('.dropdown-button') || e.target.matches('.dropdown-button i');

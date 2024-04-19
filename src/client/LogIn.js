@@ -1,11 +1,13 @@
 import { User} from './DataStructures.js';
 
+let user = new User;
+
 class AuthService {
     static async authenticate(username, password) {
         return new Promise((resolve, reject) => {
         
             setTimeout(() => {
-                const user = users.find(user => user.email === username && user.password === password);
+                user = users.find(user => user.email === username && user.password === password);
                 if (user) {
                     resolve(user); 
                 } else {
