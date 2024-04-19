@@ -20,6 +20,7 @@ export class ProgressBar {
         <div></div>
         `;
 
+        // divs for current step and completed steps are a darker color
         Array
             .from(elm.getElementsByTagName('div'))
             .forEach((div, i) => {

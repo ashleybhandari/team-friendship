@@ -1,18 +1,18 @@
 import { Footer } from './components/Footer.js';
-import { CreateAccountView } from "./views/CreateAccountView.js";
-import { SignedInView } from "./views/SignedInView.js";
-import { SignedOutView } from "./views/SignedOutView.js";
+import { CreateAccountContainer } from "./views/CreateAccountContainer.js";
+import { SignedInContainer } from "./views/SignedInContainer.js";
+import { SignedOutContainer } from "./views/SignedOutContainer.js";
 import { Events } from './Events.js';
 
 /**
- * Sets up headers and footers for account creation views, signed in views, and
- * signed out views.
+ * Sets up headers and footers for account creation, signed in, and signed out
+ * view containers.
  */
 export class App {
     #viewContainer = null;
-    #createAcctViewElm  = null;
-    #signedInViewElm  = null;
-    #signedOutViewElm  = null;
+    #createAcctCntrElm  = null;
+    #signedInCntrElm  = null;
+    #signedOutCntrElm  = null;
     #events  = null;
 
     constructor() {
@@ -25,10 +25,10 @@ export class App {
 
         this.#viewContainer = document.createElement('div');
 
-        // renders views to be injected into viewContainer
-        this.#createAcctViewElm = await new CreateAccountView().render();
-        this.#signedInViewElm = await new SignedInView().render();
-        this.#signedOutViewElm = await new SignedOutView().render();
+        // renders elements to be injected into viewContainer
+        this.#createAcctCntrElm = await new CreateAccountContainer().render();
+        this.#signedInCntrElm = await new SignedInContainer().render();
+        this.#signedOutCntrElm = await new SignedOutContainer().render();
 
         // initializes view
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
@@ -41,19 +41,22 @@ export class App {
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
-        // TODO: create accounts views
+        // TODO: createAcctCntr views
         switch (view) {
             case 'landing':
             case 'about':
-                this.#viewContainer.appendChild(this.#signedOutViewElm);
+                this.#viewContainer.appendChild(this.#signedOutCntrElm);
+                break;
+            case 'sign-in':
+                this.#viewContainer.appendChild(this.#createAcctCntrElm);
                 break;
             case 'discover':
             case 'matches':
             case 'settings':
-                this.#viewContainer.appendChild(this.#signedInViewElm);
+                this.#viewContainer.appendChild(this.#signedInCntrElm);
                 break;
             default:
-                this.#viewContainer.appendChild(this.#signedOutViewElm);
+                this.#viewContainer.appendChild(this.#signedOutCntrElm);
         }
     }
 }

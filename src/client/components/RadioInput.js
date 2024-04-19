@@ -16,11 +16,13 @@ export class RadioInput {
         elm.classList.add('radio-input');
         const radioName = createElementId(this.name, 'Radio');
 
+        // options to select from
         this.elements.forEach((e, i) => {
             const id = createElementId(e);
 
             const group = document.createElement('div');
 
+            // radio button for option
             const input = document.createElement('input');
             input.type = 'radio';
             input.name = radioName;
@@ -28,6 +30,7 @@ export class RadioInput {
             input.value = e;
             if (i === 0) input.checked = true;
 
+            // label for option
             const label = document.createElement('label');
             label.htmlFor = id;
             label.innerText = e;

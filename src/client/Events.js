@@ -1,7 +1,8 @@
 /**
  * Singleton class for event handling, allowing subscription to, publishing of,
  * and unsubscribing from events. This class implements the singleton pattern to
- * ensure that only one instance exists throughout the application.
+ * ensure that only one instance exists throughout the application. Implemented
+ * by Prof. Tim Richards.
  */
 export class Events {
     /**

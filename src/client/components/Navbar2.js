@@ -2,7 +2,7 @@ import { Events } from '../Events.js';
 
 /**
  * UI component: Navbar for screens when the user is logged in. Only used in
- * SignedInView.js.
+ * SignedInContainer.js.
  */
 export class Navbar2 {
     #events = null;
@@ -30,18 +30,11 @@ export class Navbar2 {
         // add click event listener to each link
         elm
             .querySelectorAll('a')
-            .forEach(link =>
+            .forEach((link) =>
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    let view = e.currentTarget.getAttribute('href').replace('#', '');
-
-                    if (view === 'signOut') {
-                        view = 'landing';
-                        this.#signOut();
-                    }
-
-                    window.location.hash = view;
-                    await this.#events.publish('navigateTo', view);
+                    const view = e.currentTarget.getAttribute('href').replace('#', '');
+                    this.#navigate(view);
                 })
             );
 
@@ -69,12 +62,13 @@ export class Navbar2 {
         dropdown.classList.add('dropdown-content');
         dropdown.innerHTML = `
         <a href="#settings" id="nav-settings">Settings</a>
-        <a href="#signOut" id="nav-signOut">Sign out</a>
+        <a href="#sign-out" id="nav-sign-out">Sign out</a>
         `;
 
-        // events to open and close the dropdown content
-        btn.querySelector('button').addEventListener('click', () => {
-            dropdown.classList.toggle('show')
+        // events to open and close the dropdown
+        btn.querySelector('button').addEventListener('click', (e) => {
+            e.preventDefault();
+            dropdown.classList.toggle('show');
         });
 
         window.onclick = (e) => {
@@ -91,16 +85,21 @@ export class Navbar2 {
         container.appendChild(dropdown);
     }
 
+    
     /**
-     * Signs user out.
+     * Navigates to v. Signs out and navigates to landing if the Sign out
+     * button was clicked.
+     * @param {string} v - View to navigate to
      */
-    #signOut() {
-        // TODO
+    async #navigate(v) {
+        let view = v;
 
-         btn.querySelector('nav2-landing').addEventListener('click', () => {
-            localStorage.removeItem('authToken');
-        });
+        if (view === 'sign-out') {
+            view = 'landing';
+            localStorage.removeItem('authToken'); // TODO: switch to PouchDB
+        }
 
-        // Switch window to Home
+        window.location.hash = view;
+        await this.#events.publish('navigateTo', view);
     }
 }

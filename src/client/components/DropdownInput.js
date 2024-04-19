@@ -20,10 +20,12 @@ export class DropdownInput {
         const elm = document.createElement('div');
         elm.classList.add('dropdown-input');
 
+        // dropdown label
         const label = document.createElement('label');
         label.htmlFor = id;
         label.innerText = this.name;
 
+        // input box with selected option, onclick opens dropdown
         const input = document.createElement('select');
         input.classList.add('be-vietnam');
         input.id = id;
@@ -31,6 +33,7 @@ export class DropdownInput {
         input.style.height = this.height;
         input.style.width = this.width;
 
+        // adds options to dropdown
         this.elements.forEach((e) => {
             const option = document.createElement('option');
             option.value = createElementId(e);

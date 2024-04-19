@@ -54,11 +54,31 @@ export class Footer {
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const view = e.target.getAttribute('href').replace('#', '');
-                    window.location.hash = view;
-                    await this.#events.publish('navigateTo', view);
+                    this.#navigate(view);
                 })
             );
 
         return elm;
+    }
+
+    /**
+     * Navigates to v. If a signed out user clicks a link that requires an
+     * account, redirects them to the Sign in page.
+     * @param {string} v - View to navigate to
+     */
+    async #navigate(v) {
+        const view = (() => {
+            switch(v) {
+                case 'discover':
+                case 'matches':
+                case 'settings':
+                    // TODO: if (not signed in) return 'sign-in'
+                default:
+                    return v;
+            }
+        })();
+
+        window.location.hash = view;
+        await this.#events.publish('navigateTo', view);
     }
 }

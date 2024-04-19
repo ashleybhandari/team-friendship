@@ -17,10 +17,12 @@ export class SliderInput {
         const elm = document.createElement('div');
         elm.classList.add('slider-input');
 
+        // slider title
         const title = document.createElement('p');
         title.classList.add('title');
         title.innerText = this.name;
 
+        // slider
         const input = document.createElement('input');
         input.id = createElementId(this.name, 'Sldr');
         input.type = 'range';
@@ -28,6 +30,7 @@ export class SliderInput {
         input.max = 3;
         input.value = 2;
 
+        // labels for left- and rightmost values
         const labels = document.createElement('div');
         labels.classList.add('labels');
 

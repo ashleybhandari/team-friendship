@@ -1,8 +1,8 @@
 export class Preferences {
     /**
-     * Describes the preferences of users who don't have housing. For
-     * multi-select's, must select at least 1 unless otherwise stated.
-     * Parameters in brackets are optional.
+     * Data structure: Describes the preferences of users who don't have
+     * housing. For multi-select's, must select at least 1 unless otherwise
+     * stated. Parameters in brackets are optional.
      * @param {string[]} [cities]
      * @param {Object} rent - Budget range
      *   @param {number} [rent.min]
