@@ -1,5 +1,7 @@
-import { Header } from '../components/Header.js';
-import { Footer } from '../components/Footer.js';
+import { Header } from './components/Header.js';
+import { Footer } from './components/Footer.js';
+
+// Created by Gauri Arvind
 
 export class DisplayWithHousingView {
     // A toggle for viewing users with or without housing. This might
@@ -80,13 +82,13 @@ export class DisplayWithHousingView {
         const aboutUser = document.createElement("div");
         aboutUser.id = "user-about";
 
-        const userAccomodation = document.createElement("div");
-        userAccomodation.id = "user-accomodation";
-        userAccomodation.innerText = "About me:";
-        const userAccomodationLeft = document.createElement("div");
-        userAccomodationLeft.id = "user-accommodation-left";
-        const userAccomodationRight = document.createElement("div");
-        userAccomodationRight.id = "user-accomodation-right";
+        const userAccommodation = document.createElement("div");
+        userAccommodation.id = "user-accommodation";
+        userAccommodation.innerText = "About me:";
+        const userAccommodationLeft = document.createElement("div");
+        userAccommodationLeft.id = "user-accommodation-left";
+        const userAccommodationRight = document.createElement("div");
+        userAccommdationRight.id = "user-accommodation-right";
 
         const userHouseRent = document.createElement("div");
         userHouseRent.id = "user-house-rent";
@@ -105,9 +107,9 @@ export class DisplayWithHousingView {
 
         rightContainer.appendChild(aboutUser);
 
-        userAccomodation.appendChild(userAccomodationLeft);
-        userAccomodation.appendChild(userAccomodationRight);
-        rightContainer.appendChild(userAccomodation);
+        userAccommodation.appendChild(userAccommodationLeft);
+        userAccommodation.appendChild(userAccommodationRight);
+        rightContainer.appendChild(userAccommodation);
 
         rightContainer.appendChild(userHouseRent);
         rightContainer.appendChild(userHouseAmenities);

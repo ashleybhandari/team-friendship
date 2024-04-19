@@ -1,5 +1,8 @@
-import { Header } from '../components/Header.js';
-import { Footer } from '../components/Footer.js';
+import { Header } from './components/Header.js';
+import { Footer } from './components/Footer.js';
+
+// Created by Gauri Arvind
+// Note: may not need header and footer
 
 export class DisplayWithHousingView {
     // A toggle for viewing users with or without housing. This might
