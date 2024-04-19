@@ -96,5 +96,11 @@ export class Navbar2 {
      */
     #signOut() {
         // TODO
+
+         btn.querySelector('nav2-landing').addEventListener('click', () => {
+            localStorage.removeItem('authToken');
+        });
+
+        // Switch window to Home
     }
 }
