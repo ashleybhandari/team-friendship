@@ -40,6 +40,10 @@ export class Footer {
         <li><a href="#settings">Settings</a></li>
         `;
 
+        elm.appendChild(center);
+        elm.appendChild(links1);
+        elm.appendChild(links2);
+
         elm
             .querySelectorAll('li a')
             .forEach(link =>
@@ -50,10 +54,6 @@ export class Footer {
                     await this.#events.publish('navigateTo', view);
                 })
             );
-
-        elm.appendChild(center);
-        elm.appendChild(links1);
-        elm.appendChild(links2);
 
         return elm;
     }
