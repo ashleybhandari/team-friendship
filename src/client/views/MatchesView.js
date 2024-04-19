@@ -79,7 +79,6 @@ export class MatchesView {
     /**
      * Renders the selected match's profile.
      * @param {HTMLDivElement} container 
-     * @param {User} user 
      */
     async #renderProfile(container) {
         this.#profileViewElm = document.createElement('div');
@@ -106,7 +105,7 @@ export class MatchesView {
      */
     #injectProfile(user) {
         this.#profileViewContainer.innerText = `Inject ${user.name.fname}'s profile`;
-        // TODO: inject profile from DIscover page
+        // TODO: inject profile from Discover page, add contact info
     }
 
     /**
@@ -119,7 +118,7 @@ export class MatchesView {
             this.#usersViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
             this.#injectProfile(user);
-            window.location.hash = `matches/${user.id}`;
+            window.location.hash = `matches-${user.id}`;
         }
         else {
             // view all matches
