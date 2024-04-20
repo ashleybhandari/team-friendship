@@ -10,7 +10,7 @@ function login(username, password) {
   db.logIn(username, password)
     .then(response => {
       console.log('Logged in successfully');
-      window.location.href = 'DiscoverHousing.js';
+      //TODO: Switch the window to the logged in page
     })
     .catch(err => {
       console.error('Login failed:', err);
