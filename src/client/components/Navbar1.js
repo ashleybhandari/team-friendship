@@ -15,13 +15,34 @@ export class Navbar1 {
         const elm = document.createElement('nav');
         elm.classList.add('navbar1');
 
-        elm.innerHTML = `
-        <nav>
-            <a href="#landing" id="nav-landing">Home</a>
-            <a href="#about" id="nav-about">About us</a>
-            <a href="#sign-in" id="nav-sign-in">Sign in</a>
-        </nav>
+        //Home button
+        const homeButton = new Button('Home');
+        const homeButtonElement = await homeButton.render();
+        homeButtonElement.addEventListener('click', async () => {
+            await this.#navigate('landing');
+        });
+
+         //About Us button
+        const aboutButton = new Button('About Us');
+        const aboutButtonElement = await aboutButton.render();
+        aboutButtonElement.addEventListener('click', async () => {
+            await this.#navigate('about');
+        });
+
+        elm.appendChild(homeButtonElement);
+        elm.appendChild(aboutButtonElement);
+
+        elm.innerHTML += `
+        <a href="#sign-in" id="nav-sign-in">Sign in</a>
         `;
+
+        // elm.innerHTML = `
+        // <nav>
+        //     <a href="#landing" id="nav-landing">Home</a>
+        //     <a href="#about" id="nav-about">About us</a>
+        //     <a href="#sign-in" id="nav-sign-in">Sign in</a>
+        // </nav>
+        // `;
         // TODO: style, etc.
 
         // add click event listener to each link
