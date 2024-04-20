@@ -33,6 +33,11 @@ export class SignInView {
         const signInButtonElement = await signInButton.render();
         signInContainer.appendChild(signInButtonElement);
 
+        signUpOption.querySelector('a').addEventListener('click', (e) => {
+            e.preventDefault();
+            Events.events().publish('navigateTo', 'create-account');
+        });
+
         return signInContainer;
     }
 }
