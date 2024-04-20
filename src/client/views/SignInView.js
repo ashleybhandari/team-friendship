@@ -27,7 +27,7 @@ export class SignInView {
         const emailInputElement = await emailInput.render();
         signInContainer.appendChild(emailInputElement);
 
-        const passwordInput = new TextInput('Password');
+        const passwordInput = new TextInput('Password', 'password');
         const passwordInputElement = await passwordInput.render();
         signInContainer.appendChild(passwordInputElement);
 
