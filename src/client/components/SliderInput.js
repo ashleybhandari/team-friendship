@@ -6,11 +6,13 @@ export class SliderInput {
      * @param {string} name - Slider label
      * @param {string} min - Label for the leftmost value of the slider
      * @param {string} max - Label for the rightmost value of the slider
+     * @param {number} [value=2] - Initial value
      */
-    constructor(name, min, max) {
+    constructor(name, min, max, value = 2) {
         this.name = name;
         this.min = min;
         this.max = max;
+        this.value = value;
     }
     
     async render() {
@@ -28,7 +30,7 @@ export class SliderInput {
         input.type = 'range';
         input.min = 1;
         input.max = 3;
-        input.value = 2;
+        input.value = this.value;
 
         // labels for left- and rightmost values
         const labels = document.createElement('div');

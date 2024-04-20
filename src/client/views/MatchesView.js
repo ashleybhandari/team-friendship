@@ -61,7 +61,7 @@ export class MatchesView {
                 : user.name.fname;
             
             elm.innerHTML = `
-            <img src=${user.pic} alt="${user.name.fname}'s profile picture">
+            <img src=${user.avatar} alt="${user.name.fname}'s profile picture">
             <div class="bio">
                 <h2>${name}</h2>
             </div>

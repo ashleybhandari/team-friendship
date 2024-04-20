@@ -120,21 +120,24 @@ body {
     transform: rotate(45deg);
 }
 
-/* DropdownInput.js, TextInput.js */
+/* DropdownInput.js, TextAreaInput.js, TextInput.js */
 
 .dropdown-input,
+.text-area-input,
 .text-input {
     display: flex;
     flex-direction: column;
 }
 
 .dropdown-input label,
+.text-area-input label,
 .text-input label {
     margin: 0 3px 5px;
     font-size: 14px;
 }
 
 .dropdown-input select,
+.text-area-input textarea,
 .text-input input {
     margin-bottom: 15px;
     padding: 5px 14px;
@@ -144,13 +147,30 @@ body {
 }
 
 .dropdown-input select:hover,
+.text-area-input textarea:focus,
 .text-input input:focus {
     outline: none;
     border-color: #7DD2AE;
 }
 
+.dropdown-input select:hover {
+    cursor: pointer;
+}
+
 .dropdown-input select:focus {
     outline: none;
+}
+
+.text-area-input {
+    width: 306.2px !important; 
+}
+
+.text-area-input textarea {
+    resize: vertical;
+    height: 55px;
+    min-height: 18px;
+    padding: 8px 10px;
+    border-radius: 10px;
 }
 
 #showPassword {
@@ -352,12 +372,12 @@ body {
 .radio-input {
     display: flex;
     flex-direction: column;
-}
-
-.radio-input label {
     font-size: 14px;
 }
-/* TODO: RadioInput styling */
+
+.radio-input div, .radio-input input, .radio-input label {
+    cursor: pointer;
+}
 
 /* SliderInput.js */
 
@@ -378,6 +398,7 @@ body {
     outline: none;
     -webkit-transition: .2s;
     transition: opacity .2s;
+    cursor: pointer;
 }
 
 .slider-input input::-webkit-slider-thumb {
@@ -484,19 +505,68 @@ body {
 /* SettingsView.js */
 
 #settingsView {
-    padding: 50px 20%;
+    margin: 50px auto;
+    padding-bottom: 50px;
+    width: 1100px;
 }
 
 #settingsView h2 {
+    margin: 0 0 40px;
+    text-align: center;
+    font-size: 28px;
 }
 
 #settingsView h3 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#settingsView p {
+    font-size: 14px;
+    margin-top: 0;
+}
+
+#settingsView .section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
+    margin: 0 0 50px 45px;
+}
+
+#settingsView .subgroup {
+    display: flex;
+    justify-content: space-between;
+    width: 306.2px;
+}
+
+#settingsView #credentials {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 50px 0;
+}
+
+#settingsView #credentials .text-input {
+    margin: 0 20px;
+}
+
+#settingsView #profile .text-area-input {
+    grid-column: 1 / 3;
+}
+
+#settingsView #profile textarea {
+    min-height: 82px;
+    width: 635px;
+}
+
+#settingsView #profile .radio-input {
+    margin: auto;
+    grid-column: 3;
+    grid-row: 3 / 5;
 }
 
 #settingsView .buttons {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
 }
 
 #settingsView .buttons button {

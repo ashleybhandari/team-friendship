@@ -4,7 +4,7 @@ export class CheckboxInput {
     /**
      * UI component: Checkbox with label.
      * @param {string} name - Checkbox label
-     * @param {boolean} [checked=false] - Whether the box is checked
+     * @param {boolean} [checked=false] - Initial value
      */
     constructor(name, checked = false) {
         this.name = name;
