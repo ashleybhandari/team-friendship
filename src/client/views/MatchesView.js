@@ -4,10 +4,10 @@ import { Button } from '../components/Button.js';
 
 /**
  * Displays the user's matches as a list of abbreviated profiles (can click on
- * a profile to view more details). Injected into SignedInView.
+ * a profile to view more details). Injected into SignedInContainer.
  */
 export class MatchesView {
-    #usersViewElm = null;
+    #listViewElm = null;
     #profileViewElm = null;
     #profileViewContainer = null;
 
@@ -15,12 +15,11 @@ export class MatchesView {
         const matchesViewElm = document.createElement('div');
         matchesViewElm.id = 'matchesView';
 
-        await this.#renderUsers(matchesViewElm);
+        // matches list, profile container
+        await this.#renderList(matchesViewElm);
         await this.#renderProfile(matchesViewElm);
-        matchesViewElm
-            .querySelector('#toMatchesBtn')
-            .addEventListener('click', () => this.#switchView());
 
+        // initialize view with matches list
         this.#switchView();
 
         return matchesViewElm;
@@ -29,38 +28,54 @@ export class MatchesView {
     /**
      * Renders a list of the user's matches. Each entry consists of the match's
      * profile picture, name, location (if applicable), and self-written
-     * description
+     * description.
      * @param {HTMLDivElement} container 
      */
-    async #renderUsers(container) {
-        this.#usersViewElm = document.createElement('div');
-        this.#usersViewElm.id = 'usersView';
+    async #renderList(container) {
+        this.#listViewElm = document.createElement('div');
+        this.#listViewElm.id = 'listView';
 
-        for (const match of await getMatches()) {
+        const matches = await getMatches();
+
+        // show message if user has no matches
+        if (matches.length === 0) {
+            const noMatches = document.createElement('div');
+            noMatches.id = 'noMatches';
+            noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
+            container.appendChild(noMatches);
+            return;
+        }
+
+        // show list if user has matches
+        for (const match of matches) {
             const user = await getUser(match);
             
+            // match's entry in list
             const elm = document.createElement('div');
             elm.id = `user${user.id}`;
             elm.classList.add('user');
             
+            // name, profile picture
             const name = user.name.nname
                 ? `${user.name.fname} (${user.name.nname})`
                 : user.name.fname;
             
             elm.innerHTML = `
-            <img src=${user.pic} alt="${user.name.fname}'s profile picture">
+            <img src=${user.avatar} alt="${user.name.fname}'s profile picture">
             <div class="bio">
                 <h2>${name}</h2>
             </div>
             `;
 
-            if (user.housing) {
+            // location if match has housing
+            if (user.hasHousing) {
                 const housing = document.createElement('h3');
                 housing.innerText = `${user.housing.city} - `
                     + `$${user.housing.rent.price}/${user.housing.rent.period}`;
                 elm.getElementsByClassName('bio')[0].appendChild(housing);
             }
             
+            // (truncated) description if match wrote one
             if (user.description) {
                 const description = document.createElement('p');
                 description.innerText = user.description
@@ -69,28 +84,39 @@ export class MatchesView {
                 elm.getElementsByClassName('bio')[0].appendChild(description);
             }
 
-            elm.addEventListener('click', () => this.#switchView(user));
-            this.#usersViewElm.appendChild(elm);
+            // switch to profile view if match is clicked
+            elm.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.#switchView(user);
+            });
+            this.#listViewElm.appendChild(elm);
         }
 
-        container.appendChild(this.#usersViewElm);
+        container.appendChild(this.#listViewElm);
     }
 
     /**
      * Renders the selected match's profile.
      * @param {HTMLDivElement} container 
-     * @param {User} user 
      */
     async #renderProfile(container) {
         this.#profileViewElm = document.createElement('div');
         this.#profileViewElm.id = 'profileView';
 
+        // Back to Matches button
         const toMatchesBtn = await new Button(
             '<i class="material-symbols-outlined">arrow_back</i>Back to Matches',
             200
             ).render();
         toMatchesBtn.id = 'toMatchesBtn';
 
+        // switch to matches list when Back to Matches is clicked
+        toMatchesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.#switchView();
+        });
+
+        // container, injected with selected match's information
         this.#profileViewContainer = document.createElement('div');
         this.#profileViewContainer.id = 'profileViewContainer';
 
@@ -102,28 +128,28 @@ export class MatchesView {
 
     /**
      * Injects the page with the selected match's Discover profile
-     * @param {User} user 
+     * @param {User} match 
      */
-    #injectProfile(user) {
-        this.#profileViewContainer.innerText = `Inject ${user.name.fname}'s profile`;
-        // TODO: inject profile from DIscover page
+    #injectProfile(match) {
+        this.#profileViewContainer.innerText = `Inject ${match.name.fname}'s profile`;
+        // TODO: inject profile from Discover page, add contact info
     }
 
     /**
      * Switches between viewing all matches and a selected match's profile
-     * @param {User} user 
+     * @param {User} match
      */
-    #switchView(user = null) {
-        if (user) {
-            // view user's profile
-            this.#usersViewElm.classList.add('hidden');
+    #switchView(match = null) {
+        if (match) {
+            // view match's profile
+            this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            this.#injectProfile(user);
-            window.location.hash = `matches/${user.id}`;
+            this.#injectProfile(match);
+            window.location.hash = `match${match.id}`;
         }
         else {
-            // view all matches
-            this.#usersViewElm.classList.remove('hidden');
+            // view matches list
+            this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
             window.location.hash = 'matches';
         }

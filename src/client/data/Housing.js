@@ -1,10 +1,11 @@
 export class Housing {
     /**
-     * Describes a housing accommodation. Parameters in brackets are optional.
+     * Data structure: Describes a housing accommodation. Parameters in
+     * brackets are optional.
      * @param {string} city 
      * @param {Object} rent
-     *   @param {number} price
-     *   @param {string} period - "semester", "month", "year"
+     *   @param {number} rent.price
+     *   @param {string} rent.period - "semester", "month", "year"
      * @param {number} beds
      * @param {number} baths
      * @param {string} gender - Gender inclusivity: "female", "male", "mixed"
