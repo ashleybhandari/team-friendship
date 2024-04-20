@@ -30,7 +30,7 @@ export class Footer {
         const links1 = document.createElement('ul');
         links1.classList.add('left');
         links1.innerHTML = `
-        <li><a href="#home">Home</a></li>
+        <li><a href="#landing">Home</a></li>
         <li><a href="#about">About us</a></li>
         `;
 

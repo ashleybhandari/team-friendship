@@ -179,7 +179,7 @@ body {
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
-    color: #50a984;
+    color: #7DD2AE;
     background-color: white;
 }
 
@@ -262,6 +262,12 @@ body {
     margin: 0;
     padding: 6px 5px 0;
     cursor: pointer;
+}
+
+/* Navbar1.js */
+
+.navbar1 .selected {
+    font-weight: bold;
 }
 
 /* Navbar2.js */

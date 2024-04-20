@@ -48,6 +48,7 @@ export class App {
                 this.#viewContainer.appendChild(this.#signedOutCntrElm);
                 break;
             case 'sign-in':
+            case 'create-credentials':
                 this.#viewContainer.appendChild(this.#createAcctCntrElm);
                 break;
             case 'discover':

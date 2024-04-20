@@ -45,7 +45,7 @@ export class SignedInContainer {
     /**
      * Called when navigateTo is published. Injects view into viewContainer and
      * styles the navbar accordingly.
-     * @param {string} view - "matches", "settings"
+     * @param {string} view
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
