@@ -19,9 +19,9 @@ async function getUser(id) {
 
 // temp
 async function getMatches() {
-    const roommateMatches = users.filter((u) => !u.hasHousing);
-    const housingMatches = users.filter((u) => u.hasHousing);
-    return roommateMatches.map((u) => u.id);
+    const noHousing = users.filter((u) => !u.hasHousing);
+    const haveHousing = users.filter((u) => u.hasHousing);
+    return noHousing.map((u) => u.id);
 }
 
 export { getUsers, getUser, getMatches };

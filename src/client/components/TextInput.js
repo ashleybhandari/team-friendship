@@ -4,11 +4,13 @@ export class TextInput {
     /**
      * UI component: Standard text input
      * @param {string} name - Label for the input element
+     * @param {string} [value=""] - Initial value
      * @param {string} [type="text"] - Input type (text/password)
      * @param {number} [width=275] - Input width
      */
-    constructor(name, type = 'text', width = 275) {
+    constructor(name, value = '', type = 'text', width = 275) {
         this.name = name;
+        this.value = value;
         this.type = type;
         this.width = `${width}px`;
     }
@@ -30,6 +32,7 @@ export class TextInput {
         input.id = id;
         input.name = id;
         input.type = this.type;
+        input.value = this.value;
         input.style.width = this.width;
 
         elm.appendChild(label);
