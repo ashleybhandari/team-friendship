@@ -1,5 +1,6 @@
 import { Navbar1 } from '../components/Navbar1.js';
 import { Events } from '../Events.js';
+import { LandingView } from '../views/LandingView.js';
 
 /**
  * Sets up navbar for Landing and About views. Injected into App.
@@ -41,7 +42,26 @@ export class SignedOutContainer {
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
-
+        let viewElement;
+    
+        if (view === 'landing') {
+            if (!this.#landingViewElm) {
+                this.#landingViewElm = new LandingView().render();
+            }
+            viewElement = this.#landingViewElm;
+        } else if (view === 'about') {
+            if (!this.#aboutViewElm) {
+                this.#aboutViewElm = new AboutView().render();
+            }
+            viewElement = this.#aboutViewElm;
+        } else {
+            viewElement = document.createElement('h2');
+            viewElement.textContent = '404 Page Not Found';
+        }
+    
+        this.#updateNavbar(view);
+        this.#viewContainer.appendChild(viewElement);
+        
         // TODO
         // if (view === 'landing') {
         //     this.#viewContainer.appendChild(this.#landingViewElm);

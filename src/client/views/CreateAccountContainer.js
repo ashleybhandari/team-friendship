@@ -1,5 +1,8 @@
 import { Header } from '../components/Header.js';
 import { Events } from '../Events.js';
+import { SignInView } from './SignInView.js';
+import { CreateAccountView } from './CreateAccountView.js';
+
 
 /**
  * Injected into App.js. Can be injected with Sign in and Create account views.
@@ -7,6 +10,8 @@ import { Events } from '../Events.js';
 export class CreateAccountContainer {
     #viewContainer = null;
     #events = null;
+    #createAccountViewElm = null;
+    #signInViewElm = null;
 
     constructor() {
         this.#events = Events.events();
@@ -26,9 +31,8 @@ export class CreateAccountContainer {
         // TODO: render views
         
         // initializes view container
-        this.#navigateTo(''); // TODO
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
-
+        this.#navigateTo('sign-in');
         return createAcctCntrElm;
     }
 
@@ -38,6 +42,21 @@ export class CreateAccountContainer {
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
-        // TODO
-    }
+    
+        if (view === 'sign-in') {
+            const signInViewInstance = new SignInView();
+            signInViewInstance.render().then(viewElm => {
+                this.#viewContainer.appendChild(viewElm);
+            });
+        } else if (view === 'create-account') {
+            const createAccountViewInstance = new CreateAccountView();
+            createAccountViewInstance.render().then(viewElm => {
+                this.#viewContainer.appendChild(viewElm);
+            });
+        } else {
+            const notFoundText = document.createElement('h2');
+            notFoundText.textContent = 'Page Not Found';
+            this.#viewContainer.appendChild(notFoundText);
+        }
+    }    
 }
