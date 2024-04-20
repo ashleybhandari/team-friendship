@@ -63,6 +63,64 @@ const dataService = {
     return db.get(id)
       .then(doc => db.remove(doc));
   },
+  getAllHousings: () => {
+    return db.allDocs({ include_docs: true, startkey: 'housing_' })
+      .then(result => result.rows.map(row => row.doc));
+  },
+
+  getHousingById: (id) => {
+    return db.get(`housing_${id}`);
+  },
+
+  addHousing: (housing) => {
+    const newHousing = {
+      _id: `housing_${housing.id}`, // Use a prefix to distinguish housing documents
+      city: housing.city,
+      rent: housing.rent,
+      beds: housing.beds,
+      baths: housing.baths,
+      gender: housing.gender,
+      utilities: housing.utilities,
+      leaseLength: housing.leaseLength,
+      leaseType: housing.leaseType,
+      roomType: housing.roomType,
+      buildingType: housing.buildingType,
+      timeframe: housing.timeframe,
+      amenities: housing.amenities,
+      pics: housing.pics,
+      notes: housing.notes
+    };
+
+    return db.put(newHousing);
+  },
+
+  updateHousing: (housing) => {
+    const updatedHousing = {
+      _id: `housing_${housing.id}`,
+      _rev: housing._rev, // Include the _rev property for updates
+      city: housing.city,
+      rent: housing.rent,
+      beds: housing.beds,
+      baths: housing.baths,
+      gender: housing.gender,
+      utilities: housing.utilities,
+      leaseLength: housing.leaseLength,
+      leaseType: housing.leaseType,
+      roomType: housing.roomType,
+      buildingType: housing.buildingType,
+      timeframe: housing.timeframe,
+      amenities: housing.amenities,
+      pics: housing.pics,
+      notes: housing.notes
+    };
+
+    return db.put(updatedHousing);
+  },
+
+  deleteHousing: (id) => {
+    return db.get(`housing_${id}`)
+      .then(doc => db.remove(doc));
+  }
 };
 
 export default dataService;
