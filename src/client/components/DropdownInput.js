@@ -5,15 +5,15 @@ export class DropdownInput {
      * UI component: Dropdown with predefined options.
      * @param {string} name - Dropdown label
      * @param {string[]} elements - Options to select from
-     * @param {string} [value=''] - Initial value 
      * @param {number} [width=306.2] - Dropdown width (default matches TextInput)
+     * @param {string} [value=''] - Initial value 
      */
-    constructor(name, elements, value = '', width = 306.2) {
+    constructor(name, elements, width = 306.2, value = '') {
         this.name = name;
         this.elements = elements;
-        this.value = value;
         this.width = `${width}px`;
         this.height = '31.6px';
+        this.value = value;
     }
 
     async render() {

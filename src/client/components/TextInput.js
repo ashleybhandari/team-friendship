@@ -4,15 +4,15 @@ export class TextInput {
     /**
      * UI component: Standard text input
      * @param {string} name - Label for the input element
-     * @param {string} [value=""] - Initial value
      * @param {string} [type="text"] - Input type (text/password)
      * @param {number} [width=275] - Input width
+     * @param {string} [value=""] - Initial value
      */
-    constructor(name, value = '', type = 'text', width = 275) {
+    constructor(name, type = 'text', width = 275, value = '') {
         this.name = name;
-        this.value = value;
         this.type = type;
         this.width = `${width}px`;
+        this.value = value;
     }
     
     async render() {
