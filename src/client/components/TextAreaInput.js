@@ -4,13 +4,13 @@ export class TextAreaInput {
     /**
      * UI component: Text area
      * @param {string} name - Label for the input element
-     * @param {string} [value=""] - Initial value
      * @param {string} [placeholder=""] - Placeholder
+     * @param {string} [value=""] - Initial value
      */
-    constructor(name, value = '', placeholder = '') {
+    constructor(name, placeholder = '', value = '') {
         this.name = name;
-        this.value = value;
         this.placeholder = placeholder;
+        this.value = value;
     }
     
     async render() {

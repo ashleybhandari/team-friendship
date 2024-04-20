@@ -558,7 +558,7 @@ body {
     width: 635px;
 }
 
-#settingsView #profile .radio-input {
+#settingsView #profile #lookingForRadio {
     margin: auto;
     grid-column: 3;
     grid-row: 3 / 5;
