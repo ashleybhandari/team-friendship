@@ -264,6 +264,12 @@ body {
     cursor: pointer;
 }
 
+/* Navbar1.js */
+
+.navbar1 .selected {
+    font-weight: bold;
+}
+
 /* Navbar2.js */
 
 .navbar2 nav {

@@ -1,17 +1,16 @@
 import { Header } from '../components/Header.js';
-import { Events } from '../Events.js';
 import { SignInView } from './SignInView.js';
-import { CreateAccountView } from './CreateAccountView.js';
-
+import { CreateCredentialsView } from './CreateCredentialsView.js';
+import { Events } from '../Events.js';
 
 /**
  * Injected into App.js. Can be injected with Sign in and Create account views.
  */
 export class CreateAccountContainer {
     #viewContainer = null;
-    #events = null;
-    #createAccountViewElm = null;
     #signInViewElm = null;
+    #createCredViewElm = null;
+    #events = null;
 
     constructor() {
         this.#events = Events.events();
@@ -28,11 +27,14 @@ export class CreateAccountContainer {
         createAcctCntrElm.appendChild(this.#viewContainer);
 
         // renders views to be injected into viewContainer
-        // TODO: render views
+        // TODO: other views
+        this.#signInViewElm = await new SignInView().render()
+        this.#createCredViewElm = await new CreateCredentialsView().render()
         
         // initializes view container
-        this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
         this.#navigateTo('sign-in');
+        this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
+
         return createAcctCntrElm;
     }
 
@@ -44,19 +46,16 @@ export class CreateAccountContainer {
         this.#viewContainer.innerHTML = '';
     
         if (view === 'sign-in') {
-            const signInViewInstance = new SignInView();
-            signInViewInstance.render().then(viewElm => {
-                this.#viewContainer.appendChild(viewElm);
-            });
-        } else if (view === 'create-account') {
-            const createAccountViewInstance = new CreateAccountView();
-            createAccountViewInstance.render().then(viewElm => {
-                this.#viewContainer.appendChild(viewElm);
-            });
-        } else {
-            const notFoundText = document.createElement('h2');
-            notFoundText.textContent = 'Page Not Found';
-            this.#viewContainer.appendChild(notFoundText);
+            this.#viewContainer.appendChild(this.#signInViewElm);
         }
-    }    
+        else if (view === 'create-credentials') {
+            console.log(view)
+            this.#viewContainer.appendChild(this.#createCredViewElm);
+        }
+        else {
+            this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
+        }
+
+        window.location.hash = view;
+    }
 }

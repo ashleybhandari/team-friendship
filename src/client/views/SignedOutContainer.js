@@ -1,11 +1,13 @@
 import { Navbar1 } from '../components/Navbar1.js';
-import { Events } from '../Events.js';
 import { LandingView } from '../views/LandingView.js';
+import { AboutView } from '../views/AboutView.js';
+import { Events } from '../Events.js';
 
 /**
  * Sets up navbar for Landing and About views. Injected into App.
  */
 export class SignedOutContainer {
+    #signedOutCntrElm = null;
     #viewContainer = null;
     #landingViewElm = null;
     #aboutViewElm = null;
@@ -16,67 +18,48 @@ export class SignedOutContainer {
     }
 
     async render() {
-        const signedOutCntrElm = document.createElement('div');
-        signedOutCntrElm.id = 'signedOutCntr';
+        this.#signedOutCntrElm = document.createElement('div');
+        this.#signedOutCntrElm.id = 'signedOutCntr';
 
         this.#viewContainer = document.createElement('div');
 
         // navbar and view container
-        signedOutCntrElm.appendChild(await new Navbar1().render());
-        signedOutCntrElm.appendChild(this.#viewContainer);
+        this.#signedOutCntrElm.appendChild(await new Navbar1().render());
+        this.#signedOutCntrElm.appendChild(this.#viewContainer);
 
         // renders views to be injected into viewContainer
-        // TODO: render #landingViewElm and #aboutViewElm
-
+        this.#landingViewElm = await new LandingView().render();
+        this.#aboutViewElm = await new AboutView().render();
+        
         // initializes view container
         this.#navigateTo('landing');
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
 
-        return signedOutCntrElm;
+        return this.#signedOutCntrElm;
     }
 
     /**
      * Called when navigateTo is published. Injects view into viewContainer and
      * styles the navbar accordingly.
-     * @param {string} view - "landing", "about"
+     * @param {string} view
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
-        let viewElement;
-    
-        if (view === 'landing') {
-            if (!this.#landingViewElm) {
-                this.#landingViewElm = new LandingView().render();
-            }
-            viewElement = this.#landingViewElm;
-        } else if (view === 'about') {
-            if (!this.#aboutViewElm) {
-                this.#aboutViewElm = new AboutView().render();
-            }
-            viewElement = this.#aboutViewElm;
-        } else {
-            viewElement = document.createElement('h2');
-            viewElement.textContent = '404 Page Not Found';
-        }
-    
-        this.#updateNavbar(view);
-        this.#viewContainer.appendChild(viewElement);
         
-        // TODO
-        // if (view === 'landing') {
-        //     this.#viewContainer.appendChild(this.#landingViewElm);
-        //     this.#updateNavbar(view);
-        // }
-        // else if (view === 'about') {
-        //     this.#viewContainer.appendChild(this.#aboutViewElm);
-        //     this.#updateNavbar(view);
-        // }
-        // else {
-        //     this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
-        //     this.#updateNavbar(view);
-        // }
+        if (view === 'landing') {
+            this.#viewContainer.appendChild(this.#landingViewElm);
+            this.#updateNavbar(view);
+        }
+        else if (view === 'about') {
+            this.#viewContainer.appendChild(this.#aboutViewElm);
+            this.#updateNavbar(view);
+        }
+        else {
+            this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
+            this.#updateNavbar(view);
+        }
 
-        // window.location.hash = view;
+        window.location.hash = view;
     }
 
     /**
@@ -85,6 +68,11 @@ export class SignedOutContainer {
      * @param {string} view 
      */
     #updateNavbar(view) {
-        // TODO
+        Array
+            .from(this.#signedOutCntrElm.querySelectorAll('nav a'))
+            .forEach((elm) => elm.classList.remove('selected'));
+        
+        const elm = this.#signedOutCntrElm.querySelector(`#nav-${view}`);
+        if (elm) elm.classList.add('selected');
     }
 }
