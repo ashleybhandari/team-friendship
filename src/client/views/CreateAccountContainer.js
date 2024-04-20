@@ -1,4 +1,6 @@
 import { Header } from '../components/Header.js';
+import { SignInView } from './SignInView.js';
+import { CreateCredentialsView } from './CreateCredentialsView.js';
 import { Events } from '../Events.js';
 
 /**
@@ -6,6 +8,8 @@ import { Events } from '../Events.js';
  */
 export class CreateAccountContainer {
     #viewContainer = null;
+    #signInViewElm = null;
+    #createCredViewElm = null;
     #events = null;
 
     constructor() {
@@ -23,10 +27,12 @@ export class CreateAccountContainer {
         createAcctCntrElm.appendChild(this.#viewContainer);
 
         // renders views to be injected into viewContainer
-        // TODO: render views
+        // TODO: other views
+        this.#signInViewElm = await new SignInView().render()
+        this.#createCredViewElm = await new CreateCredentialsView().render()
         
         // initializes view container
-        this.#navigateTo(''); // TODO
+        this.#navigateTo('sign-in');
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
 
         return createAcctCntrElm;
@@ -38,6 +44,18 @@ export class CreateAccountContainer {
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
-        // TODO
+    
+        if (view === 'sign-in') {
+            this.#viewContainer.appendChild(this.#signInViewElm);
+        }
+        else if (view === 'create-credentials') {
+            console.log(view)
+            this.#viewContainer.appendChild(this.#createCredViewElm);
+        }
+        else {
+            this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
+        }
+
+        window.location.hash = view;
     }
 }
