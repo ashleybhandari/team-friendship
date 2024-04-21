@@ -2,7 +2,7 @@ import { Events } from '../Events.js';
 
 /**
  * UI component: Navbar for screens when the user is logged in. Only used in
- * SignedInContainer.js.
+ * SignedInView.js.
  */
 export class Navbar2 {
     #events = null;
@@ -18,8 +18,8 @@ export class Navbar2 {
         elm.innerHTML = `
         <nav>
             <div class="main-links">
-                <a href="#discover" id="nav-discover">Discover</a>
-                <a href="#matches" id="nav-matches">Matches</a>
+                <a href="#discover" id="nav2-discover">Discover</a>
+                <a href="#matches" id="nav2-matches">Matches</a>
             </div>
         </nav>
         <hr>
@@ -27,27 +27,21 @@ export class Navbar2 {
 
         await this.#renderDropdown(elm);
 
-        // add click event listener to each link
         elm
             .querySelectorAll('a')
-            .forEach((link) =>
+            .forEach(link =>
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const view = e.currentTarget.getAttribute('href').replace('#', '');
-                    this.#navigate(view);
+                    window.location.hash = view;
+                    await this.#events.publish('navigateTo', view);
                 })
             );
 
         return elm;
     }
 
-    /**
-     * Renders a button on the navbar that, when clicked, displays a dropdown
-     * with links to Settings and Sign out.
-     * @param {HTMLDivElement} container 
-     */
     async #renderDropdown(container) {
-        // dropdown button
         const btn = document.createElement('div');
         btn.classList.add('button-container');
         btn.innerHTML = `
@@ -56,24 +50,24 @@ export class Navbar2 {
         </button>
         `;
         
-        // dropdown content
         const dropdown = document.createElement('div');
         dropdown.id = 'accountDropdown';
         dropdown.classList.add('dropdown-content');
         dropdown.innerHTML = `
-        <a href="#settings" id="nav-settings">Settings</a>
-        <a href="#sign-out" id="nav-sign-out">Sign out</a>
+        <a href="#settings" id="nav2-settings">Settings</a>
+        <a href="#landing" id="nav2-landing">Sign out</a>
         `;
 
-        // events to open and close the dropdown
-        btn.querySelector('button').addEventListener('click', (e) => {
-            e.preventDefault();
-            dropdown.classList.toggle('show');
+        btn.querySelector('button').addEventListener('click', () => {
+            dropdown.classList.toggle('show')
         });
 
+        btn.querySelector('nav2-landing').addEventListener('click', () => {
+            localStorage.removeItem('authToken');
+        });
+          
         window.onclick = (e) => {
-            const btnClicked = e.target.matches('.dropdown-button') ||
-                e.target.matches('.dropdown-button i');
+            const btnClicked = e.target.matches('.dropdown-button') || e.target.matches('.dropdown-button i');
             if (!btnClicked) {
                 if (dropdown.classList.contains('show')) {
                     dropdown.classList.remove('show');
@@ -83,23 +77,5 @@ export class Navbar2 {
 
         container.querySelector('nav').appendChild(btn);
         container.appendChild(dropdown);
-    }
-
-    
-    /**
-     * Navigates to v. Signs out and navigates to landing if the Sign out
-     * button was clicked.
-     * @param {string} v - View to navigate to
-     */
-    async #navigate(v) {
-        let view = v;
-
-        if (view === 'sign-out') {
-            view = 'landing';
-            localStorage.removeItem('authToken'); // TODO: switch to PouchDB
-        }
-
-        window.location.hash = view;
-        await this.#events.publish('navigateTo', view);
     }
 }

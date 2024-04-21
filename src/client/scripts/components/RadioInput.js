@@ -32,6 +32,7 @@ export class RadioInput {
 
             // radio button for option
             const input = document.createElement('input');
+            input.classList.add("radio-container"); // new class
             input.type = 'radio';
             input.name = radioName;
             input.id = id;
@@ -42,12 +43,19 @@ export class RadioInput {
                 input.checked = true;
             }
 
+            // creates span option - Gauri
+            const span = document.createElement("span");
+            span.classList.add("radio-checkmark");
+
             // label for option
             const label = document.createElement('label');
             label.htmlFor = id;
             label.innerText = e;
+            label.classList.add("radio-container");
 
-            group.appendChild(input);
+            label.appendChild(input);
+            label.appendChild(span);
+            // group.appendChild(input); - part of old code in case this fails
             group.appendChild(label);
             elm.appendChild(group);
         });
