@@ -1,18 +1,11 @@
-import { User} from './DataStructures.js';
-import PouchDB from 'pouchdb';
-import PouchDBAuthentication from 'pouchdb-authentication';
+import dataService from './dataService.js';
 
-PouchDB.plugin(PouchDBAuthentication);
-
-const db = new PouchDB('http://localhost:5984/mydb');
-
-function login(username, password) {
-  db.logIn(username, password)
-    .then(response => {
-      console.log('Logged in successfully');
-      //TODO: Switch the window to the logged in page
-    })
-    .catch(err => {
-      console.error('Login failed:', err);
-    });
+async function login(email, password) {
+  try {
+    const user = await dataService.authenticateUser(email, password);
+    console.log('Authentication successful:', user);
+    //TODO: Change the window
+  } catch (error) {
+    console.error('Authentication failed:', error.message);
+  }
 }
