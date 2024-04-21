@@ -1,7 +1,7 @@
-// DB TODO: import { DatabasePouchDB as db } from '../data/DatabasePouchDB.js';
 import { getUser, getMatches } from '../../../data/Backend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
  * Displays the user's matches as a list of abbreviated profiles (can click on

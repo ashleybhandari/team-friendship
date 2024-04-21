@@ -66,7 +66,7 @@ const dataService = {
   },
 
   getMatches: async (id) => {}, // TODO: return user.matches
-    
+  
   deleteMatch: async(id, matchId) => {}, // TODO
 
   getAllHousings: async () => {

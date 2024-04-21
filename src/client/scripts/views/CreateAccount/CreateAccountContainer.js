@@ -58,36 +58,31 @@ export class CreateAccountContainer {
     
         if (view === 'sign-in') {
             this.#viewContainer.appendChild(this.#signInViewElm);
-            window.location.hash = view;
         }
         else if (view === 'create-1') {
             // CredentialsView
             this.#viewContainer.appendChild(this.#credViewElm);
-            window.location.hash = 'create';
         }
         else if (view === 'create-2') {
             // ProfileView
             this.#viewContainer.appendChild(this.#profileViewElm);
-            window.location.hash = 'create';
         }
         else if (view === 'create-3') {
             // HousingSituationView
             this.#viewContainer.appendChild(this.#situationViewElm);
-            window.location.hash = 'create';
         }
         else if (view === 'create-4-1') {
             // NeedHousingView
             this.#viewContainer.appendChild(this.#needHousingViewElm);
-            window.location.hash = 'create';
         }
         else if (view === 'create-4-2') {
             // HaveHousingView
             this.#viewContainer.appendChild(this.#haveHousingViewElm);
-            window.location.hash = 'create';
         }
         else {
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
-            window.location.hash = view;
         }
+
+        window.location.hash = view;
     }
 }

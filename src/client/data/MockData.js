@@ -1,6 +1,7 @@
 import { User } from './data_structures/User.js';
 import { Preferences } from './data_structures/Preferences.js';
 import { Housing } from './data_structures/Housing.js';
+import * as db from './DatabasePouchDB.js';
 
 // mock users
 
@@ -31,7 +32,7 @@ const u1 = new User(
     44,
     { identity: 'woman', pronouns: 'she/her' },
     { clean: 2, sleep: 3, noise: 3, guests: 2 },
-    { major: 'Math' },
+    { major: 'Music' },
     { fb: 'lindabelcher' },
     'Linda. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
     false,
