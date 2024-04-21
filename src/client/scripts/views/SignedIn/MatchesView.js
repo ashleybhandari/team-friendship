@@ -1,38 +1,47 @@
 // DB TODO: import { DatabasePouchDB as db } from '../data/DatabasePouchDB.js';
-import { User } from '../../../data/data_structures/User.js';
 import { getUser, getMatches } from '../../../data/Backend.js';
 import { Button } from '../../components/Button.js';
+import { Events } from '../../Events.js';
 
 /**
  * Displays the user's matches as a list of abbreviated profiles (can click on
  * a profile to view more details). Injected into SignedInContainer.
  */
 export class MatchesView {
+    #matchesViewElm = null;
     #listViewElm = null;
     #profileViewElm = null;
     #profileViewContainer = null;
+    #events = null;
+
+    constructor() {
+        this.#events = Events.events();
+    }
 
     async render() {
-        const matchesViewElm = document.createElement('div');
-        matchesViewElm.id = 'matchesView';
+        this.#matchesViewElm = document.createElement('div');
+        this.#matchesViewElm.id = 'matchesView';
 
         // matches list, profile container
-        await this.#renderList(matchesViewElm);
-        await this.#renderProfile(matchesViewElm);
+        await this.#renderList();
+        await this.#renderProfile();
 
         // initialize view with matches list
         this.#switchView();
 
-        return matchesViewElm;
+        // inject user profile if the Discover page publishes one
+        new DiscoverTmp();
+        this.#events.subscribe('sendProfile', (elm) => this.#injectProfile(elm));
+
+        return this.#matchesViewElm;
     }
 
     /**
      * Renders a list of the user's matches. Each entry consists of the match's
      * profile picture, name, location (if applicable), and self-written
      * description.
-     * @param {HTMLDivElement} container 
      */
-    async #renderList(container) {
+    async #renderList() {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
@@ -51,7 +60,7 @@ export class MatchesView {
         // show list if user has matches
         for (const id of matches) {
             const user = await getUser(id);
-            // TODO: const user = await db.getUserById(matchId);
+            // DB TODO: const user = await db.getUserById(matchId);
             
             // match's entry in list
             const elm = document.createElement('div');
@@ -90,21 +99,39 @@ export class MatchesView {
             // switch to profile view if match is clicked
             elm.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.#switchView(user);
+                this.#switchView(user.id);
             });
             this.#listViewElm.appendChild(elm);
         }
 
-        container.appendChild(this.#listViewElm);
+        this.#matchesViewElm.appendChild(this.#listViewElm);
     }
 
     /**
-     * Renders the selected match's profile.
-     * @param {HTMLDivElement} container 
+     * Renders the view in which the selected match's profile will be injected.
      */
-    async #renderProfile(container) {
+    async #renderProfile() {
         this.#profileViewElm = document.createElement('div');
         this.#profileViewElm.id = 'profileView';
+
+        // Back to Matches button, contact info, and Unmatch button
+        this.#profileViewElm.appendChild(await this.#renderOptions());
+
+        // container, injected with selected match's information
+        this.#profileViewContainer = document.createElement('div');
+        this.#profileViewContainer.id = 'profileViewContainer';
+        this.#profileViewElm.appendChild(this.#profileViewContainer);
+
+        this.#matchesViewElm.appendChild(this.#profileViewElm);
+    }
+
+    /**
+     * Render the buttons/info that go at the top of a match's profile.
+     * @returns {HTMLDivElement}
+     */
+    async #renderOptions() {
+        const elm = document.createElement('div');
+        elm.classList.add('options');
 
         // Back to Matches button
         const toMatchesBtn = await new Button(
@@ -113,42 +140,72 @@ export class MatchesView {
             ).render();
         toMatchesBtn.id = 'toMatchesBtn';
 
-        // switch to matches list when Back to Matches is clicked
+        // switch to matches list
         toMatchesBtn.addEventListener('click', (e) => {
             e.preventDefault();
             this.#switchView();
         });
 
-        // container, injected with selected match's information
-        this.#profileViewContainer = document.createElement('div');
-        this.#profileViewContainer.id = 'profileViewContainer';
+        // contact info
+        const contact = document.createElement('div');
+        contact.classList.add('contact');
+        contact.innerHTML = `
+        <span class="battambang">Contact me</span>
+        <a id="matchContact"></a>
+        `;
 
-        this.#profileViewElm.appendChild(toMatchesBtn);
-        this.#profileViewElm.appendChild(this.#profileViewContainer);
+        // unmatch button
+        const unmatchBtn = await new Button('Unmatch', 200, 'danger').render();
+        unmatchBtn.id = 'unmatchBtn';
 
-        container.appendChild(this.#profileViewElm);
+        // unmatch and switch to matches list
+        unmatchBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            // DB TODO: await db.removeMatch(userId, matchId);
+            await this.#renderList();
+            this.#switchView();
+        });
+
+        elm.appendChild(toMatchesBtn);
+        elm.appendChild(contact);
+        elm.appendChild(unmatchBtn);
+
+        return elm;
     }
 
     /**
-     * Injects the page with the selected match's Discover profile
-     * @param {User} match 
+     * Injects the page with the selected match's Discover profile.
+     * @param {Object} match - Discover page's publisher message
+     * @param {number} match.id - Selected match's id
+     * @param {HTMLDivElement} match.id - Selected match's profile
      */
-    #injectProfile(match) {
-        this.#profileViewContainer.innerText = `Inject ${match.name.fname}'s profile`;
-        // TODO: inject profile from Discover page, add contact info
+    async #injectProfile(match) {
+        const [id, profile] = Object.values(match);
+        const email = (await getUser(id)).email;
+
+        // contact information
+        const contactElm = document.getElementById('matchContact');
+        contactElm.href = `mailto: ${email}`;
+        contactElm.innerHTML = `
+        <i class="material-symbols-outlined">mail</i>
+        ${email}
+        `;
+
+        this.#profileViewContainer.innerHTML = '';
+        this.#profileViewContainer.appendChild(profile);
     }
 
     /**
      * Switches between viewing all matches and a selected match's profile
-     * @param {User} match
+     * @param {number} [matchId]
      */
-    #switchView(match = null) {
-        if (match) {
+    #switchView(matchId = null) {
+        if (matchId !== null) {
             // view match's profile
+            this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            this.#injectProfile(match);
-            window.location.hash = `match${match.id}`;
+            window.location.hash = `match${matchId}`;
         }
         else {
             // view matches list
@@ -156,5 +213,19 @@ export class MatchesView {
             this.#profileViewElm.classList.add('hidden');
             window.location.hash = 'matches';
         }
+    }
+}
+
+// TODO: make discover page subscribe('getProfile'), publish('sendProfile')
+// models the injection system until then
+class DiscoverTmp {
+    constructor() {
+        Events.events().subscribe('getProfile', this.#createElm);
+    }
+
+    async #createElm(id) {
+        const elm = document.createElement('div');
+        elm.innerText = `Match id: ${id}`;
+        Events.events().publish('sendProfile', { id, profile: elm});
     }
 }
