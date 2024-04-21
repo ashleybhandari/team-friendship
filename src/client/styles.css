@@ -581,15 +581,48 @@ body {
     font-size: 14px;
 }
 
+#matchesView .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
 #matchesView #profileView #toMatchesBtn {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    height: 40px
 }
 
 #matchesView #profileView #toMatchesBtn i {
     margin-right: 5px;
+}
+
+#matchesView .contact {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#matchesView .contact span {
+    font-size: 18px;
+}
+
+#matchesView .contact a {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    text-decoration: none;
+    color: #FF715B;
+}
+
+#matchesView .contact a i {
+    margin-right: 3px;
+}
+
+#matchesView #unmatchBtn {
+    height: 40px;
 }
 
 /* SettingsView.js */

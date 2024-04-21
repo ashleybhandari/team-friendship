@@ -18,8 +18,8 @@ export class Navbar2 {
         elm.innerHTML = `
         <nav>
             <div class="main-links">
-                <a href="#discover" id="nav2-discover">Discover</a>
-                <a href="#matches" id="nav2-matches">Matches</a>
+                <a href="#discover" id="nav-discover">Discover</a>
+                <a href="#matches" id="nav-matches">Matches</a>
             </div>
         </nav>
         <hr>
@@ -54,16 +54,12 @@ export class Navbar2 {
         dropdown.id = 'accountDropdown';
         dropdown.classList.add('dropdown-content');
         dropdown.innerHTML = `
-        <a href="#settings" id="nav2-settings">Settings</a>
-        <a href="#landing" id="nav2-landing">Sign out</a>
+        <a href="#settings" id="nav-settings">Settings</a>
+        <a href="#landing" id="nav-landing">Sign out</a>
         `;
 
         btn.querySelector('button').addEventListener('click', () => {
             dropdown.classList.toggle('show')
-        });
-
-        btn.querySelector('nav2-landing').addEventListener('click', () => {
-            localStorage.removeItem('authToken');
         });
           
         window.onclick = (e) => {
@@ -74,6 +70,10 @@ export class Navbar2 {
                 }
             }
         }
+
+        dropdown.querySelector('#nav-landing').addEventListener('click', () => {
+            localStorage.removeItem('authToken'); // TODO: PouchDB
+        });
 
         container.querySelector('nav').appendChild(btn);
         container.appendChild(dropdown);

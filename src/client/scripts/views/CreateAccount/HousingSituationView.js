@@ -2,6 +2,7 @@
 
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
+import { RadioInput } from '../../components/RadioInput.js';
 
 /**
  * UI component: Housing Situation Screen
