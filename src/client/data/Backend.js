@@ -1,13 +1,10 @@
-import { users } from './Data.js';
+// DB TODO: Delete when DatabasePouchDB works
+import { users } from './MockData.js';
 
-// TODO: PouchDB stuff, data mocking
-
-// temp
 async function getUsers() {
     return users;
 }
 
-// temp
 async function getUser(id) {
     for (const user of await getUsers()) {
         if (user.id === id) {
@@ -17,7 +14,6 @@ async function getUser(id) {
     return null;
 }
 
-// temp
 async function getMatches() {
     const noHousing = users.filter((u) => !u.hasHousing);
     const haveHousing = users.filter((u) => u.hasHousing);
