@@ -1,10 +1,9 @@
-// DB TODO: getting errors, commenting out until can resolve
-/*
 import PouchDB from 'pouchdb';
 
 const db = new PouchDB('roommate-matching');
 
 const dataService = {
+
   getAllUsers: async () => {
     return db.allDocs({ include_docs: true })
       .then(result => result.rows.map(row => row.doc));
@@ -67,6 +66,8 @@ const dataService = {
   },
 
   getMatches: async (id) => {}, // TODO: return user.matches
+    
+  deleteMatch: async(id, matchId) => {}, // TODO
 
   getAllHousings: async () => {
     return db.allDocs({ include_docs: true, startkey: 'housing_' })
@@ -125,8 +126,24 @@ const dataService = {
   deleteHousing: async (id) => {
     return db.get(`housing_${id}`)
       .then(doc => db.remove(doc));
-  }
+  },
+
+  authenticateUser: async (email, password) => {
+    try {
+      const user = await db.get(`user_${email}`);
+      if (user.password === password) {
+        return user;
+      } else {
+        throw new Error('Invalid username or password');
+      }
+    } catch (error) {
+      if (error.status === 404) {
+        throw new Error('Invalid username or password');
+      } else {
+        throw error;
+      }
+    }
+  },
 };
 
 export default dataService;
-*/

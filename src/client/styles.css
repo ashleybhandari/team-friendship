@@ -405,6 +405,70 @@ body {
     cursor: pointer;
 }
 
+/* Radio Styling */
+/* The radio container */
+.radio-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hides the browser's default radio button */
+  .radio-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  /* Creates a custom radio button */
+  .radio-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    border: 3px solid #ff715bce;
+  }
+  
+  
+  /* When the radio button is checked, add a red background */
+  .radio-container input:checked ~ .radio-checkmark {
+    background-color: #FF715B;
+    border-color: #FF715B;
+    
+  }
+  
+  /* Creates the indicator (the dot/circle - hidden when not checked) */
+  .radio-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Shows the indicator (dot/circle) when checked */
+  .radio-container input:checked ~ .radio-checkmark:after {
+    display: block;
+  }
+  
+  /* Styles the indicator (dot/circle) */
+  .radio-container .radio-checkmark:after {
+       top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: white;
+  }
+
 /* SliderInput.js */
 
 .slider-input {
