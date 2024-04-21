@@ -62,5 +62,8 @@
     "http-server": "^14.1.1",
     "jsdoc": "^4.0.2",
     "prettier": "^3.2.5"
+  },
+  "dependencies": {
+    "pouchdb": "^8.0.1"
   }
 }

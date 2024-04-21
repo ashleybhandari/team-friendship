@@ -1,4 +1,5 @@
-import { users, roommateMatches, housingMatches } from './Data.js';
+// DB TODO: Delete when DatabasePouchDB works
+import { users } from './MockData.js';
 
 async function getUsers() {
     return users;
@@ -14,7 +15,9 @@ async function getUser(id) {
 }
 
 async function getMatches() {
-    return housingMatches;
+    const noHousing = users.filter((u) => !u.hasHousing);
+    const haveHousing = users.filter((u) => u.hasHousing);
+    return noHousing.map((u) => u.id);
 }
 
 export { getUsers, getUser, getMatches };
