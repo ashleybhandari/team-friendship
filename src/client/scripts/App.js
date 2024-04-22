@@ -32,7 +32,7 @@ export class App {
 
         // initializes view
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
-        await this.#events.publish('navigateTo', 'create-2');
+        await this.#events.publish('navigateTo', 'landing');
 
         rootElm.appendChild(this.#viewContainer);
         rootElm.appendChild(await new Footer().render());
