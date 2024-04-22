@@ -51,7 +51,6 @@ export class App {
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
-        // TODO: createAcctCntr views
         switch (view) {
             case 'landing':    // SignedOut/LandingView
             case 'about':      // SignedOut/AboutView

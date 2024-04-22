@@ -1,17 +1,19 @@
-import PouchDB from 'pouchdb';
-import PouchDBAuthentication from 'pouchdb-authentication';
+// DB TODO: uncomment
+// import PouchDB from 'pouchdb';
+// import PouchDBAuthentication from 'pouchdb-authentication';
 
-PouchDB.plugin(PouchDBAuthentication);
+// PouchDB.plugin(PouchDBAuthentication);
 
-const db = new PouchDB('http://localhost:5984/mydb');
+// const db = new PouchDB('http://localhost:5984/mydb');
 
-export function login(username, password) {
-  db.logIn(username, password)
+export function login(email, password, onSuccess, onFailure) {
+  db.logIn(email, password)
     .then(response => {
       console.log('Logged in successfully');
-      //TODO: Switch the window to the logged in page
+      onSuccess();
     })
     .catch(err => {
       console.error('Login failed:', err);
+      onFailure();
     });
 }

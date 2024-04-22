@@ -1,3 +1,4 @@
+// DB TODO: uncomment
 //const PouchDB = require('pouchdb');
 const db = new PouchDB('roommate-matching');
 
