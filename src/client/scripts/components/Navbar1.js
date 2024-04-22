@@ -12,29 +12,31 @@ export class Navbar1 {
     }
     
     async render() {
-        const elm = document.createElement('nav');
+        const elm = document.createElement('div');
         elm.classList.add('navbar1');
 
         elm.innerHTML = `
         <nav>
-            <a href="#landing" id="nav-landing">Home</a>
-            <a href="#about" id="nav-about">About us</a>
-            <a href="#sign-in" id="nav-sign-in">Sign in</a>
+            <div class="main-links">
+                <a href="#landing" id="nav-landing">Home</a>
+                <a href="#about" id="nav-about">About us</a>
+                <a href="#sign-in" id="nav-sign-in">Sign in</a>
+            </div>
         </nav>
+        <hr>
         `;
-        // TODO: style, etc.
 
-        // add click event listener to each link
         elm
             .querySelectorAll('a')
-            .forEach((link) =>
+            .forEach(link =>
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    const view = e.target.getAttribute('href').replace('#', '');
-                    this.#navigate(view);
+                    const view = e.currentTarget.getAttribute('href').replace('#', '');
+                    window.location.hash = view;
+                    await this.#navigate(view);
                 })
             );
-        
+
         return elm;
     }
 
@@ -47,7 +49,6 @@ export class Navbar1 {
         const view = v;
         // TODO: const view = (v === 'sign-in' && signed in) ? 'discover' : v;
 
-        window.location.hash = view;
         await this.#events.publish('navigateTo', view);
     }
 }
