@@ -1,7 +1,7 @@
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
 
-// href: create-2
+// view: create-2
 export class ProfileView {
     async render() {
         const profileViewElm = document.createElement('div');

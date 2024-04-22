@@ -46,15 +46,15 @@ export class SignedOutContainer {
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
         
-        if (view === 'landing') {
+        if (view === 'landing') {    // LandingView
             this.#viewContainer.appendChild(this.#landingViewElm);
             this.#updateNavbar(view);
         }
-        else if (view === 'about') {
+        else if (view === 'about') { // AboutView
             this.#viewContainer.appendChild(this.#aboutViewElm);
             this.#updateNavbar(view);
         }
-        else {
+        else {                       // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
             this.#updateNavbar(view);
         }
@@ -68,10 +68,12 @@ export class SignedOutContainer {
      * @param {string} view 
      */
     #updateNavbar(view) {
+        // removes "selected" from all links
         Array
             .from(this.#signedOutCntrElm.querySelectorAll('nav a'))
             .forEach((elm) => elm.classList.remove('selected'));
         
+        // applies "selected" to link associated with view
         const elm = this.#signedOutCntrElm.querySelector(`#nav-${view}`);
         if (elm) elm.classList.add('selected');
     }
