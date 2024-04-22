@@ -1,5 +1,7 @@
 import { Header } from '../../components/Header.js';
 import { Navbar2 } from '../../components/Navbar2.js';
+import { DisplayWithHousingView } from './DisplayWithHousingView.js';
+import { DisplayWithoutHousingView } from './DisplayWithoutHousingView.js'
 import { MatchesView } from './MatchesView.js';
 import { SettingsView } from './SettingsView.js';
 import { Events } from '../../Events.js';
@@ -11,6 +13,8 @@ import { Events } from '../../Events.js';
 export class SignedInContainer {
     #signedInCntrElm = null;
     #viewContainer = null;
+    #withHousingViewElm = null;
+    #withoutHousingViewElm = null;
     #matchesViewElm = null;
     #settingsViewElm = null;
     #events = null;
@@ -31,7 +35,8 @@ export class SignedInContainer {
         this.#signedInCntrElm.appendChild(this.#viewContainer);
 
         // renders views to be injected into viewContainer
-        // TODO: discover views
+        this.#withHousingViewElm = await new DisplayWithHousingView().render();
+        this.#withoutHousingViewElm = await new DisplayWithoutHousingView().render();
         this.#matchesViewElm = await new MatchesView().render();
         this.#settingsViewElm = await new SettingsView().render();
 
@@ -50,16 +55,20 @@ export class SignedInContainer {
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
-        // TODO: discover views
-        if (view === 'matches') {
+        if (view === 'discover') {      // DisplayWithHousingView or DisplayWithoutHousingView
+            // discover changes depending on whether user has housing  // TODO: implement
+            this.#viewContainer.appendChild(this.#withHousingViewElm);
+            this.#updateNavbar(view);
+        }
+        else if (view === 'matches') {  // MatchesView
             this.#viewContainer.appendChild(this.#matchesViewElm);
             this.#updateNavbar(view);
         }
-        else if (view === 'settings') {
+        else if (view === 'settings') { // SettingsView
             this.#viewContainer.appendChild(this.#settingsViewElm);
             this.#updateNavbar(view);
         }
-        else {
+        else {                          // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
             this.#updateNavbar(view);
         }
@@ -73,10 +82,12 @@ export class SignedInContainer {
      * @param {string} view 
      */
     #updateNavbar(view) {
+        // removes "selected" from all links
         Array
             .from(this.#signedInCntrElm.querySelectorAll('nav a'))
             .forEach((elm) => elm.classList.remove('selected'));
         
+        // applies "selected" to link associated with view
         const elm = this.#signedInCntrElm.querySelector(`#nav-${view}`);
         if (elm) elm.classList.add('selected');
     }

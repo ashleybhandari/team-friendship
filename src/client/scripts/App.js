@@ -19,13 +19,18 @@ export class App {
         this.#events = Events.events();   
     }
 
+    /**
+     * Creates all pages and navigates to landing.
+     * @param {string} root - id of root div element
+     */
     async render(root) {
         const rootElm = document.getElementById(root);
         rootElm.innerHTML = '';
 
         this.#viewContainer = document.createElement('div');
 
-        // renders elements to be injected into viewContainer
+        // renders elements to be injected into viewContainer = containers and
+        // their associated views
         this.#createAcctCntrElm = await new CreateAccountContainer().render();
         this.#signedInCntrElm = await new SignedInContainer().render();
         this.#signedOutCntrElm = await new SignedOutContainer().render();
@@ -38,29 +43,33 @@ export class App {
         rootElm.appendChild(await new Footer().render());
     }
 
+    /**
+     * Navigates to SignedOutContainer, CreateAccountContainer, or
+     * SignedInContainer depending on what view it's called with.
+     * @param {string} view 
+     */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
         // TODO: createAcctCntr views
         switch (view) {
-            case 'landing':
-            case 'about':
+            case 'landing':    // SignedOut/LandingView
+            case 'about':      // SignedOut/AboutView
                 this.#viewContainer.appendChild(this.#signedOutCntrElm);
                 break;
-            case 'sign-in':
-            case 'create-1':   // CredentialsView
-            case 'create-2':   // ProfileView
-            case 'create-3':   // HousingSituationView
-            case 'create-4-1': // NeedHousingView
-            case 'create-4-2': // HaveHousingView
+            case 'sign-in':    // CreateAccount/SignInView
+            case 'create-1':   // CreateAccount/CredentialsView
+            case 'create-2':   // CreateAccount/ProfileView
+            case 'create-3':   // CreateAccount/HousingSituationView
+            case 'create-4': // CreateAccount/NeedHousingView or CreateAccount/HaveHousingView
                 this.#viewContainer.appendChild(this.#createAcctCntrElm);
                 break;
-            case 'discover':
-            case 'matches':
-            case 'settings':
+            case 'discover':   // SignedIn/DisplayWithHousing or SignedIn/DisplayWithoutHousing
+            case 'matches':    // SignedIn/MatchesView
+            case 'settings':   // SignedIn/SettingsView
                 this.#viewContainer.appendChild(this.#signedInCntrElm);
                 break;
-            default:
+            default:           // invalid view name
                 this.#viewContainer.appendChild(this.#signedOutCntrElm);
         }
     }

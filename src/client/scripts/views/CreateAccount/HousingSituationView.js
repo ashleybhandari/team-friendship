@@ -7,7 +7,7 @@ import { RadioInput } from '../../components/RadioInput.js';
 /**
  * UI component: Housing Situation Screen
  * Includes a header, progress bar, radio inputs for housing options, and navigation buttons.
- * href: create-3
+ * view: create-3
  */
 export class HousingSituationView {
     async render() {
@@ -24,8 +24,7 @@ export class HousingSituationView {
         ).render();
         housingViewElm.appendChild(radioInputElement);
 
-        // TODO: if need housing, 'create-4-1', otherwise, 'create-4-2'
-        housingViewElm.appendChild(await new Navigation('create-2', 'create-4-1').render());
+        housingViewElm.appendChild(await new Navigation('create-2', 'create-4').render());
 
         return housingViewElm;
     }

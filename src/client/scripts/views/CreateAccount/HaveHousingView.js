@@ -3,7 +3,7 @@ import { Navigation } from '../../components/Navigation.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 
-// href: create-4-2
+// view: create-4
 export class HaveHousingView {
     #viewContainer = null;
     #events = null;

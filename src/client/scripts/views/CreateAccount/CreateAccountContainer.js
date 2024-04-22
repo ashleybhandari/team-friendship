@@ -56,30 +56,23 @@ export class CreateAccountContainer {
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
     
-        if (view === 'sign-in') {
+        if (view === 'sign-in') {         // SignInView
             this.#viewContainer.appendChild(this.#signInViewElm);
         }
-        else if (view === 'create-1') {
-            // CredentialsView
+        else if (view === 'create-1') {   // CredentialsView
             this.#viewContainer.appendChild(this.#credViewElm);
         }
-        else if (view === 'create-2') {
-            // ProfileView
+        else if (view === 'create-2') {   // ProfileView
             this.#viewContainer.appendChild(this.#profileViewElm);
         }
-        else if (view === 'create-3') {
-            // HousingSituationView
+        else if (view === 'create-3') {   // HousingSituationView
             this.#viewContainer.appendChild(this.#situationViewElm);
         }
-        else if (view === 'create-4-1') {
-            // NeedHousingView
+        else if (view === 'create-4') {   // NeedHousingView or HaveHousingView
+            // create-4 changes depending on whether user has housing  // TODO: implement
             this.#viewContainer.appendChild(this.#needHousingViewElm);
         }
-        else if (view === 'create-4-2') {
-            // HaveHousingView
-            this.#viewContainer.appendChild(this.#haveHousingViewElm);
-        }
-        else {
+        else {                            // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
         }
 

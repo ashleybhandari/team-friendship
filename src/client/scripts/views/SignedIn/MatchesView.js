@@ -6,6 +6,7 @@ import * as db from '../../../data/DatabasePouchDB.js';
 /**
  * Displays the user's matches as a list of abbreviated profiles (can click on
  * a profile to view more details). Injected into SignedInContainer.
+ * view: 'matches'
  */
 export class MatchesView {
     #matchesViewElm = null;
