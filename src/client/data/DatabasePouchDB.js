@@ -1,5 +1,5 @@
 // DB TODO: getting errors, commenting out until can resolve
-/*
+
 import PouchDB from 'pouchdb';
 
 const db = new PouchDB('roommate-matching');
@@ -66,7 +66,17 @@ const dataService = {
       .then(doc => db.remove(doc));
   },
 
-  getMatches: async (id) => {}, // TODO: return user.matches
+  getMatches: async (id) => {
+    const user = user.getUserById(id);
+    return user.matches;
+  }, 
+
+  removeMatches: async (currUserId, removeUserId) => {
+    const user = user.getUserById(id);
+    const removeUserIndex = user.matches.indexOf(removeUserId);
+    user.matches = user.matches.splice(removeUserIndex, 1);
+    updateUser(user);
+  },
 
   getAllHousings: async () => {
     return db.allDocs({ include_docs: true, startkey: 'housing_' })
@@ -128,5 +138,55 @@ const dataService = {
   }
 };
 
+  getAllPreferences: async () => {
+    return db.allDocs({ include_docs: true, startkey: 'preference_' })
+      .then(result => result.rows.map(row => row.doc));
+  };
+
+  getPreferenceById: async (id) => {
+    return db.get(`preference_${id}`);
+  };
+
+  addPreferences: async (preference) => {
+    const newPreference = {
+      _id: `preference_${preference.id}`,
+      cities: preference.cities,
+      rent: preference.rent,
+      occupants: preference.occupants,
+      gender: preference.gender,
+      leaseLength: preference.leaseLength,
+      leaseType: preference.leaseType,
+      roomType: preference.roomType,
+      buildingType: preference.buildingType,
+      timeframe: preference.timeframe,
+      amenities: preference.amenities,
+    }
+
+    return db.put(addPreferences);
+  };
+
+  updatePreferences: async (preference) => {
+    const updatedPreferences = {
+      _id: `preference_${preference.id}`,
+      _rev: preference._rev,
+      cities: preference.cities,
+      rent: preference.rent,
+      occupants: preference.occupants,
+      gender: preference.gender,
+      leaseLength: preference.leaseLength,
+      leaseType: preference.leaseType,
+      roomType: preference.roomType,
+      buildingType: preference.buildingType,
+      timeframe: preference.timeframe,
+      amenities: preference.amenities,
+  }
+  
+  return db.put(updatedPreferences);
+};
+
+deletePreference: async (id) => {
+  return db.get(`preference_${id}`)
+      .then(doc => db.remove(doc));
+};
+
 export default dataService;
-*/
