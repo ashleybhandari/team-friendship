@@ -1,4 +1,5 @@
-import PouchDB from 'pouchdb';
+//import PouchDB from 'pouchdb';
+const PouchDB = require('pouchdb');
 
 const db = new PouchDB('roommate-matching');
 
