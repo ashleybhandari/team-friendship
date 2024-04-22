@@ -68,11 +68,9 @@ export class CreateAccountContainer {
         else if (view === 'create-3') {   // HousingSituationView
             this.#viewContainer.appendChild(this.#situationViewElm);
         }
-        else if (view === 'create-4-1') { // NeedHousingView
+        else if (view === 'create-4') {   // NeedHousingView or HaveHousingView
+            // create-4 changes depending on whether user has housing  // TODO: implement
             this.#viewContainer.appendChild(this.#needHousingViewElm);
-        }
-        else if (view === 'create-4-2') { // HaveHousingView
-            this.#viewContainer.appendChild(this.#haveHousingViewElm);
         }
         else {                            // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'

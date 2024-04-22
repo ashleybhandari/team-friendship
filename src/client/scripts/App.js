@@ -61,8 +61,7 @@ export class App {
             case 'create-1':   // CreateAccount/CredentialsView
             case 'create-2':   // CreateAccount/ProfileView
             case 'create-3':   // CreateAccount/HousingSituationView
-            case 'create-4-1': // CreateAccount/NeedHousingView
-            case 'create-4-2': // CreateAccount/HaveHousingView
+            case 'create-4': // CreateAccount/NeedHousingView or CreateAccount/HaveHousingView
                 this.#viewContainer.appendChild(this.#createAcctCntrElm);
                 break;
             case 'discover':   // SignedIn/DisplayWithHousing or SignedIn/DisplayWithoutHousing
