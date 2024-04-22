@@ -68,8 +68,8 @@ export class SignInView {
             // DB TODO: replace with login function below
             this.#events.publish('navigateTo', 'discover')
             // login(
-            //     emailInput.value,
-            //     passwordInput.value,
+            //     emailInputElement.value,
+            //     passwordInputElement.value,
             //     () => this.#events.publish('navigateTo', 'discover'),
             //     () => alert('Login failed. Check your credentials.')
             // );
