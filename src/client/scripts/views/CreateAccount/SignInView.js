@@ -8,6 +8,7 @@ import { Events } from '../../Events.js';
  * Provides a UI view for user sign-in. This class is responsible for rendering the
  * sign-in form and handling user interactions such as signing in and navigating
  * to the sign-up page.
+ * view: 'sign-in'
  */
 export class SignInView {
     #events = null;

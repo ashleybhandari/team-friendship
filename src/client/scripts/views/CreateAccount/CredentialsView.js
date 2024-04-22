@@ -2,7 +2,7 @@ import { Button } from '../../components/Button.js';
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Events } from '../../Events.js';
 
-// href: create-1
+// view: create-1
 export class CredentialsView {
     #events = null;
 

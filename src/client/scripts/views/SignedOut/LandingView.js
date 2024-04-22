@@ -7,6 +7,7 @@ import { Events } from '../../Events.js';
  * Provides a UI view for the landing page. This class is responsible for rendering
  * the initial landing screen that users see when they visit the application.
  * It includes a welcome message and a join button to direct new users to sign up or sign in.
+ * view: 'landing'
  */
 export class LandingView {
     /**

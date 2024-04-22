@@ -7,7 +7,7 @@ import { RadioInput } from '../../components/RadioInput.js';
 /**
  * UI component: Housing Situation Screen
  * Includes a header, progress bar, radio inputs for housing options, and navigation buttons.
- * href: create-3
+ * view: create-3
  */
 export class HousingSituationView {
     async render() {

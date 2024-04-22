@@ -1,4 +1,4 @@
-import PouchDB from 'pouchdb';
+// import PouchDB from 'pouchdb';
 
 const db = new PouchDB('roommate-matching');
 

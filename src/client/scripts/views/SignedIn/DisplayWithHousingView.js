@@ -1,5 +1,6 @@
 // Created by Gauri Arvind
 
+// view: 'discover'
 export class DisplayWithHousingView {
     // A toggle for viewing users with or without housing. This might
     // become a component to reduce code in file.
@@ -120,26 +121,27 @@ export class DisplayWithHousingView {
         const dWHVElem = document.createElement("div");
         dWHVElem.id = 'display-with-housing-view';
 
-        const dWHVContainerElem = document.createElement("div");
-        dWHVContainerElem.id = 'display-with-housing-container';
+    // commenting out because errors stop page from rendering
+    //     const dWHVContainerElem = document.createElement("div");
+    //     dWHVContainerElem.id = 'display-with-housing-container';
 
-        // This container has 3 sections: an upper portion, left portion,
-        // and a right portion. 
+    //     // This container has 3 sections: an upper portion, left portion,
+    //     // and a right portion. 
 
-       // The upper portion, which is focused on a toggle
-       const upperContainer = this.#createUpperPortion();
+    //    // The upper portion, which is focused on a toggle
+    //    const upperContainer = this.#createUpperPortion();
 
-       // The left container of the page, which includes user info
-       const leftContainer = this.#createLeftContainer();
+    //    // The left container of the page, which includes user info
+    //    const leftContainer = this.#createLeftContainer();
 
-       // The right container of the page, which includes housing information
-       const rightContainer = this.#createRightContainer();
+    //    // The right container of the page, which includes housing information
+    //    const rightContainer = this.#createRightContainer();
 
-       dWHVContainerElem.appendChild(upperContainer);
-       dWHVContainerElem.appendChild(leftContainer);
-       dWHVContainerElem.appendChild(rightContainer);
+    //    dWHVContainerElem.appendChild(upperContainer);
+    //    dWHVContainerElem.appendChild(leftContainer);
+    //    dWHVContainerElem.appendChild(rightContainer);
 
-        dWHVElem.appendChild(dWHVContainerElem);
+    //     dWHVElem.appendChild(dWHVContainerElem);
 
         return dWHVElem;
     }
