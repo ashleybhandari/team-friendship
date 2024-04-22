@@ -1,3 +1,4 @@
+// DB TODO: uncomment
 // import PouchDB from 'pouchdb';
 
 const db = new PouchDB('roommate-matching');

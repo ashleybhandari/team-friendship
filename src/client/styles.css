@@ -650,10 +650,7 @@ body {
 }
 
 #settingsView .section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 40px;
-    margin: 0 0 50px 45px;
+    margin: 0 0 100px 45px;
 }
 
 #settingsView .subgroup {
@@ -665,11 +662,16 @@ body {
 #settingsView #credentials {
     display: flex;
     justify-content: center;
-    margin: 0 0 50px 0;
 }
 
 #settingsView #credentials .text-input {
     margin: 0 20px;
+}
+
+#settingsView #profile {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
 }
 
 #settingsView #profile .text-area-input {
@@ -686,6 +688,18 @@ body {
     grid-column: 3;
     grid-row: 3 / 5;
 }
+
+#settingsView #preferences {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
+}
+
+#settingsView #preferences .checkbox-list {
+    margin: auto 0;
+}
+
+#settingsView #housing {}
 
 #settingsView .buttons {
     display: flex;

@@ -28,7 +28,7 @@ export class LandingView {
         const joinButton = new Button('Join', 200);
         const joinButtonElement = await joinButton.render();
         joinButtonElement.addEventListener('click', () => {
-            // TODO: Events.events().publish('navigateTo', signed in ? 'discover' : 'sign-in');
+            // DB TODO: replace with Events.events().publish('navigateTo', signed in ? 'discover' : 'sign-in');
             Events.events().publish('navigateTo', 'sign-in');
         });
 
