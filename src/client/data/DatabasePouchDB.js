@@ -1,4 +1,4 @@
-const PouchDB = require('pouchdb');
+//const PouchDB = require('pouchdb');
 const db = new PouchDB('roommate-matching');
 
 const dataService = {
