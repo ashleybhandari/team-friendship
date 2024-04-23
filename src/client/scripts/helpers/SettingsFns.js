@@ -7,6 +7,8 @@ export class SettingsFns {
     /**
      * @param {HTMLDivElement} parent - View holding the input fields
      * @param {User} user - Current user
+     * @param {Preferences} prefs - Current user's housing preferences
+     * @param {Housing} house - Current user's housing
      */
     constructor(parent, user) {
         this.#parent = parent;
@@ -16,9 +18,14 @@ export class SettingsFns {
     }
 
     /**
-     * Functions to fill and save fields. Each element is associated with in input filed
-     * in the DOM.
-     * @returns {{fill: function, save: function}[]}
+     * @callback Fill - Fills a field with the obj's saved value
+     * @callback Save - Saves a field's current value to its associated object
+     */
+
+    /**
+     * Array of Functions to fill and save fields. Each element is associated
+     * with in input filed in the DOM.
+     * @returns {{Fill, Save}[]}
      */
     getFns() {
         return [
@@ -28,60 +35,111 @@ export class SettingsFns {
         ];
     }
 
+    /**
+     * Array of fill and save functions for TextInput fields
+     * @returns {{Fill, Save}[]}
+     */
     #getTextFns() {
         const fns = [];
 
+        /**
+         * Iterate through all text fields and adds their fill and save
+         * functions to fns
+         * @param {User | Preferences | Housing} obj - object containing the field's value
+         * @param {string} id - id of the field's HTML element
+         * @param {string[]} prop - property in obj with the field's value; array to handle nested properties
+         * @param {function} [fillFn] - applies necessary changes before filling the field
+         * @param {function} [saveFn] - applies necessary changes before saving the value
+         */
         this.#getTextFields().forEach(([obj, id, prop, fillFn, saveFn]) => {
+            // element containing the field
             const elm = this.#parent.querySelector(`#${id}`);
             let value, fill, save;
 
+            // skip if element DNE
             if (!elm) return;
 
-            if (prop.length === 1) {
+            // if-else necessary to access obj's
+            // props properly
+            if (prop.length === 1) {      // ex. user.prop
                 value = obj[prop[0]];
                 fill = () => elm.value = fillFn ? fillFn(value) : value;
                 save = () => obj[prop[0]] = saveFn ? saveFn(elm.value) : elm.value;
             }
-            else if (prop.length === 2) {
+            else if (prop.length === 2) { // ex. user.prop1.prop2
                 value = obj[prop[0]][prop[1]];
                 fill = () => elm.value = fillFn ? fillFn(value) : value;
                 save = () => obj[prop[0]][prop[1]] = saveFn ? saveFn(elm.value) : elm.value;
             }
-            else {
+            else {                        // ex. user.prop1.prop2.prop3
                 value = obj[prop[0]][prop[1]][prop[2]];
                 fill = () => elm.value = fillFn ? fillFn(value) : value;
                 save = () => obj[prop[0]][prop[1]][prop[2]] = saveFn ? saveFn(elm.value) : elm.value;
             }
             
+            // add functions to fn
             fns.push({ fill, save });
         });
 
         return fns;
     }
 
+    /**
+     * Array of fill and save functions for CheckboxGroup fields
+     * @returns {{Fill, Save}[]}
+     */
     #getCheckboxFns() {
         const fns = [];
+
+        /**
+         * @param {User | Preferences | Housing} obj - object containing the field's value
+         * @param {string} id - id of the field's HTML element
+         * @param {string[]} prop - property in obj with the field's value; array to handle nested properties
+         */
         this.#getCheckboxFields().forEach(([obj, id, prop]) => {
+            // elm containing the field
             const elm = this.#parent.querySelector(`#${id}`)
             
+            // skip if element DNE
             if (!elm) return;
 
+            // assuming 2 property levels, ex. user.prop1.prop2
             const fill = () => elm.checked = obj[prop[0]][prop[1]];
             const save = () => obj[prop[0]][prop[1]] = elm.checked;
 
+            // add functions to fn
             fns.push({ fill, save });
         });
 
         return fns;
     }
 
+    /**
+     * Array of fill and save functions for RadioInput fields
+     * @returns {{Fill, Save}[]}
+     */
     #getRadioFns() {
         const fns = [];
 
+        /**
+         * Iterate through all text fields and adds their fill and save
+         * functions to fns
+         * @param {User | Preferences | Housing} obj - object containing the field's value
+         * @param {string} id - id of the field's HTML element
+         * @param {string[]} prop - property in obj with the field's value; array to handle nested properties
+         * @param {function} fillFn - applies necessary changes before filling the field
+         * @param {function} saveFn - applies necessary changes before saving the value
+         */
         this.#getRadioFields().forEach(([obj, id, prop, fillFn, saveFn]) => {
+            // element containing the field
             const elm = this.#parent.querySelector(`#${id}`);
+            // array of radio options
             const options = elm.querySelectorAll('input');
 
+            // skip if element DNE
+            if (!elm) return;
+
+            // updates radio options, sets data_value accordingly
             const fill = () => Array.from(options).forEach((option) => {
                 option.checked = option.value === fillFn()
                 if (option.checked) elm.setAttribute('data_value', option.value)
@@ -89,12 +147,18 @@ export class SettingsFns {
 
             const save = () => obj[prop[0]] = saveFn(elm.getAttribute('data_value'));
             
+            // adds functions to fn
             fns.push({ fill, save });
         });
 
         return fns;
     }
 
+    /**
+     * Array of arguments to #getTextFns. Each element corresponds to an HTML
+     * field.
+     * @returns {[Object | string | string[] | function][]}
+     */
     #getTextFields() {
         return [
             // Credentials section
@@ -122,10 +186,14 @@ export class SettingsFns {
             [this.#prefs, 'maxRentInput', ['rent', 'max']],
             [this.#prefs, 'minOccupantsInput', ['occupants', 'min']],
             [this.#prefs, 'maxOccupantsInput', ['occupants', 'max']],
-            // Housing section
         ];
     }
 
+    /**
+     * Array of arguments to #getCheckboxFns. Each element corresponds to an
+     * HTML field.
+     * @returns {[Object | string | string[] | function][]}
+     */
     #getCheckboxFields() {
         return [
             // Preferences section
@@ -165,6 +233,11 @@ export class SettingsFns {
         ];
     }
 
+    /**
+     * Array of arguments to #getRadioFns. Each element corresponds to an HTML
+     * field.
+     * @returns {[Object | string | string[] | function][]}
+     */
     #getRadioFields() {
         return [
             [
