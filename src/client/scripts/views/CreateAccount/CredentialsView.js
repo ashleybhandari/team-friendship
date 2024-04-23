@@ -1,36 +1,47 @@
 import { Button } from '../../components/Button.js';
-import { ProgressBar } from '../../components/ProgressBar.js';
+import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
+//Rachel
 // view: create-1
 export class CredentialsView {
     #events = null;
+    #database = null;
 
     constructor() {
         this.#events = Events.events();
+        this.#database = db.default;
     }
 
     async render() {
         const credViewElm = document.createElement('div');
-        credViewElm.id = 'credentialsView';
+        credViewElm.classList.add('create-account-container');
 
-        credViewElm.appendChild(await new ProgressBar(1).render());
+        const header = document.createElement('h1');
+        header.textContent = 'Create Your Account';
+        credViewElm.appendChild(header);
 
-        // TODO: view content
+        const emailInput = new TextInput('Email');
+        const emailInputElement = await emailInput.render();
+        credViewElm.appendChild(emailInputElement);
 
-        this.#renderNavigation(credViewElm);
+        const passwordInput = new TextInput('Password', 'password');
+        const passwordInputElement = await passwordInput.render();
+        credViewElm.appendChild(passwordInputElement);
 
-        return credViewElm;
-    }
+        const signUpButton = new Button('Sign Up', 200);
+        const signUpButtonElement = await signUpButton.render();
+        credViewElm.appendChild(signUpButtonElement);
 
-    async #renderNavigation(container) {
-        const nextBtn = await new Button('Next').render();
+        signUpButtonElement.addEventListener('click', async (e) => {
+    
+                e.preventDefault();
 
-        nextBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.#events.publish('navigateTo', 'create-2');
+            // DB TODO: replace with login function below
+           this.#events.publish('navigateTo', 'create-2');
         });
 
-        container.append(nextBtn);
+        return credViewElm;
     }
 }
