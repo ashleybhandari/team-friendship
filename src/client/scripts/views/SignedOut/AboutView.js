@@ -32,7 +32,7 @@ export class AboutView {
                 <h2>The Team</h2>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="members_rachel.png" alt="Rachel">
+                        <img src="url('https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_rachel.png" alt="Rachel)">
                         <p>Rachel Lahav - Data Lead</p>
                     </div>
                     <div class="member-bio">
