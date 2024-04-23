@@ -128,22 +128,4 @@ const dataService = {
       .then(doc => db.remove(doc));
   },
 
-  authenticateUser: async (email, password) => {
-    try {
-      const user = await db.get(`user_${email}`);
-      if (user.password === password) {
-        return user;
-      } else {
-        throw new Error('Invalid username or password');
-      }
-    } catch (error) {
-      if (error.status === 404) {
-        throw new Error('Invalid username or password');
-      } else {
-        throw error;
-      }
-    }
-  },
-};
-
 export default dataService;
