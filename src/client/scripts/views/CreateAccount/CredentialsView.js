@@ -56,14 +56,4 @@ export class CredentialsView {
         return credViewElm;
     }
 
-    async #renderNavigation(container) {
-        const nextBtn = await new Button('Next').render();
-
-        nextBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.#events.publish('navigateTo', 'create-2');
-        });
-
-        container.append(nextBtn);
-    }
 }
