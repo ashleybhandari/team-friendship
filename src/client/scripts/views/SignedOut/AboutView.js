@@ -1,4 +1,4 @@
-import { Button } from '../../components/Button.js';
+berimport { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 
 // view: about
@@ -32,7 +32,7 @@ export class AboutView {
                 <h2>The Team</h2>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="Rachel pic.png" alt="Rachel">
+                        <img src="members_rachel.png" alt="Rachel">
                         <p>Rachel Lahav - Data Lead</p>
                     </div>
                     <div class="member-bio">
@@ -41,7 +41,7 @@ export class AboutView {
                 </div>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="Ashley pic.png" alt="Ashley">
+                        <img src=members_ashley.jpg" alt="Ashley">
                         <p>Ashley Bhandari - Front-end Developer</p>
                     </div>
                     <div class="member-bio">
@@ -50,7 +50,7 @@ export class AboutView {
                 </div>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="Kshama pic.png" alt="Kshama">
+                        <img src="members_kshama.jpg" alt="Kshama">
                         <p>Kshama Kolur - Documentation Lead</p>
                     </div>
                     <div class="member-bio">
@@ -59,7 +59,7 @@ export class AboutView {
                 </div>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="Gauri pic.png" alt="Gauri">
+                        <img src="members_gauri.jpg" alt="Gauri">
                         <p>Gauri Arvind - Back-end Developer</p>
                     </div>
                     <div class="member-bio">
