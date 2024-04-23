@@ -127,5 +127,5 @@ const dataService = {
     return db.get(`housing_${id}`)
       .then(doc => db.remove(doc));
   },
-
+};
 export default dataService;
