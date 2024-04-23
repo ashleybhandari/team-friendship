@@ -1,6 +1,6 @@
 // DB TODO: uncomment
-const PouchDB = require('pouchdb');
-import PouchDBAuthentication from 'pouchdb-authentication';
+var PouchDB = require("pouchdb");
+PouchDB.plugin(require('pouchdb-authentication'));
 
 PouchDB.plugin(PouchDBAuthentication);
 
