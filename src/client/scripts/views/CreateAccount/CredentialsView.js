@@ -40,16 +40,11 @@ export class CredentialsView {
             const password = passwordInputElement.value;
 
             if (email && password) {
-                try {
-                    await this.#database.createUser(email, password);
-                    alert('Account created successfully!');
-                    this.#events.publish('navigateTo', 'create-2');
-                } catch (error) {
-                    alert('Error creating account: ' + error.message);
-                }
-            } else {
-                alert('Please enter both email and password.');
-            }
+                e.preventDefault();
+
+            // DB TODO: replace with login function below
+            this.#events.publish('navigateTo', 'discover');
+       
         });
 
         return credViewElm;
