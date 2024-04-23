@@ -1,5 +1,5 @@
 import { Button } from '../../components/Button.js';
-import { ProgressBar } from '../../components/ProgressBar.js';
+import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
@@ -15,34 +15,28 @@ export class CredentialsView {
 
     async render() {
         const credViewElm = document.createElement('div');
-        credViewElm.id = 'credentialsView';
+        credViewElm.classList.add('create-account-container');
 
-        credViewElm.appendChild(await new ProgressBar(1).render());
+        const header = document.createElement('h1');
+        header.textContent = 'Create Your Account';
+        credViewElm.appendChild(header);
 
-        const content = document.createElement('div');
-        content.innerHTML = `
-            <h2>Create Your Account</h2>
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" required>
-            <div id="signup-btn-container"></div>
-        `;
-        credViewElm.appendChild(content);
+        const emailInput = new TextInput('Email');
+        const emailInputElement = await emailInput.render();
+        credViewElm.appendChild(emailInputElement);
 
-        this.#renderSignUpButton(content);
-        this.#renderNavigation(credViewElm);
+        const passwordInput = new TextInput('Password', 'password');
+        const passwordInputElement = await passwordInput.render();
+        credViewElm.appendChild(passwordInputElement);
 
-        return credViewElm;
-    }
+        const signUpButton = new Button('Sign Up', 200);
+        const signUpButtonElement = await signUpButton.render();
+        credViewElm.appendChild(signUpButtonElement);
 
-    async #renderSignUpButton(container) {
-        const signUpBtn = await new Button('Sign Up').render();
-
-        signUpBtn.addEventListener('click', async (e) => {
+        signUpButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = emailInputElement.value;
+            const password = passwordInputElement.value;
 
             if (email && password) {
                 try {
@@ -57,8 +51,9 @@ export class CredentialsView {
             }
         });
 
-        const signUpBtnContainer = container.querySelector('#signup-btn-container');
-        signUpBtnContainer.appendChild(signUpBtn);
+        this.#renderNavigation(credViewElm);
+
+        return credViewElm;
     }
 
     async #renderNavigation(container) {
