@@ -2,6 +2,7 @@
 
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
+import { login } from '../../../data/LogIn.js';
 import { Events } from '../../Events.js';
 
 /**
@@ -63,8 +64,15 @@ export class SignInView {
         // Event listener for sign-in button to validate credentials and sign in
         signInButtonElement.addEventListener('click', (e) => {
             e.preventDefault();
-            // TODO: implement validation of account existence and credentials
-            this.#events.publish('navigateTo', 'discover');
+
+            // DB TODO: replace with login function below
+            this.#events.publish('navigateTo', 'discover')
+            // login(
+            //     emailInputElement.value,
+            //     passwordInputElement.value,
+            //     () => this.#events.publish('navigateTo', 'discover'),
+            //     () => alert('Login failed. Check your credentials.')
+            // );
         });
 
         return signInContainer;  // Return the complete sign-in container element

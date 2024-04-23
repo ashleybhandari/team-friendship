@@ -72,7 +72,7 @@ export class Footer {
                 case 'discover':
                 case 'matches':
                 case 'settings':
-                    // TODO: if (not signed in) return 'sign-in'
+                    // DB TODO: if (not signed in) return 'sign-in'
                 default:
                     return v;
             }

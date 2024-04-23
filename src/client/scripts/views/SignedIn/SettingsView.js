@@ -6,9 +6,11 @@ import { SliderInput } from '../../components/SliderInput.js';
 import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { users } from '../../../data/MockData.js';
+import { QueryFunctions } from '../../helpers/queryFunctions.js';
 
 /**
  * Lets the user change their configuration. Injected into SignedInContainer.
+ * view: 'settings'
  */
 export class SettingsView {
     #settingsViewElm = null;
@@ -17,7 +19,7 @@ export class SettingsView {
     #preferencesSection = null;
     #housingSection = null;
     #user = null;
-    #queryMap = null;
+    #queryFns = null;
     #requiredFields = null;
 
     constructor() {
@@ -38,8 +40,8 @@ export class SettingsView {
         `;
 
         // create page sections
-        this.#credentialsSection = new CredentialsSection(this.#settingsViewElm);
-        this.#profileSection = new ProfileSection(this.#settingsViewElm);
+        this.#credentialsSection = new CredentialsSection(this.#settingsViewElm, this.#user);
+        this.#profileSection = new ProfileSection(this.#settingsViewElm, this.#user);
         this.#preferencesSection = new PreferencesSection(this.#settingsViewElm);
         this.#housingSection = new HousingSection(this.#settingsViewElm);
         
@@ -55,7 +57,7 @@ export class SettingsView {
         await this.#renderButtons(this.#settingsViewElm);
 
         // fill HTML fields with the user's saved values
-        this.#initMap();
+        this.#queryFns = new QueryFunctions(this.#settingsViewElm, this.#user);
         this.#fillFields(this.#settingsViewElm);
 
         // set up form validation
@@ -98,30 +100,8 @@ export class SettingsView {
      * Fills the HTML elements with the user's saved values. Used for
      * initialization and reverting changes.
      */
-    async #fillFields() {
-        /** @type {HTMLDivElement[]} - Container-child tuple for #lookingForRadio */
-        let radio;
-
-        this.#queryMap.forEach((field, query) => {
-            const elm = this.#settingsViewElm.querySelector(query);
-
-            // elements to re-render radio group (hard to directly assign a value)
-            if (query === '#lookingForRadio') {
-                elm.innerHTML = '';
-                radio = [elm, new RadioInput(
-                    'I am looking for...', ['roommates', 'housing'],
-                    this.#user.hasHousing ? 0 : 1
-                )];
-            }
-            else {
-                elm.value = field.length === 1
-                ? this.#user[field[0]]
-                : this.#user[field[0]][field[1]];
-            }
-        });
-
-        // render radio group
-        radio[0].appendChild(await radio[1].render());
+    #fillFields() {
+        this.#queryFns.getFns().forEach((field) => field.fill());
     }
 
     /**
@@ -136,41 +116,13 @@ export class SettingsView {
             return;
         }
 
-        this.#queryMap.forEach((field, query) => {
-            const elm = this.#settingsViewElm.querySelector(query);
-
-            // radio group requires special treatment
-            if (query === '#lookingForRadio') {
-                const value = elm.querySelector('input[name="iAmLookingForRadio"]:checked').value;
-                this.#user.hasHousing = value !== 'housing';
-            }
-            else if (field.length === 1) {
-                this.#user[field[0]] = elm.value;
-            }
-            else {
-                this.#user[field[0]][field[1]] = elm.value;
-            }
-        });
+        this.#queryFns.getFns().forEach((field) => field.save());
 
         // save new configuration
         localStorage.setItem('user', JSON.stringify(this.#user));
-    }
 
-    /**
-     * Initializes queryMap to a Map of all HTML elements and their associated
-     * property names. Keys are HTML element queries, values are the saved
-     * values for those queries. If a value has multiple elements, it is
-     * associated with a nested property in  User: ex. ['name', 'fname'] is
-     * used to set and get this.#user.name.fname
-     * @returns {Map<string, string[]>}
-     */
-    #initMap() {
-        this.#queryMap = new Map([
-            ...this.#credentialsSection.queryMap(),
-            ...this.#profileSection.queryMap(),
-            ...this.#preferencesSection.queryMap(),
-            ...this.#housingSection.queryMap(),
-        ]);
+        // get query functions with new user value
+        this.#queryFns = new QueryFunctions(this.#settingsViewElm, this.#user);
     }
 
     /**
@@ -193,28 +145,14 @@ export class SettingsView {
 
 
 class CredentialsSection {
-    #settingsViewElm = null;
+    #parent = null;
 
     /**
      * Credentials section of the Settings view.
      * @param {HTMLDivElement} parent - Settings view
      */
     constructor(parent) {
-        this.#settingsViewElm = parent;
-    }
-
-    /**
-     * Map of HTML elements and their associated property names. Keys are HTML
-     * element queries, values are the saved values for those queries. If a
-     * value has multiple elements, it is associated with a nested property in
-     * User: ex. ['name', 'fname'] is used to set and get this.#user.name.fname
-     * @returns {Map<string, string[]>}
-     */
-    queryMap() {
-        return new Map([
-            ['#emailInput', ['email']]
-        ]);
-        // TODO: implement passwordInput
+        this.#parent = parent;
     }
 
     /**
@@ -238,64 +176,21 @@ class CredentialsSection {
         section.appendChild(await new TextInput('Email*').render());
         section.appendChild(await new TextInput('Password').render());
 
-        this.#settingsViewElm.appendChild(header);
-        this.#settingsViewElm.appendChild(section);
+        this.#parent.appendChild(header);
+        this.#parent.appendChild(section);
     }
 }
 
 
 class ProfileSection {
-    #settingsViewElm = null;
+    #parent = null;
 
     /**
      * Profile section of the Settings view.
      * @param {HTMLDivElement} parent - Settings view
      */
     constructor(parent) {
-        this.#settingsViewElm = parent;
-    }
-
-    /**
-     * Map of HTML elements and their associated property names. Keys are HTML
-     * element queries, values are the saved values for those queries. If a
-     * value has multiple elements, it is associated with a nested property in
-     * User: ex. ['name', 'fname'] is used to set and get this.#user.name.fname
-     * @returns {Map<string, string[]>}
-     */
-    queryMap() {
-        return new Map([
-            ['#firstNameInput',        ['name', 'fname']      ],
-            ['#nicknameInput',         ['name', 'nname']      ],
-            ['#ageInput',              ['age']                ],
-            ['#genderIdentityDrpdwn',  ['gender', 'identity'] ],
-            ['#pronounsInput',         ['gender', 'pronouns'] ],
-            ['#majorInput',            ['education', 'major'] ],
-            ['#schoolInput',           ['education', 'school']],
-            ['#levelOfEducatioDrpdwn', ['education', 'level'] ],
-            ['#tellUsAboutYourArea',   ['description']        ],
-            ['#facebookInput',         ['socials', 'fb']      ],
-            ['#instagramInput',        ['socials', 'ig']      ],
-            ['#cleanlinessSldr',       ['character', 'clean'] ],
-            ['#noiseWhenStudyiSldr',   ['character', 'noise'] ],
-            ['#sleepingHabitsSldr',    ['character', 'sleep'] ],
-            ['#hostingGuestsSldr',     ['character', 'guests']],
-            ['#lookingForRadio',       ['character', 'guests']]
-        ]);
-    }
-
-    /**
-     * @returns {string[]} - Array of queries for required fields
-     */
-    requiredFields() {
-        return [
-            '#firstNameInput',
-            '#ageInput',
-            '#genderIdentityDrpdwn',
-            '#cleanlinessSldr',
-            '#noiseWhenStudyiSldr',
-            '#sleepingHabitsSldr',
-            '#hostingGuestsSldr'
-        ];
+        this.#parent = parent;
     }
 
     /**
@@ -336,8 +231,8 @@ class ProfileSection {
         radioCntr.id = 'lookingForRadio';
         section.appendChild(radioCntr);
 
-        this.#settingsViewElm.appendChild(header);
-        this.#settingsViewElm.appendChild(section);
+        this.#parent.appendChild(header);
+        this.#parent.appendChild(section);
     }
 
     /**
@@ -419,29 +314,33 @@ class ProfileSection {
             ).render()
         ];
     }
+
+    /**
+     * @returns {string[]} - Array of queries for required fields
+     */
+    requiredFields() {
+        return [
+            '#firstNameInput',
+            '#ageInput',
+            '#genderIdentityDrpdwn',
+            '#cleanlinessSldr',
+            '#noiseWhenStudyiSldr',
+            '#sleepingHabitsSldr',
+            '#hostingGuestsSldr'
+        ];
+    }
 }
 
 
 class PreferencesSection {
-    #settingsViewElm = null;
+    #parent = null;
 
     /**
      * Preferences section of the Settings view.
      * @param {HTMLDivElement} parent - Settings view
      */
     constructor(parent) {
-        this.#settingsViewElm = parent;
-    }
-
-    /**
-     * Map of HTML elements and their associated property names. Keys are HTML
-     * element queries, values are the saved values for those queries. If a
-     * value has multiple elements, it is associated with a nested property in
-     * User: ex. ['name', 'fname'] is used to set and get this.#user.name.fname
-     * @returns {Map<string, string[]>}
-     */
-    queryMap() {
-        return new Map();
+        this.#parent = parent;
     }
 
     /**
@@ -462,32 +361,113 @@ class PreferencesSection {
         section.id = 'preferences';
         section.classList.add('section');
 
-        this.#settingsViewElm.appendChild(header);
-        this.#settingsViewElm.appendChild(section);
+        section.appendChild(await this.renderCol1());
+        section.appendChild(await this.renderCol2());
+        section.appendChild(await this.renderCol3());
+
+        this.#parent.appendChild(header);
+        this.#parent.appendChild(section);
     }
+
+    /**
+     * Renders column 1 of the Preferences section.
+     * @returns {HTMLDivElement1}
+     */
+    async renderCol1() {
+        const elm = document.createElement('div');
+
+        // cities
+        elm.appendChild(await new TextInput('Cities (comma-separated)').render());
+
+        // subgroup (inputs are half-width): min and max rent
+        const rent = document.createElement('div');
+        rent.classList.add('subgroup');
+        rent.appendChild(await new TextInput('Min rent', 'text', 118).render());
+        rent.appendChild(await new TextInput('Max rent', 'text', 118).render());
+        elm.appendChild(rent);
+
+        // subgroup (inputs are half-width): min and max occupants
+        const occupants = document.createElement('div');
+        occupants.classList.add('subgroup');
+        occupants.appendChild(await new TextInput('Min occupants', 'text', 118).render());
+        occupants.appendChild(await new TextInput('Max occupants', 'text', 118).render());
+        elm.appendChild(occupants);
+
+        // gender inclusivity
+        elm.appendChild(await new DropdownInput(
+            'Gender inclusivity', ['All-female', 'All-male', 'Mixed']
+        ).render());
+
+        // move-in period
+        elm.appendChild(await new DropdownInput(
+            'Move-in period', ['Fall', 'Winter', 'Spring', 'Summer']
+        ).render());
+
+        return elm;
+    }
+
+    /**
+     * Renders column 2 of the Preferences section.
+     * @returns {HTMLDivElement1}
+     */
+    async renderCol2() {
+        const elm = document.createElement('div');
+
+        // lease length
+        elm.appendChild(await new DropdownInput(
+            'Lease length', ['Per semester', 'Monthly', '6 months', 'Yearly']
+        ).render());
+
+        // lease type
+        elm.appendChild(await new DropdownInput(
+            'Lease type', ['Rent', 'Sublet']
+        ).render());
+
+        // room type
+        elm.appendChild(await new DropdownInput(
+            'Room type', ['Private', 'Shared']
+        ).render());
+
+        // building type
+        elm.appendChild(await new DropdownInput(
+            'Building type', ['Dorm', 'Apartment', 'House']
+        ).render());
+
+        return elm;
+    }
+
+    /**
+     * Renders column 3 of the Preferences section.
+     * @returns {HTMLDivElement1}
+     */
+    async renderCol3() {
+        const elm = document.createElement('div');
+        elm.classList.add('checkbox-list');
+
+        // checkboxes
+        elm.appendChild(await new CheckboxInput('Air conditioning').render());
+        elm.appendChild(await new CheckboxInput('Dishwasher').render());
+        elm.appendChild(await new CheckboxInput('Hardwood floors').render());
+        elm.appendChild(await new CheckboxInput('Carpet floors').render());
+        elm.appendChild(await new CheckboxInput('On-site laundry').render());
+        elm.appendChild(await new CheckboxInput('Residential parking').render());
+        elm.appendChild(await new CheckboxInput('Nearby bus stop').render());
+        elm.appendChild(await new CheckboxInput('Pet-friendly').render());
+
+        return elm;
+    }    
 }
 
 
 class HousingSection {
-    #settingsViewElm = null;
+    #parent = null;
 
     /**
      * Housing section of the Settings view.
      * @param {HTMLDivElement} parent - Settings view
      */
     constructor(parent) {
-        this.#settingsViewElm = parent;
-    }
-
-    /**
-     * Map of HTML elements and their associated property names. Keys are HTML
-     * element queries, values are the saved values for those queries. If a
-     * value has multiple elements, it is associated with a nested property in
-     * User: ex. ['name', 'fname'] is used to set and get this.#user.name.fname
-     * @returns {Map<string, string[]>}
-     */
-    queryMap() {
-        return new Map();
+        this.#parent = parent;
     }
 
     /**
@@ -508,7 +488,7 @@ class HousingSection {
         section.id = 'housing';
         section.classList.add('section');
 
-        this.#settingsViewElm.appendChild(header);
-        this.#settingsViewElm.appendChild(section);
+        this.#parent.appendChild(header);
+        this.#parent.appendChild(section);
     }
 }

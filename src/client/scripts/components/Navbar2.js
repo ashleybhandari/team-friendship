@@ -72,7 +72,7 @@ export class Navbar2 {
         }
 
         dropdown.querySelector('#nav-landing').addEventListener('click', () => {
-            localStorage.removeItem('authToken'); // TODO: PouchDB
+            localStorage.removeItem('authToken'); // DB TODO: switch to PouchDB
         });
 
         container.querySelector('nav').appendChild(btn);

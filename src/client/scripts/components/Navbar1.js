@@ -45,7 +45,7 @@ export class Navbar1 {
      */
     async #navigate(v) {
         const view = v;
-        // TODO: const view = (v === 'sign-in' && signed in) ? 'discover' : v;
+        // DB TODO: replace with const view = (v === 'sign-in' && signed in) ? 'discover' : v;
 
         window.location.hash = view;
         await this.#events.publish('navigateTo', view);
