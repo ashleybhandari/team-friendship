@@ -21,44 +21,54 @@ export class CredentialsView {
 
         const content = document.createElement('div');
         content.innerHTML = `
-            <h2>Create Your Account</h2>
+            <h2>Sign In</h2>
             <label for="email">Email:</label>
             <input type="email" id="email" required>
             <label for="password">Password:</label>
             <input type="password" id="password" required>
-            <div id="signup-btn-container"></div>
+            <div id="signin-btn-container"></div>
+            <div id="signup-link-container">Don't have an account? <a href="#" id="signup-link">Sign Up</a></div>
         `;
         credViewElm.appendChild(content);
 
-        this.#renderSignUpButton(content);
+        this.#renderSignInButton(content);
+        this.#renderSignUpLink(content);
         this.#renderNavigation(credViewElm);
 
         return credViewElm;
     }
 
-    async #renderSignUpButton(container) {
-        const signUpBtn = await new Button('Sign Up').render();
+    async #renderSignInButton(container) {
+        const signInBtn = await new Button('Sign In').render();
 
-        signUpBtn.addEventListener('click', async (e) => {
+        signInBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             if (email && password) {
                 try {
-                    await this.#database.createUser(email, password);
-                    alert('Account created successfully!');
+                    const user = await this.#database.authenticateUser(email, password);
+                    alert(`Welcome, ${user.email}!`);
                     this.#events.publish('navigateTo', 'create-2');
                 } catch (error) {
-                    alert('Error creating account: ' + error.message);
+                    alert('Error signing in: ' + error.message);
                 }
             } else {
                 alert('Please enter both email and password.');
             }
         });
 
-        const signUpBtnContainer = container.querySelector('#signup-btn-container');
-        signUpBtnContainer.appendChild(signUpBtn);
+        const signInBtnContainer = container.querySelector('#signin-btn-container');
+        signInBtnContainer.appendChild(signInBtn);
+    }
+
+    #renderSignUpLink(container) {
+        const signUpLink = container.querySelector('#signup-link');
+        signUpLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.#events.publish('navigateTo', 'create-1');
+        });
     }
 
     async #renderNavigation(container) {
