@@ -1,4 +1,4 @@
-berimport { Button } from '../../components/Button.js';
+import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 
 // view: about
