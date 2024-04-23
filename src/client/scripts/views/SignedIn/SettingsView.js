@@ -40,17 +40,33 @@ export class SettingsView {
         `;
 
         // create page sections
-        this.#credentialsSection = new CredentialsSection(this.#settingsViewElm, this.#user);
-        this.#profileSection = new ProfileSection(this.#settingsViewElm, this.#user);
-        this.#preferencesSection = new PreferencesSection(this.#settingsViewElm);
-        this.#housingSection = new HousingSection(this.#settingsViewElm);
+        this.#credentialsSection = new CredentialsSection(
+            this.#settingsViewElm, this.#user
+        );
+        this.#profileSection = new ProfileSection(
+            this.#settingsViewElm, this.#user
+        );
+        this.#preferencesSection = new PreferencesSection(
+            this.#settingsViewElm
+        );
+        this.#housingSection = new HousingSection(
+            this.#settingsViewElm
+        );
         
-        // render sections (and buttons after every section)
-        await this.#credentialsSection.render(await this.#getButtons(this.#settingsViewElm));
-        await this.#profileSection.render(await this.#getButtons(this.#settingsViewElm));
+        // render sections
+        await this.#credentialsSection.render(
+            await this.#getButtons(this.#settingsViewElm)
+        );
+        await this.#profileSection.render(
+            await this.#getButtons(this.#settingsViewElm)
+        );
         this.#user.hasHousing
-            ? await this.#housingSection.render(await this.#getButtons(this.#settingsViewElm))
-            : await this.#preferencesSection.render(await this.#getButtons(this.#settingsViewElm));
+            ? await this.#housingSection.render(
+                await this.#getButtons(this.#settingsViewElm)
+              )
+            : await this.#preferencesSection.render(
+                await this.#getButtons(this.#settingsViewElm)
+              );
 
         // fill HTML fields with the user's saved values
         this.#settingsFns = new SettingsFns(
@@ -107,8 +123,8 @@ export class SettingsView {
      * Save any changes made.
      */
     #saveChanges() {
-        const invalid = this.#requiredFields.some((query) =>
-            !this.#settingsViewElm.querySelector(query).checkValidity()
+        const invalid = this.#requiredFields.some((id) =>
+            !this.#settingsViewElm.querySelector(`#${id}`).checkValidity()
         );
         if (invalid) {
             alert('Make sure all required fields are filled out (the starred ones!)');
@@ -138,8 +154,8 @@ export class SettingsView {
         ]
 
         // set required property on required fields to true
-        this.#requiredFields.forEach((query) =>
-            this.#settingsViewElm.querySelector(query).required = true
+        this.#requiredFields.forEach((id) =>
+            this.#settingsViewElm.querySelector(`#${id}`).required = true
         );
     }
 }
@@ -154,13 +170,6 @@ class CredentialsSection {
      */
     constructor(parent) {
         this.#parent = parent;
-    }
-
-    /**
-     * @returns {string[]} - Array of queries for required fields
-     */
-    requiredFields() {
-        return ['#emailInput'];
     }
 
     /**
@@ -185,6 +194,13 @@ class CredentialsSection {
         elm.appendChild(section);
         elm.appendChild(buttons);
         this.#parent.appendChild(elm);
+    }
+
+    /**
+     * @returns {string[]} - Array of id's for required fields
+     */
+    requiredFields() {
+        return ['emailInput'];
     }
 }
 
@@ -328,17 +344,17 @@ class ProfileSection {
     }
 
     /**
-     * @returns {string[]} - Array of queries for required fields
+     * @returns {string[]} - Array of id's for required fields
      */
     requiredFields() {
         return [
-            '#firstNameInput',
-            '#ageInput',
-            '#genderIdentityDrpdwn',
-            '#cleanlinessSldr',
-            '#noiseWhenStudyiSldr',
-            '#sleepingHabitsSldr',
-            '#hostingGuestsSldr'
+            'firstNameInput',
+            'ageInput',
+            'genderIdentityDrpdwn',
+            'cleanlinessSldr',
+            'noiseWhenStudyiSldr',
+            'sleepingHabitsSldr',
+            'hostingGuestsSldr'
         ];
     }
 }
@@ -353,13 +369,6 @@ class PreferencesSection {
      */
     constructor(parent) {
         this.#parent = parent;
-    }
-
-    /**
-     * @returns {string[]} - Array of queries for required fields
-     */
-    requiredFields() {
-        return [];
     }
 
     /**
@@ -500,6 +509,13 @@ class PreferencesSection {
 
         return group;
     }
+
+    /**
+     * @returns {string[]} - Array of id's for required fields
+     */
+    requiredFields() {
+        return [];
+    }
 }
 
 
@@ -512,13 +528,6 @@ class HousingSection {
      */
     constructor(parent) {
         this.#parent = parent;
-    }
-
-    /**
-     * @returns {string[]} - Array of queries for required fields
-     */
-    requiredFields() {
-        return [];
     }
 
     /**
@@ -540,5 +549,12 @@ class HousingSection {
         elm.appendChild(section);
         elm.appendChild(buttons);
         this.#parent.appendChild(elm);
+    }
+
+    /**
+     * @returns {string[]} - Array of id's for required fields
+     */
+    requiredFields() {
+        return [];
     }
 }
