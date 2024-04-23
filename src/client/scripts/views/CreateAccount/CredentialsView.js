@@ -3,6 +3,7 @@ import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
+//Rachel
 // view: create-1
 export class CredentialsView {
     #events = null;
@@ -51,9 +52,6 @@ export class CredentialsView {
             }
         });
 
-        this.#renderNavigation(credViewElm);
-
         return credViewElm;
     }
-
 }
