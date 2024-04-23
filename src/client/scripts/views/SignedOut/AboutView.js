@@ -49,7 +49,7 @@ export class AboutView {
                 </div>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="members_kshama.jpg" alt="Kshama">
+                        <img src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_kshama.jpg" alt="Kshama">
                         <p>Kshama Kolur - Documentation Lead</p>
                     </div>
                     <div class="member-bio">
@@ -58,7 +58,7 @@ export class AboutView {
                 </div>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="members_gauri.jpg" alt="Gauri">
+                        <img src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_gauri.png" alt="Gauri">
                         <p>Gauri Arvind - Back-end Developer</p>
                     </div>
                     <div class="member-bio">
