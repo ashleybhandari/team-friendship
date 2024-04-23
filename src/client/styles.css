@@ -754,3 +754,35 @@ body {
     border-radius: 2rem;
     cursor: pointer;
 }
+
+/* Style for SignInView */
+
+/* Styles for all input fields within .text-input in SignInView */
+.sign-in-container .text-input input {
+    border: 2px solid #ccc; /* Make border thicker */
+}
+
+/* Highlight all focused input fields within .text-input in SignInView */
+.sign-in-container .text-input input:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #28a745; /* Green border for focused state */
+    box-shadow: 0 0 3px #28a745; /* Add a subtle glow effect */
+}
+
+/* SignInView specific styles */
+.sign-in-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height to center vertically on the page */
+    text-align: center;
+    gap: 20px; /* This sets the vertical space between elements */
+}
+
+/* Style for the sign-up option */
+.sign-up-option {
+    margin-top: 20px;
+    font-size: 0.9em;
+    margin-bottom: 30px; /* Adds space below the 'Not a member? Sign up' */
+}
