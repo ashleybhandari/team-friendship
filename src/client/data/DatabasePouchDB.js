@@ -1,5 +1,5 @@
 // DB TODO: uncomment
-const PouchDB = require('pouchdb');
+//const PouchDB = require('pouchdb');
 const db = new PouchDB('roommate-matching');
 
 const dataService = {
@@ -127,5 +127,23 @@ const dataService = {
     return db.get(`housing_${id}`)
       .then(doc => db.remove(doc));
   },
+
+  authenticateUser: async (email, password) => {
+    try {
+      const user = await db.get(`user_${email}`);
+      if (user.password === password) {
+        return user;
+      } else {
+        throw new Error('Invalid username or password');
+      }
+    } catch (error) {
+      if (error.status === 404) {
+        throw new Error('Invalid username or password');
+      } else {
+        throw error;
+      }
+    }
+  },
 };
+
 export default dataService;
