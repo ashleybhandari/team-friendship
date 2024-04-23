@@ -1,7 +1,7 @@
 import { Button } from '../../components/Button.js';
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Events } from '../../Events.js';
-import { DatabasePouchDB } from '../../data/DatabasePouchDB.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: create-1
 export class CredentialsView {
@@ -10,7 +10,7 @@ export class CredentialsView {
 
     constructor() {
         this.#events = Events.events();
-        this.#database = new DatabasePouchDB('users');
+        this.#database = db.default;
     }
 
     async render() {
