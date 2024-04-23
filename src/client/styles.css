@@ -754,3 +754,37 @@ body {
     border-radius: 2rem;
     cursor: pointer;
 }
+
+/* Style for SignInView */
+
+/* Styles specifically for the email and password input fields */
+.text-input input[type='email'],
+.text-input input[type='password'] {
+    border: 2px solid #ccc; /* Make border thicker */
+}
+
+/* Highlight input fields in green when they are focused */
+.text-input input[type='email']:focus,
+.text-input input[type='password']:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #28a745; /* Green border for focused state */
+    box-shadow: 0 0 3px #28a745; /* Add a subtle glow effect */
+}
+
+/* SignInView specific styles */
+.sign-in-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height to center vertically on the page */
+    text-align: center;
+    gap: 20px; /* This sets the vertical space between elements */
+}
+
+/* Style for the sign-up option */
+.sign-up-option {
+    margin-top: 20px;
+    font-size: 0.9em;
+    margin-bottom: 30px; /* Adds space below the 'Not a member? Sign up' */
+}
