@@ -58,6 +58,23 @@ body {
     background-color: #ec5b45;
 }
 
+/* CheckboxGroup.js */
+
+.checkbox-group.big-group p {
+    text-align: center;
+}
+
+.checkbox-group .boxes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox-group.big-group .boxes {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
 /* CheckboxInput.js */
 
 .custom-checkbox {
@@ -640,7 +657,7 @@ body {
 }
 
 #settingsView h3 {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
 }
 
@@ -651,6 +668,20 @@ body {
 
 #settingsView .section {
     margin: 0 0 100px 45px;
+}
+
+#settingsView .buttons {
+    display: flex;
+    justify-content: center;
+    margin: 50px 45px 0 0;
+}
+
+#settingsView #credentials-section .buttons {
+    margin-top: 20px;
+}
+
+#settingsView .buttons button {
+    margin: 0 5px;
 }
 
 #settingsView .subgroup {
@@ -683,7 +714,7 @@ body {
     width: 635px;
 }
 
-#settingsView #profile #lookingForRadio {
+#settingsView #profile #iAmLookingForRadio {
     margin: auto;
     grid-column: 3;
     grid-row: 3 / 5;
@@ -691,21 +722,21 @@ body {
 
 #settingsView #preferences {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     row-gap: 40px;
 }
 
-#settingsView #preferences .checkbox-list {
-    margin: auto 0;
+#settingsView #preferences .text-input {
+    grid-column: 1 / 3;
+}
+
+#settingsView #preferences .amenities {
+    grid-row: 3;
+    grid-column: 1 / 5;
+}
+
+#settingsView #preferences .big-group {
+    margin-right: 45px;
 }
 
 #settingsView #housing {}
-
-#settingsView .buttons {
-    display: flex;
-    justify-content: center;
-}
-
-#settingsView .buttons button {
-    margin: 0 5px;
-}

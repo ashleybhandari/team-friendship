@@ -3,7 +3,7 @@ import { createElementId } from '../helpers/createElementId.js';
 export class RadioInput {
     /**
      * UI component: Group of radio buttons. Calling getAttribute('data_value')
-     * on the group label returns the currently selected value.
+     * on the element returns the currently selected value.
      * @param {string} name - Name representing the group of options
      * @param {string[]} elements - Options to select from
      * @param {string} [value] - Initial value
@@ -17,11 +17,12 @@ export class RadioInput {
     async render() {
         const elm = document.createElement('div');
         elm.classList.add('radio-input');
+        elm.id = createElementId(this.name, 'Radio');
 
         // group label, displayed above radio options
         const group = document.createElement('p');
         group.innerText = this.name;
-        group.id = createElementId(this.name, 'Radio');
+        group.id = createElementId(this.name, 'RadioGrp');
         elm.appendChild(group);
 
         // options to select from
@@ -37,12 +38,16 @@ export class RadioInput {
             input.name = group.id;
             input.id = id;
             input.value = e;
-            input.onclick = () => group.setAttribute('data_value', e);
+            // if this option is selected, changes the value of data_value
+            input.onclick = () => {
+                elm.setAttribute('data_value', e);
+            }
 
             // initializes checked option
             if ((!this.value && i === 0) || (this.value && e === this.value)) {
                 input.checked = true;
-                group.setAttribute('data_value', e);
+                // initializes the value of data_value
+                elm.setAttribute('data_value', e);
             }
 
             // creates span option - Gauri
