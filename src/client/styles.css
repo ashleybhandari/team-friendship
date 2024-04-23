@@ -709,3 +709,48 @@ body {
 #settingsView .buttons button {
     margin: 0 5px;
 }
+
+/* The landing container */
+.landing-container {
+    background-image: url('https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/landing.jpg');
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the left */
+    padding-left: 10%; /* Adjusted padding for left alignment */
+}
+
+/* Style for titles within the landing page */
+.landing-container .title-find-your,
+.landing-container .title-next-home {
+    color: #FFFFFF; /* Assuming both titles are white */
+    font-weight: bold; /* Assuming both titles are bold */
+    text-align: left; /* Align the text to the left */
+}
+
+/* Smaller title "Find Your" */
+.landing-container .title-find-your {
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+
+/* Larger title "Next Home" */
+.landing-container .title-next-home {
+    font-size: 4rem;
+    margin-top: 0;
+}
+
+/* Style for the Join button */
+.landing-container .join-button {
+    align-self: flex-start; /* Align the button to the left */
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: #FFD700; /* Yellow color */
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+}
