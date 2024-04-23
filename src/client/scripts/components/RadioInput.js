@@ -2,10 +2,11 @@ import { createElementId } from '../helpers/createElementId.js';
 
 export class RadioInput {
     /**
-     * UI component: Group of radio buttons
+     * UI component: Group of radio buttons. Calling getAttribute('data_value')
+     * on the group label returns the currently selected value.
      * @param {string} name - Name representing the group of options
      * @param {string[]} elements - Options to select from
-     * @param {number} [value] - Initial value (index in elements)
+     * @param {string} [value] - Initial value
      */
     constructor(name, elements, value = null) {
         this.name = name;
@@ -17,31 +18,31 @@ export class RadioInput {
         const elm = document.createElement('div');
         elm.classList.add('radio-input');
 
-        // text displayed above options
-        const title = document.createElement('p');
-        title.innerText = this.name;
-        title.id = createElementId(this.name, 'Radio');
-        elm.appendChild(title);
+        // group label, displayed above radio options
+        const group = document.createElement('p');
+        group.innerText = this.name;
+        group.id = createElementId(this.name, 'Radio');
+        elm.appendChild(group);
 
         // options to select from
         this.elements.forEach((e, i) => {
             const id = createElementId(e);
 
-            const group = document.createElement('div');
+            const option = document.createElement('div');
 
             // radio button for option
             const input = document.createElement('input');
             input.classList.add("radio-container");
             input.type = 'radio';
-            input.name = title.id;
+            input.name = group.id;
             input.id = id;
             input.value = e;
-            input.onclick = () => title.setAttribute('data_value', i);
+            input.onclick = () => group.setAttribute('data_value', e);
 
             // initializes checked option
-            if ((!this.value && i === 0) || (this.value && i === this.value)) {
+            if ((!this.value && i === 0) || (this.value && e === this.value)) {
                 input.checked = true;
-                title.setAttribute('data_value', i);
+                group.setAttribute('data_value', e);
             }
 
             // creates span option - Gauri
@@ -56,9 +57,8 @@ export class RadioInput {
 
             label.appendChild(input);
             label.appendChild(span);
-            // group.appendChild(input); - part of old code in case this fails
-            group.appendChild(label);
-            elm.appendChild(group);
+            option.appendChild(label);
+            elm.appendChild(option);
         });
 
         return elm;

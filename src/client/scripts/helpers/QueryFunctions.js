@@ -152,12 +152,12 @@ export class QueryFunctions {
                     elm.innerHTML = '';
                     elm.appendChild(await new RadioInput(
                         'I am looking for...', ['roommates', 'housing'],
-                        this.#user.hasHousing ? 0 : 1
+                        this.#user.hasHousing ? 'roommates' : 'housing'
                     ).render());
                 },
                 save: () => {
-                    const v = this.#parent.querySelector('input[name="iAmLookingForRadio"]:checked').value;
-                    this.#user.hasHousing = v !== 'housing'
+                    const elm = this.#parent.querySelector('#iAmLookingForRadio');
+                    this.#user.hasHousing = elm.getAttribute('data_value') !== 'housing';
                 }
             }
         ];
