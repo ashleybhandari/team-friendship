@@ -812,3 +812,39 @@ body {
     font-size: 0.9em;
     margin-bottom: 30px; /* Adds space below the 'Not a member? Sign up' */
 }
+
+/* Styles for CredentialsView */
+
+/* Styles for all input fields within .text-input in CredentialsView */
+.create-account-container .text-input input {
+    border: 2px solid #ccc; /* Make border thicker */
+}
+
+/* Highlight all focused input fields within .text-input in CredentialsView */
+.create-account-container .text-input input:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #28a745; /* Green border for focused state */
+    box-shadow: 0 0 3px #28a745; /* Add a subtle glow effect */
+}
+
+/* CredentialsView specific styles */
+.create-account-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height to center vertically on the page */
+    text-align: center;
+    gap: 20px; /* This sets the vertical space between elements */
+}
+
+/* Style for the header */
+.create-account-container h1 {
+    margin-bottom: 30px; /* Adds space below the header */
+}
+
+/* Style for the sign-up button */
+.create-account-container button {
+    margin-top: 20px;
+    margin-bottom: 30px; /* Adds space below the sign-up button */
+}
