@@ -757,15 +757,13 @@ body {
 
 /* Style for SignInView */
 
-/* Styles specifically for the email and password input fields */
-.text-input input[type='email'],
-.text-input input[type='password'] {
+/* Styles for all input fields within .text-input in SignInView */
+.sign-in-container .text-input input {
     border: 2px solid #ccc; /* Make border thicker */
 }
 
-/* Highlight input fields in green when they are focused */
-.text-input input[type='email']:focus,
-.text-input input[type='password']:focus {
+/* Highlight all focused input fields within .text-input in SignInView */
+.sign-in-container .text-input input:focus {
     outline: none; /* Remove default focus outline */
     border-color: #28a745; /* Green border for focused state */
     box-shadow: 0 0 3px #28a745; /* Add a subtle glow effect */
