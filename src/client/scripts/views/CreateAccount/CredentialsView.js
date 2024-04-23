@@ -35,11 +35,7 @@ export class CredentialsView {
         credViewElm.appendChild(signUpButtonElement);
 
         signUpButtonElement.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const email = emailInputElement.value;
-            const password = passwordInputElement.value;
 
-            if (email && password) {
                 e.preventDefault();
 
             // DB TODO: replace with login function below
