@@ -35,7 +35,7 @@ export class CredentialsView {
         credViewElm.appendChild(signUpButtonElement);
 
         signUpButtonElement.addEventListener('click', async (e) => {
-
+            this.#events.publish('navigateTo', 'create-2');
                 e.preventDefault();
 
             // DB TODO: replace with login function below
