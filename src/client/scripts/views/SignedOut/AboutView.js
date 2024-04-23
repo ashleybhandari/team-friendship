@@ -4,6 +4,7 @@
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 
+// view: about
 export class AboutView {
     #viewContainer = null;
     #events = null;
@@ -18,9 +19,9 @@ export class AboutView {
 
         const content = document.createElement('div');
         content.innerHTML = `
-            <section id="contact">
+            <section id="contact" style="text-align: center;">
                 <h2>Contact Us</h2>
-                <a href="#" id="email-link">keymateteam@gmail.com</a>
+                <div id="email-button-container"></div>
             </section>
 
             <section id="mission">
@@ -32,7 +33,7 @@ export class AboutView {
 
             <section id="team">
                 <h2>The Team</h2>
-                <div class="Team-member">
+                <div class="team-member">
                     <img src="Rachel pic.png" alt="Rachel">
                     <p>Rachel Lahav - Data Lead</p>
                 </div>
@@ -40,28 +41,33 @@ export class AboutView {
                     <img src="Ashley pic.png" alt="Ashley">
                     <p>Ashley Bhandari - Front-end Developer</p>
                 </div>
-                <div class="Team-member">
+                <div class="team-member">
                     <img src="Kshama pic.png" alt="Kshama">
                     <p>Kshama Kolur - Documentation Lead</p>
                 </div>
-                <div class="Team-member">
+                <div class="team-member">
                     <img src="Gauri pic.png" alt="Gauri">
-                    <p>Gauri Arvind - Bacn-end Developer</p>
+                    <p>Gauri Arvind - Back-end Developer</p>
                 </div>
-                <div class="Team-member">
+                <div class="team-member">
                     <img src="Isha pic.png" alt="Isha">
                     <p>Isha Bang - All rounder</p>
                 </div>
-            
             </section>
         `;
         aboutViewElm.appendChild(content);
 
-        // Add event listener for email link
-        const emailLink = content.querySelector('#email-link');
-        emailLink.addEventListener('click', () => {
-            window.location.href = `mailto:${emailLink.textContent}`;
+        // Create the email button
+        const emailButton = new Button('keymateteam@gmail.com');
+        const emailButtonElement = await emailButton.render();
+        emailButtonElement.classList.add('email-button');
+        emailButtonElement.addEventListener('click', () => {
+            window.location.href = `mailto:${emailButtonElement.textContent}`;
         });
+
+        // Add the email button to the container
+        const emailButtonContainer = content.querySelector('#email-button-container');
+        emailButtonContainer.appendChild(emailButtonElement);
 
         return aboutViewElm;
     }
