@@ -20,9 +20,8 @@ export class RadioInput {
         // text displayed above options
         const title = document.createElement('p');
         title.innerText = this.name;
+        title.id = createElementId(this.name, 'Radio');
         elm.appendChild(title);
-
-        const radioName = createElementId(this.name, 'Radio');
 
         // options to select from
         this.elements.forEach((e, i) => {
@@ -32,15 +31,17 @@ export class RadioInput {
 
             // radio button for option
             const input = document.createElement('input');
-            input.classList.add("radio-container"); // new class
+            input.classList.add("radio-container");
             input.type = 'radio';
-            input.name = radioName;
+            input.name = title.id;
             input.id = id;
             input.value = e;
+            input.onclick = () => title.setAttribute('data_value', i);
 
             // initializes checked option
             if ((!this.value && i === 0) || (this.value && i === this.value)) {
                 input.checked = true;
+                title.setAttribute('data_value', i);
             }
 
             // creates span option - Gauri
@@ -59,9 +60,6 @@ export class RadioInput {
             group.appendChild(label);
             elm.appendChild(group);
         });
-        // console.log(elm.querySelector('input:checked').value)
-        // elm.querySelector('input:checked').value = this.elements[1]
-        // console.log(elm.querySelector('input:checked').value)
 
         return elm;
     }
