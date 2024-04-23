@@ -1,4 +1,4 @@
-import { User } from "./User.js";
+import { User } from "../../../data/data_structures/User.js";
 
 // Created by Gauri Arvind
 // TODO: connect with database and store all 3

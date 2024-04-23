@@ -1,4 +1,4 @@
-import { User } from "./User.js";
+import { User } from "../../../data/data_structures/User.js";
 import { DisplayHelper } from "../../helpers/Display/displayHelper.js";
 
 // Created by Gauri Arvind

@@ -1,4 +1,4 @@
-import { User } from "./User.js";
+import { User } from "../../../data/data_structures/User.js";
 import { DisplayHousingHelper } from "./displayHousingHelper.js";
 import { DisplayRoommatesHelper } from "./displayRoommatesHelper.js";
 // import { db } from "./src/client/data/DatabasePouchDB.js"; - will finalize once pushed in

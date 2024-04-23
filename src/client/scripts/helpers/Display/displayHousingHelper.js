@@ -1,5 +1,5 @@
-import { User } from './data/User.js';
-import { Housing } from './data/Housing.js';
+import { User } from '../../../data/data_structures/User.js';
+import { Housing } from '../../../data/data_structures/Housing.js';
 import { DisplayManageUsersHelper as DisplayUser } from './displayManageUsersHelper.js';
 
 // Created by Gauri Arvind
