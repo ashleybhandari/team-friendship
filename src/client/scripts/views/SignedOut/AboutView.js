@@ -32,7 +32,8 @@ export class AboutView {
                 <h2>The Team</h2>
                 <div class="team-member">
                     <div class="member-info">
-                    <img src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_rachel.png" alt="Rachel">                        <p>Rachel Lahav - Data Lead</p>
+                        <img src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_rachel.png" alt="Rachel">      
+                        <p>Rachel Lahav - Data Lead</p>
                     </div>
                     <div class="member-bio">
                         <p>Rachel Lahav is a junior studying computer science with an interdisciplinary concentration in virtual design at the University of Massachusetts Amherst. Rachel is currently working at the Berthiaume Center of Entrepreneurship at UMass and is working to enhance data functionality and a more efficient data management system, as well as focusing on front-end design for the website and creating social content. Rachel has participated in multiple startups, including her current part-time work at Xpertesy (currently in beta testing) where she tests various website features and applications.</p>
