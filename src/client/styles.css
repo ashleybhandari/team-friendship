@@ -650,10 +650,7 @@ body {
 }
 
 #settingsView .section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 40px;
-    margin: 0 0 50px 45px;
+    margin: 0 0 100px 45px;
 }
 
 #settingsView .subgroup {
@@ -665,11 +662,16 @@ body {
 #settingsView #credentials {
     display: flex;
     justify-content: center;
-    margin: 0 0 50px 0;
 }
 
 #settingsView #credentials .text-input {
     margin: 0 20px;
+}
+
+#settingsView #profile {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
 }
 
 #settingsView #profile .text-area-input {
@@ -686,6 +688,18 @@ body {
     grid-column: 3;
     grid-row: 3 / 5;
 }
+
+#settingsView #preferences {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
+}
+
+#settingsView #preferences .checkbox-list {
+    margin: auto 0;
+}
+
+#settingsView #housing {}
 
 #settingsView .buttons {
     display: flex;
@@ -957,3 +971,79 @@ body {
     margin-bottom: 2em;
   }
   
+/* The landing container */
+.landing-container {
+    background-image: url('https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/landing.jpg');
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the left */
+    padding-left: 10%; /* Adjusted padding for left alignment */
+}
+
+/* Style for titles within the landing page */
+.landing-container .title-find-your,
+.landing-container .title-next-home {
+    color: #FFFFFF; /* Assuming both titles are white */
+    font-weight: bold; /* Assuming both titles are bold */
+    text-align: left; /* Align the text to the left */
+}
+
+/* Smaller title "Find Your" */
+.landing-container .title-find-your {
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+
+/* Larger title "Next Home" */
+.landing-container .title-next-home {
+    font-size: 4rem;
+    margin-top: 0;
+}
+
+/* Style for the Join button */
+.landing-container .join-button {
+    align-self: flex-start; /* Align the button to the left */
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: #FFD700; /* Yellow color */
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+
+/* Style for SignInView */
+
+/* Styles for all input fields within .text-input in SignInView */
+.sign-in-container .text-input input {
+    border: 2px solid #ccc; /* Make border thicker */
+}
+
+/* Highlight all focused input fields within .text-input in SignInView */
+.sign-in-container .text-input input:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #28a745; /* Green border for focused state */
+    box-shadow: 0 0 3px #28a745; /* Add a subtle glow effect */
+}
+
+/* SignInView specific styles */
+.sign-in-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height to center vertically on the page */
+    text-align: center;
+    gap: 20px; /* This sets the vertical space between elements */
+}
+
+/* Style for the sign-up option */
+.sign-up-option {
+    margin-top: 20px;
+    font-size: 0.9em;
+    margin-bottom: 30px; /* Adds space below the 'Not a member? Sign up' */
+}
