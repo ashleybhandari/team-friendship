@@ -61,6 +61,7 @@ export class AboutView {
         const emailButton = new Button('keymateteam@gmail.com');
         const emailButtonElement = await emailButton.render();
         emailButtonElement.classList.add('email-button');
+        emailButtonElement.style.width = '200px';
         emailButtonElement.addEventListener('click', () => {
             window.location.href = `mailto:${emailButtonElement.textContent}`;
         });
