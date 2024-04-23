@@ -1,5 +1,5 @@
 // DB TODO: uncomment
-const PouchDB = require("pouchdb");
+//const PouchDB = require("pouchdb");
 //PouchDB.plugin(require('pouchdb-authentication'));
 
 //PouchDB.plugin(PouchDBAuthentication);
