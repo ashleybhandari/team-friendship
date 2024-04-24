@@ -21,7 +21,18 @@ export class DisplayWithoutHousingView {
             for(let i = 0; i < parts.length; ++i) {
                 const textInput = document.createElement("input");
                 textInput.classList.add("display-personal-button", "be-vietnam");
-                textInput.value = parts[i];
+                if(i === 0) {
+                    textInput.value = "Cleanliness: " + parts[i];
+                }
+                else if(i === 1) {
+                    textInput.value = "Sleeping Habits: " + parts[i];
+                }
+                else if(i === 2) {
+                    textInput.value = "Noisiness When Studying: " + parts[i];
+                }
+                else if (i === 3) {
+                    textInput.value = "Hosting Guests: " + parts[i];
+                }
                 textInput.type = "button";
 
                 viewButtonElement.appendChild(textInput);
@@ -37,33 +48,40 @@ export class DisplayWithoutHousingView {
      */
     async #createLeftContainer(currUser, user) {
         const leftContainer = document.createElement("div");
-        leftContainer.classList.add("display-left-container display-split");
+        leftContainer.classList.add("display-left-container", "display-split");
 
-         // Creates a div to center remaining left container elements
-         const displayCenterProfile = document.createElement("div");
-         // There may be an issue causing elements to appear weird - display-center works locally
-         displayCenterProfile.classList.add("display-center");
+        // Creates a div to center remaining left container elements
+        const displayCenterProfile = document.createElement("div");
+        // There may be an issue causing elements to appear weird - display-center works locally
+        displayCenterProfile.classList.add("display-center");
 
         // Creates the item to flag a user
         const flagUser = document.createElement("input");
         flagUser.classList.add("flag-user");
         flagUser.type = "image";
         flagUser.value = "Flag";
-        flagUser.src = "assets/Google Fonts - Flag.png";
+        flagUser.src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/Google Fonts - Flag.png";
         flagUser.addEventListener("click", () => {
-            // DisplayUser.matchUsers(currUser, user); TODO: resolve import
-            console.log("flag"); 
+            currUser.rejected.push(user.id);
         });
 
         // Displays the user's profile image
         const userProfileImg = document.createElement("img");
         userProfileImg.classList.add("user-profile-image");
-        userProfileImg.src = user.pic;
+        userProfileImg.src = user.avatar;
 
         // Displays the user's name
         const userName = document.createElement("div");
         userName.classList.add("user-name", "battambang");
-        userName.innerText = user.name + " " + user.age;
+        if(user.name.fname !== undefined) {
+            userName.innerText += user.name.fname + " ";
+        }
+        if (user.name.lname !== undefined) {
+            userName.innerText += user.name.fname + " ";
+        }
+        if (user.age !== undefined) {
+            userName.innerText += "- " + user.age;
+        }
 
         // Displays the user's schooling
         const userSchool = document.createElement("div");
@@ -71,48 +89,39 @@ export class DisplayWithoutHousingView {
 
         const userSchoolMajor = document.createElement("div");
         userSchoolMajor.classList.add("user-school-info");
-        userSchoolMajor.innerText = user.schooling.major;
+        userSchoolMajor.innerText = user.education.major;
 
         const userSchoolLevel = document.createElement("div");
         userSchoolLevel.classList.add("user-school-info");
-        userSchoolLevel.innerText = user.schooling.level;
-
-        const userSchoolUni = document.createElement("div");
-        userSchoolUni.classList.add("user-school-info");
-        userSchoolUni.innerText = user.schooling.school;
-
-        userSchool.appendChild(userSchoolMajor);
-        userSchool.appendChild(userSchoolLevel);
-        userSchool.appendChild(userSchoolUni);
+        userSchoolLevel.innerText = user.education.level;
 
         // A button for rejecting the user
         const rejectUser = document.createElement("input");
-        rejectUser.className("reject-user");
+        rejectUser.classList.add("reject-user");
         rejectUser.type = "image";
         rejectUser.value = "Reject";
-        rejectUser.src = "assets/Google Fonts - Close.png";
+        rejectUser.src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/Google Fonts - Close.png";
         rejectUser.addEventListener("click", () => {
-            // DisplayUser.rejectUsers(currUser, user); TODO: resolve import
-            console.log("reject"); 
+            currUser.rejected.push(user.id);
         });
 
         // A button for accepting the user
         const acceptUser = document.createElement("input");
-        rejectUser.className("accept-user");
+        acceptUser.classList.add("accept-user");
         acceptUser.type = "image";
         acceptUser.value = "Accept";
-        acceptUser.src = "assets/Google Fonts - Favorite.png";
+        acceptUser.src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/Google Fonts - Favorite.png";
         acceptUser.addEventListener("click", () => {
-            // DisplayUser.acceptUsers(currUser, user); TODO: resolve import
-            console.log("accept"); 
+            currUser.matches.push(user.id);
         });
 
+        // acceptRejectDiv.appendChild(rejectUser);
         displayCenterProfile.appendChild(flagUser);
         displayCenterProfile.appendChild(userProfileImg);
         displayCenterProfile.appendChild(userName);
         displayCenterProfile.appendChild(userSchool);
-        displayCenterProfile.appendChild(rejectUser);
         displayCenterProfile.appendChild(acceptUser);
+        displayCenterProfile.appendChild(rejectUser);
         leftContainer.appendChild(displayCenterProfile);
 
         return leftContainer;
@@ -126,31 +135,30 @@ export class DisplayWithoutHousingView {
         const rightContainer = document.createElement("div");
         rightContainer.classList.add("right-container-roommate", "display-split");
 
-         // Creates a div to center remaining left container elements
-         const displayCenterProfile = document.createElement("div");
-         // There may be an issue causing elements to appear weird - display-center works locally
-         displayCenterProfile.classList.add("display-center");
+        // Creates a div to center remaining left container elements
+        const displayCenterProfile = document.createElement("div");
+        // There may be an issue causing elements to appear weird - display-center works locally
+        displayCenterProfile.classList.add("display-center");
 
        // Displays characteristics of user
        const aboutUser = document.createElement("div");
        aboutUser.classList.add("user-about", "be-vietnam-700");
        const aboutUserLabel = document.createElement("label");
        aboutUserLabel.value = "About me:";
-
-       const aboutUserButtons = document.createElement("div");
-       aboutUserButtons.innerHTML = await this.createViewButtons(Object.values(user.characteristics));
        aboutUser.appendChild(aboutUserLabel);
-       aboutUser.appendChild(aboutUserButtons);
+       aboutUser.appendChild(await this.createViewButtons(Object.values(user.character)));
+       displayCenterProfile.appendChild(aboutUser);
 
-        // Displays the user's description of themselves
+      // Displays the user's description of themselves
+       if(user.description !== null) {
         const userDescription = document.createElement("div");
         userDescription.classList.add("user-description", "be-vietnam");
         userDescription.innerText = user.description;
         userDescription.id = "user-description-housing";
-
-        displayCenterProfile.appendChild(aboutUser);
         displayCenterProfile.appendChild(userDescription);
-        rightContainer.appendChild(displayCenterProfile);
+       }
+
+       rightContainer.appendChild(displayCenterProfile);
 
         return rightContainer;
     }
@@ -160,41 +168,33 @@ export class DisplayWithoutHousingView {
      */
     async render() {
         const dWOHVElem = document.createElement("div");
-        dWOHVElem.classList.add("display-with-housing-view", "display-user-block"); 
+        dWOHVElem.classList.add("display-with-housing-view"); 
 
         const currUser = users[5];
         let potentialMatches = await getMatches();
-        let displayMatches = [];
+        let displayMatches = potentialMatches.filter(e => !currUser.matches.includes(e) && !currUser.rejected.includes(e));
 
-        // Code for rendering mock data matches
-        for(let i = 0; i < potentialMatches.length; ++i) {
-            const user = await getUser(potentialMatches[i].id);
-            if(user.hasHousing === currUser.hasHousing) {
-                if(user.character.sleep === currUser.character.sleep) {
-                    displayMatches.push(user);
-                }
+        if(displayMatches.length === 0) {
+            dWOHVElem.innerText = "There are no new users to display. More will come soon!";
+            return dWOHVElem;
+        }
+        else {
+            for(let i = 2; i < 3; ++i) {
+                const dWOHContainer = document.createElement("div");
+                dWOHContainer.innerHTML = '';
+    
+                dWOHContainer.classList.add("display-user-block");
+                // The left container of the page, which includes user info
+                const leftContainer = await this.#createLeftContainer(currUser, await getUser(i));
+    
+                // The right container of the page, which includes housing information
+                const rightContainer = await this.#createRightContainer(await getUser(i));
+                
+                dWOHContainer.appendChild(leftContainer);
+                dWOHContainer.appendChild(rightContainer);
+                dWOHVElem.appendChild(dWOHContainer);
             }
         }
-
-        for(let i = 0; i < displayMatches.length; ++i) {
-            const dWOHContainer = document.createElement("div");
-            // The left container of the page, which includes user info
-            const leftContainer = await this.#createLeftContainer(currUser, displayMatches[i]);
-
-            // The right container of the page, which includes housing information
-            const rightContainer = await this.#createRightContainer(displayMatches[i]);
-            
-            dWOHContainer.appendChild(leftContainer);
-            dWOHContainer.appendChild(rightContainer);
-            dWOHVElem.appendChild(dWOHContainer);
-        }
-
-        // // // The left container of the page, which includes user info
-        // // const leftContainer = await this.#createLeftContainer(currUser, user);
-
-        // // // The right container of the page, which includes housing information
-        // // const rightContainer = await this.#createRightContainer(user);
-
 
         return dWOHVElem;
     }

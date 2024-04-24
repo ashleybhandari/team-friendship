@@ -68,7 +68,6 @@ export class AboutView {
                 </div>
                 <div class="team-member">
                     <div class="member-info">
-                        <img src="Isha pic.png" alt="Isha">
                         <p>Isha Bang - All rounder</p>
                     </div>
                     <div class="member-bio">

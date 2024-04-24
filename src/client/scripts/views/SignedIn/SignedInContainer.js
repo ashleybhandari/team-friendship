@@ -60,7 +60,7 @@ export class SignedInContainer {
 
         if (view === 'discover') {      // DisplayWithHousingView or DisplayWithoutHousingView
             // discover changes depending on whether user has housing  // DB TODO: implement
-            this.#viewContainer.appendChild(this.#withHousingViewElm);
+            this.#viewContainer.appendChild(this.#withoutHousingViewElm);
             this.#updateNavbar(view);
         }
         else if (view === 'matches') {  // MatchesView

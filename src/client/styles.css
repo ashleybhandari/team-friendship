@@ -944,6 +944,7 @@ body {
   }
   
   .display-user-block {
+    margin-top: 10px;
     margin-bottom: 40px;
     background-color: linen;
   }
@@ -991,6 +992,7 @@ body {
     background: rgba(0, 0, 0, 0.05);
     border: 2px solid rgba(0, 0, 0, 0.3);
     border-radius: 50%;
+    margin-bottom: 4em;
   }
   
   /* Flag Button Styling - temporary */
@@ -1022,7 +1024,7 @@ body {
   }
   
   .user-name {
-   margin-top: 13em;
+   margin-top: 8em;
    margin-left: 17.25em;
   }
   
@@ -1054,6 +1056,7 @@ body {
     border-radius: 30px;
     font-size: 14px;
     display: inline;
+    margin-right: 0.5em;
   }
   
   /* Accept Button Styling */
@@ -1064,7 +1067,7 @@ body {
     outline: 2px solid #7DD2AE;
     border-radius: 50%;
     border: none;
-    margin-left: 4em;
+    margin-left: 18em;
   }
   
   .accept-user:active {
@@ -1079,7 +1082,7 @@ body {
     outline: 2px solid #FF715B;
     border-radius: 50%;
     border: none;
-    margin-left: 20em;
+    margin-left: 4em;
   }
   
   .reject-user:active {
@@ -1087,6 +1090,22 @@ body {
     outline: 2px solid #FF715B;
   }
   
+/* Next Button Styling */
+.next-user {
+    width: 60px;
+    height: 60px;
+    background-color: #eeb963c8;
+    outline: 2px solid #cc9e55c8;
+    border-radius: 50%;
+    border: none;
+    margin-top: 2em;  
+    margin-left: 14em;
+  }
+  
+  .next-user:active {
+    background-color: #cc9e55c8;
+  }
+
   /* View Button Styling */
    .display-personal-button1 {
     width: 103px;
