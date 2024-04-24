@@ -693,7 +693,7 @@ body {
 }
 
 #settingsView .section {
-    margin: 0 0 100px 45px;
+    margin-bottom: 100px;
 }
 
 #settingsView .buttons {
@@ -759,10 +759,6 @@ body {
 #settingsView #preferences .amenities {
     grid-row: 3;
     grid-column: 1 / 5;
-}
-
-#settingsView #preferences .big-group {
-    margin-right: 45px;
 }
 
 #settingsView #housing {
