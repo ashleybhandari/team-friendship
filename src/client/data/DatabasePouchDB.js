@@ -152,5 +152,5 @@ const db = new PouchDB('roommate-matching');
     }
   }
 
-export {getAllUsers, getUserById, addUser, updateUser, deleteUser, getMatches, removeMatches, deleteMatch, getAllHousing,
+export {getAllUsers, getUserById, addUser, updateUser, deleteUser, getMatches, removeMatches, deleteMatch, getAllHousings,
         getHousingById, addHousing, updateHousing, deleteHousing, authenticateUser };
