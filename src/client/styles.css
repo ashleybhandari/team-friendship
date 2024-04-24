@@ -75,6 +75,23 @@ body {
 }
 
 
+/* CheckboxGroup.js */
+
+.checkbox-group.big-group p {
+    text-align: center;
+}
+
+.checkbox-group .boxes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox-group.big-group .boxes {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
 /* CheckboxInput.js */
 
 .custom-checkbox {
@@ -929,7 +946,6 @@ body {
     margin: 0 auto;
     margin-top: 40px;
 }
-
 
 /* Display Pages Styling */
 /* Display Container Styling */
