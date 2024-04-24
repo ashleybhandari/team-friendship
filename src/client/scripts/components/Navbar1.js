@@ -1,4 +1,5 @@
 import { Events } from '../Events.js';
+import { Header } from './Header.js'; // Assuming Header.js file path
 
 /**
  * UI component: Navbar for screens when the user is logged out. Only used in
@@ -15,25 +16,49 @@ export class Navbar1 {
         const elm = document.createElement('nav');
         elm.classList.add('navbar1');
 
-        elm.innerHTML = `
-        <nav>
-            <a href="#landing" id="nav-landing">Home</a>
-            <a href="#about" id="nav-about">About us</a>
-            <a href="#sign-in" id="nav-sign-in">Sign in</a>
-        </nav>
-        `;
-        // TODO: style, etc.
+        const header = new Header();
+        const headerElement = await header.render();
 
-        // add click event listener to each link
+        const container = document.createElement('div');
+        container.classList.add('navbar1-container');
+
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+
+        const keyMateText = headerElement.querySelector('h1');
+        container.appendChild(keyMateText);
+
+        const homeLink = document.createElement('a');
+        homeLink.href = '#landing';
+        homeLink.id = 'nav-landing';
+        homeLink.innerText = 'Home';
+        homeLink.style.color = 'black';
+        homeLink.style.textDecoration = 'none'; 
+        homeLink.style.cursor = 'default';
+        homeLink.style.marginRight = '10px';
+
+        const aboutLink = document.createElement('a');
+        aboutLink.href = '#about';
+        aboutLink.id = 'nav-about';
+        aboutLink.innerText = 'About Us';
+        aboutLink.style.color = 'black';
+        aboutLink.style.textDecoration = 'none'; 
+        aboutLink.style.cursor = 'default';
+
+        container.appendChild(homeLink);
+        container.appendChild(aboutLink);
+
+        elm.appendChild(container);
+
         elm
-            .querySelectorAll('a')
-            .forEach((link) =>
-                link.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const view = e.target.getAttribute('href').replace('#', '');
-                    this.#navigate(view);
-                })
-            );
+        .querySelectorAll('a')
+        .forEach((link) =>
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const view = e.target.getAttribute('href').replace('#', '');
+                await this.#navigate(view);
+            })
+        );
         
         return elm;
     }
