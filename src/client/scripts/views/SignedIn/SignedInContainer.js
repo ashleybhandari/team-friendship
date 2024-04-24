@@ -1,7 +1,8 @@
 import { Header } from '../../components/Header.js';
 import { Navbar2 } from '../../components/Navbar2.js';
 import { DisplayWithHousingView } from './DisplayWithHousingView.js';
-import { DisplayWithoutHousingView } from './DisplayWithoutHousingView.js'
+import { DisplayWithoutHousingView } from './DisplayWithoutHousingView.js';
+// import {DisplayView } from './DisplayView.js';
 import { MatchesView } from './MatchesView.js';
 import { SettingsView } from './SettingsView.js';
 import { Events } from '../../Events.js';
@@ -37,6 +38,8 @@ export class SignedInContainer {
         // renders views to be injected into viewContainer
         this.#withHousingViewElm = await new DisplayWithHousingView().render();
         this.#withoutHousingViewElm = await new DisplayWithoutHousingView().render();
+
+        // this.#withHousingViewElm = await new DisplayView().render();
         this.#matchesViewElm = await new MatchesView().render();
         this.#settingsViewElm = await new SettingsView().render();
 

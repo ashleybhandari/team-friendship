@@ -1,11 +1,11 @@
-import { User } from "../../data/data_structures/User.js";
-import { getUser, getMatches } from '../../data/Backend.js';
-import { users } from '../../data/MockData.js';
+import { User } from '../../../data/data_structures/User.js';
+import { Housing } from '../../../data/data_structures/Housing.js';
+import { DisplayManageUsersHelper as DisplayUser } from './displayManageUsersHelper.js';
+
 
 // Created by Gauri Arvind
 
-// view: 'discover'
-export class DisplayWithHousingView {
+export class DisplayHousingHelper {   
     /**
      * Takes an array of housing information and creates buttons to display it
      * @param {string[]} parts - array of housing information
@@ -101,8 +101,7 @@ export class DisplayWithHousingView {
         flagUser.value = "Flag";
         flagUser.src = "assets/Google Fonts - Flag.png";
         flagUser.addEventListener("click", () => {
-            // DisplayUser.matchUsers(currUser, user); TODO: fix import issue
-            console.log("flag")
+            DisplayUser.matchUsers(currUser, user);
         });
 
         // Displays the user's profile image
@@ -148,8 +147,7 @@ export class DisplayWithHousingView {
         rejectUser.value = "Reject";
         rejectUser.src = "assets/Google Fonts - Close.png";
         rejectUser.addEventListener("click", () => {
-            // DisplayUser.rejectUsers(currUser, user); TODO: fix import issue
-            console.log("reject");
+            DisplayUser.rejectUsers(currUser, user);
         });
 
         // A button for accepting the user
@@ -159,8 +157,7 @@ export class DisplayWithHousingView {
         acceptUser.value = "Accept";
         acceptUser.src = "assets/Google Fonts - Favorite.png";
         acceptUser.addEventListener("click", () => {
-            // DisplayUser.acceptUsers(currUser, user); TODO: fix import issue
-            console.log("accept");
+            DisplayUser.acceptUsers(currUser, user);
         });
 
         displayCenterProfile.appendChild(flagUser);
@@ -295,47 +292,23 @@ export class DisplayWithHousingView {
 
     /**
      * Creates housing view for a single user with housing
+     * @param {User} currUser - the user who owns the account
+     * @param {User} user - the user to be displayed
+     * @param {Housing} housing - the user's housing information
+     * @returns {Object} - returns a div containing the constructed page of user housing information
      */
-    async render() {
+    async render(currUser, user, housing) {
         const dWHVElem = document.createElement("div");
         dWHVElem.classList.add("display-with-housing-view", "display-user-block");
 
-    //     const currUser = users[5];
-    //     let potentialMatches = await getMatches();
-    //     let displayMatches = [];
+       // The left container of the page, which includes user info
+       const leftContainer = await this.#createLeftContainer(currUser, user);
 
-    //     // Code for rendering mock data matches
-    //     for(let i = 0; i < potentialMatches.length; ++i) {
-    //         const user = await getUser(potentialMatches[i].id);
-    //         if(user.hasHousing === currUser.hasHousing) {
-    //             if(user.character.sleep === currUser.character.sleep) {
-    //                 displayMatches.push(user);
-    //             }
-    //         }
-    //     }
+       // The right container of the page, which includes housing information
+       const rightContainer = await this.#createRightContainer(user, housing);
 
-    //     for(let i = 0; i < displayMatches.length; ++i) {
-    //         const dWHContainer = document.createElement("div");
-    //         // The left container of the page, which includes user info
-    //         const leftContainer = await this.#createLeftContainer(currUser, displayMatches[i]);
-
-    //         // The right container of the page, which includes housing information
-    //         const rightContainer = await this.#createRightContainer(displayMatches[i], displayMatches[i].housing);
-            
-    //         dWHContainer.appendChild(leftContainer);
-    //         dWHContainer.appendChild(rightContainer);
-    //         dWHVElem.appendChild(dWHContainer);
-    //     }
-        
-
-    // //    // The left container of the page, which includes user info
-    // //    const leftContainer = await this.#createLeftContainer(currUser, user);
-
-    // //    // The right container of the page, which includes housing information
-    // //    const rightContainer = await this.#createRightContainer(user, housing);
-
-    // //    dWHVElem.appendChild(leftContainer);
-    // //    dWHVElem.appendChild(rightContainer);
+       dWHVElem.appendChild(leftContainer);
+       dWHVElem.appendChild(rightContainer);
 
        return dWHVElem;
     }
