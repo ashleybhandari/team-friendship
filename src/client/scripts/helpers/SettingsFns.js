@@ -1,3 +1,5 @@
+import { getFieldFromProp, getPropFromDomValue } from './SettingsData.js';
+
 export class SettingsFns {
     #parent = null;
     #user = null;
@@ -15,10 +17,11 @@ export class SettingsFns {
         this.#user = user;
         this.#prefs = user.preferences;
         this.#house = user.housing;
+        this.#changeFieldIds();
     }
 
     /**
-     * @callback Fill - Fills a field with the obj's saved value
+     * @callback Fill - Fills a field with the object's saved value
      * @callback Save - Saves a field's current value to its associated object
      */
 
@@ -29,21 +32,43 @@ export class SettingsFns {
      */
     getFns() {
         return [
-            ...this.#getTextFns(),
+            ...this.#getGeneralFns(),
+            ...this.#getDropdownFns(),
             ...this.#getCheckboxFns(),
             ...this.#getRadioFns()
         ];
     }
 
     /**
-     * Array of fill and save functions for TextInput fields
+     * Prepends all id's with "settings_" to avoid conflicts with other parts
+     * of the application.
+     */
+    #changeFieldIds() {
+        const fields = [
+            ...this.#getGeneralFields(),
+            ...this.#getDropdownFields(),
+            ...this.#getCheckboxFields(),
+            ...this.#getRadioFields()
+        ];
+
+        fields.forEach((field) => {
+            const elm = this.#parent.querySelector(`#${field[1]}`);
+            const label = this.#parent.querySelector(`label[for="${field[1]}"]`);
+
+            if (elm)   elm.id = `settings_${elm.id}`;
+            if (label) label.htmlFor = elm.id;
+        });
+    }
+
+    /**
+     * Array of fill and save functions for TextInput and SliderInput fields.
      * @returns {{Fill, Save}[]}
      */
-    #getTextFns() {
+    #getGeneralFns() {
         const fns = [];
 
         /**
-         * Iterate through all text fields and adds their fill and save
+         * Iterate through all fields and adds their fill and save
          * functions to fns
          * @param {User | Preferences | Housing} obj - object containing the field's value
          * @param {string} id - id of the field's HTML element
@@ -51,9 +76,9 @@ export class SettingsFns {
          * @param {function} [fillFn] - applies necessary changes before filling the field
          * @param {function} [saveFn] - applies necessary changes before saving the value
          */
-        this.#getTextFields().forEach(([obj, id, prop, fillFn, saveFn]) => {
+        this.#getGeneralFields().forEach(([obj, id, prop, fillFn, saveFn]) => {
             // element containing the field
-            const elm = this.#parent.querySelector(`#${id}`);
+            const elm = this.#parent.querySelector(`#settings_${id}`);
             let value, fill, save;
 
             // skip if element DNE
@@ -66,17 +91,45 @@ export class SettingsFns {
                 fill = () => elm.value = fillFn ? fillFn(value) : value;
                 save = () => obj[prop[0]] = saveFn ? saveFn(elm.value) : elm.value;
             }
-            else if (prop.length === 2) { // ex. user.prop1.prop2
+            else { // ex. user.prop1.prop2
                 value = obj[prop[0]][prop[1]];
                 fill = () => elm.value = fillFn ? fillFn(value) : value;
                 save = () => obj[prop[0]][prop[1]] = saveFn ? saveFn(elm.value) : elm.value;
             }
-            else {                        // ex. user.prop1.prop2.prop3
-                value = obj[prop[0]][prop[1]][prop[2]];
-                fill = () => elm.value = fillFn ? fillFn(value) : value;
-                save = () => obj[prop[0]][prop[1]][prop[2]] = saveFn ? saveFn(elm.value) : elm.value;
-            }
             
+            // add functions to fn
+            fns.push({ fill, save });
+        });
+
+        return fns;
+    }
+
+    /**
+     * Array of fill and save functions for DropdownInput fields
+     * @returns {{Fill, Save}[]}
+     */
+    #getDropdownFns() {
+        const fns = [];
+
+        this.#getDropdownFields().forEach(([obj, id, prop]) => {
+            // elm containing the field
+            const elm = this.#parent.querySelector(`#settings_${id}`)
+            let value, fill, save;
+
+            // skip if element DNE
+            if (!elm) return;
+
+            if (prop.length === 1) { // ex. user.prop
+                value = obj[prop[0]];
+                fill = () => elm.value = getFieldFromProp(value);
+                save = () => obj[prop[0]] = getPropFromDomValue(elm.value);
+            }
+            else {                   // ex. user.prop1.prop2
+                value = obj[prop[0]][prop[1]];
+                fill = () => elm.value = getFieldFromProp(value);
+                save = () => obj[prop[0]][prop[1]] = getPropFromDomValue(elm.value);
+            }
+
             // add functions to fn
             fns.push({ fill, save });
         });
@@ -98,7 +151,7 @@ export class SettingsFns {
          */
         this.#getCheckboxFields().forEach(([obj, id, prop]) => {
             // elm containing the field
-            const elm = this.#parent.querySelector(`#${id}`)
+            const elm = this.#parent.querySelector(`#settings_${id}`)
             
             // skip if element DNE
             if (!elm) return;
@@ -122,7 +175,7 @@ export class SettingsFns {
         const fns = [];
 
         /**
-         * Iterate through all text fields and adds their fill and save
+         * Iterate through all fields and adds their fill and save
          * functions to fns
          * @param {User | Preferences | Housing} obj - object containing the field's value
          * @param {string} id - id of the field's HTML element
@@ -132,7 +185,7 @@ export class SettingsFns {
          */
         this.#getRadioFields().forEach(([obj, id, prop, fillFn, saveFn]) => {
             // element containing the field
-            const elm = this.#parent.querySelector(`#${id}`);
+            const elm = this.#parent.querySelector(`#settings_${id}`);
             // array of radio options
             const options = elm.querySelectorAll('input');
 
@@ -155,11 +208,11 @@ export class SettingsFns {
     }
 
     /**
-     * Array of arguments to #getTextFns. Each element corresponds to an HTML
+     * Array of arguments to #getGeneralFns. Each element corresponds to an HTML
      * field.
      * @returns {[Object | string | string[] | function][]}
      */
-    #getTextFields() {
+    #getGeneralFields() {
         return [
             // Credentials section
             // TODO: implement password
@@ -168,11 +221,9 @@ export class SettingsFns {
             [this.#user, 'firstNameInput', ['name', 'fname']],
             [this.#user, 'nicknameInput', ['name', 'nname']],
             [this.#user, 'ageInput', ['age']],
-            [this.#user, 'genderIdentityDrpdwn', ['gender', 'identity']],
             [this.#user, 'pronounsInput', ['gender', 'pronouns']],
             [this.#user, 'majorInput', ['education', 'major']],
             [this.#user, 'schoolInput', ['education', 'school']],
-            [this.#user, 'levelOfEducatioDrpdwn', ['education', 'level']],
             [this.#user, 'tellUsAboutYourArea', ['description']],
             [this.#user, 'facebookInput', ['socials', 'fb']],
             [this.#user, 'instagramInput', ['socials', 'ig']],
@@ -186,7 +237,34 @@ export class SettingsFns {
             [this.#prefs, 'maxRentInput', ['rent', 'max']],
             [this.#prefs, 'minOccupantsInput', ['occupants', 'min']],
             [this.#prefs, 'maxOccupantsInput', ['occupants', 'max']],
+            // Housing section
+            [this.#house, 'cityInput', ['city']],
+            [this.#house, 'rentForRoomInput', ['rent', 'price']],
+            [this.#house, 'noBedsInput', ['beds']],
+            [this.#house, 'noBathsInput', ['baths']],
+            [this.#house, 'detailsArea', ['notes']],
         ];
+    }
+
+    /**
+     * Array of arguments to #getDropdownFns. Each element corresponds to an
+     * HTML field.
+     * @returns {[Object | string | Map<string, string>][]}
+     */
+    #getDropdownFields() {
+        return [
+            // Profile section
+            [this.#user, 'genderIdentityDrpdwn', ['gender', 'identity']],
+            [this.#user, 'levelOfEducatioDrpdwn', ['education', 'level']],
+            [this.#house, 'periodDrpdwn', ['rent', 'period']],
+            [this.#house, 'genderInclusiviDrpdwn', ['gender']],
+            [this.#house, 'moveInPeriodDrpdwn', ['timeframe']],
+            [this.#house, 'leaseLengthDrpdwn', ['leaseLength']],
+            [this.#house, 'leaseTypeDrpdwn', ['leaseType']],
+            [this.#house, 'roomTypeDrpdwn', ['roomType']],
+            [this.#house, 'buildingTypeDrpdwn', ['buildingType']],
+        ];
+
     }
 
     /**
@@ -222,14 +300,30 @@ export class SettingsFns {
             [this.#prefs, 'apartmentBox', ['buildingType', 'apt']],
             [this.#prefs, 'houseBox', ['buildingType', 'house']],
             // Amenities
-            [this.#prefs, 'airConditioningBox', ['amenities', 'aircon']],
-            [this.#prefs, 'dishwasherBox', ['amenities', 'dishwasher']],
-            [this.#prefs, 'hardwoodFloorsBox', ['amenities', 'hardwood']],
-            [this.#prefs, 'carpetFloorsBox', ['amenities', 'carpet']],
-            [this.#prefs, 'onSiteLaundryBox', ['amenities', 'laundry']],
-            [this.#prefs, 'residentialParkBox', ['amenities', 'parking']],
-            [this.#prefs, 'nearbyBusStopBox', ['amenities', 'bus']],
-            [this.#prefs, 'petFriendlyBox', ['amenities', 'pets']]
+            [this.#prefs, 'airConditioningBoxP', ['amenities', 'aircon']],
+            [this.#prefs, 'dishwasherBoxP', ['amenities', 'dishwasher']],
+            [this.#prefs, 'hardwoodFloorsBoxP', ['amenities', 'hardwood']],
+            [this.#prefs, 'carpetFloorsBoxP', ['amenities', 'carpet']],
+            [this.#prefs, 'onSiteLaundryBoxP', ['amenities', 'laundry']],
+            [this.#prefs, 'residentialParkBoxP', ['amenities', 'parking']],
+            [this.#prefs, 'nearbyBusStopBoxP', ['amenities', 'bus']],
+            [this.#prefs, 'petFriendlyBoxP', ['amenities', 'pets']],
+            // Housing section
+            [this.#house, 'electricityBox', ['utilities', 'electric']],
+            [this.#house, 'gasBox', ['utilities', 'gas']],
+            [this.#house, 'waterBox', ['utilities', 'water']],
+            [this.#house, 'trashBox', ['utilities', 'trash']],
+            [this.#house, 'sewerBox', ['utilities', 'sewer']],
+            [this.#house, 'internetBox', ['utilities', 'internet']],
+            [this.#house, 'snowRemovalBox', ['utilities', 'snow']],
+            [this.#house, 'airConditioningBoxH', ['amenities', 'aircon']],
+            [this.#house, 'dishwasherBoxH', ['amenities', 'dishwasher']],
+            [this.#house, 'hardwoodFloorsBoxH', ['amenities', 'hardwood']],
+            [this.#house, 'carpetFloorsBoxH', ['amenities', 'carpet']],
+            [this.#house, 'onSiteLaundryBoxH', ['amenities', 'laundry']],
+            [this.#house, 'residentialParkBoxH', ['amenities', 'parking']],
+            [this.#house, 'nearbyBusStopBoxH', ['amenities', 'bus']],
+            [this.#house, 'petFriendlyBoxH', ['amenities', 'pets']]
         ];
     }
 

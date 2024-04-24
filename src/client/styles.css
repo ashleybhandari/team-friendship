@@ -714,7 +714,7 @@ body {
     width: 635px;
 }
 
-#settingsView #profile #iAmLookingForRadio {
+#settingsView #profile #settings_iAmLookingForRadio {
     margin: auto;
     grid-column: 3;
     grid-row: 3 / 5;
@@ -739,4 +739,33 @@ body {
     margin-right: 45px;
 }
 
-#settingsView #housing {}
+#settingsView #housing {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
+}
+
+#settingsView #housing .rent {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+}
+
+#settingsView #housing .rent .dollar-sign,
+#settingsView #housing .rent .slash {
+    margin-top: 29px;
+}
+
+#settingsView #housing .details {
+    grid-row: 2;
+    grid-column: 2 / 4;
+}
+
+#settingsView #housing textarea {
+    width: 634px;
+    height: 150px;
+}
+
+#settingsView #housing .amenities {
+    grid-row: 3;
+    grid-column: 1 / 4;
+}

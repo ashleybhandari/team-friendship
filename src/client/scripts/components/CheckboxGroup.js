@@ -12,7 +12,7 @@ export class CheckboxGroup {
         this.name = name;
         this.boxes = boxes;
         this.columns = columns;
-        this.colSize = boxes.size / columns;
+        this.colSize = Math.ceil(boxes.size / columns);
     }
 
     async render() {
