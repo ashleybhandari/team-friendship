@@ -842,21 +842,28 @@ body {
     cursor: pointer;
 }
 
+/* CreateAccountContainer.js */
+
 /* SignInView.js, CredentialsView.js */
 
 .sign-in-container, .create-account-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 60px 0 180px;
+}
+
+.create-account-container {
+    padding-top: 0;
 }
 
 .sign-in-container h1, .create-account-container h1 {
     font-size: 28px;
-    margin: 0;
+    margin: 70px 0 0;
 }
 
-.sign-in-container h1 {
-    margin-top: 70px;
+.create-account-container h1 {
+    margin-top: 60px;
 }
 
 .sign-in-container a {
