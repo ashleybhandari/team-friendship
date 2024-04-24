@@ -1,5 +1,8 @@
 import { getFieldFromProp, getPropFromDomValue } from './SettingsData.js';
 
+/**
+ * Class to create functions that fill and save fields on the Settings page.
+ */
 export class SettingsFns {
     #parent = null;
     #user = null;
@@ -215,8 +218,8 @@ export class SettingsFns {
     #getGeneralFields() {
         return [
             // Credentials section
-            // TODO: implement password
             [this.#user, 'emailInput', ['email'] ],
+            // TODO: implement password
             // Profile section
             [this.#user, 'firstNameInput', ['name', 'fname']],
             [this.#user, 'nicknameInput', ['name', 'nname']],

@@ -5,9 +5,9 @@ import { RadioInput } from '../../components/RadioInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
 import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
-import { users } from '../../../data/MockData.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
+import { users } from '../../../data/MockData.js';
 
 /**
  * Lets the user change their configuration. Injected into SignedInContainer.
@@ -24,7 +24,7 @@ export class SettingsView {
     #requiredFields = null;
 
     constructor() {
-        // TODO: remove users import, replace all localStorage stuff w PouchDB
+        // DB TODO: remove users import, replace all localStorage stuff w PouchDB
         localStorage.setItem('user', JSON.stringify(users[5]));
         this.#user = JSON.parse(localStorage.getItem('user')); 
     }
@@ -235,7 +235,7 @@ class ProfileSection {
         const section = document.createElement('div');
         section.id = 'profile';
 
-        // TODO: implement avatar
+        // TODO: implement user avatar
         const avatar = document.createElement('div');
         avatar.innerHTML = `
         <p>Change your avatar:</p>
@@ -522,7 +522,7 @@ class HousingSection {
         section.appendChild(await this.renderDetails());
         section.appendChild(await this.renderAmenities());
 
-        // TODO: implement pics
+        // TODO: implement housing pics
 
         elm.appendChild(header);
         elm.appendChild(section);

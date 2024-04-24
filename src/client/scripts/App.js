@@ -46,10 +46,12 @@ export class App {
     /**
      * Navigates to SignedOutContainer, CreateAccountContainer, or
      * SignedInContainer depending on what view it's called with.
-     * @param {string} view 
+     * @param {string} view
      */
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
+
+        if (this.#redirect(view)) return;
 
         switch (view) {
             case 'landing':    // SignedOut/LandingView
@@ -60,7 +62,7 @@ export class App {
             case 'create-1':   // CreateAccount/CredentialsView
             case 'create-2':   // CreateAccount/ProfileView
             case 'create-3':   // CreateAccount/HousingSituationView
-            case 'create-4': // CreateAccount/NeedHousingView or CreateAccount/HaveHousingView
+            case 'create-4':   // CreateAccount/NeedHousingView or CreateAccount/HaveHousingView
                 this.#viewContainer.appendChild(this.#createAcctCntrElm);
                 break;
             case 'discover':   // SignedIn/DisplayWithHousing or SignedIn/DisplayWithoutHousing
@@ -71,5 +73,41 @@ export class App {
             default:           // invalid view name
                 this.#viewContainer.appendChild(this.#signedOutCntrElm);
         }
+    }
+
+    /**
+     * Redirects the user if they try accessing a page they aren't allowed to
+     * (depending on whether they're signed in).
+     * @param {string} view 
+     * @returns {boolean} - Whether the user was redirected
+     */
+    #redirect(view) {
+        return false;
+
+        const signedIn = false; // DB TODO
+        let redirect = false;
+
+        if (signedIn && view === 'sign-in') {
+            // if signed in, the Sign in button redirects to Discover page
+            redirect = true;
+            this.#events.publish('navigateTo', 'discover');
+        }
+
+        if (!signedIn) {
+            // if signed out, pages only accessible by signing in redirects to
+            // Sign in page
+            switch (view) {
+                case 'discover':
+                case 'matches':
+                case 'settings': {
+                    redirect = true;
+                    this.#events.publish('navigateTo', 'sign-in');
+                }                    
+                default:
+                    break;
+            }
+        }
+
+        return redirect;
     }
 }

@@ -78,7 +78,7 @@ export class SignInView {
             //     emailInputElement.value,
             //     passwordInputElement.value,
             //     () => this.#events.publish('navigateTo', 'discover'),
-            //     () => alert('Login failed. Check your credentials.')
+            //     () => alert('Login failed. Double-check your credentials.')
             // );
         });
 

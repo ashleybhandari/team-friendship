@@ -64,20 +64,9 @@ export class Footer {
     /**
      * Navigates to v. If a signed out user clicks a link that requires an
      * account, redirects them to the Sign in page.
-     * @param {string} v - View to navigate to
+     * @param {string} view
      */
-    async #navigate(v) {
-        const view = (() => {
-            switch(v) {
-                case 'discover':
-                case 'matches':
-                case 'settings':
-                    // DB TODO: if (not signed in) return 'sign-in'
-                default:
-                    return v;
-            }
-        })();
-
+    async #navigate(view) {
         window.location.hash = view;
         await this.#events.publish('navigateTo', view);
     }

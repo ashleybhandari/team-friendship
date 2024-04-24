@@ -15,6 +15,7 @@ export class Navbar2 {
         const elm = document.createElement('div');
         elm.classList.add('navbar2');
 
+        // Discover and Matches links
         elm.innerHTML = `
         <nav>
             <div class="main-links">
@@ -25,8 +26,10 @@ export class Navbar2 {
         <hr>
         `;
 
+        // dropdown for Settings and Sign out
         await this.#renderDropdown(elm);
 
+        // add event listeners to links
         elm
             .querySelectorAll('a')
             .forEach(link =>
@@ -41,7 +44,13 @@ export class Navbar2 {
         return elm;
     }
 
+    /**
+     * Renders an account icon at the right end of the navbar. Clicking it
+     * opens a dropdown with options to navigate to Settings or sign out.
+     * @param {HTMLDivElement} container
+     */
     async #renderDropdown(container) {
+        // dropdown button
         const btn = document.createElement('div');
         btn.classList.add('button-container');
         btn.innerHTML = `
@@ -50,6 +59,7 @@ export class Navbar2 {
         </button>
         `;
         
+        // links in dropdown
         const dropdown = document.createElement('div');
         dropdown.id = 'accountDropdown';
         dropdown.classList.add('dropdown-content');
@@ -58,10 +68,12 @@ export class Navbar2 {
         <a href="#landing" id="nav-landing">Sign out</a>
         `;
 
+        // dropdown appears when button is clicked
         btn.querySelector('button').addEventListener('click', () => {
             dropdown.classList.toggle('show')
         });
           
+        // dropdown closes when window is clicked
         window.onclick = (e) => {
             const btnClicked = e.target.matches('.dropdown-button') || e.target.matches('.dropdown-button i');
             if (!btnClicked) {
@@ -71,6 +83,7 @@ export class Navbar2 {
             }
         }
 
+        // signs out
         dropdown.querySelector('#nav-landing').addEventListener('click', () => {
             localStorage.removeItem('authToken'); // DB TODO: switch to PouchDB
         });

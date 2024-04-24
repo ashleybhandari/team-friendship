@@ -46,8 +46,7 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches();
-        // DB TODO: const matches = await db.getMatches(userId);
+        const matches = await getMatches(); // DB TODO: use PouchDB
 
         // show message if user has no matches
         if (matches.length === 0) {
@@ -60,8 +59,7 @@ export class MatchesView {
 
         // show list if user has matches
         for (const id of matches) {
-            const user = await getUser(id);
-            // DB TODO: const user = await db.getUserById(matchId);
+            const user = await getUser(id); // DB TODO: Use PouchDB
             
             // match's entry in list
             const elm = document.createElement('div');
@@ -162,7 +160,7 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            // DB TODO: await db.removeMatch(userId, matchId);
+            // DB TODO: remove match
             await this.#renderList();
             this.#switchView();
         });
