@@ -23,7 +23,9 @@ export class Navigation {
 
         const backBtn = await new Button('Back', 130).render();
         const nextBtn = await new Button(
-            'Next', 130, this.final ? 'submit' : 'button'
+            this.final ? 'Finish' : 'Next',
+            130,
+            this.final ? 'submit' : 'button'
         ).render();
 
         backBtn.addEventListener('click', (e) => {

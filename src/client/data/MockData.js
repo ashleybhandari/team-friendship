@@ -1,7 +1,6 @@
 import { User } from './data_structures/User.js';
 import { Preferences } from './data_structures/Preferences.js';
 import { Housing } from './data_structures/Housing.js';
-import * as db from './DatabasePouchDB.js';
 
 // mock users
 
@@ -82,7 +81,7 @@ const u3 = new User(
         2,
         'mixed',
         { electric: true, gas: false, water: true, trash: true, sewer: true, internet: false, snow: true },
-        'year',
+        'yearly',
         'rent',
         'shared',
         'house',
@@ -116,7 +115,7 @@ const u4 = new User(
         1,
         'female',
         { electric: true, gas: false, water: true, trash: true, sewer: true, internet: false, snow: true },
-        'year',
+        'yearly',
         'rent',
         'private',
         'apt',
@@ -162,7 +161,7 @@ const u5 = new User(
         1,
         'male',
         { water: true, sewer: true, snow: true },
-        'year',
+        'yearly',
         'rent',
         'shared',
         'house',

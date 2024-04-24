@@ -17,7 +17,7 @@ export class Housing {
      *   @param {boolean} utilities.sewer
      *   @param {boolean} utilities.internet
      *   @param {boolean} utilities.snow
-     * @param {string} leaseLength - "semester", "month", "halfYear", "year"
+     * @param {string} leaseLength - "perSemester", "monthly", "halfYear", "yearly"
      * @param {string} leaseType - "rent", "sublet"
      * @param {string} roomType - "private", "shared"
      * @param {string} buildingType - "dorm", "apt", "house"
