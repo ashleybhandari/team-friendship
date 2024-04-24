@@ -19,14 +19,15 @@ export class SettingsView {
     #profileSection = null;
     #preferencesSection = null;
     #housingSection = null;
-    #user = null;
-    #settingsFns = null;
-    #requiredFields = null;
+
+    #user = null;           // current user
+    #settingsFns = null;    // functions fill and save each field
+    #requiredFields = null; // required fields
 
     constructor() {
         // DB TODO: remove users import, replace all localStorage stuff w PouchDB
         localStorage.setItem('user', JSON.stringify(users[5]));
-        this.#user = JSON.parse(localStorage.getItem('user')); 
+        this.#user = JSON.parse(localStorage.getItem('user'));
     }
 
     async render() {
@@ -255,11 +256,7 @@ class ProfileSection {
         section.appendChild(await this.#renderSocials());
 
         // row 3-4: characteristics, is user looking for roommates or housing
-        const sliders = await this.#renderSliders();
-        sliders.forEach((s) => section.appendChild(s));
-        section.appendChild(await new RadioInput(
-            'I am looking for...', ['roommates', 'housing']
-        ).render());
+        section.appendChild(await this.#renderSliders());
 
         elm.appendChild(header);
         elm.appendChild(section);
@@ -328,23 +325,29 @@ class ProfileSection {
 
     /**
      * Fields for slider elements.
-     * @returns {HTMLDivElement[]} - Array of sliders
+     * @returns {HTMLDivElement} - All 4 sliders
      */
     async #renderSliders() {
-        return [
-            await new SliderInput(
-                'Cleanliness*', 'not clean', 'very clean'
-            ).render(),
-            await new SliderInput(
-                'Noise when studying*', 'very quiet', 'noise is okay'
-            ).render(),
-            await new SliderInput(
-                'Sleeping habits*', 'early bird', 'night owl'
-            ).render(),
-            await new SliderInput(
-                'Hosting guests*', 'never', 'frequent'
-            ).render()
-        ];
+        const sliders = document.createElement('div');
+        sliders.classList.add('sliders');
+
+        sliders.appendChild(await new SliderInput(
+            'Cleanliness*', 'not clean', 'very clean'
+        ).render());
+
+        sliders.appendChild(await new SliderInput(
+            'Sleeping habits*', 'early bird', 'night owl'
+        ).render());
+
+        sliders.appendChild(await new SliderInput(
+            'Noise when studying*', 'very quiet', 'noise is okay'
+        ).render());
+
+        sliders.appendChild(await new SliderInput(
+            'Hosting guests*', 'never', 'frequent'
+        ).render());
+
+        return sliders;
     }
 
     /**

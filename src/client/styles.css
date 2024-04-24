@@ -740,10 +740,14 @@ body {
     width: 635px;
 }
 
-#settingsView #profile #settings_iAmLookingForRadio {
-    margin: auto;
-    grid-column: 3;
-    grid-row: 3 / 5;
+#settingsView #profile .sliders {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: 1 / 4;
+}
+
+#settingsView #profile .sliders .slider-input {
+    margin: 10px auto;
 }
 
 #settingsView #preferences {
