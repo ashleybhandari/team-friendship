@@ -1,6 +1,6 @@
-import { User } from "../../data/data_structures/User.js";
-import { getUser, getMatches } from '../../data/Backend.js';
-import { users } from '../../data/MockData.js';
+import { User } from "../../../data/data_structures/User.js";
+import { getUser, getMatches } from '../../../data/Backend.js';
+import { users } from '../../../data/MockData.js';
 import { DisplayManageUsersHelper as DisplayUser } from '../../helpers/Display/displayManageUsersHelper.js';
 
 // Created by Gauri Arvind
