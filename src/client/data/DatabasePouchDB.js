@@ -74,7 +74,7 @@ const db = new PouchDB('roommate-matching');
     updateUser(user);
   } 
   
-  deleteMatch: async(id, matchId) => {}, // TODO
+  deleteMatch: async(id, matchId) => {} // TODO
 
   getAllHousings: async () => {
     return db.allDocs({ include_docs: true, startkey: 'housing_' })
