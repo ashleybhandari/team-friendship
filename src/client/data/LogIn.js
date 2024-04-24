@@ -1,6 +1,6 @@
 // DB TODO: uncomment
-import {PouchDB} from "pouchdb"; 
-PouchDB.plugin(require('pouchdb-authentication'));
+const db = new PouchDB('roommate-matching');
+//PouchDB.plugin(require('pouchdb-authentication'));
 
 const db = new PouchDB('http://localhost:5984/mydb');
 
