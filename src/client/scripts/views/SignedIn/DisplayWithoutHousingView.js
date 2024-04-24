@@ -1,7 +1,7 @@
 import { User } from "../../data/data_structures/User.js";
 import { getUser, getMatches } from '../../data/Backend.js';
 import { users } from '../../data/MockData.js';
-import { DisplayManageUsersHelper as DisplayUser } from '../../scripts/helpers/Display/displayManageUsersHelper.js';
+import { DisplayManageUsersHelper as DisplayUser } from '../../helpers/Display/displayManageUsersHelper.js';
 
 // Created by Gauri Arvind
 
@@ -162,32 +162,32 @@ export class DisplayWithoutHousingView {
         const dWOHVElem = document.createElement("div");
         dWOHVElem.classList.add("display-with-housing-view", "display-user-block"); 
 
-        // const currUser = users[5];
-        // let potentialMatches = await getMatches();
-        // let displayMatches = [];
+        const currUser = users[5];
+        let potentialMatches = await getMatches();
+        let displayMatches = [];
 
-        // // Code for rendering mock data matches
-        // for(let i = 0; i < potentialMatches.length; ++i) {
-        //     const user = await getUser(potentialMatches[i].id);
-        //     if(user.hasHousing === currUser.hasHousing) {
-        //         if(user.character.sleep === currUser.character.sleep) {
-        //             displayMatches.push(user);
-        //         }
-        //     }
-        // }
+        // Code for rendering mock data matches
+        for(let i = 0; i < potentialMatches.length; ++i) {
+            const user = await getUser(potentialMatches[i].id);
+            if(user.hasHousing === currUser.hasHousing) {
+                if(user.character.sleep === currUser.character.sleep) {
+                    displayMatches.push(user);
+                }
+            }
+        }
 
-        // for(let i = 0; i < displayMatches.length; ++i) {
-        //     const dWOHContainer = document.createElement("div");
-        //     // The left container of the page, which includes user info
-        //     const leftContainer = await this.#createLeftContainer(currUser, displayMatches[i]);
+        for(let i = 0; i < displayMatches.length; ++i) {
+            const dWOHContainer = document.createElement("div");
+            // The left container of the page, which includes user info
+            const leftContainer = await this.#createLeftContainer(currUser, displayMatches[i]);
 
-        //     // The right container of the page, which includes housing information
-        //     const rightContainer = await this.#createRightContainer(displayMatches[i]);
+            // The right container of the page, which includes housing information
+            const rightContainer = await this.#createRightContainer(displayMatches[i]);
             
-        //     dWOHContainer.appendChild(leftContainer);
-        //     dWOHContainer.appendChild(rightContainer);
-        //     dWOHVElem.appendChild(dWOHContainer);
-        // }
+            dWOHContainer.appendChild(leftContainer);
+            dWOHContainer.appendChild(rightContainer);
+            dWOHVElem.appendChild(dWOHContainer);
+        }
 
         // // // The left container of the page, which includes user info
         // // const leftContainer = await this.#createLeftContainer(currUser, user);

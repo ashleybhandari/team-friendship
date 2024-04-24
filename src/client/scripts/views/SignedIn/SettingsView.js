@@ -1,12 +1,13 @@
 import { Button } from '../../components/Button.js';
-import { CheckboxInput } from '../../components/CheckboxInput.js';
+import { CheckboxGroup } from '../../components/CheckboxGroup.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
 import { RadioInput } from '../../components/RadioInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
 import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { users } from '../../../data/MockData.js';
-import { QueryFunctions } from '../../helpers/queryFunctions.js';
+import { SettingsFns } from '../../helpers/SettingsFns.js';
+import { toMap, fields } from '../../helpers/SettingsData.js';
 
 /**
  * Lets the user change their configuration. Injected into SignedInContainer.
@@ -19,7 +20,7 @@ export class SettingsView {
     #preferencesSection = null;
     #housingSection = null;
     #user = null;
-    #queryFns = null;
+    #settingsFns = null;
     #requiredFields = null;
 
     constructor() {
@@ -40,24 +41,38 @@ export class SettingsView {
         `;
 
         // create page sections
-        this.#credentialsSection = new CredentialsSection(this.#settingsViewElm, this.#user);
-        this.#profileSection = new ProfileSection(this.#settingsViewElm, this.#user);
-        this.#preferencesSection = new PreferencesSection(this.#settingsViewElm);
-        this.#housingSection = new HousingSection(this.#settingsViewElm);
+        this.#credentialsSection = new CredentialsSection(
+            this.#settingsViewElm, this.#user
+        );
+        this.#profileSection = new ProfileSection(
+            this.#settingsViewElm, this.#user
+        );
+        this.#preferencesSection = new PreferencesSection(
+            this.#settingsViewElm
+        );
+        this.#housingSection = new HousingSection(
+            this.#settingsViewElm
+        );
         
         // render sections
-        await this.#credentialsSection.render();
-        await this.#profileSection.render();
-
-        await this.#user.hasHousing
-            ? this.#housingSection.render()
-            : this.#preferencesSection.render();
-
-        // render revert changes and save buttons
-        await this.#renderButtons(this.#settingsViewElm);
+        await this.#credentialsSection.render(
+            await this.#getButtons(this.#settingsViewElm)
+        );
+        await this.#profileSection.render(
+            await this.#getButtons(this.#settingsViewElm)
+        );
+        this.#user.hasHousing
+            ? await this.#housingSection.render(
+                await this.#getButtons(this.#settingsViewElm)
+              )
+            : await this.#preferencesSection.render(
+                await this.#getButtons(this.#settingsViewElm)
+              );
 
         // fill HTML fields with the user's saved values
-        this.#queryFns = new QueryFunctions(this.#settingsViewElm, this.#user);
+        this.#settingsFns = new SettingsFns(
+            this.#settingsViewElm, this.#user
+        ).getFns();
         this.#fillFields(this.#settingsViewElm);
 
         // set up form validation
@@ -69,7 +84,7 @@ export class SettingsView {
     /**
      * Render Revert changes and Save buttons.
      */
-    async #renderButtons() {
+    async #getButtons() {
         const elm = document.createElement('div');
         elm.classList.add('buttons');
 
@@ -77,7 +92,9 @@ export class SettingsView {
         const revertElm = await new Button(
             'Revert changes', 150, 'danger'
         ).render();
-        const saveElm = await new Button('Save', 80, 'submit').render();
+        const saveElm = await new Button(
+            'Save', 80, 'submit'
+        ).render();
         saveElm.id = 'saveBtn';
 
         // click event listeners
@@ -93,7 +110,8 @@ export class SettingsView {
 
         elm.appendChild(revertElm);
         elm.appendChild(saveElm);
-        this.#settingsViewElm.appendChild(elm);
+
+        return elm;
     }
 
     /**
@@ -101,28 +119,30 @@ export class SettingsView {
      * initialization and reverting changes.
      */
     #fillFields() {
-        this.#queryFns.getFns().forEach((field) => field.fill());
+        this.#settingsFns.forEach((field) => field.fill());
     }
 
     /**
      * Save any changes made.
      */
     #saveChanges() {
-        const invalid = this.#requiredFields.some((query) =>
-            !this.#settingsViewElm.querySelector(query).checkValidity()
+        const invalid = this.#requiredFields.some((id) =>
+            !this.#settingsViewElm.querySelector(`#settings_${id}`).checkValidity()
         );
         if (invalid) {
             alert('Make sure all required fields are filled out (the starred ones!)');
             return;
         }
 
-        this.#queryFns.getFns().forEach((field) => field.save());
+        this.#settingsFns.forEach((field) => field.save());
 
         // save new configuration
         localStorage.setItem('user', JSON.stringify(this.#user));
 
-        // get query functions with new user value
-        this.#queryFns = new QueryFunctions(this.#settingsViewElm, this.#user);
+        // get settings functions with new user value
+        this.#settingsFns = new SettingsFns(
+            this.#settingsViewElm, this.#user
+        ).getFns();
     }
 
     /**
@@ -137,9 +157,10 @@ export class SettingsView {
         ]
 
         // set required property on required fields to true
-        this.#requiredFields.forEach((query) =>
-            this.#settingsViewElm.querySelector(query).required = true
-        );
+        this.#requiredFields.forEach((id) => {
+            const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
+            if (elm) elm.required = true
+        });
     }
 }
 
@@ -156,28 +177,34 @@ class CredentialsSection {
     }
 
     /**
-     * @returns {string[]} - Array of queries for required fields
-     */
-    requiredFields() {
-        return ['#emailInput'];
-    }
-
-    /**
      * Renders Credentials section.
+     * @param {HTMLDivElement} - Buttons to render at bottom of section
      */
-    async render() {
+    async render(buttons) {
+        const elm = document.createElement('div');
+        elm.id = 'credentials-section';
+        elm.classList.add('section');
+        
         const header = document.createElement('h3');
         header.innerText = 'Credentials';
 
         const section = document.createElement('div');
         section.id = 'credentials';
-        section.classList.add('section');
 
         section.appendChild(await new TextInput('Email*').render());
         section.appendChild(await new TextInput('Password').render());
 
-        this.#parent.appendChild(header);
-        this.#parent.appendChild(section);
+        elm.appendChild(header);
+        elm.appendChild(section);
+        elm.appendChild(buttons);
+        this.#parent.appendChild(elm);
+    }
+
+    /**
+     * @returns {string[]} - Array of id's for required fields
+     */
+    requiredFields() {
+        return ['emailInput'];
     }
 }
 
@@ -195,14 +222,18 @@ class ProfileSection {
 
     /**
      * Renders Profile section.
+     * @param {HTMLDivElement} - Buttons to render at bottom of section
      */
-    async render() {
+    async render(buttons) {
+        const elm = document.createElement('div');
+        elm.id = 'profile-section';
+        elm.classList.add('section');
+
         const header = document.createElement('h3');
         header.innerText = 'Profile';
 
         const section = document.createElement('div');
         section.id = 'profile';
-        section.classList.add('section');
 
         // TODO: implement avatar
         const avatar = document.createElement('div');
@@ -226,13 +257,14 @@ class ProfileSection {
         // row 3-4: characteristics, is user looking for roommates or housing
         const sliders = await this.#renderSliders();
         sliders.forEach((s) => section.appendChild(s));
+        section.appendChild(await new RadioInput(
+            'I am looking for...', ['roommates', 'housing']
+        ).render());
 
-        const radioCntr = document.createElement('div');
-        radioCntr.id = 'lookingForRadio';
-        section.appendChild(radioCntr);
-
-        this.#parent.appendChild(header);
-        this.#parent.appendChild(section);
+        elm.appendChild(header);
+        elm.appendChild(section);
+        elm.appendChild(buttons);
+        this.#parent.appendChild(elm);
     }
 
     /**
@@ -255,7 +287,7 @@ class ProfileSection {
         const grp2 = document.createElement('div');
         grp2.classList.add('subgroup');
         grp2.appendChild(await new DropdownInput(
-            'Gender identity*', ['Woman', 'Man', 'Nonbinary'], 149.2
+            'Gender identity*', fields.genderId, 149.2
         ).render());
         grp2.appendChild(await new TextInput('Pronouns', 'text', 118).render());
         
@@ -275,7 +307,7 @@ class ProfileSection {
         elm.appendChild(await new TextInput('Major').render());
         elm.appendChild(await new TextInput('School').render());
         elm.appendChild(await new DropdownInput(
-            'Level of education', ['Undergrad', 'Grad', 'Other']
+            'Level of education', fields.level
         ).render());
 
         return elm;
@@ -316,17 +348,17 @@ class ProfileSection {
     }
 
     /**
-     * @returns {string[]} - Array of queries for required fields
+     * @returns {string[]} - Array of id's for required fields
      */
     requiredFields() {
         return [
-            '#firstNameInput',
-            '#ageInput',
-            '#genderIdentityDrpdwn',
-            '#cleanlinessSldr',
-            '#noiseWhenStudyiSldr',
-            '#sleepingHabitsSldr',
-            '#hostingGuestsSldr'
+            'firstNameInput',
+            'ageInput',
+            'genderIdentityDrpdwn',
+            'cleanlinessSldr',
+            'noiseWhenStudyiSldr',
+            'sleepingHabitsSldr',
+            'hostingGuestsSldr'
         ];
     }
 }
@@ -344,37 +376,41 @@ class PreferencesSection {
     }
 
     /**
-     * @returns {string[]} - Array of queries for required fields
-     */
-    requiredFields() {
-        return [];
-    }
-
-    /**
      * Renders Preferences section.
      */
-    async render() {
+    async render(buttons) {
+        const elm = document.createElement('div');
+        elm.id = 'preferences-section';
+        elm.classList.add('section');
+
         const header = document.createElement('h3');
         header.innerText = 'Your Preferences';
 
         const section = document.createElement('div');
         section.id = 'preferences';
-        section.classList.add('section');
 
-        section.appendChild(await this.renderCol1());
-        section.appendChild(await this.renderCol2());
-        section.appendChild(await this.renderCol3());
+        section.appendChild(await this.renderTextInput());
+        section.appendChild(await this.renderGender());
+        section.appendChild(await this.renderTimeframe());
+        section.appendChild(await this.renderLeaseLength());
+        section.appendChild(await this.renderLeaseType());
+        section.appendChild(await this.renderRoomType());
+        section.appendChild(await this.renderBuildingType());
+        section.appendChild(await this.renderAmenities());
 
-        this.#parent.appendChild(header);
-        this.#parent.appendChild(section);
+        elm.appendChild(header);
+        elm.appendChild(section);
+        elm.appendChild(buttons);
+        this.#parent.appendChild(elm);
     }
 
     /**
-     * Renders column 1 of the Preferences section.
+     * Fields for cities, rent, and number of occupants
      * @returns {HTMLDivElement1}
      */
-    async renderCol1() {
+    async renderTextInput() {
         const elm = document.createElement('div');
+        elm.classList.add('text-input');
 
         // cities
         elm.appendChild(await new TextInput('Cities (comma-separated)').render());
@@ -393,69 +429,63 @@ class PreferencesSection {
         occupants.appendChild(await new TextInput('Max occupants', 'text', 118).render());
         elm.appendChild(occupants);
 
-        // gender inclusivity
-        elm.appendChild(await new DropdownInput(
-            'Gender inclusivity', ['All-female', 'All-male', 'Mixed']
-        ).render());
+        return elm;
+    }
 
-        // move-in period
-        elm.appendChild(await new DropdownInput(
-            'Move-in period', ['Fall', 'Winter', 'Spring', 'Summer']
-        ).render());
+    /**
+     * Fields for gender inclusivity
+     * @returns {HTMLDivElement1}
+     */
+    async renderGender() {
+        const boxes = toMap(fields.genderIncl);
+        return await new CheckboxGroup('Gender inclusivity', boxes).render();
+    }
+
+    async renderLeaseLength() {
+        const boxes = toMap(fields.leaseLength);
+        return await new CheckboxGroup('Lease length', boxes).render();
+    }
+
+    async renderLeaseType() {
+        const boxes = toMap(fields.leaseType);
+        return await new CheckboxGroup('Lease type', boxes).render();
+    }
+
+    async renderRoomType() {
+        const boxes = toMap(fields.roomType);
+        return await new CheckboxGroup('Room type', boxes).render();
+    }
+
+    async renderBuildingType() {
+        const boxes = toMap(fields.buildingType);
+        return await new CheckboxGroup('Building type', boxes).render();
+    }
+    
+    async renderTimeframe() {
+        const boxes = toMap(fields.timeframe);
+        return await new CheckboxGroup('Move-in period', boxes).render();
+    }
+
+    async renderAmenities() {
+        const boxes = toMap(fields.amenities);
+
+        const elm = await new CheckboxGroup('Amenities', boxes, 4).render();
+        elm.classList.add('amenities');
+
+        // to differentiate it from Housing section's amenities
+        elm.id = `${elm.id}P`
+        elm.querySelectorAll('label').forEach((e) => e.htmlFor = `${e.htmlFor}P`);
+        elm.querySelectorAll('input').forEach((e) => e.id = `${e.id}P`);
 
         return elm;
     }
 
     /**
-     * Renders column 2 of the Preferences section.
-     * @returns {HTMLDivElement1}
+     * @returns {string[]} - Array of id's for required fields
      */
-    async renderCol2() {
-        const elm = document.createElement('div');
-
-        // lease length
-        elm.appendChild(await new DropdownInput(
-            'Lease length', ['Per semester', 'Monthly', '6 months', 'Yearly']
-        ).render());
-
-        // lease type
-        elm.appendChild(await new DropdownInput(
-            'Lease type', ['Rent', 'Sublet']
-        ).render());
-
-        // room type
-        elm.appendChild(await new DropdownInput(
-            'Room type', ['Private', 'Shared']
-        ).render());
-
-        // building type
-        elm.appendChild(await new DropdownInput(
-            'Building type', ['Dorm', 'Apartment', 'House']
-        ).render());
-
-        return elm;
+    requiredFields() {
+        return [];
     }
-
-    /**
-     * Renders column 3 of the Preferences section.
-     * @returns {HTMLDivElement1}
-     */
-    async renderCol3() {
-        const elm = document.createElement('div');
-        elm.classList.add('checkbox-list');
-
-        // checkboxes
-        elm.appendChild(await new CheckboxInput('Air conditioning').render());
-        elm.appendChild(await new CheckboxInput('Dishwasher').render());
-        elm.appendChild(await new CheckboxInput('Hardwood floors').render());
-        elm.appendChild(await new CheckboxInput('Carpet floors').render());
-        elm.appendChild(await new CheckboxInput('On-site laundry').render());
-        elm.appendChild(await new CheckboxInput('Residential parking').render());
-        elm.appendChild(await new CheckboxInput('Nearby bus stop').render());
-        elm.appendChild(await new CheckboxInput('Pet-friendly').render());
-
-        return elm;
-    }    
 }
 
 
@@ -471,24 +501,159 @@ class HousingSection {
     }
 
     /**
-     * @returns {string[]} - Array of queries for required fields
-     */
-    requiredFields() {
-        return [];
-    }
-
-    /**
      * Renders Housing section.
+     * @param {HTMLDivElement} - Buttons to render at bottom of section
      */
-    async render() {
+    async render(buttons) {
+        const elm = document.createElement('div');
+        elm.id = 'housing-section';
+        elm.classList.add('section');
+
         const header = document.createElement('h3');
         header.innerText = 'Your Housing';
 
         const section = document.createElement('div');
         section.id = 'housing';
-        section.classList.add('section');
 
-        this.#parent.appendChild(header);
-        this.#parent.appendChild(section);
+        section.appendChild(await this.renderCityCol());
+        section.appendChild(await this.renderGenderCol());
+        section.appendChild(await this.renderTypeCol());
+        section.appendChild(await this.renderUtilities());
+        section.appendChild(await this.renderDetails());
+        section.appendChild(await this.renderAmenities());
+
+        // TODO: implement pics
+
+        elm.appendChild(header);
+        elm.appendChild(section);
+        elm.appendChild(buttons);
+        this.#parent.appendChild(elm);
+    }
+
+    async renderCityCol() {
+        const elm = document.createElement('div');
+
+        elm.appendChild(await new TextInput('City*').render());
+        elm.appendChild(await this.renderRent());
+
+        // subgroup (inputs are half-width): number of beds and baths
+        const brba = document.createElement('div');
+        brba.classList.add('subgroup');
+        brba.appendChild(await new TextInput('No. beds*', 'text', 118).render());
+        brba.appendChild(await new TextInput('No. baths*', 'text', 118).render());
+        elm.appendChild(brba);
+
+        return elm;
+    }
+
+    async renderGenderCol() {
+        const elm = document.createElement('div');
+
+        elm.appendChild(await new DropdownInput(
+            'Gender inclusivity*', fields.genderIncl
+        ).render());
+
+        elm.appendChild(await new DropdownInput(
+            'Move-in period*', fields.timeframe
+        ).render());
+
+        elm.appendChild(await new DropdownInput(
+            'Lease length*', fields.leaseLength
+        ).render());
+
+        return elm;
+    }
+
+    async renderTypeCol() {
+        const elm = document.createElement('div');
+
+        elm.appendChild(await new DropdownInput(
+            'Lease type*', fields.leaseType
+        ).render());
+
+        elm.appendChild(await new DropdownInput(
+            'Room type*', fields.roomType
+        ).render());
+        
+        elm.appendChild(await new DropdownInput(
+            'Building type*', fields.buildingType
+        ).render());
+
+        return elm;
+    }    
+
+    async renderRent() {
+        const elm = document.createElement('div');
+        elm.classList.add('subgroup', 'rent');
+
+        const dollarSign = document.createElement('span');
+        dollarSign.classList.add('dollar-sign');
+        dollarSign.innerText = '$';
+
+        const slash = document.createElement('span');
+        slash.classList.add('slash');
+        slash.innerText = '/';
+        
+        elm.appendChild(dollarSign);
+
+        elm.appendChild(await new TextInput(
+            'Rent for room*', 'text', 103
+        ).render());
+
+        elm.appendChild(slash);
+
+        elm.appendChild(await new DropdownInput(
+            'Period*', fields.rentPeriod, 133
+        ).render());
+
+        return elm;
+    }
+
+    async renderDetails() {
+        const elm = await new TextAreaInput(
+            'Details', 'Anything else you want to mention!'
+        ).render();
+        elm.classList.add('details');
+        return elm;
+    }
+
+    async renderUtilities() {
+        const boxes = toMap(fields.utilities);
+        return await new CheckboxGroup(
+            'Utilities included in rent', boxes, 2
+        ).render();
+    }
+
+    async renderAmenities() {
+        const boxes = toMap(fields.amenities);
+
+        const elm = await new CheckboxGroup('Amenities', boxes, 4).render();
+        elm.classList.add('amenities');
+
+        // to differentiate it from Preferences section's amenities
+        elm.id = `${elm.id}H`
+        elm.querySelectorAll('label').forEach((e) => e.htmlFor = `${e.htmlFor}H`);
+        elm.querySelectorAll('input').forEach((e) => e.id = `${e.id}H`);
+
+        return elm;
+    }
+
+
+    /**
+     * @returns {string[]} - Array of id's for required fields
+     */
+    requiredFields() {
+        return [
+            'cityInput',
+            'rentForRoomInput',
+            'noBedsInput',
+            'noBathsInput',
+            'genderInclusiviDrpdwn',
+            'moveInPeriodDrpdwn',
+            'leaseLengthDrpdwn',
+            'leaseTypeDrpdwn',
+            'roomTypeDrpdwn',
+            'buildingTypeDrpdwn'
+        ];
     }
 }
