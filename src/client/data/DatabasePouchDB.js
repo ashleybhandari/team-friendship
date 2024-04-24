@@ -2,16 +2,16 @@
 //const PouchDB = require('pouchdb');
 const db = new PouchDB('roommate-matching');
 
-const getAllUsers = async () => {
+export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
     .then(result => result.rows.map(row => row.doc));
 }
 
-const getUserById = async (id) => {
+export const getUserById = async (id) => {
   return db.get(id);
 }
 
-const addUser = async (user) => {
+export const addUser = async (user) => {
   const newUser = {
     _id: user.id, // Use the user's id as the document _id
     email: user.email,
@@ -34,7 +34,7 @@ const addUser = async (user) => {
   return db.put(newUser);
 }
 
-const updateUser = async (user) => {
+export const updateUser = async (user) => {
   const updatedUser = {
     _id: user.id,
     _rev: user._rev, // Include the _rev property for updates
@@ -57,35 +57,33 @@ const updateUser = async (user) => {
   return db.put(updatedUser);
 }
 
-const deleteUser = async (id) => {
+export const deleteUser = async (id) => {
   return db.get(id)
     .then(doc => db.remove(doc));
 }
 
-const getMatches = async (id) => {
+export const getMatches = async (id) => {
   const user = await getUserById(id);
   return user.matches;
 }
 
-const removeMatches = async (currUserId, removeUserId) => {
+export const removeMatch = async (currUserId, removeUserId) => {
   const user = await getUserById(currUserId);
   const removeUserIndex = user.matches.indexOf(removeUserId);
   user.matches.splice(removeUserIndex, 1);
   await updateUser(user);
 }
 
-const deleteMatch = async (id, matchId) => {} // TODO
-
-const getAllHousings = async () => {
+export const getAllHousings = async () => {
   return db.allDocs({ include_docs: true, startkey: 'housing_' })
     .then(result => result.rows.map(row => row.doc));
 }
 
-const getHousingById = async (id) => {
+export const getHousingById = async (id) => {
   return db.get(`housing_${id}`);
 }
 
-const addHousing = async (housing) => {
+export const addHousing = async (housing) => {
   const newHousing = {
     _id: `housing_${housing.id}`, // Use a prefix to distinguish housing documents
     city: housing.city,
@@ -107,7 +105,7 @@ const addHousing = async (housing) => {
   return db.put(newHousing);
 }
 
-const updateHousing = async (housing) => {
+export const updateHousing = async (housing) => {
   const updatedHousing = {
     _id: `housing_${housing.id}`,
     _rev: housing._rev, // Include the _rev property for updates
@@ -130,12 +128,12 @@ const updateHousing = async (housing) => {
   return db.put(updatedHousing);
 }
 
-const deleteHousing = async (id) => {
+export const deleteHousing = async (id) => {
   return db.get(`housing_${id}`)
     .then(doc => db.remove(doc));
 }
 
-const authenticateUser = async (email, password) => {
+export const authenticateUser = async (email, password) => {
   try {
     const user = await db.get(`user_${email}`);
     if (user.password === password) {
@@ -151,5 +149,3 @@ const authenticateUser = async (email, password) => {
     }
   }
 }
-
-export { getAllUsers, getUserById, addUser, updateUser, deleteUser, getMatches, removeMatches, deleteMatch, getAllHousings, getHousingById, addHousing, updateHousing, deleteHousing, authenticateUser };
