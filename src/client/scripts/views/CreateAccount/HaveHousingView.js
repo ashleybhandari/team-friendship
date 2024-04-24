@@ -11,10 +11,12 @@ export class HaveHousingView {
     #user = null;
     #queryFns = null;
     #requiredFields = null;
+    #events = null;
 
-    constructor() {
+    constructor(events) {
         localStorage.setItem('user', JSON.stringify(users[5]));
         this.#user = JSON.parse(localStorage.getItem('user'));
+        this.#events = events; 
     }
 
     async render() {
@@ -67,9 +69,20 @@ export class HaveHousingView {
         return haveHousingViewElm;
     }
 
+    // async handleSubmit(event) {
+    //     event.preventDefault();
+    // }
     async handleSubmit(event) {
         event.preventDefault();
+        try {
+            alert('Housing information saved successfully!');
+            this.#events.publish('navigateTo', 'create-5');
+        } catch (error) {
+            console.error('Error saving housing information:', error);
+            alert('Error saving housing information: ' + error.message);
+        }
     }
+
 
     #fillFields(parent) {
         this.#queryFns.getFns().forEach((field) => field.fill());
