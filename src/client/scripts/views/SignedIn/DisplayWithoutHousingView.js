@@ -172,7 +172,7 @@ export class DisplayWithoutHousingView {
 
         const currUser = users[5];
         let potentialMatches = await getMatches();
-        let displayMatches = potentialMatches.filter(e => !currUser.matches.includes(e) && !currUser.rejected.includes(e));
+        let displayMatches = potentialMatches.filter(e => !currUser.matches.includes(e) && !currUser.rejected.includes(e) && !e.hasHousing);
 
         if(displayMatches.length === 0) {
             dWOHVElem.innerText = "There are no new users to display. More will come soon!";
