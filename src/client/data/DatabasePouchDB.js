@@ -65,7 +65,7 @@ const db = new PouchDB('roommate-matching');
    getMatches: async (id) => {
     const user = user.getUserById(id);
     return user.matches;
-  }, 
+  }
 
   removeMatches: async (currUserId, removeUserId) => {
     const user = user.getUserById(id);
