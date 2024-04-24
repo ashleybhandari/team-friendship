@@ -2,16 +2,14 @@
 const PouchDB = require('pouchdb');
 const db = new PouchDB('roommate-matching');
 
-const dataService = {
-
   getAllUsers: async () => {
     return db.allDocs({ include_docs: true })
       .then(result => result.rows.map(row => row.doc));
-  },
+  }
 
   getUserById: async (id) => {
     return db.get(id);
-  },
+  }
 
   addUser: async (user) => {
     const newUser = {
@@ -34,7 +32,7 @@ const dataService = {
     };
 
     return db.put(newUser);
-  },
+  }
 
   updateUser: async (user) => {
     const updatedUser = {
@@ -56,27 +54,36 @@ const dataService = {
       rejected: user.rejected,
       matches: user.matches
     };
-
     return db.put(updatedUser);
-  },
+  }
 
   deleteUser: async (id) => {
     return db.get(id)
       .then(doc => db.remove(doc));
-  },
+  }
 
-  getMatches: async (id) => {}, // TODO: return user.matches
+   getMatches: async (id) => {
+    const user = user.getUserById(id);
+    return user.matches;
+  }, 
+
+  removeMatches: async (currUserId, removeUserId) => {
+    const user = user.getUserById(id);
+    const removeUserIndex = user.matches.indexOf(removeUserId);
+    user.matches = user.matches.splice(removeUserIndex, 1);
+    updateUser(user);
+  } 
   
   deleteMatch: async(id, matchId) => {}, // TODO
 
   getAllHousings: async () => {
     return db.allDocs({ include_docs: true, startkey: 'housing_' })
       .then(result => result.rows.map(row => row.doc));
-  },
+  }
 
   getHousingById: async (id) => {
     return db.get(`housing_${id}`);
-  },
+  }
 
   addHousing: async (housing) => {
     const newHousing = {
@@ -98,7 +105,7 @@ const dataService = {
     };
 
     return db.put(newHousing);
-  },
+  }
 
   updateHousing: async (housing) => {
     const updatedHousing = {
@@ -121,12 +128,12 @@ const dataService = {
     };
 
     return db.put(updatedHousing);
-  },
+  }
 
   deleteHousing: async (id) => {
     return db.get(`housing_${id}`)
       .then(doc => db.remove(doc));
-  },
+  }
 
   authenticateUser: async (email, password) => {
     try {
@@ -143,7 +150,7 @@ const dataService = {
         throw error;
       }
     }
-  },
-};
+  }
 
-export default dataService;
+export {getAllUsers, getUserById, addUser, updateUser, deleteUser, getMatches, removeMatches, deleteMatch, getAllHousing,
+        getHousingById, addHousing, updateHousing, deleteHousing, authenticateUser };
