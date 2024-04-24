@@ -56,7 +56,18 @@ const BIOS = [
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png', // TODO
         name: 'Isha Bang',
         role: 'All-Rounder',
-        bio:  'TBD' // TODO
+        bio:  'Isha Bang is a sophmore at the University of Massachusetts      \
+               Amherst majoring in Computer Science with a minor in business.  \
+               While learning Python on her own in high school, she was also   \
+               able to master Java and many aspects of HTML and CSS through    \
+               the curriculum her school provided. The curriculum at UMass     \
+               has taught her C, TypeScript, and JavaScript as well, providing \
+               her with a very strong foundation and helping her gain          \
+               proficiency in what she does. She hopes to skills to use        \
+               to make an impact, specifically in the Cyber Security or        \
+               Artifical Intelligence sector. She is also interested in        \
+               Neuro Science research, and looks forward to putting her        \
+               skills to use in various fields of study.' 
     },
     {
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_ashley.jpg',

@@ -46,18 +46,16 @@ export class ProfileView {
         const nextBtnHandler = async () => {
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
-            let success = true;
 
             try {
-                await this.#database.updateUserProfile(userData);
-                // alert('Profile updated successfully!');
+                await this.#database.updateUser(userData);
+                alert('Profile updated successfully!');
+                this.#events.publish('navigateTo', 'create-3');
+                
             } catch (error) {
-                alert('Error updating profile: ' + error.message);
-                success = false;
-            }
-
-            return success;
-        };
+            alert('Error updating profile: ' + error.message);
+          }
+    };
 
         // navigation between account creation pages
         profileViewElm.appendChild(
