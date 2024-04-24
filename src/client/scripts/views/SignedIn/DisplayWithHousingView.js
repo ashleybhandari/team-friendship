@@ -300,42 +300,120 @@ export class DisplayWithHousingView {
         const dWHVElem = document.createElement("div");
         dWHVElem.classList.add("display-with-housing-view", "display-user-block");
 
-    //     const currUser = users[5];
-    //     let potentialMatches = await getMatches();
-    //     let displayMatches = [];
+        // dWHVElem.innerHTML = `
+        // <div class="display-split left-container">
+        //     <div class="display-center">
+        //     <input src="./assets/Google Fonts - Flag.png" type="image" class="flag-user" value="Flag">
+        //     <!-- <div class="display-center-profile"> -->
+        //         <img src="/Users/gauri/Downloads/team-friendship-1/assets/Google Fonts - Flag.png" class="user-profile-image">
+        //         <div class="user-name battambang">Jane, 22</div>
+        //         <div class="user-school be-vietnam">
+        //             <div class="user-school-info">major</div>
+        //             <div class="user-school-info">level</div>
+        //             <div class="user-school-info">university</div>
+        //         </div>
+        //         <input class="reject-user" type="image" value="Reject" src="/Users/gauri/Downloads/team-friendship-1/assets/Google Fonts - Close.png">
+        //         <input class="accept-user" type="image" value="Accept" src="/Users/gauri/Downloads/team-friendship-1/assets/Google Fonts - Favorite.png">
+        //     <!-- </div> -->
+        //     </div>
+        // </div>
+        
+        // <div class="display-split right-container-roommate">
+        //     <div class="display-center">
+        //         <div class="user-about-roommate be-vietnam-700">
+        //             <label>About me:</label>
+        //             <div class="be-vietnam">
+        //                 <input class="display-personal-button" type="button" value="Clean">
+        //                 <input class="display-personal-button" type="button" value="Early Riser">
+        //                 <input class="display-personal-button be-vietnam" type="button" value="Looking for roommates">
+        //             </div>
+        //         </div>
+        //         <div class="user-description be-vietnam" id="user-description-housing">a very long description of this user a very long description of this user a very long description of this user a very long description of this user a very long description of this user a very long description of this user a very long description of this user </div>
+        //         <!-- <div class="user-accommodation be-vietnam-700">My accommodation:
+        //         </div>
+        //         <div class="user-accommodation-left be-vietnam">
+        //             <div class="user-acc-left-child">City</div>
+        //             <div class="user-acc-left-child">Rent</div>
+        //             <div class="user-acc-left-child">Lease</div>
+        //             <div class="user-acc-left-child">Length</div>
+        //             <div class="user-acc-left-child">Timeframe</div>
+        //         </div>
+        //         <div class="user-accommodation-right be-vietnam">
+        //             <div class="user-acc-right-child">Room</div>
+        //             <div class="user-acc-right-child">Type</div>
+        //             <div class="user-acc-right-child">Building</div>
+        //             <div class="user-acc-right-child">Type</div>
+        //             <div class="user-acc-right-child">Gender</div>
+        //         </div>
+        //         <div class="user-house-rent be-vietnam-700">Rent includes:
+        //             <div class="view-list-element be-vietnam">
+        //                 <div class="view-inner-text">hi</div>
+        //                 <span class="housing-dot"></span>
+        //                 <div class="view-inner-text">hi</div>
+        //                 <span class="housing-dot"></span>
+        //                 <div class="view-inner-text">hi</div>
+        //             </div>
+        //         </div>
+        //         <div class="user-house-amenities be-vietnam-700">Amenities:
+        //             <div class="view-list-element be-vietnam">
+        //                 <div class="view-inner-text">hi</div>
+        //                 <span class="housing-dot"></span>
+        //                 <div class="view-inner-text">hi</div>
+        //                 <span class="housing-dot"></span>
+        //                 <div class="view-inner-text">hi</div>
+        //             </div>
+        //         </div>
+        //         <div class="user-house-notes be-vietnam-700">Notes:
+        //             <div class="user-notes-description be-vietnam">
+        //                 banana
+        //             </div>
+        //         </div>
+        //         <div class="user-house-images be-vietnam-700">Images:
+        //             <div class="user-house-image-carousel">
+        //                 <img class="housing-images" src="assets/Google Fonts - Favorite.png">
+        //                 <img class="housing-images" src="assets/Google Fonts - Favorite.png">
+        //             </div>
+        //         </div> -->
+        //     </div>
+        // </div>
+        // `;
 
-    //     // Code for rendering mock data matches
-    //     for(let i = 0; i < potentialMatches.length; ++i) {
-    //         const user = await getUser(potentialMatches[i].id);
-    //         if(user.hasHousing === currUser.hasHousing) {
-    //             if(user.character.sleep === currUser.character.sleep) {
-    //                 displayMatches.push(user);
-    //             }
-    //         }
-    //     }
+        const currUser = users[5];
+        let potentialMatches = await getMatches();
+        let displayMatches = [];
 
-    //     for(let i = 0; i < displayMatches.length; ++i) {
-    //         const dWHContainer = document.createElement("div");
-    //         // The left container of the page, which includes user info
-    //         const leftContainer = await this.#createLeftContainer(currUser, displayMatches[i]);
+        // Code for rendering mock data matches
+        for(let i = 0; i < potentialMatches.length; ++i) {
+            const user = await getUser(potentialMatches[i].id);
+            if(user.hasHousing === currUser.hasHousing) {
+                if(user.character.sleep === currUser.character.sleep) {
+                    displayMatches.push(user);
+                }
+            }
+        }
 
-    //         // The right container of the page, which includes housing information
-    //         const rightContainer = await this.#createRightContainer(displayMatches[i], displayMatches[i].housing);
+        for(let i = 0; i < displayMatches.length; ++i) {
+            const dWHContainer = document.createElement("div");
+            // The left container of the page, which includes user info
+            const leftContainer = await this.#createLeftContainer(currUser, displayMatches[i]);
+
+            // The right container of the page, which includes housing information
+            const rightContainer = await this.#createRightContainer(displayMatches[i], displayMatches[i].housing);
             
-    //         dWHContainer.appendChild(leftContainer);
-    //         dWHContainer.appendChild(rightContainer);
-    //         dWHVElem.appendChild(dWHContainer);
-    //     }
+            dWHContainer.appendChild(leftContainer);
+            dWHContainer.appendChild(rightContainer);
+            dWHVElem.appendChild(dWHContainer);
+        }
         
 
-    // //    // The left container of the page, which includes user info
-    // //    const leftContainer = await this.#createLeftContainer(currUser, user);
+    //    // The left container of the page, which includes user info
+    //    const leftContainer = await this.#createLeftContainer(currUser, user);
 
-    // //    // The right container of the page, which includes housing information
-    // //    const rightContainer = await this.#createRightContainer(user, housing);
+    //    // The right container of the page, which includes housing information
+    //    const rightContainer = await this.#createRightContainer(user, housing);
 
-    // //    dWHVElem.appendChild(leftContainer);
-    // //    dWHVElem.appendChild(rightContainer);
+    //    dWHVElem.appendChild(leftContainer);
+    //    dWHVElem.appendChild(rightContainer);
 
        return dWHVElem;
     }
