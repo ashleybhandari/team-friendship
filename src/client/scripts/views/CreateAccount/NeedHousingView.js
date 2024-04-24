@@ -15,10 +15,12 @@ export class NeedHousingView {
     #user = null;
     #queryFns = null;
     #requiredFields = null;
+    #events = null;
 
     constructor() {
         localStorage.setItem('user', JSON.stringify(users[5]));
         this.#user = JSON.parse(localStorage.getItem('user')); 
+        this.#events = Events.events();
     }
 
     async render() {
@@ -64,7 +66,23 @@ export class NeedHousingView {
 
     async handleSubmit(event) {
         event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const userData = Object.fromEntries(formData.entries());
+
+        try {
+            console.log('Updating user:', userData);
+            alert('Preferences saved successfully!');
+            this.#events.publish('navigateTo', 'create-4');
+        } catch (error) {
+            console.error('Error updating preferences:', error);
+            alert('Error updating preferences: ' + error.message);
+        }
     }
+
+    // async handleSubmit(event) {
+    //     event.preventDefault();
+    // }
 
     #fillFields(parent) {
         this.#queryFns.getFns().forEach((field) => field.fill());
