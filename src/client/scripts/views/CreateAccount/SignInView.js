@@ -32,6 +32,7 @@ export class SignInView {
 
         // Header for the sign-in form
         const header = document.createElement('h1');
+        header.classList.add('battambang');
         header.textContent = 'Sign in';
         signInContainer.appendChild(header);
 
@@ -40,15 +41,21 @@ export class SignInView {
         signUpOption.innerHTML = 'Not a member? <a href="#signup">Sign up</a>';
         signInContainer.appendChild(signUpOption);
 
+        // Container for email and password
+        const input = document.createElement('div');
+        input.classList.add('input');
+
         // Email input field
         const emailInput = new TextInput('Email');
         const emailInputElement = await emailInput.render();
-        signInContainer.appendChild(emailInputElement);
+        input.appendChild(emailInputElement);
 
         // Password input field with type 'password' to hide characters
         const passwordInput = new TextInput('Password', 'password');
         const passwordInputElement = await passwordInput.render();
-        signInContainer.appendChild(passwordInputElement);
+        input.appendChild(passwordInputElement);
+
+        signInContainer.appendChild(input);
 
         // Sign-in button
         const signInButton = new Button('Sign in', 200);

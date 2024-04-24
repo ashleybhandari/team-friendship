@@ -8,11 +8,13 @@ export class Navigation {
      * UI component: "Back" and "Next" buttons
      * @param {string} back - href for previous page
      * @param {string} next - href for next page
+     * @param {function[]} [nextHandlers] - event handlers for clicking Next or Submit 
      * @param {boolean} [final=false] - whether current page is the last one
      */
-    constructor(back, next, final = false) {
+    constructor(back, next, nextHandlers = [], final = false) {
         this.back = back;
         this.next = next;
+        this.nextHandlers = nextHandlers;
         this.final = final;
         this.#events = Events.events();
     }
@@ -34,6 +36,7 @@ export class Navigation {
         });
         nextBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            this.nextHandlers.forEach((handler) => handler(e));
             this.#events.publish('navigateTo', this.next);
         });
         

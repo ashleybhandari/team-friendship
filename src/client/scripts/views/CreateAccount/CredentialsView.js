@@ -1,3 +1,4 @@
+import { ProgressBar } from '../../components/ProgressBar.js';
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
@@ -18,19 +19,29 @@ export class CredentialsView {
         const credViewElm = document.createElement('div');
         credViewElm.classList.add('create-account-container');
 
+        // progress bar
+        credViewElm.appendChild(await new ProgressBar(1).render());
+
         const header = document.createElement('h1');
-        header.textContent = 'Create Your Account';
+        header.classList.add('battambang');
+        header.textContent = 'Create an account';
         credViewElm.appendChild(header);
+
+        // container for email and password
+        const input = document.createElement('div');
+        input.classList.add('input');
 
         const emailInput = new TextInput('Email');
         const emailInputElement = await emailInput.render();
-        credViewElm.appendChild(emailInputElement);
+        input.appendChild(emailInputElement);
 
         const passwordInput = new TextInput('Password', 'password');
         const passwordInputElement = await passwordInput.render();
-        credViewElm.appendChild(passwordInputElement);
+        input.appendChild(passwordInputElement);
 
-        const signUpButton = new Button('Sign Up', 200);
+        credViewElm.appendChild(input);
+
+        const signUpButton = new Button('Next');
         const signUpButtonElement = await signUpButton.render();
         credViewElm.appendChild(signUpButtonElement);
 
