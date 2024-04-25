@@ -1137,74 +1137,74 @@ body {
 
 /* DiscoverView.js */
 
-.discoverElm {
+.discoverView {
     display: grid;
     grid-template-columns: 350px auto;
     column-gap: 80px;
     padding: 60px 20% 80px;
 }
 
-.discoverElm .buttons {
+.discoverView .buttons {
     display: flex;
     justify-content: center;
 }
 
-.discoverElm .discover-bio {
+.discoverView .discover-bio {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
 }
 
-.discoverElm .discover-bio img {
+.discoverView .discover-bio img {
     width: 170px;
     border-radius: 50%;
     border: 2px solid rgba(0, 0, 0, 0.4);
     margin-bottom: 20px;
 }
 
-.discoverElm .discover-bio .bio-name {
+.discoverView .discover-bio .bio-name {
     font-size: 26px;
     margin: 0;
 }
 
-.discoverElm .discover-bio .bio-titles {
+.discoverView .discover-bio .bio-titles {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 18px 0 26px;
 }
 
-.discoverElm .discover-bio .bio-titles p {
+.discoverView .discover-bio .bio-titles p {
     font-size: 18px;
     color: gray;
     margin: 4px 0;
 }
 
-.discoverElm .discover-bio .bio-description {
+.discoverView .discover-bio .bio-description {
     text-align: center;
 }
 
-.discoverElm .discover-info {
+.discoverView .discover-info {
     grid-row: 1 / 3;
     grid-column: 2;
     width: 600px;
     margin: auto 0;
 }
 
-.discoverElm .discover-info > div {
+.discoverView .discover-info > div {
     margin-bottom: 40px;
 }
 
-.discoverElm .discover-info h1 {
+.discoverView .discover-info h1 {
     font-size: 20px;
 }
 
-.discoverElm .discover-info .about-details {
+.discoverView .discover-info .about-details {
     display: flex;
 }
 
-.discoverElm .discover-info .about-details div {
+.discoverView .discover-info .about-details div {
     padding: 7px 15px;
     margin-right: 8px;
     border-radius: 20px;
@@ -1212,39 +1212,43 @@ body {
     color: white;
 }
 
-.discoverElm .discover-info .accommodation-details {
+.discoverView .discover-info .accommodation-details {
     display: grid;
     grid-template-columns: repeat(2, auto);
     width: 500px;
 }
 
-.discoverElm .discover-info .accommodation-details p {
+.discoverView .discover-info .accommodation-details p {
     margin: 3px 0;
     font-size: 20px;
 }
 
-.discoverElm .discover-info .accommodation-stats > p {
+.discoverView .discover-info .accommodation-stats > p {
     margin: 0;
     font-weight: bold;
 }
 
-.discoverElm .discover-info .accommodation-stats > div {
+.discoverView .discover-info .accommodation-stats > div {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
 }
 
-.discoverElm .discover-info .accommodation-stats i {
+.discoverView .discover-info .accommodation-stats i {
     color: #F4D06F;
     font-size: 10px;
     margin: 0 8px;
 }
 
-.discoverElm .discover-info .bio-description {
+.discoverView .discover-info .accommodation-stats .stats-empty {
+    margin: 15px 0 18px;
+}
+
+.discoverView .discover-info .bio-description {
     margin-top: 70px;
 }
 
-.discoverElm .no-users-msg {
+.discoverView .no-users-msg {
     grid-column: 1 / 3;
     text-align: center;
 }
