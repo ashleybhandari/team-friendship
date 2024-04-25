@@ -48,7 +48,9 @@ export class ProfileView {
             const userData = Object.fromEntries(formData.entries());
 
             try {
-                await this.#database.updateUser(userData);
+                const currentUser = await this.#database.getUser();
+                const updatedUserData = { ...currentUser, ...userData };
+                await this.#database.updateUser(updatedUserData);
                 alert('Profile updated successfully!');
                 this.#events.publish('navigateTo', 'create-3');
                 
