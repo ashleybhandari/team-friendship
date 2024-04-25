@@ -11,6 +11,7 @@ import { toMap, fields } from '../../helpers/SettingsData.js';
 import { users } from '../../../data/MockData.js';
 
 /**
+ * Created by Ashley Bhandari
  * Lets the user change their configuration. Injected into SignedInContainer.
  * view: 'settings'
  */

@@ -3,8 +3,8 @@ import { getUser, getMatches } from '../../../data/Backend.js';
 import { users } from '../../../data/MockData.js';
 
 // Created by Gauri Arvind
+// not in use
 
-// view: 'discover'
 export class DisplayWithHousingView {
     /**
      * Takes an array of housing information and creates buttons to display it

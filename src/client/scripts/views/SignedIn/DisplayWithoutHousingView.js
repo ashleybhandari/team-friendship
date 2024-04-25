@@ -4,8 +4,8 @@ import { users } from '../../../data/MockData.js';
 import { DisplayManageUsersHelper as DisplayUser } from '../../helpers/Display/displayManageUsersHelper.js';
 
 // Created by Gauri Arvind
+// not in use
 
-// view: 'discover'
 export class DisplayWithoutHousingView {
     /**
      * Takes an array of housing information and creates buttons to display it
