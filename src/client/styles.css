@@ -600,28 +600,81 @@ body {
 
 /* AboutView.js */
 
-#aboutView .team-member {
-    display: flex;
-    align-items: flex-start;
+#aboutView {
+    padding: 80px 20% 20px;
+}
+
+#aboutView .section {
+    margin-bottom: 80px;
+}
+
+#aboutView .header {
+    text-align: center;
     margin-bottom: 20px;
 }
 
-#aboutView .member-info {
-    text-align: center;
-    margin-right: 20px;
+#aboutView p {
+    text-align: justify;
 }
 
-#aboutView .member-info img {
+#aboutView .contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#aboutView .contact p {
+    margin: 0;
+}
+
+#aboutView .contact a {
+    margin-top: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #FF715B;
+}
+
+#aboutView .contact a {
+    margin-top: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #FF715B;
+}
+
+#aboutView #teamContainer {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    row-gap: 40px;
+    column-gap: 40px;
+}
+
+#aboutView #teamContainer .pic-role {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#aboutView img {
     width: 150px;
-    height: 150px;
     border-radius: 50%;
-    object-fit: cover;
+    margin-bottom: 20px;
 }
 
-#aboutView .member-bio {
-    flex: 1;
-    text-align: left;
+#aboutView #teamContainer .pic-role h3 {
+    margin: 0;
 }
+
+#aboutView #teamContainer .pic-role p {
+    margin: 5px 0;
+}
+
+#aboutView #teamContainer .bio {
+    display: flex;
+    justify-content: center;
+}
+
+
 
 
 /* MatchesView.js */
@@ -758,7 +811,7 @@ body {
 }
 
 #settingsView .section {
-    margin: 0 0 100px 45px;
+    margin-bottom: 100px;
 }
 
 #settingsView .buttons {
@@ -805,10 +858,14 @@ body {
     width: 635px;
 }
 
-#settingsView #profile #settings_iAmLookingForRadio {
-    margin: auto;
-    grid-column: 3;
-    grid-row: 3 / 5;
+#settingsView #profile .sliders {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: 1 / 4;
+}
+
+#settingsView #profile .sliders .slider-input {
+    margin: 10px auto;
 }
 
 #settingsView #preferences {
@@ -824,10 +881,6 @@ body {
 #settingsView #preferences .amenities {
     grid-row: 3;
     grid-column: 1 / 5;
-}
-
-#settingsView #preferences .big-group {
-    margin-right: 45px;
 }
 
 #settingsView #housing {

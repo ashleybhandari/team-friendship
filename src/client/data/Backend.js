@@ -1,4 +1,4 @@
-// DB TODO: Delete when DatabasePouchDB works
+// DB TODO: delete
 import { users } from './MockData.js';
 
 async function getUsers() {

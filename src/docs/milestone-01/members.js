@@ -53,7 +53,7 @@ const BIOS = [
                to create social change with technology and entrepreneurship.'
     },
     {
-        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png', // TODO
+        pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_isha.jpeg',
         name: 'Isha Bang',
         role: 'All-Rounder',
         bio:  'Isha Bang is a sophmore at the University of Massachusetts      \

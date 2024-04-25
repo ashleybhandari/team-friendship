@@ -37,7 +37,6 @@ export class LandingView {
         const joinButtonElement = await joinButton.render();
         joinButtonElement.classList.add('join-button');
         joinButtonElement.addEventListener('click', () => {
-            // DB TODO: replace with Events.events().publish('navigateTo', signed in ? 'discover' : 'sign-in');
             Events.events().publish('navigateTo', 'sign-in');
         });
         landingContainer.appendChild(joinButtonElement);

@@ -46,12 +46,9 @@ export class Navbar1 {
     /**
      * Navigates to v. If the user is already signed in, clicking the Sign in
      * button redirects them to the Discover page.
-     * @param {string} v - View to navigate to
+     * @param {string} view - View to navigate to
      */
-    async #navigate(v) {
-        const view = v;
-        // DB TODO: replace with const view = (v === 'sign-in' && signed in) ? 'discover' : v;
-
+    async #navigate(view) {
         window.location.hash = view;
         await this.#events.publish('navigateTo', view);
     }

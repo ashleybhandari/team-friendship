@@ -1,3 +1,5 @@
+// created by Ashley Bhandari
+
 export class User {
     /**
      * Data structure: A user's profile information. Parameters in brackets are

@@ -42,7 +42,7 @@ export class NeedHousingView {
         `;
         needHousingViewElm.appendChild(content);
         needHousingViewElm.appendChild(
-            await new Navigation('create-3', 'discover', true).render()
+            await new Navigation('create-3', 'discover', [], true).render()
         );
 
         return needHousingViewElm;

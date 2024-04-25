@@ -72,14 +72,17 @@ export class SignInView {
         signInButtonElement.addEventListener('click', (e) => {
             e.preventDefault();
 
-            // DB TODO: replace with login function below
-            this.#events.publish('navigateTo', 'discover')
-            // login(
-            //     emailInputElement.value,
-            //     passwordInputElement.value,
-            //     () => this.#events.publish('navigateTo', 'discover'),
-            //     () => alert('Login failed. Check your credentials.')
-            // );
+            const signInFns = [
+                () => this.#events.publish('signedIn', emailInputElement.value),
+                () => this.#events.publish('navigateTo', 'discover')
+            ];
+
+            login(
+                emailInputElement.value,
+                passwordInputElement.value,
+                signInFns,
+                [() => alert('Login failed. Double-check your credentials.')]
+            );
         });
 
         return signInContainer;  // Return the complete sign-in container element
