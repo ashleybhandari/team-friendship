@@ -33,11 +33,11 @@ export class NeedHousingView {
         const headerContainer = document.createElement('div');
         headerContainer.style.textAlign = 'center'; 
     
-        const preferencesHeader = document.createElement('h2');
+        const preferencesHeader = document.createElement('h1');
         preferencesHeader.innerText = 'Tell us your preferences';
-        preferencesHeader.classList.add('preferences-header');
+        preferencesHeader.classList.add('preferences-header', 'battambang');
         headerContainer.appendChild(preferencesHeader);
-    
+
         const preferencesNote = document.createElement('p');
         preferencesNote.innerText = "we'll use this to set up your feed";
         preferencesNote.classList.add('preferences-note');
