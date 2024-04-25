@@ -19,7 +19,7 @@ export class MatchesView {
     #events = null;
 
     constructor() {
-        this.#user = users[0];
+        this.#user = users[0];  // DB TODO: initialize properly when PouchDB works
         this.#events = Events.events();
     }
 
@@ -49,7 +49,8 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches(this.#user.id); // DB TODO: use PouchDB
+        const matches = await getMatches(this.#user.id) // DB TODO: replace with below when PouchDB works
+        // const matches = await db.getMatches(this.#user.id);
 
         // show message if user has no matches
         if (matches.length === 0) {
@@ -62,7 +63,8 @@ export class MatchesView {
 
         // show list if user has matches
         for (const id of matches) {
-            const user = await getUser(id); // DB TODO: Use PouchDB
+            const user = await getUser(id); // DB TODO: replace with below when PouchDB works
+            // const user = await db.getUser(id);
             
             // match's entry in list
             const elm = document.createElement('div');
@@ -163,7 +165,8 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            // DB TODO: remove match
+            // DB TODO: uncomment when PouchDB works
+            // await db.removeMatch(this.#user.id, this.#curMatch) 
             await this.#renderList();
             this.#switchView();
         });
@@ -184,6 +187,8 @@ export class MatchesView {
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
         const email = (await getUser(id)).email;
+
+        this.#curMatch = id;
 
         // contact information
         const contactElm = document.getElementById('matchContact');

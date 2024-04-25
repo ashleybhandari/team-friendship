@@ -1,4 +1,4 @@
-// DB TODO: uncomment
+// DB TODO: uncomment when PouchDB works
 //PouchDB.plugin(require('pouchdb-authentication'));
 
 const db = new PouchDB('http://localhost:5984/mydb');
