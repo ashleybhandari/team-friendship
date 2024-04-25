@@ -22,7 +22,55 @@ export class ProfileView {
     }
 
     async render() {
-        // ... (existing code)
+        const profileViewElm = document.createElement('div');
+        profileViewElm.id = 'profileView';
+
+        // progress bar
+        profileViewElm.appendChild(await new ProgressBar(2).render());
+
+        // page header
+        const header = document.createElement('div');
+        header.classList.add('header');
+        header.innerHTML = `
+        <h1 class="battambang">Tell us about yourself</h1>
+        <p>starred fields are required</p>
+        `;
+        profileViewElm.appendChild(header);
+
+        const form = document.createElement('form');
+        form.appendChild(await this.#renderIdentity());
+        form.appendChild(await this.#renderEducation());
+        form.appendChild(await this.#renderBio());
+        form.appendChild(await this.#renderSocials());
+        form.appendChild(await this.#renderSliders());
+
+        profileViewElm.appendChild(form);
+
+        const nextBtnHandler = async () => {
+            const formData = new FormData(form);
+            const userData = Object.fromEntries(formData.entries());
+
+            try {
+                const currentUser = await getUserById(userData.id);
+                const updatedUserData = { ...currentUser, ...userData };
+                await updateUser(updatedUserData);
+                alert('Profile updated successfully!');
+                this.#events.publish('navigateTo', 'create-3');
+            } catch (error) {
+                if (error.message) {
+                    alert(`Error updating profile: ${error.message}`);
+                } else {
+                    alert('An unknown error occurred while updating the profile.');
+                }
+            }
+        };
+
+        // navigation between account creation pages
+        profileViewElm.appendChild(
+            await new Navigation('create-1', 'create-3', [nextBtnHandler]).render()
+        );
+
+        return profileViewElm;
     }
 
     async #renderIdentity() {
@@ -41,6 +89,7 @@ export class ProfileView {
 
         return identityContainer;
     }
+  
 
     async #renderGender() {
         return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
@@ -58,6 +107,53 @@ export class ProfileView {
         educationContainer.appendChild(await new DropdownInput('Level of education', fields.level).render());
 
         return educationContainer;
+    }
+
+    async #renderSocials() {
+        const socialsContainer = document.createElement('div');
+
+        socialsContainer.appendChild(await new TextInput('Facebook').render());
+        socialsContainer.appendChild(await new TextInput('Instagram').render());
+
+        return socialsContainer;
+    }
+
+    async #renderSliders() {
+        const slidersContainer = document.createElement('div');
+
+        slidersContainer.appendChild(await new SliderInput('Cleanliness*', 'not clean', 'very clean').render());
+        slidersContainer.appendChild(await new SliderInput('Noise when studying*', 'very quiet', 'noise is okay').render());
+        slidersContainer.appendChild(await new SliderInput('Sleeping habits*', 'early bird', 'night owl').render());
+        slidersContainer.appendChild(await new SliderInput('Hosting guests*', 'never', 'frequent').render());
+
+        return slidersContainer;
+    }
+}
+
+    async #re() {
+        return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
+    }
+
+    async #renderPronouns() {
+        return await new TextInput('Pronouns', 'text', 118).render();
+    }
+
+    async #renderEducation() {
+        const educationContainer = document.createElement('div');
+
+        educationContainer.appendChild(await new TextInput('Major').render());
+        educationContainer.appendChild(await new TextInput('School').render());
+        educationContainer.appendChild(await new DropdownInput('Level of education', fields.level).render());
+
+        return educationContainer;
+    }
+
+    async #renderBio() {
+        const bioContainer = document.createElement('div');
+
+        bioContainer.appendChild(await new TextAreaInput('Tell us about yourself', 'Lifestyle, hobbies, routines, allergies...').render());
+
+        return bioContainer;
     }
 
     async #renderSocials() {
