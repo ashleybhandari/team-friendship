@@ -363,17 +363,9 @@ body {
     font-weight: bold;
 }
 
-.navbar1 .logo {
+.navbar1 .links {
     display: flex;
     align-items: center;
-}
-
-.navbar1 .logo img {
-    width: 30px;
-}
-
-.navbar1 .logo h2 {
-    margin: 0 0 0 8px;
 }
 
 .navbar1 .links a {
@@ -382,6 +374,21 @@ body {
 
 .navbar1 .links a:hover {
     font-weight: bold;
+}
+
+.navbar1 .links .logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.navbar1 .links .logo img {
+    height: 30px;
+    width: 30px;
+}
+
+.navbar1 .links .logo h2 {
+    margin: 0 0 0 8px;
 }
 
 .navbar1 #nav-sign-in {
@@ -639,7 +646,7 @@ body {
 /* AboutView.js */
 
 #aboutView {
-    padding: 80px 20% 20px;
+    padding: 30px 20% 20px;
 }
 
 #aboutView .section {
