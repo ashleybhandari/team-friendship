@@ -53,8 +53,12 @@ export class ProfileView {
                 this.#events.publish('navigateTo', 'create-3');
                 
             } catch (error) {
-            alert('Error updating profile: ' + error.message);
-          }
+        if (error.message) {
+            alert(`Error updating profile: ${error.message}`);
+        } else {
+            alert('An unknown error occurred while updating the profile.');
+        }
+    }
     };
 
         // navigation between account creation pages
