@@ -58,6 +58,23 @@ body {
     background-color: #ec5b45;
 }
 
+/* CheckboxGroup.js */
+
+.checkbox-group.big-group p {
+    text-align: center;
+}
+
+.checkbox-group .boxes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox-group.big-group .boxes {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
 /* CheckboxInput.js */
 
 .custom-checkbox {
@@ -666,7 +683,7 @@ body {
 }
 
 #settingsView h3 {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
 }
 
@@ -677,6 +694,20 @@ body {
 
 #settingsView .section {
     margin: 0 0 100px 45px;
+}
+
+#settingsView .buttons {
+    display: flex;
+    justify-content: center;
+    margin: 50px 45px 0 0;
+}
+
+#settingsView #credentials-section .buttons {
+    margin-top: 20px;
+}
+
+#settingsView .buttons button {
+    margin: 0 5px;
 }
 
 #settingsView .subgroup {
@@ -709,7 +740,7 @@ body {
     width: 635px;
 }
 
-#settingsView #profile #lookingForRadio {
+#settingsView #profile #settings_iAmLookingForRadio {
     margin: auto;
     grid-column: 3;
     grid-row: 3 / 5;
@@ -717,24 +748,55 @@ body {
 
 #settingsView #preferences {
     display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 40px;
+}
+
+#settingsView #preferences .text-input {
+    grid-column: 1 / 3;
+}
+
+#settingsView #preferences .amenities {
+    grid-row: 3;
+    grid-column: 1 / 5;
+}
+
+#settingsView #preferences .big-group {
+    margin-right: 45px;
+}
+
+#settingsView #housing {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
     row-gap: 40px;
 }
 
-#settingsView #preferences .checkbox-list {
-    margin: auto 0;
+#settingsView #housing .rent {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
 }
 
-#settingsView #housing {}
-
-#settingsView .buttons {
-    display: flex;
-    justify-content: center;
+#settingsView #housing .rent .dollar-sign,
+#settingsView #housing .rent .slash {
+    margin-top: 29px;
 }
 
-#settingsView .buttons button {
-    margin: 0 5px;
+#settingsView #housing .details {
+    grid-row: 2;
+    grid-column: 2 / 4;
 }
+
+#settingsView #housing textarea {
+    width: 634px;
+    height: 150px;
+}
+
+#settingsView #housing .amenities {
+    grid-row: 3;
+    grid-column: 1 / 4;
+}
+
+/* LandingView.js */
 
 /* The landing container */
 .landing-container {
@@ -759,133 +821,81 @@ body {
 
 /* Smaller title "Find Your" */
 .landing-container .title-find-your {
-    font-size: 2rem;
-    margin-bottom: 0;
+    font-size: 2.4rem;
+    margin-bottom: -2rem;
 }
 
 /* Larger title "Next Home" */
 .landing-container .title-next-home {
     font-size: 4rem;
-    margin-top: 0;
 }
 
 /* Style for the Join button */
 .landing-container .join-button {
     align-self: flex-start; /* Align the button to the left */
     margin-top: 1rem;
-    font-size: 1.5rem;
-    padding: 1rem 2rem;
-    background-color: #FFD700; /* Yellow color */
+    font-size: 1.2rem;
+    padding: .7rem 0;
+    background-color: #F4D06F; /* Yellow color */
     border: none;
     border-radius: 2rem;
     cursor: pointer;
 }
 
-/* Style for SignInView */
+/* CreateAccountContainer.js */
 
-/* Styles for all input fields within .text-input in SignInView */
-.sign-in-container .text-input input {
-    border: 2px solid #ccc; /* Make border thicker */
-}
+/* SignInView.js, CredentialsView.js */
 
-/* Highlight all focused input fields within .text-input in SignInView */
-.sign-in-container .text-input input:focus {
-    outline: none; /* Remove default focus outline */
-    border-color: #28a745; /* Green border for focused state */
-    box-shadow: 0 0 3px #28a745; /* Add a subtle glow effect */
-}
-
-/* SignInView specific styles */
-.sign-in-container {
+.sign-in-container, .create-account-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh; /* Full height to center vertically on the page */
-    text-align: center;
-    gap: 20px; /* This sets the vertical space between elements */
+    padding: 60px 0 180px;
 }
 
-/* Style for the sign-up option */
-.sign-up-option {
-    margin-top: 20px;
-    font-size: 0.9em;
-    margin-bottom: 30px; /* Adds space below the 'Not a member? Sign up' */
-}
-
-/* Container for the title and options only */
-#housingView .title-options-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center the children horizontally */
-    width: 100%; /* Use the full width of the container */
-}
-
-#housingView .title-options-container .title {
-    font-size: 5rem; /* Increase the font-size for the title */
-    font-weight: bold; /* Make the title bold */
-    text-align: center; /* Center the title horizontally */
-    margin-top: 20px; /* Add space on top if needed */
-    margin-bottom: 20px; /* Space between the title and options */
-}
-
-#housingView .title-options-container .options {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Align radio buttons in the center */
-    margin-bottom: 1rem; /* Space after the last option */
-}
-
-/* Styles for CredentialsView */
-
-/* Styles for all input fields within .text-input in CredentialsView */
-.create-account-container .text-input input {
-    border: 2px solid #ccc; /* Make border thicker */
-}
-
-/* Highlight all focused input fields within .text-input in CredentialsView */
-.create-account-container .text-input input:focus {
-    outline: none; /* Remove default focus outline */
-    border-color: #28a745; /* Green border for focused state */
-    box-shadow: 0 0 3px #28a745; /* Add a subtle glow effect */
-}
-
-/* CredentialsView specific styles */
 .create-account-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* Full height to center vertically on the page */
-    text-align: center;
-    gap: 20px; /* This sets the vertical space between elements */
+    padding-top: 0;
 }
 
-/* Style for the header */
+.sign-in-container h1, .create-account-container h1 {
+    font-size: 28px;
+    margin: 70px 0 0;
+}
+
 .create-account-container h1 {
-    margin-bottom: 30px; /* Adds space below the header */
+    margin-top: 60px;
 }
 
-/* Style for the sign-up button */
-.create-account-container button {
-    margin-top: 20px;
-    margin-bottom: 30px; /* Adds space below the sign-up button */
+.sign-in-container a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #F4D06F;
 }
 
-/* PROFILE VIEW */
+.sign-in-container .input, .create-account-container .input {
+    margin: 25px;
+}
 
-/* ProfileView.css */
+/* ProfileView.js */
 
 #profileView {
-    margin: 50px auto;
-    padding-bottom: 50px;
+    margin: 0 auto;
     width: 1100px;
 }
 
-#profileView h1 {
-    margin: 0 0 40px;
-    text-align: center;
+#profileView .header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+#profileView .header h1 {
     font-size: 28px;
+}
+
+#profileView .header p {
+    margin: 0;
+    font-size: 18px;
 }
 
 #profileView form {
@@ -918,4 +928,29 @@ body {
     display: block;
     margin: 0 auto;
     margin-top: 40px;
+}
+
+/* HousingSituationView.js */
+
+/* Container for the title and options only */
+#housingView .title-options-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the children horizontally */
+    width: 100%; /* Use the full width of the container */
+}
+
+#housingView .title-options-container .title {
+    font-size: 5rem; /* Increase the font-size for the title */
+    font-weight: bold; /* Make the title bold */
+    text-align: center; /* Center the title horizontally */
+    margin-top: 20px; /* Add space on top if needed */
+    margin-bottom: 20px; /* Space between the title and options */
+}
+
+#housingView .title-options-container .options {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align radio buttons in the center */
+    margin-bottom: 1rem; /* Space after the last option */
 }

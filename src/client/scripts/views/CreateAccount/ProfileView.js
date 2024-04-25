@@ -1,8 +1,10 @@
+import { ProgressBar } from '../../components/ProgressBar.js';
 import { Button } from '../../components/Button.js';
-import { TextInput } from '../../components/TextInput.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
 import { TextAreaInput } from '../../components/TextAreaInput.js';
+import { TextInput } from '../../components/TextInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
+import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
@@ -20,8 +22,16 @@ export class ProfileView {
         const profileViewElm = document.createElement('div');
         profileViewElm.id = 'profileView';
 
-        const header = document.createElement('h1');
-        header.textContent = 'Create Your Profile';
+        // progress bar
+        profileViewElm.appendChild(await new ProgressBar(2).render());
+
+        // page header
+        const header = document.createElement('div');
+        header.classList.add('header');
+        header.innerHTML = `
+        <h1 class="battambang">Tell us about yourself</h1>
+        <p>starred fields are required</p>
+        `;
         profileViewElm.appendChild(header);
 
         const form = document.createElement('form');
@@ -33,23 +43,24 @@ export class ProfileView {
 
         profileViewElm.appendChild(form);
 
-        const saveButton = new Button('Save', 200);
-        const saveButtonElement = await saveButton.render();
-        profileViewElm.appendChild(saveButtonElement);
-
-        saveButtonElement.addEventListener('click', async (e) => {
-            e.preventDefault();
+        const nextBtnHandler = async () => {
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
 
             try {
-                await this.#database.updateUserProfile(userData);
+                await this.#database.updateUser(userData);
                 alert('Profile updated successfully!');
                 this.#events.publish('navigateTo', 'create-3');
+                
             } catch (error) {
-                alert('Error updating profile: ' + error.message);
-            }
-        });
+            alert('Error updating profile: ' + error.message);
+          }
+    };
+
+        // navigation between account creation pages
+        profileViewElm.appendChild(
+            await new Navigation('create-1', 'create-3', [nextBtnHandler]).render()
+        );
 
         return profileViewElm;
     }

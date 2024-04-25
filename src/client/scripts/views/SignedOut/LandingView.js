@@ -22,13 +22,13 @@ export class LandingView {
 
         // Create the 'Find Your' title element, add a class for styling, and append it to the landing container
         const titleFindYour = document.createElement('div');
-        titleFindYour.classList.add('title-find-your');
+        titleFindYour.classList.add('title-find-your', 'battambang');
         titleFindYour.textContent = 'Find Your';
         landingContainer.appendChild(titleFindYour);
 
         // Create the 'Next Home' title element, add a class for styling, and append it to the landing container
         const titleNextHome = document.createElement('div');
-        titleNextHome.classList.add('title-next-home');
+        titleNextHome.classList.add('title-next-home', 'battambang');
         titleNextHome.textContent = 'Next Home';
         landingContainer.appendChild(titleNextHome);
 
