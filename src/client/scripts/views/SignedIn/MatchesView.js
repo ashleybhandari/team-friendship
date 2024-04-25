@@ -1,6 +1,6 @@
 // created by Ashley Bhandari
 
-import { users, getUser, getMatches } from '../../../data/Backend.js';
+import { users, getUser, getMatches, removeMatch } from '../../../data/Backend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
@@ -16,8 +16,10 @@ export class MatchesView {
     #listViewElm = null;
     #profileViewElm = null;
     #profileViewContainer = null;
-    #user = null;
     #events = null;
+
+    #user = null;
+    #openedMatchId = null;
 
     constructor() {
         this.#user = users[0];  // DB TODO: initialize properly when PouchDB works
@@ -167,8 +169,8 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            // DB TODO: uncomment when PouchDB works
-            // await db.removeMatch(this.#user.id, curMatch) 
+            await removeMatch(this.#user.id, this.#openedMatchId); // DB TODO: replace with below when PouchDB works
+            // await db.removeMatch(this.#user.id, this.#openedMatchId) ;
             await this.#renderList();
             this.#switchView();
         });
@@ -189,6 +191,8 @@ export class MatchesView {
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
         const email = (await getUser(id)).email;
+
+        this.#openedMatchId = id;
 
         // contact information
         const contactElm = document.getElementById('matchContact');
