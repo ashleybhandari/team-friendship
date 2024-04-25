@@ -50,10 +50,8 @@ export class ProfileView {
             const userData = Object.fromEntries(formData.entries());
 
     try {
-        
-        const allUsers = await getAllUsers();
-        const currentUser = allUsers.find(user => user.id === userData.id);
 
+       const currentUser = await getUserByID(userData.id);
         const updatedUserData = { ...currentUser, ...userData };
         await updateUser(updatedUserData);
         alert('Profile updated successfully!');
