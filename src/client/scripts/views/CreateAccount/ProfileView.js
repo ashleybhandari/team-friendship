@@ -13,7 +13,7 @@ import { getUserById } from '../../../data/DatabasePouchDB.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
 
 /**
- * Represents the ProfileView class.
+ * ProfileView class
  */
 export class ProfileView {
     #events = null;
