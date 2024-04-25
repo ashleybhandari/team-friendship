@@ -9,6 +9,7 @@ import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
 import { getAllUsers } from '../../../data/DatabasePouchDB.js';
 import { getUserById } from '../../../data/DatabasePouchDB.js';
+import { fields } from '../../helpers/SettingsData.js';
 
 // view: create-2
 export class ProfileView {
@@ -17,7 +18,7 @@ export class ProfileView {
 
     constructor() {
         this.#events = Events.events();
-        this.#database = this.#database = { updateUser };
+        this.#database = { updateUser };
     }
 
     async render() {
@@ -46,28 +47,23 @@ export class ProfileView {
         profileViewElm.appendChild(form);
 
         const nextBtnHandler = async () => {
-            
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
 
             try {
-                const allUsers = await this.#database.getAllUsers();
-                const currentUser = allUsers.find(user => user.id === userData.id);
+                const currentUser = await getUserById(userData.id);
                 const updatedUserData = { ...currentUser, ...userData };
-                
                 await updateUser(updatedUserData);
                 alert('Profile updated successfully!');
                 this.#events.publish('navigateTo', 'create-3');
-                
             } catch (error) {
-             if (error.message) {
-            alert(`Error updating profile: ${error.message}`);
-        } else {
-            alert('An unknown error occurred while updating the profile.');
-        }
-    }
-};
-        
+                if (error.message) {
+                    alert(`Error updating profile: ${error.message}`);
+                } else {
+                    alert('An unknown error occurred while updating the profile.');
+                }
+            }
+        };
 
         // navigation between account creation pages
         profileViewElm.appendChild(
@@ -80,7 +76,7 @@ export class ProfileView {
     async #renderIdentity() {
         const identityContainer = document.createElement('div');
 
-        identityContainer.appendChild(await new TextInput('First Name*').render());
+        identityContainer.appendChild(await new TextInput('First name*').render());
 
         const subgroup1 = document.createElement('div');
         subgroup1.classList.add('subgroup');
@@ -88,13 +84,19 @@ export class ProfileView {
         subgroup1.appendChild(await new TextInput('Age*', 'text', 118).render());
         identityContainer.appendChild(subgroup1);
 
-        const subgroup2 = document.createElement('div');
-        subgroup2.classList.add('subgroup');
-        subgroup2.appendChild(await new DropdownInput('Gender Identity*', ['Woman', 'Man', 'Nonbinary'], 149.2).render());
-        subgroup2.appendChild(await new TextInput('Pronouns', 'text', 118).render());
-        identityContainer.appendChild(subgroup2);
+        identityContainer.appendChild(await this.#renderGender());
+        identityContainer.appendChild(await this.#renderPronouns());
 
         return identityContainer;
+    }
+  
+
+    async #renderGender() {
+        return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
+    }
+
+    async #renderPronouns() {
+        return await new TextInput('Pronouns', 'text', 118).render();
     }
 
     async #renderEducation() {
@@ -102,7 +104,46 @@ export class ProfileView {
 
         educationContainer.appendChild(await new TextInput('Major').render());
         educationContainer.appendChild(await new TextInput('School').render());
-        educationContainer.appendChild(await new DropdownInput('Level of Education', ['Undergrad', 'Grad', 'Other']).render());
+        educationContainer.appendChild(await new DropdownInput('Level of education', fields.level).render());
+
+        return educationContainer;
+    }
+
+    async #renderSocials() {
+        const socialsContainer = document.createElement('div');
+
+        socialsContainer.appendChild(await new TextInput('Facebook').render());
+        socialsContainer.appendChild(await new TextInput('Instagram').render());
+
+        return socialsContainer;
+    }
+
+    async #renderSliders() {
+        const slidersContainer = document.createElement('div');
+
+        slidersContainer.appendChild(await new SliderInput('Cleanliness*', 'not clean', 'very clean').render());
+        slidersContainer.appendChild(await new SliderInput('Noise when studying*', 'very quiet', 'noise is okay').render());
+        slidersContainer.appendChild(await new SliderInput('Sleeping habits*', 'early bird', 'night owl').render());
+        slidersContainer.appendChild(await new SliderInput('Hosting guests*', 'never', 'frequent').render());
+
+        return slidersContainer;
+    }
+}
+
+    async #re() {
+        return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
+    }
+
+    async #renderPronouns() {
+        return await new TextInput('Pronouns', 'text', 118).render();
+    }
+
+    async #renderEducation() {
+        const educationContainer = document.createElement('div');
+
+        educationContainer.appendChild(await new TextInput('Major').render());
+        educationContainer.appendChild(await new TextInput('School').render());
+        educationContainer.appendChild(await new DropdownInput('Level of education', fields.level).render());
 
         return educationContainer;
     }
@@ -128,9 +169,9 @@ export class ProfileView {
         const slidersContainer = document.createElement('div');
 
         slidersContainer.appendChild(await new SliderInput('Cleanliness*', 'not clean', 'very clean').render());
-        slidersContainer.appendChild(await new SliderInput('Noise When Studying*', 'very quiet', 'noise is okay').render());
-        slidersContainer.appendChild(await new SliderInput('Sleeping Habits*', 'early bird', 'night owl').render());
-        slidersContainer.appendChild(await new SliderInput('Hosting Guests*', 'never', 'frequent').render());
+        slidersContainer.appendChild(await new SliderInput('Noise when studying*', 'very quiet', 'noise is okay').render());
+        slidersContainer.appendChild(await new SliderInput('Sleeping habits*', 'early bird', 'night owl').render());
+        slidersContainer.appendChild(await new SliderInput('Hosting guests*', 'never', 'frequent').render());
 
         return slidersContainer;
     }
