@@ -879,43 +879,29 @@ body {
 /* ProfileView.js */
 
 #profileView {
-    margin: 50px auto;
-    padding-bottom: 50px;
+    margin: 0 auto;
     width: 1100px;
-    text-align: center;
 }
 
-#profileView h2 {
-    margin: 0 0 40px;
+#profileView .header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+#profileView .header h1 {
     font-size: 28px;
 }
 
-#profileView h3 {
-    margin-bottom: 40px;
+#profileView .header p {
+    margin: 0;
+    font-size: 18px;
 }
 
-#profileView p {
-    font-size: 14px;
-    margin-top: 0;
-}
-
-#profileView .section {
-    margin: 0 0 100px 45px;
-    text-align: left;
-}
-
-#profileView .buttons {
-    display: flex;
-    justify-content: center;
-    margin: 50px 45px 0 0;
-}
-
-#profileView #credentials-section .buttons {
-    margin-top: 20px;
-}
-
-#profileView .buttons button {
-    margin: 0 5px;
+#profileView form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
 }
 
 #profileView .subgroup {
@@ -924,85 +910,47 @@ body {
     width: 306.2px;
 }
 
-#profileView #credentials {
-    display: flex;
-    justify-content: center;
-}
-
-#profileView #credentials .text-input {
-    margin: 0 20px;
-}
-
-#profileView #profile {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 40px;
-    text-align: left;
-}
-
-#profileView #profile .text-area-input {
+#profileView .text-area-input {
     grid-column: 1 / 3;
 }
 
-#profileView #profile textarea {
+#profileView textarea {
     min-height: 82px;
     width: 635px;
 }
 
-#profileView #profile #settings_iAmLookingForRadio {
-    margin: auto;
+#profileView .sliders-container {
     grid-column: 3;
     grid-row: 3 / 5;
 }
 
-#profileView #preferences {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    row-gap: 40px;
-    text-align: left;
+#profileView button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 40px;
 }
 
-#profileView #preferences .text-input {
-    grid-column: 1 / 3;
+/* HousingSituationView.js */
+
+/* Container for the title and options only */
+#housingView .title-options-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the children horizontally */
+    width: 100%; /* Use the full width of the container */
 }
 
-#profileView #preferences .amenities {
-    grid-row: 3;
-    grid-column: 1 / 5;
+#housingView .title-options-container .title {
+    font-size: 5rem; /* Increase the font-size for the title */
+    font-weight: bold; /* Make the title bold */
+    text-align: center; /* Center the title horizontally */
+    margin-top: 20px; /* Add space on top if needed */
+    margin-bottom: 20px; /* Space between the title and options */
 }
 
-#profileView #preferences .big-group {
-    margin-right: 45px;
-}
-
-#profileView #housing {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 40px;
-    text-align: left;
-}
-
-#profileView #housing .rent {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-}
-
-#profileView #housing .rent .dollar-sign,
-#profileView #housing .rent .slash {
-    margin-top: 29px;
-}
-
-#profileView #housing .details {
-    grid-row: 2;
-    grid-column: 2 / 4;
-}
-
-#profileView #housing textarea {
-    width: 634px;
-    height: 150px;
-}
-
-#profileView #housing .amenities {
-    grid-row: 3;
-    grid-column: 1 / 4;
+#housingView .title-options-container .options {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align radio buttons in the center */
+    margin-bottom: 1rem; /* Space after the last option */
 }
