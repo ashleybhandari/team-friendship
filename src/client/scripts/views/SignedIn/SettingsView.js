@@ -8,7 +8,7 @@ import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
-import { users } from '../../../data/MockData.js';
+import { getCurrentUser } from '../../../data/MockBackend.js';
 
 /**
  * Created by Ashley Bhandari
@@ -27,12 +27,15 @@ export class SettingsView {
     #requiredFields = null; // required fields
 
     constructor() {
-        // DB TODO: remove users import, replace all localStorage stuff with PouchDB when it works
-        localStorage.setItem('user', JSON.stringify(users[0]));
-        this.#user = JSON.parse(localStorage.getItem('user'));
+        
     }
 
     async render() {
+        // DB TODO: remove users import, replace all localStorage stuff with PouchDB when it works
+        const user = await getCurrentUser();
+        localStorage.setItem('user', JSON.stringify(user));
+        this.#user = JSON.parse(localStorage.getItem('user'));
+
         this.#settingsViewElm = document.createElement('div');
         this.#settingsViewElm.id = 'settingsView';
 

@@ -2,7 +2,7 @@ import { User } from "../../../data/data_structures/User.js";
 import { DisplayHousingHelper } from "./displayHousingHelper.js";
 import { DisplayRoommatesHelper } from "./displayRoommatesHelper.js";
 // import { db } from "./src/client/data/DatabasePouchDB.js";
-import { getUser, getMatches } from '../../../data/Backend.js';
+import { getUserById, getMatches } from '../../../data/MockBackend.js';
 
 // Created by Gauri Arvind
 
@@ -18,7 +18,7 @@ import { getUser, getMatches } from '../../../data/Backend.js';
 
         // Code for rendering mock data matches
         for(let i = 0; i < potentialMatches.length; ++i) {
-            const currUser = await getUser(potentialMatches[i].id);
+            const currUser = await getUserById(potentialMatches[i].id);
             if(user.hasHousing === currUser.hasHousing) {
                 if(user.character.sleep === currUser.character.sleep) {
                     displayMatches.push(currUser);

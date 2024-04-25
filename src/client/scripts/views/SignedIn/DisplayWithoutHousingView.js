@@ -1,6 +1,5 @@
 import { User } from "../../../data/data_structures/User.js";
-import { getUser, getMatches } from '../../../data/Backend.js';
-import { users } from '../../../data/MockData.js';
+import { getUserById, getMatches, getCurrentUser } from '../../../data/MockBackend.js';
 import { DisplayManageUsersHelper as DisplayUser } from '../../helpers/Display/displayManageUsersHelper.js';
 
 // Created by Gauri Arvind
@@ -170,7 +169,7 @@ export class DisplayWithoutHousingView {
         const dWOHVElem = document.createElement("div");
         dWOHVElem.classList.add("display-with-housing-view"); 
 
-        const currUser = users[5];
+        const currUser = await getCurrentUser();
         let potentialMatches = await getMatches();
         let displayMatches = potentialMatches.filter(e => !currUser.matches.includes(e) && !currUser.rejected.includes(e) && !e.hasHousing);
 
@@ -185,10 +184,10 @@ export class DisplayWithoutHousingView {
     
                 dWOHContainer.classList.add("display-user-block");
                 // The left container of the page, which includes user info
-                const leftContainer = await this.#createLeftContainer(currUser, await getUser(i));
+                const leftContainer = await this.#createLeftContainer(currUser, await getUserById(i));
     
                 // The right container of the page, which includes housing information
-                const rightContainer = await this.#createRightContainer(await getUser(i));
+                const rightContainer = await this.#createRightContainer(await getUserById(i));
                 
                 dWOHContainer.appendChild(leftContainer);
                 dWOHContainer.appendChild(rightContainer);
