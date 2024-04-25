@@ -109,8 +109,9 @@ export class HaveHousingView {
             const box = document.createElement('div');
             box.classList.add('small-box');
             box.style.width = '100px';
-            box.style.height = '100px';
-            box.style.backgroundColor = '#CCCCCC'; 
+            box.style.height = '100px'; 
+            box.style.border = '2px solid #CCCCCC'; 
+            box.style.backgroundColor = '#FFFFFF'; 
             box.style.marginRight = '20px'; 
             box.style.borderRadius = '10px';
             box.style.display = 'flex';
