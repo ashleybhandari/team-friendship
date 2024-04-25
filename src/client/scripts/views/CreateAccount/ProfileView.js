@@ -15,7 +15,7 @@ export class ProfileView {
 
     constructor() {
         this.#events = Events.events();
-        this.#database = db.default;
+        this.#database = this.#database = { updateUser };
     }
 
     async render() {
