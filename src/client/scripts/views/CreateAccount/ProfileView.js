@@ -12,16 +12,26 @@ import { getAllUsers } from '../../../data/DatabasePouchDB.js';
 import { getUserById } from '../../../data/DatabasePouchDB.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
 
-// view: create-2
+/**
+ * Represents the ProfileView class.
+ */
 export class ProfileView {
     #events = null;
     #database = null;
 
+    /**
+     * Creates an instance of ProfileView.
+     */
     constructor() {
         this.#events = Events.events();
         this.#database = { updateUser };
     }
 
+    /**
+     * Renders the ProfileView.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered ProfileView element.
+     */
     async render() {
         const profileViewElm = document.createElement('div');
         profileViewElm.id = 'profileView';
@@ -75,6 +85,11 @@ export class ProfileView {
         return profileViewElm;
     }
 
+    /**
+     * Renders the identity section of the profile.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered identity section element.
+     */
     async #renderIdentity() {
         const identityContainer = document.createElement('div');
 
@@ -92,14 +107,29 @@ export class ProfileView {
         return identityContainer;
     }
 
+    /**
+     * Renders the gender dropdown input.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered gender dropdown input element.
+     */
     async #renderGender() {
         return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
     }
 
+    /**
+     * Renders the pronouns text input.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered pronouns text input element.
+     */
     async #renderPronouns() {
         return await new TextInput('Pronouns', 'text', 118).render();
     }
 
+    /**
+     * Renders the education section of the profile.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered education section element.
+     */
     async #renderEducation() {
         const educationContainer = document.createElement('div');
 
@@ -110,6 +140,11 @@ export class ProfileView {
         return educationContainer;
     }
 
+    /**
+     * Renders the bio text area input.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered bio text area input element.
+     */
     async #renderBio() {
         const bioContainer = document.createElement('div');
 
@@ -118,6 +153,11 @@ export class ProfileView {
         return bioContainer;
     }
 
+    /**
+     * Renders the socials section of the profile.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered socials section element.
+     */
     async #renderSocials() {
         const socialsContainer = document.createElement('div');
 
@@ -127,6 +167,11 @@ export class ProfileView {
         return socialsContainer;
     }
 
+    /**
+     * Renders the sliders section of the profile.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered sliders section element.
+     */
     async #renderSliders() {
         const slidersContainer = document.createElement('div');
 
