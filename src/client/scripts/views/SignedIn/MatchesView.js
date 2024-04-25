@@ -166,7 +166,7 @@ export class MatchesView {
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             // DB TODO: uncomment when PouchDB works
-            // await db.removeMatch(this.#user.id, this.#curMatch) 
+            // await db.removeMatch(this.#user.id, curMatch) 
             await this.#renderList();
             this.#switchView();
         });
@@ -187,8 +187,6 @@ export class MatchesView {
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
         const email = (await getUser(id)).email;
-
-        this.#curMatch = id;
 
         // contact information
         const contactElm = document.getElementById('matchContact');

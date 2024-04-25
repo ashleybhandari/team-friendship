@@ -15,7 +15,7 @@ const u0 = new User(
     { major: 'Culinary Arts', school: 'Umass Amherst', level: 'grad' },
     { fb: 'fbobob', ig: 'bobig'},
     'Bob. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
-    true, // hasHousing
+    false, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
@@ -46,7 +46,7 @@ const u0 = new User(
     ),
     [], // liked
     [], // rejected
-    [1,2]  // matches
+    [1, 2]  // matches
 );
 
 const u1 = new User(
@@ -60,7 +60,7 @@ const u1 = new User(
     { major: 'Music', school: 'Smith', level: 'grad' },
     { fb: 'lindabelcher', ig: 'linlig' },
     'Linda. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
-    false, // hasHousing
+    true, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
@@ -105,7 +105,7 @@ const u2 = new User(
     { major: 'Biology', school: 'Smith', level: 'undergrad' },
     { fb: 'tinytina', ig: 'tt_ig' },
     'Tina. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
-    false, // hasHousing
+    true, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
@@ -150,7 +150,7 @@ const u3 = new User(
     { major: 'Music', school: 'Umass Amherst', level: 'undergrad' },
     { fb: 'geniefb', ig: 'genebelcher' },
     'Gene. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
-    false, // hasHousing
+    true, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
