@@ -1,4 +1,3 @@
-// DB TODO: uncomment
 const db = new PouchDB('roommate-matching');
 
 export const getAllUsers = async () => {

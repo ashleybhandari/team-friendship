@@ -26,7 +26,7 @@ export class SettingsView {
     #requiredFields = null; // required fields
 
     constructor() {
-        // DB TODO: remove users import, replace all localStorage stuff w PouchDB
+        // DB TODO: remove users import, replace all localStorage stuff with PouchDB when it works
         localStorage.setItem('user', JSON.stringify(users[5]));
         this.#user = JSON.parse(localStorage.getItem('user'));
     }
@@ -229,7 +229,6 @@ class ProfileSection {
         const section = document.createElement('div');
         section.id = 'profile';
 
-        // TODO: implement user avatar
         const avatar = document.createElement('div');
         avatar.innerHTML = `
         <p>Change your avatar:</p>
@@ -495,8 +494,6 @@ class HousingSection {
         section.appendChild(await this.renderUtilities());
         section.appendChild(await this.renderDetails());
         section.appendChild(await this.renderAmenities());
-
-        // TODO: implement housing pics
 
         elm.appendChild(header);
         elm.appendChild(section);

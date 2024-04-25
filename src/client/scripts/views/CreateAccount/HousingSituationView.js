@@ -56,7 +56,7 @@ export class HousingSituationView {
             try {
                 await updateUser(updatedUser);
             } catch (error) {
-                alert('Error updating housing situation: ' + error.message);
+                console.log('Error updating housing situation: ' + error.message);
             }
         };
 

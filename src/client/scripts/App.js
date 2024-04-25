@@ -86,7 +86,7 @@ export class App {
     #redirect(view) {
         return false;
 
-        const signedIn = false; // DB TODO
+        const signedIn = false; // DB TODO: use when PouchDB works
         let redirect = false;
 
         if (signedIn && view === 'sign-in') {

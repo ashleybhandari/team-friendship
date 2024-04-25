@@ -56,13 +56,13 @@ export class ProfileView {
                 const currentUser = await getUserById(userData.id);
                 const updatedUserData = { ...currentUser, ...userData };
                 await updateUser(updatedUserData);
-                alert('Profile updated successfully!');
+                console.log('Profile updated successfully!');
                 this.#events.publish('navigateTo', 'create-3');
             } catch (error) {
                 if (error.message) {
-                    alert(`Error updating profile: ${error.message}`);
+                    console.log(`Error updating profile: ${error.message}`);
                 } else {
-                    alert('An unknown error occurred while updating the profile.');
+                    console.log('An unknown error occurred while updating the profile.');
                 }
             }
         };

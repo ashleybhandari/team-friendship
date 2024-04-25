@@ -77,12 +77,13 @@ export class SignInView {
                 () => this.#events.publish('navigateTo', 'discover')
             ];
 
-            login(
-                emailInputElement.value,
-                passwordInputElement.value,
-                signInFns,
-                [() => alert('Login failed. Double-check your credentials.')]
-            );
+            signInFns.forEach((fn) => fn()); // DB TODO: replace with below when PouchDB works
+            // login(
+            //     emailInputElement.value,
+            //     passwordInputElement.value,
+            //     signInFns,
+            //     [() => alert('Login failed. Double-check your credentials.')]
+            // );
         });
 
         return signInContainer;  // Return the complete sign-in container element
