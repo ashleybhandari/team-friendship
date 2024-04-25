@@ -41,6 +41,13 @@ export class SettingsFns {
         ];
     }
 
+    getFields() {
+        return [
+            ...this.#getGeneralFields().map((e) => e[1]),
+            ...this.#getDropdownFields().map((e) => e[1])
+        ];
+    }
+
     /**
      * Prepends all id's with "settings_" to avoid conflicts with other parts
      * of the application.

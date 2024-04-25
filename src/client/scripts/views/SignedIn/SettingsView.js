@@ -71,12 +71,14 @@ export class SettingsView {
               );
 
         // fill HTML fields with the user's saved values
-        this.#settingsFns = new SettingsFns(
+        const settingsFnsObj = new SettingsFns(
             this.#settingsViewElm, this.#user
-        ).getFns();
+        );
+        this.#settingsFns = settingsFnsObj.getFns();
         this.#fillFields(this.#settingsViewElm);
 
         // set up form validation
+        this.#requiredFields = settingsFnsObj.getFields();
         this.#validationSetup()
         
         return this.#settingsViewElm;
@@ -127,11 +129,15 @@ export class SettingsView {
      * Save any changes made.
      */
     #saveChanges() {
-        const invalid = this.#requiredFields.some((id) =>
-            !this.#settingsViewElm.querySelector(`#settings_${id}`).checkValidity()
+        const invalid = this.#requiredFields.some((id) => {
+            const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
+            if (elm) return !elm.checkValidity()
+            return false;
+        }
+            
         );
         if (invalid) {
-            alert('Make sure all required fields are filled out (the starred ones!)');
+            alert('Make sure all fields are filled out!');
             return;
         }
 
@@ -150,13 +156,6 @@ export class SettingsView {
      * Sets up form validation.
      */
     #validationSetup() {
-        this.#requiredFields = [
-            ...this.#credentialsSection.requiredFields(),
-            ...this.#profileSection.requiredFields(),
-            ...this.#preferencesSection.requiredFields(),
-            ...this.#housingSection.requiredFields()
-        ]
-
         // set required property on required fields to true
         this.#requiredFields.forEach((id) => {
             const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
@@ -192,20 +191,13 @@ class CredentialsSection {
         const section = document.createElement('div');
         section.id = 'credentials';
 
-        section.appendChild(await new TextInput('Email*').render());
+        section.appendChild(await new TextInput('Email').render());
         section.appendChild(await new TextInput('Password').render());
 
         elm.appendChild(header);
         elm.appendChild(section);
         elm.appendChild(buttons);
         this.#parent.appendChild(elm);
-    }
-
-    /**
-     * @returns {string[]} - Array of id's for required fields
-     */
-    requiredFields() {
-        return ['emailInput'];
     }
 }
 
@@ -272,19 +264,19 @@ class ProfileSection {
         const elm = document.createElement('div');
 
         // first name
-        elm.appendChild(await new TextInput('First name*').render());
+        elm.appendChild(await new TextInput('First name').render());
 
         // subgroup (inputs are half-width): nickname + age
         const grp1 = document.createElement('div');
         grp1.classList.add('subgroup');
         grp1.appendChild(await new TextInput('Nickname', 'text', 118).render());
-        grp1.appendChild(await new TextInput('Age*', 'text', 118).render());
+        grp1.appendChild(await new TextInput('Age', 'text', 118).render());
 
         // subgroup (inputs are half-width): gender identity + pronouns
         const grp2 = document.createElement('div');
         grp2.classList.add('subgroup');
         grp2.appendChild(await new DropdownInput(
-            'Gender identity*', fields.genderId, 149.2
+            'Gender identity', fields.genderId, 149.2
         ).render());
         grp2.appendChild(await new TextInput('Pronouns', 'text', 118).render());
         
@@ -332,37 +324,22 @@ class ProfileSection {
         sliders.classList.add('sliders');
 
         sliders.appendChild(await new SliderInput(
-            'Cleanliness*', 'not clean', 'very clean'
+            'Cleanliness', 'not clean', 'very clean'
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Sleeping habits*', 'early bird', 'night owl'
+            'Sleeping habits', 'early bird', 'night owl'
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Noise when studying*', 'very quiet', 'noise is okay'
+            'Noise when studying', 'very quiet', 'noise is okay'
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Hosting guests*', 'never', 'frequent'
+            'Hosting guests', 'never', 'frequent'
         ).render());
 
         return sliders;
-    }
-
-    /**
-     * @returns {string[]} - Array of id's for required fields
-     */
-    requiredFields() {
-        return [
-            'firstNameInput',
-            'ageInput',
-            'genderIdentityDrpdwn',
-            'cleanlinessSldr',
-            'noiseWhenStudyiSldr',
-            'sleepingHabitsSldr',
-            'hostingGuestsSldr'
-        ];
     }
 }
 
@@ -482,13 +459,6 @@ class PreferencesSection {
 
         return elm;
     }
-
-    /**
-     * @returns {string[]} - Array of id's for required fields
-     */
-    requiredFields() {
-        return [];
-    }
 }
 
 
@@ -536,14 +506,14 @@ class HousingSection {
     async renderCityCol() {
         const elm = document.createElement('div');
 
-        elm.appendChild(await new TextInput('City*').render());
+        elm.appendChild(await new TextInput('City').render());
         elm.appendChild(await this.renderRent());
 
         // subgroup (inputs are half-width): number of beds and baths
         const brba = document.createElement('div');
         brba.classList.add('subgroup');
-        brba.appendChild(await new TextInput('No. beds*', 'text', 118).render());
-        brba.appendChild(await new TextInput('No. baths*', 'text', 118).render());
+        brba.appendChild(await new TextInput('No. beds', 'text', 118).render());
+        brba.appendChild(await new TextInput('No. baths', 'text', 118).render());
         elm.appendChild(brba);
 
         return elm;
@@ -553,15 +523,15 @@ class HousingSection {
         const elm = document.createElement('div');
 
         elm.appendChild(await new DropdownInput(
-            'Gender inclusivity*', fields.genderIncl
+            'Gender inclusivity', fields.genderIncl
         ).render());
 
         elm.appendChild(await new DropdownInput(
-            'Move-in period*', fields.timeframe
+            'Move-in period', fields.timeframe
         ).render());
 
         elm.appendChild(await new DropdownInput(
-            'Lease length*', fields.leaseLength
+            'Lease length', fields.leaseLength
         ).render());
 
         return elm;
@@ -571,15 +541,15 @@ class HousingSection {
         const elm = document.createElement('div');
 
         elm.appendChild(await new DropdownInput(
-            'Lease type*', fields.leaseType
+            'Lease type', fields.leaseType
         ).render());
 
         elm.appendChild(await new DropdownInput(
-            'Room type*', fields.roomType
+            'Room type', fields.roomType
         ).render());
         
         elm.appendChild(await new DropdownInput(
-            'Building type*', fields.buildingType
+            'Building type', fields.buildingType
         ).render());
 
         return elm;
@@ -600,13 +570,13 @@ class HousingSection {
         elm.appendChild(dollarSign);
 
         elm.appendChild(await new TextInput(
-            'Rent for room*', 'text', 103
+            'Rent for room', 'text', 103
         ).render());
 
         elm.appendChild(slash);
 
         elm.appendChild(await new DropdownInput(
-            'Period*', fields.rentPeriod, 133
+            'Period', fields.rentPeriod, 133
         ).render());
 
         return elm;
@@ -639,24 +609,5 @@ class HousingSection {
         elm.querySelectorAll('input').forEach((e) => e.id = `${e.id}H`);
 
         return elm;
-    }
-
-
-    /**
-     * @returns {string[]} - Array of id's for required fields
-     */
-    requiredFields() {
-        return [
-            'cityInput',
-            'rentForRoomInput',
-            'noBedsInput',
-            'noBathsInput',
-            'genderInclusiviDrpdwn',
-            'moveInPeriodDrpdwn',
-            'leaseLengthDrpdwn',
-            'leaseTypeDrpdwn',
-            'roomTypeDrpdwn',
-            'buildingTypeDrpdwn'
-        ];
     }
 }
