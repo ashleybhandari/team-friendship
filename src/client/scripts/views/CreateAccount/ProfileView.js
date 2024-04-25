@@ -34,10 +34,13 @@ export class ProfileView {
      */
     async render() {
         const profileViewElm = document.createElement('div');
-        profileViewElm.id = 'profileView';
+        profileViewElm.id = 'profileViewElm';
 
         // progress bar
         profileViewElm.appendChild(await new ProgressBar(2).render());
+
+        const viewContent = document.createElement('div');
+        viewContent.id = 'profileView';
 
         // page header
         const header = document.createElement('div');
@@ -46,7 +49,7 @@ export class ProfileView {
         <h1 class="battambang">Tell us about yourself</h1>
         <p>starred fields are required</p>
         `;
-        profileViewElm.appendChild(header);
+        viewContent.appendChild(header);
 
         const form = document.createElement('form');
         form.appendChild(await this.#renderIdentity());
@@ -55,7 +58,7 @@ export class ProfileView {
         form.appendChild(await this.#renderSocials());
         form.appendChild(await this.#renderSliders());
 
-        profileViewElm.appendChild(form);
+        viewContent.appendChild(form);
 
         const nextBtnHandler = async () => {
             const formData = new FormData(form);
@@ -77,10 +80,13 @@ export class ProfileView {
             }
         };
 
+        profileViewElm.appendChild(viewContent);
+
         // navigation between account creation pages
         profileViewElm.appendChild(
             await new Navigation('create-1', 'create-3', [nextBtnHandler]).render()
         );
+
 
         return profileViewElm;
     }

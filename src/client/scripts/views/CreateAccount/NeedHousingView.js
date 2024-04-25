@@ -28,6 +28,8 @@ export class NeedHousingView {
         const needHousingViewElm = document.createElement('div');
         needHousingViewElm.id = 'needHousingView';
 
+        needHousingViewElm.appendChild(await new ProgressBar(4).render());
+
         const headerContainer = document.createElement('div');
         headerContainer.style.textAlign = 'center'; 
     
