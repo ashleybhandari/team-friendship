@@ -6,6 +6,7 @@ import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
+ * Created by Ashley Bhandari
  * Displays the user's matches as a list of abbreviated profiles (can click on
  * a profile to view more details). Injected into SignedInContainer.
  * view: 'matches'
@@ -34,7 +35,8 @@ export class MatchesView {
         // initialize view with matches list
         this.#switchView();
 
-        // inject user profile from Discover page into expanded match page
+        // Published by DiscoverView. Injects the published element (a user
+        // profile) into MatchView's profile view.
         this.#events.subscribe('sendProfile', (elm) => this.#injectProfile(elm));
 
         return this.#matchesViewElm;

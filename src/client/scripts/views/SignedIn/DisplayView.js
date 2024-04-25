@@ -3,6 +3,7 @@ import { findUsersToDisplay, displayUsers } from "../../helpers/Display/displayH
 import { users } from '../../../data/MockData.js';
 
 // Created by Gauri Arvind
+// not in use
 
 export class DisplayView {
     #displayView = null;

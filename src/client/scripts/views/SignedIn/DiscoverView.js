@@ -6,6 +6,7 @@ import { getUsers, getUser } from '../../../data/Backend.js';
 
 /**
  * Created by Ashley Bhandari
+ * User can view other users by either liking or rejecting them.
  * view: 'discover'
  */
 export class DiscoverView {
@@ -15,8 +16,11 @@ export class DiscoverView {
     #events = null;
 
     constructor() {
-        this.#curUser = users[0];
+        this.#curUser = users[0]; // DB TODO: Replace when PouchDB works
         this.#events = Events.events();
+
+        // Published by MatchesView. Creates a profile element of the user with
+        // the published id, and sends it back to MatchesView.
         this.#events.subscribe('getProfile', async (id) => await this.renderFromId(id));
     }
 
@@ -35,19 +39,21 @@ export class DiscoverView {
                 !this.#curUser.matches.includes(user.id)
         });
 
-        this.#unseenIndex = 0; // index of currently displayed profile in unseen
+        // index in unseen of the profile to display
+        this.#unseenIndex = 0;
+
+        // profile to display
         const curProfile = unseen[this.#unseenIndex];
 
-        // left side of page: pic, name, bio (depending on housing situation)
+        // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#renderBioSection();
         this.#discoverViewElm.appendChild(bioSection);
 
-        // right side of page: info abt housing or bio (depending on housing situation)
+        // right side of page: info about housing or bio (depending on housing situation)
         const hasHousing = curProfile ? curProfile.hasHousing : false; // necessary if unseen is empty
         const infoSection = hasHousing
             ? this.#renderInfoSectionWithHousing()
             : this.#renderInfoSectionWithoutHousing();
-
         this.#discoverViewElm.appendChild(infoSection);
 
         // like and reject buttons
@@ -57,12 +63,13 @@ export class DiscoverView {
         const rejectBtn = await new DiscoverButton(false).render();
         const likeBtn = await new DiscoverButton(true).render();
 
+        // handles "liking" or "rejecting" a profile
         rejectBtn.addEventListener('click', () => {
             this.#curUser.rejected.push(unseen[this.#unseenIndex].id);
             this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
         likeBtn.addEventListener('click', () => {
-            this.#curUser.rejected.push(unseen[this.#unseenIndex].id);
+            this.#curUser.liked.push(unseen[this.#unseenIndex].id);
             this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
 
@@ -70,19 +77,26 @@ export class DiscoverView {
         buttons.appendChild(likeBtn);
         this.#discoverViewElm.appendChild(buttons);
 
-        // inject information into HTML
+        // inject user's information into the page
         this.#injectProfile(curProfile, bioSection, infoSection);
 
         return this.#discoverViewElm;
     }
 
+    /**
+     * Creates an element with a single profile. Published to MatchesView for
+     * its match profile pages.
+     * @param {string} id - id of the user whose profile will be published
+     */
     async renderFromId(id) {
         const elm = document.createElement('div');
         elm.id = 'discoverProfile'
         elm.classList.add('discoverElm');
 
+        // user to display
         const user = await getUser(id);
 
+        // render HTML
         const bioSection = this.#renderBioSection();
         const infoSection = user.hasHousing
             ? this.#renderInfoSectionWithHousing()
@@ -90,16 +104,25 @@ export class DiscoverView {
         elm.appendChild(bioSection);
         elm.appendChild(infoSection);
         
+        // inject user's info into the HTML
         this.#injectBio(bioSection, user)
         user.hasHousing
             ? this.#injectInfoWithHousing(infoSection, user)
             : this.#injectInfoWithoutHousing(infoSection, user);
 
+        // send the profile to MatchesView
         this.#events.publish('sendProfile', {
             id: user.id, profile: elm
         });
     }
 
+
+    /**
+     * Renders containers for the left side of the page, to be injected with
+     * information at a later point in time. Holds the user's profile picture,
+     * name, education, and a self-written bio.
+     * @returns {HTMLDivElement}
+     */
     #renderBioSection() {
         const elm = document.createElement('div');
         elm.classList.add('discover-bio');
@@ -120,6 +143,13 @@ export class DiscoverView {
         return elm;
     }
     
+    /**
+     * Renders containers for the right side of the page, to be injected with
+     * information at a later point in time. Specific to users with housing, it
+     * holds their personal characteristics and basic information about their
+     * housing.
+     * @returns {HTMLDivElement}
+     */
     #renderInfoSectionWithHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
@@ -148,6 +178,12 @@ export class DiscoverView {
         return elm;
     }
 
+    /**
+     * Renders containers for the right side of the page, to be injected with
+     * information at a later point in time. Specific to users without housing,
+     * it holds their personal characteristics and self-written bio.
+     * @returns {HTMLDivElement}
+     */
     #renderInfoSectionWithoutHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
@@ -164,8 +200,16 @@ export class DiscoverView {
         return elm;
     }
 
+    /**
+     * Inject the profile with user's information.
+     * @param {User} user - User to display
+     * @param {HTMLDivElement} bioSection - Bio section of their profile
+     * @param {HTMLDivElement} infoSection - Info section of their profile
+     * @returns 
+     */
     #injectProfile(user, bioSection, infoSection) {
-        // shows message if no more users left to display
+        // shows message if the user does not exist (there are not more unseen
+        // matches)
         if (!user) {
             this.#discoverViewElm.innerHTML = `
             <p class="no-users-msg">
@@ -175,13 +219,20 @@ export class DiscoverView {
             return;
         }
 
+        // inject bio section
         this.#injectBio(bioSection, user);
 
+        // inject info section
         user.hasHousing 
             ? this.#injectInfoWithHousing(infoSection, user)
             : this.#injectInfoWithoutHousing(infoSection, user);
     }
 
+    /**
+     * Injects the bio section with user's information.
+     * @param {HTMLDivElement} container - Bio section
+     * @param {User} user - User to display
+     */
     #injectBio(container, user) {
         // profile picture
         container.querySelector('.bio-pfp').src = user.avatar;
@@ -215,25 +266,35 @@ export class DiscoverView {
         }
     }
 
+    /**
+     * Injects the info section with user's housing information.
+     * @param {HTMLDivElement} container - Info section
+     * @param {User} user - User to display
+     */
     #injectInfoWithHousing(container, user) {
-        // about me
+        // about me: characteristics
         this.#injectCharacteristics(container, user);
 
-        // accommodation details
+        // accommodation details: lease info, occupants
         this.#injectAccommodationDetails(container, user);
 
-        // accommodation stats
+        // accommodation stats: utilities, amenities, notes
         this.#injectAccommodationStats(container, user);
     }
 
     #injectInfoWithoutHousing(container, user) {
-        // about me
+        // about me: characteristics
         this.#injectCharacteristics(container, user);
 
-        // user description
+        // user self-written description
         this.#injectDescription(container, user);
     }
 
+    /**
+     * Injects user's characteristics into the info section.
+     * @param {HTMLDivElement} container - Info section
+     * @param {User} user - User to display
+     */
     #injectCharacteristics(container, user) {
         const section = container.querySelector('.about-details');
         section.innerHTML = '';
@@ -241,16 +302,24 @@ export class DiscoverView {
         const render = (trait, value) => {
             const elm = document.createElement('div');
             elm.classList.add('character-trait');
+            
+            // gets user-friendly text for the property
             elm.innerText = characterMap.get(trait)[value - 1];
             section.appendChild(elm);
         };
 
-        render('clean', user.character.clean);
-        render('sleep', user.character.sleep);
-        render('noise', user.character.noise);
-        render('guests', user.character.guests);
+        render('clean', user.character.clean);   // cleanliness
+        render('sleep', user.character.sleep);   // sleeping habits
+        render('noise', user.character.noise);   // noise while studying
+        render('guests', user.character.guests); // how often they host guests
     }
 
+    /**
+     * Injects housing information into the info section. Only for users with
+     * housing.
+     * @param {HTMLDivElement} container - Info section
+     * @param {User} user - User to display
+     */
     #injectAccommodationDetails(container, user) {
         const section = container.querySelector('.accommodation-details');
         const house = user.housing;
@@ -270,23 +339,38 @@ export class DiscoverView {
         `;
     }
 
+    /**
+     * Injects utilities and amenities into the info section. Only for users
+     * with housing.
+     * @param {HTMLDivElement} container - Info section
+     * @param {User} user - User to display
+     */
     #injectAccommodationStats(container, user) {
         const house = user.housing;
 
+        /**
+         * Goes through a list of string-boolean pairs and creates elements
+         * based on the boolean value.
+         * @param {HTMLDivElement} cntr - Container to hold created elements
+         * @param {Object<string, boolean>} attributes - key: property, value: whether user has that property
+         */
         const renderList = (cntr, attributes) => {
             const elm = document.createElement('div');
             cntr.innerHTML = '';
 
             Object.entries(attributes).forEach(([key, value], i) => {
+                // little dot to separate the created elements
                 const separator = document.createElement('div');
                 separator.innerHTML = `
                 <i class="material-symbols-outlined">radio_button_unchecked</i>
                 `;
 
                 const attribute = document.createElement('p');
-                attribute.innerText = houseMap.get(key)    
+                attribute.innerText = houseMap.get(key); // for user-friendly text
 
                 if (value) {
+                    // if the boolean value is true, add the attribute and
+                    // separator to cntr
                     if (i !== 0) cntr.appendChild(separator);
                     cntr.appendChild(attribute)
                 }
@@ -300,11 +384,21 @@ export class DiscoverView {
         const amenities = container.querySelector('.amenities');
         const notes = container.querySelector('.notes');
 
+        // render utilities and amenities
         renderList(rentIncludes, house.utilities);
         renderList(amenities, house.amenities);
+
+        // render user-inputted notes about housing
         notes.innerHTML = `<p>${house.notes}</p>`
     }
 
+    /**
+     * Injects the user's self-written description into the info section. Only
+     * for users without housing (users with housing have this field in the
+     * bio section).
+     * @param {HTMLDivElement} container - Info section
+     * @param {User} user - User to display
+     */
     #injectDescription(container, user) {
         const elm = container.querySelector('.bio-description');
         elm.innerText = user.description;
