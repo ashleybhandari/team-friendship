@@ -12,7 +12,7 @@ import { getUserById } from '../../../data/DatabasePouchDB.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
 
 export class ProfileView {
-    #settingsViewElm = null;
+    #profileViewElm = null;
     #credentialsSection = null;
     #profileSection = null;
     #preferencesSection = null;
@@ -21,26 +21,25 @@ export class ProfileView {
     #settingsFns = null;
     #requiredFields = null;
 
-    constructor() {
-        this.#settingsViewElm = document.createElement('div');
-        this.#settingsViewElm.id = 'settingsView';
+    cconstructor() {
+        this.#profileViewElm = document.createElement('div');
+        this.#profileViewElm.id = 'profileView';
 
         // Load user data from storage or database
         // TODO: Replace localStorage with PouchDB
-        
         localStorage.setItem('user', JSON.stringify(users[5])); // Mock data for testing
         this.#user = JSON.parse(localStorage.getItem('user'));
     }
 
     async render() {
         // progress bar
-        this.#settingsViewElm.appendChild(await new ProgressBar(2).render());
+        this.#profileViewElm.appendChild(await new ProgressBar(2).render());
 
         // create page sections
-        this.#credentialsSection = new CredentialsSection(this.#settingsViewElm, this.#user);
-        this.#profileSection = new ProfileSection(this.#settingsViewElm, this.#user);
-        this.#preferencesSection = new PreferencesSection(this.#settingsViewElm);
-        this.#housingSection = new HousingSection(this.#settingsViewElm);
+        this.#credentialsSection = new CredentialsSection(this.#profileViewElm, this.#user);
+        this.#profileSection = new ProfileSection(this.#profileViewElm, this.#user);
+        this.#preferencesSection = new PreferencesSection(this.#profileViewElm);
+        this.#housingSection = new HousingSection(this.#profileViewElm);
 
         // render sections
         await this.#credentialsSection.render(await this.#getButtons());
@@ -50,13 +49,13 @@ export class ProfileView {
             : await this.#preferencesSection.render(await this.#getButtons());
 
         // fill HTML fields with the user's saved values
-        this.#settingsFns = new SettingsFns(this.#settingsViewElm, this.#user).getFns();
+        this.#settingsFns = new SettingsFns(this.#profileViewElm, this.#user).getFns();
         this.#fillFields();
 
         // set up form validation
         this.#validationSetup();
 
-        return this.#settingsViewElm;
+        return this.#profileViewElm;
     }
 
     async #getButtons() {
@@ -92,7 +91,7 @@ export class ProfileView {
     #saveChanges() {
         // Save any changes made
         const invalid = this.#requiredFields.some((id) =>
-            !this.#settingsViewElm.querySelector(`#settings_${id}`).checkValidity()
+            !this.#profileViewElm.querySelector(`#settings_${id}`).checkValidity()
         );
         if (invalid) {
             alert('Make sure all required fields are filled out (the starred ones!)');
@@ -105,7 +104,7 @@ export class ProfileView {
         localStorage.setItem('user', JSON.stringify(this.#user));
 
         // Get settings functions with new user value
-        this.#settingsFns = new SettingsFns(this.#settingsViewElm, this.#user).getFns();
+        this.#settingsFns = new SettingsFns(this.#profileViewElm, this.#user).getFns();
     }
 
     #validationSetup() {
@@ -119,7 +118,7 @@ export class ProfileView {
 
         // Set required property on required fields to true
         this.#requiredFields.forEach((id) => {
-            const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
+            const elm = this.#profileViewElm.querySelector(`#settings_${id}`);
             if (elm) elm.required = true;
         });
     }
