@@ -1,3 +1,5 @@
+// created by Ashley Bhandari
+
 import { Navbar1 } from '../../components/Navbar1.js';
 import { LandingView } from './LandingView.js';
 import { AboutView } from './AboutView.js';

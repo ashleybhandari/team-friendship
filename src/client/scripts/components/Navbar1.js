@@ -16,13 +16,18 @@ export class Navbar1 {
         elm.classList.add('navbar1');
 
         elm.innerHTML = `
-        <nav>
-            <a href="#landing" id="nav-landing">Home</a>
-            <a href="#about" id="nav-about">About us</a>
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png">
+            <h2 class="battambang">KeyMate</h2>
+            <div class="links">
+                <a href="#landing" id="nav-landing">Home</a>
+                <a href="#about" id="nav-about">About us</a>
+            </div>
+        </div>
+        <div>
             <a href="#sign-in" id="nav-sign-in">Sign in</a>
-        </nav>
+        </div>
         `;
-        // TODO: style, etc.
 
         // add click event listener to each link
         elm
@@ -41,12 +46,9 @@ export class Navbar1 {
     /**
      * Navigates to v. If the user is already signed in, clicking the Sign in
      * button redirects them to the Discover page.
-     * @param {string} v - View to navigate to
+     * @param {string} view - View to navigate to
      */
-    async #navigate(v) {
-        const view = v;
-        // DB TODO: replace with const view = (v === 'sign-in' && signed in) ? 'discover' : v;
-
+    async #navigate(view) {
         window.location.hash = view;
         await this.#events.publish('navigateTo', view);
     }

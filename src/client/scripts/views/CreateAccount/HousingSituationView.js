@@ -3,6 +3,7 @@
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
+import { updateUser } from '../../../data/DatabasePouchDB.js';
 
 /**
  * UI component: Housing Situation Screen
@@ -20,17 +21,46 @@ export class HousingSituationView {
          // Title
          const titleOptionsContainer = document.createElement('div');
          titleOptionsContainer.classList.add('title-options-container');
+
+         //Form
+         const form = document.createElement('form');
+         form.id = 'housingSituationForm'; // Handle the form submission
         
          // Render the radio input for housing situation choices
          const radioInputElement = await new RadioInput(
             'What is your housing situation?', 
             ['I am looking for housing', 'I have housing and am looking for roommates']
         ).render();
-        titleOptionsContainer.appendChild(radioInputElement);;
-
+        form.appendChild(radioInputElement);
+        titleOptionsContainer.appendChild(form);
         housingViewElm.appendChild(titleOptionsContainer);
 
-        housingViewElm.appendChild(await new Navigation('create-2', 'create-4').render());
+        const nextBtnHandler = async () => {
+
+             // Create a FormData object from the form element
+            const formData = new FormData(form);
+            // Convert the form data into a key-value pair object
+            const userData = Object.fromEntries(formData.entries());
+
+            // Placeholder values for user ID and revision number
+            const userId = 'currentUserId'; 
+            const userRev = 'currentUserRev'; 
+
+            // Construct the user object with the updated housing preference
+            const updatedUser = {
+                id: userId,
+                _rev: userRev,
+                housing: userData.housing 
+            };
+            // Attempt to update the user document in the database
+            try {
+                await updateUser(updatedUser);
+            } catch (error) {
+                console.log('Error updating housing situation: ' + error.message);
+            }
+        };
+
+        housingViewElm.appendChild(await new Navigation('create-2', 'create-4', [nextBtnHandler]).render());
 
         return housingViewElm;
     }

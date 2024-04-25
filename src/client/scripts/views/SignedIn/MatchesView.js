@@ -1,3 +1,5 @@
+// created by Ashley Bhandari
+
 import { getUser, getMatches } from '../../../data/Backend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
@@ -13,9 +15,12 @@ export class MatchesView {
     #listViewElm = null;
     #profileViewElm = null;
     #profileViewContainer = null;
+    #user = null;
+    #curMatch = null;
     #events = null;
 
     constructor() {
+        // DB TODO: initialize this.#user when PouchDB works
         this.#events = Events.events();
     }
 
@@ -46,8 +51,8 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches();
-        // DB TODO: const matches = await db.getMatches(userId);
+        const matches = await getMatches(); // DB TODO: replace with below when PouchDB works
+        // const matches = await db.getMatches(this.#user.id);
 
         // show message if user has no matches
         if (matches.length === 0) {
@@ -60,8 +65,8 @@ export class MatchesView {
 
         // show list if user has matches
         for (const id of matches) {
-            const user = await getUser(id);
-            // DB TODO: const user = await db.getUserById(matchId);
+            const user = await getUser(id); // DB TODO: replace with below when PouchDB works
+            // const user = await db.getUser(id);
             
             // match's entry in list
             const elm = document.createElement('div');
@@ -162,7 +167,8 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            // DB TODO: await db.removeMatch(userId, matchId);
+            // DB TODO: uncomment when PouchDB works
+            // await db.removeMatch(this.#user.id, this.#curMatch) 
             await this.#renderList();
             this.#switchView();
         });
@@ -183,6 +189,8 @@ export class MatchesView {
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
         const email = (await getUser(id)).email;
+
+        this.#curMatch = id;
 
         // contact information
         const contactElm = document.getElementById('matchContact');

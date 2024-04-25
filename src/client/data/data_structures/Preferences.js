@@ -1,3 +1,5 @@
+// created by Ashley Bhandari
+
 export class Preferences {
     /**
      * Data structure: Describes the preferences of users who don't have

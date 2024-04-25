@@ -2,7 +2,7 @@
 
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
-import { login } from '../../../data/LogIn.js';
+// import { login } from '../../../data/LogIn.js';
 import { Events } from '../../Events.js';
 
 /**
@@ -72,13 +72,17 @@ export class SignInView {
         signInButtonElement.addEventListener('click', (e) => {
             e.preventDefault();
 
-            // DB TODO: replace with login function below
-            this.#events.publish('navigateTo', 'discover')
+            const signInFns = [
+                () => this.#events.publish('signedIn', emailInputElement.value),
+                () => this.#events.publish('navigateTo', 'discover')
+            ];
+
+            signInFns.forEach((fn) => fn()); // DB TODO: replace with below when PouchDB works
             // login(
             //     emailInputElement.value,
             //     passwordInputElement.value,
-            //     () => this.#events.publish('navigateTo', 'discover'),
-            //     () => alert('Login failed. Check your credentials.')
+            //     signInFns,
+            //     [() => alert('Login failed. Double-check your credentials.')]
             // );
         });
 
