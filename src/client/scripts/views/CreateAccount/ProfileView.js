@@ -6,7 +6,7 @@ import { TextInput } from '../../components/TextInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
-import * as db from '../../../data/DatabasePouchDB.js';
+import { updateUser } from '../../../data/DatabasePouchDB.js';
 
 // view: create-2
 export class ProfileView {
