@@ -59,17 +59,17 @@ export class ProfileView {
 
         // render sections
         await this.#credentialsSection.render(
-            await this.#getButtons(this.#profileViewElm)
+            await this.#getNextButton(this.#profileViewElm)
         );
         await this.#profileSection.render(
-            await this.#getButtons(this.#profileViewElm)
+            await this.#getNextButton(this.#profileViewElm)
         );
         this.#user.hasHousing
             ? await this.#housingSection.render(
-                await this.#getButtons(this.#profileViewElm)
+                await this.#getNextButton(this.#profileViewElm)
               )
             : await this.#preferencesSection.render(
-                await this.#getButtons(this.#profileViewElm)
+                await this.#getNextButton(this.#profileViewElm)
               );
 
         // fill HTML fields with the user's saved values
@@ -85,54 +85,40 @@ export class ProfileView {
     }
 
     /**
-     * Render Revert changes and Save buttons.
+     * Render Next button.
      */
-    async #getButtons() {
+    async #getNextButton() {
         const elm = document.createElement('div');
         elm.classList.add('buttons');
 
-        // create buttons
-        const revertElm = await new Button(
-            'Revert changes', 150, 'danger'
+        // create next button
+        const nextElm = await new Button(
+            'Next', 80, 'submit'
         ).render();
-        const saveElm = await new Button(
-            'Save', 80, 'submit'
-        ).render();
-        saveElm.id = 'saveBtn';
+        nextElm.id = 'nextBtn';
 
-        // click event listeners
-        revertElm.addEventListener('click', (e) => {
+        // click event listener
+        nextElm.addEventListener('click', async (e) => {
             e.preventDefault();
-            this.#fillFields();
-        });
-        saveElm.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.#saveChanges();
+            if (this.#validateForm()) {
+                this.#saveChanges();
+                this.#events.publish('navigateTo', 'create-3');
+            }
         });
 
-        elm.appendChild(revertElm);
-        elm.appendChild(saveElm);
-
+        elm.appendChild(nextElm);
         return elm;
     }
 
     /**
      * Fills the HTML elements with the user's saved values. Used for
-     * initialization and reverting changes.
+     * initialization.
      */
     #fillFields() {
         this.#settingsFns.forEach((field) => field.fill());
     }
 
     #saveChanges() {
-        const invalid = this.#requiredFields.some((id) =>
-            !this.#profileViewElm.querySelector(`#settings_${id}`).checkValidity()
-        );
-        if (invalid) {
-            alert('Make sure all required fields are filled out (the starred ones!)');
-            return;
-        }
-
         this.#settingsFns.forEach((field) => field.save());
 
         // save new configuration
@@ -157,6 +143,17 @@ export class ProfileView {
             const elm = this.#profileViewElm.querySelector(`#settings_${id}`);
             if (elm) elm.required = true
         });
+    }
+
+    #validateForm() {
+        const invalid = this.#requiredFields.some((id) =>
+            !this.#profileViewElm.querySelector(`#settings_${id}`).checkValidity()
+        );
+        if (invalid) {
+            alert('Make sure all required fields are filled out (the starred ones!)');
+            return false;
+        }
+        return true;
     }
 }
 
@@ -458,7 +455,152 @@ class PreferencesSection {
     }
 
     async renderAmenities() {
-        const boxes = toMap(fields.amenities);
+    const boxes = toMap(fields.amenities);
 
-        const elm = await new CheckboxGroup('Amenities', boxes, 4).render();
-        elm.classList.add('amenities
+    const elm = await new CheckboxGroup('Amenities', boxes, 4).render();
+    elm.classList.add('amenities');
+
+    // to differentiate it from Housing section's amenities
+    elm.id = `${elm.id}P`
+    elm.querySelectorAll('label').forEach((e) => e.htmlFor = `${e.htmlFor}P`);
+    elm.querySelectorAll('input').forEach((e) => e.id = `${e.id}P`);
+
+    return elm;
+}
+
+/**
+ * @returns {string[]} - Array of id's for required fields
+ */
+requiredFields() {
+    return [];
+}
+}
+
+class HousingSection {
+    #parent = null;
+
+    /**
+     * Housing section of the Profile view.
+     * @param {HTMLDivElement} parent - Profile view
+     */
+    constructor(parent) {
+        this.#parent = parent;
+    }
+
+    /**
+     * Renders Housing section.
+     * @param {HTMLDivElement} - Buttons to render at bottom of section
+     */
+    async render(buttons) {
+        const elm = document.createElement('div');
+        elm.id = 'housing-section';
+        elm.classList.add('section');
+
+        const header = document.createElement('h3');
+        header.innerText = 'Your Housing';
+
+        const section = document.createElement('div');
+        section.id = 'housing';
+
+        section.appendChild(await this.renderCityCol());
+        section.appendChild(await this.renderGenderCol());
+        section.appendChild(await this.renderTypeCol());
+        section.appendChild(await this.renderUtilities());
+        section.appendChild(await this.renderDetails());
+        section.appendChild(await this.renderAmenities());
+
+        // TODO: implement pics
+
+        elm.appendChild(header);
+        elm.appendChild(section);
+        elm.appendChild(buttons);
+        this.#parent.appendChild(elm);
+    }
+
+    async renderCityCol() {
+        const elm = document.createElement('div');
+
+        elm.appendChild(await new TextInput('City*').render());
+        elm.appendChild(await this.renderRent());
+
+        // subgroup (inputs are half-width): number of beds and baths
+        const brba = document.createElement('div');
+        brba.classList.add('subgroup');
+        brba.appendChild(await new TextInput('No. beds*', 'text', 118).render());
+        brba.appendChild(await new TextInput('No. baths*', 'text', 118).render());
+        elm.appendChild(brba);
+
+        return elm;
+    }
+
+    async renderGenderCol() {
+        const elm = document.createElement('div');
+
+        elm.appendChild(await new DropdownInput(
+            'Gender inclusivity*', fields.genderIncl
+        ).render());
+
+        elm.appendChild(await new DropdownInput(
+            'Move-in period*', fields.timeframe
+        ).render());
+
+        elm.appendChild(await new DropdownInput(
+            'Lease length*', fields.leaseLength
+        ).render());
+
+        return elm;
+    }
+
+    async renderTypeCol() {
+        const elm = document.createElement('div');
+
+        elm.appendChild(await new DropdownInput(
+            'Lease type*', fields.leaseType
+        ).render());
+
+        elm.appendChild(await new DropdownInput(
+            'Room type*', fields.roomType
+        ).render());
+        
+        elm.appendChild(await new DropdownInput(
+            'Building type*', fields.buildingType
+        ).render());
+
+        return elm;
+    }    
+
+    async renderRent() {
+        const elm = document.createElement('div');
+        elm.classList.add('subgroup', 'rent');
+
+        const dollarSign = document.createElement('span');
+        dollarSign.classList.add('dollar-sign');
+        dollarSign.innerText = '$';
+
+        const slash = document.createElement('span');
+        slash.classList.add('slash');
+        slash.innerText = '/';
+        
+        elm.appendChild(dollarSign);
+
+        elm.appendChild(await new TextInput(
+            'Rent for room*', 'text', 103
+        ).render());
+
+        elm.appendChild(slash);
+
+        elm.appendChild(await new DropdownInput(
+            'Period*', fields.rentPeriod, 133
+        ).render());
+
+        return elm;
+    }
+
+    async renderDetails() {
+        const elm = await new TextAreaInput(
+            'Details', 'Anything else you want to mention!'
+        ).render();
+        elm.classList.add('details');
+        return elm;
+    }
+
