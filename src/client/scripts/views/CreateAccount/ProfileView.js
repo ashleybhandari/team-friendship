@@ -628,7 +628,7 @@ class HousingSection {
     /**
      * @returns {string[]} - Array of id's for required fields
      */
-    requiredFields() {
+     requiredFields() {
         return [
             'cityInput',
             'rentForRoomInput',
