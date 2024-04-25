@@ -52,7 +52,7 @@ export class ProfileView {
 
     try {
 
-       const currentUser = await getUserById(JSON.stringify(userData.id));
+        const currentUser = await this.#database.getUserByID(userData.id);
         const updatedUserData = { ...currentUser, ...userData };
         await updateUser(updatedUserData);
         alert('Profile updated successfully!');
