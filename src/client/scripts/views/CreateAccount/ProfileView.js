@@ -130,7 +130,7 @@ export class ProfileView {
     }
 }
 
-    async #re() {
+    async #renderGenderIdentity() {
         return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
     }
 
