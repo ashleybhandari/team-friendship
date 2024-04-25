@@ -1,3 +1,5 @@
+// created by Ashley Bhandari
+
 export class Housing {
     /**
      * Data structure: Describes a housing accommodation. Parameters in

@@ -1,3 +1,5 @@
+// created by Ashley Bhandari
+
 export class ProgressBar {
     /**
      * UI component: Progress bar that shows the user's progress during account
