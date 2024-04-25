@@ -62,7 +62,7 @@ export class HaveHousingView {
         this.#preferencesSection = new PreferencesSection(haveHousingViewElm);
         await this.#preferencesSection.render();
 
-        const navigation = await new Navigation('create-3', 'discover', true).render();
+        const navigation = await new Navigation('create-3', 'discover', [], true).render();
         haveHousingViewElm.appendChild(navigation);
 
         this.#queryFns = new SettingsFns(haveHousingViewElm, this.#user); 

@@ -27,7 +27,7 @@ export class SettingsView {
 
     constructor() {
         // DB TODO: remove users import, replace all localStorage stuff with PouchDB when it works
-        localStorage.setItem('user', JSON.stringify(users[5]));
+        localStorage.setItem('user', JSON.stringify(users[0]));
         this.#user = JSON.parse(localStorage.getItem('user'));
     }
 

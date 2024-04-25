@@ -53,7 +53,7 @@ export class NeedHousingView {
             console.error("Element with ID 'needHousingForm' not found");
         }
 
-        const navigation = await new Navigation('create-3', 'discover', true).render();
+        const navigation = await new Navigation('create-3', 'discover', [], true).render();
         needHousingViewElm.appendChild(navigation);
 
         this.#queryFns = new SettingsFns(needHousingViewElm, this.#user); 
