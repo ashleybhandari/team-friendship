@@ -193,4 +193,4 @@ function getPropFromDomValue(value) {
     return null;
 }
 
-export { fields, toMap, getFieldFromProp, getPropFromDomValue };
+export { data, fields, toMap, getFieldFromProp, getPropFromDomValue };

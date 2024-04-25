@@ -32,8 +32,7 @@ export class MatchesView {
         // initialize view with matches list
         this.#switchView();
 
-        // inject user profile if the Discover page publishes one
-        new DiscoverTmp();
+        // inject user profile from Discover page into expanded match page
         this.#events.subscribe('sendProfile', (elm) => this.#injectProfile(elm));
 
         return this.#matchesViewElm;
@@ -214,19 +213,5 @@ export class MatchesView {
             this.#profileViewElm.classList.add('hidden');
             window.location.hash = 'matches';
         }
-    }
-}
-
-// TODO: make discover page subscribe('getProfile'), publish('sendProfile')
-// models the injection system until then
-class DiscoverTmp {
-    constructor() {
-        Events.events().subscribe('getProfile', this.#createElm);
-    }
-
-    async #createElm(id) {
-        const elm = document.createElement('div');
-        elm.innerText = `Match id: ${id}`;
-        Events.events().publish('sendProfile', { id, profile: elm});
     }
 }
