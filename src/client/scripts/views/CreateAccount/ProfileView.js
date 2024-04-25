@@ -7,6 +7,8 @@ import { SliderInput } from '../../components/SliderInput.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
+import { getAllUsers } from '../../../data/DatabasePouchDB.js';
+
 
 // view: create-2
 export class ProfileView {
