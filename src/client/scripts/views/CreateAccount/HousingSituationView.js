@@ -31,6 +31,7 @@ export class HousingSituationView {
             'What is your housing situation?', 
             ['I am looking for housing', 'I have housing and am looking for roommates']
         ).render();
+        radioInputElement.querySelector('#whatIsYourHousiRadioGrp').classList.add('battambang')
         form.appendChild(radioInputElement);
         titleOptionsContainer.appendChild(form);
         housingViewElm.appendChild(titleOptionsContainer);

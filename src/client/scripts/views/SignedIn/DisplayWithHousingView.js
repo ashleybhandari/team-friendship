@@ -1,6 +1,5 @@
 import { User } from "../../../data/data_structures/User.js";
-import { getUser, getMatches } from '../../../data/Backend.js';
-import { users } from '../../../data/MockData.js';
+import { getUserById, getMatches, getCurrentUser } from '../../../data/MockBackend.js';
 
 // Created by Gauri Arvind
 // not in use
@@ -319,7 +318,7 @@ export class DisplayWithHousingView {
         const dWHVElem = document.createElement("div");
         dWHVElem.classList.add("display-with-housing-view", "display-user-block");
 
-        const currUser = users[5];
+        const currUser = await getCurrentUser();
         let potentialMatches = await getMatches();
         let displayMatches = potentialMatches.filter(e => !currUser.matches.includes(e) && !currUser.rejected.includes(e) && e.hasHousing);
 
@@ -332,7 +331,7 @@ export class DisplayWithHousingView {
                     const dWHContainer = document.createElement("div");
                     dWHContainer.classList.add("display-user-block");
                     // The left container of the page, which includes user info
-                    const userSearched = await getUser(displayMatches[i])
+                    const userSearched = await getUserById(displayMatches[i])
                     const leftContainer = await this.#createLeftContainer(currUser, userSearched);
 
                     // The right container of the page, which includes housing information

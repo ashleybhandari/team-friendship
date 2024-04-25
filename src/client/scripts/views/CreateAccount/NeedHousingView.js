@@ -1,12 +1,11 @@
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
-import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
-import { users } from '../../../data/MockData.js';
 import { CheckboxInput } from '../../components/CheckboxInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
+import { getCurrentUser } from '../../../data/MockBackend.js';
 
 
 export class NeedHousingView {
@@ -18,23 +17,27 @@ export class NeedHousingView {
     #events = null;
 
     constructor() {
-        localStorage.setItem('user', JSON.stringify(users[5]));
-        this.#user = JSON.parse(localStorage.getItem('user')); 
         this.#events = Events.events();
     }
 
     async render() {
+        const user = await getCurrentUser();
+        localStorage.setItem('user', JSON.stringify(user));
+        this.#user = JSON.parse(localStorage.getItem('user'));
+
         const needHousingViewElm = document.createElement('div');
         needHousingViewElm.id = 'needHousingView';
+
+        needHousingViewElm.appendChild(await new ProgressBar(4).render());
 
         const headerContainer = document.createElement('div');
         headerContainer.style.textAlign = 'center'; 
     
-        const preferencesHeader = document.createElement('h2');
+        const preferencesHeader = document.createElement('h1');
         preferencesHeader.innerText = 'Tell us your preferences';
-        preferencesHeader.classList.add('preferences-header');
+        preferencesHeader.classList.add('preferences-header', 'battambang');
         headerContainer.appendChild(preferencesHeader);
-    
+
         const preferencesNote = document.createElement('p');
         preferencesNote.innerText = "we'll use this to set up your feed";
         preferencesNote.classList.add('preferences-note');
@@ -57,7 +60,6 @@ export class NeedHousingView {
         needHousingViewElm.appendChild(navigation);
 
         this.#queryFns = new SettingsFns(needHousingViewElm, this.#user); 
-        this.#fillFields(needHousingViewElm); 
 
         this.#validationSetup(needHousingViewElm);
         

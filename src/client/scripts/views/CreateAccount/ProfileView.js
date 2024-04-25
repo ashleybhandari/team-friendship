@@ -34,10 +34,13 @@ export class ProfileView {
      */
     async render() {
         const profileViewElm = document.createElement('div');
-        profileViewElm.id = 'profileView';
+        profileViewElm.id = 'profileViewElm';
 
         // progress bar
         profileViewElm.appendChild(await new ProgressBar(2).render());
+
+        const viewContent = document.createElement('div');
+        viewContent.id = 'profileView';
 
         // page header
         const header = document.createElement('div');
@@ -46,16 +49,17 @@ export class ProfileView {
         <h1 class="battambang">Tell us about yourself</h1>
         <p>starred fields are required</p>
         `;
-        profileViewElm.appendChild(header);
+        viewContent.appendChild(header);
 
         const form = document.createElement('form');
         form.appendChild(await this.#renderIdentity());
         form.appendChild(await this.#renderEducation());
         form.appendChild(await this.#renderBio());
         form.appendChild(await this.#renderSocials());
-        form.appendChild(await this.#renderSliders());
+        form.appendChild(await this.#renderSliders1());
+        form.appendChild(await this.#renderSliders2());
 
-        profileViewElm.appendChild(form);
+        viewContent.appendChild(form);
 
         const nextBtnHandler = async () => {
             const formData = new FormData(form);
@@ -77,10 +81,13 @@ export class ProfileView {
             }
         };
 
+        profileViewElm.appendChild(viewContent);
+
         // navigation between account creation pages
         profileViewElm.appendChild(
             await new Navigation('create-1', 'create-3', [nextBtnHandler]).render()
         );
+
 
         return profileViewElm;
     }
@@ -101,8 +108,11 @@ export class ProfileView {
         subgroup1.appendChild(await new TextInput('Age*', 'text', 118).render());
         identityContainer.appendChild(subgroup1);
 
-        identityContainer.appendChild(await this.#renderGender());
-        identityContainer.appendChild(await this.#renderPronouns());
+        const subgroup2 = document.createElement('div');
+        subgroup2.classList.add('subgroup');
+        subgroup2.appendChild(await this.#renderGender());
+        subgroup2.appendChild(await this.#renderPronouns());
+        identityContainer.appendChild(subgroup2);
 
         return identityContainer;
     }
@@ -160,6 +170,7 @@ export class ProfileView {
      */
     async #renderSocials() {
         const socialsContainer = document.createElement('div');
+        socialsContainer.classList.add('socials-container');
 
         socialsContainer.appendChild(await new TextInput('Facebook').render());
         socialsContainer.appendChild(await new TextInput('Instagram').render());
@@ -168,16 +179,28 @@ export class ProfileView {
     }
 
     /**
-     * Renders the sliders section of the profile.
+     * Renders the cleanliness and sleeping habits sliders section of the profile.
      *
      * @returns {Promise<HTMLElement>} A promise that resolves with the rendered sliders section element.
      */
-    async #renderSliders() {
+    async #renderSliders1() {
         const slidersContainer = document.createElement('div');
 
         slidersContainer.appendChild(await new SliderInput('Cleanliness*', 'not clean', 'very clean').render());
-        slidersContainer.appendChild(await new SliderInput('Noise when studying*', 'very quiet', 'noise is okay').render());
         slidersContainer.appendChild(await new SliderInput('Sleeping habits*', 'early bird', 'night owl').render());
+
+        return slidersContainer;
+    }
+
+    /**
+     * Renders the noise and guests sliders section of the profile.
+     *
+     * @returns {Promise<HTMLElement>} A promise that resolves with the rendered sliders section element.
+     */
+    async #renderSliders2() {
+        const slidersContainer = document.createElement('div');
+
+        slidersContainer.appendChild(await new SliderInput('Noise when studying*', 'very quiet', 'noise is okay').render());
         slidersContainer.appendChild(await new SliderInput('Hosting guests*', 'never', 'frequent').render());
 
         return slidersContainer;

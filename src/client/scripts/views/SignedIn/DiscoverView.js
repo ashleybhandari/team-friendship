@@ -1,8 +1,7 @@
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
-import { users } from '../../../data/MockData.js';
-import { getUsers, getUser } from '../../../data/Backend.js';
+import { getCurrentUser, getAllUsers, getUserById } from '../../../data/MockBackend.js';
 
 /**
  * Created by Ashley Bhandari
@@ -16,7 +15,6 @@ export class DiscoverView {
     #events = null;
 
     constructor() {
-        this.#curUser = users[0]; // DB TODO: Replace when PouchDB works
         this.#events = Events.events();
 
         // Published by MatchesView. Creates a profile element of the user with
@@ -25,11 +23,13 @@ export class DiscoverView {
     }
 
     async render() {
+        this.#curUser = await getCurrentUser(); // DB TODO: Replace when PouchDB works
+
         this.#discoverViewElm = document.createElement('div');
         this.#discoverViewElm.classList.add('discoverElm')
 
         // get list of users to render on Discover
-        const allUsers = await getUsers();
+        const allUsers = await getAllUsers();
         const unseen = allUsers.filter((user) => {
             const compatible = this.#curUser.hasHousing !== user.hasHousing;
             return compatible                             &&
@@ -94,7 +94,7 @@ export class DiscoverView {
         elm.classList.add('discoverElm');
 
         // user to display
-        const user = await getUser(id);
+        const user = await getUserById(id);
 
         // render HTML
         const bioSection = this.#renderBioSection();

@@ -2,8 +2,8 @@ import { Navigation } from '../../components/Navigation.js';
 import { TextInput } from '../../components/TextInput.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
 import { CheckboxInput } from '../../components/CheckboxInput.js';
-import { users } from '../../../data/MockData.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
+import { getCurrentUser } from '../../../data/MockBackend.js';
 
 export class HaveHousingView {
     #viewContainer = null;
@@ -14,12 +14,14 @@ export class HaveHousingView {
     #events = null;
 
     constructor(events) {
-        localStorage.setItem('user', JSON.stringify(users[5]));
-        this.#user = JSON.parse(localStorage.getItem('user'));
         this.#events = events; 
     }
 
     async render() {
+        const user = await getCurrentUser();
+        localStorage.setItem('user', JSON.stringify(user));
+        this.#user = JSON.parse(localStorage.getItem('user'));
+
         const haveHousingViewElm = document.createElement('div');
         haveHousingViewElm.id = 'haveHousingView';
 
