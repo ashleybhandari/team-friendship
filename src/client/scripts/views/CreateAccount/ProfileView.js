@@ -44,22 +44,28 @@ export class ProfileView {
         profileViewElm.appendChild(form);
 
         const nextBtnHandler = async () => {
-            const formData = new FormData(form);
-            const userData = Object.fromEntries(formData.entries());
+    const formData = new FormData(form);
+    const userData = Object.fromEntries(formData.entries());
 
-            try {
-                await this.#database.updateUser(userData);
-                alert('Profile updated successfully!');
-                this.#events.publish('navigateTo', 'create-3');
-                
-            } catch (error) {
+    try {
+        const allUsers = await getAllUsers();
+        const currentUser = allUsers.find(user => user.id === userData.id);
+
+        const updatedUserData = { ...currentUser, ...userData };
+
+        await updateUser(updatedUserData);
+        alert('Profile updated successfully!');
+        this.#events.publish('navigateTo', 'create-3');
+        
+    } catch (error) {
         if (error.message) {
             alert(`Error updating profile: ${error.message}`);
         } else {
             alert('An unknown error occurred while updating the profile.');
         }
     }
-    };
+};
+        
 
         // navigation between account creation pages
         profileViewElm.appendChild(
