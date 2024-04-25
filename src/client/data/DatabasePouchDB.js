@@ -1,6 +1,5 @@
 // DB TODO: uncomment
-//const PouchDB = require('pouchdb');
-// const db = new PouchDB('roommate-matching');
+const db = new PouchDB('roommate-matching');
 
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
