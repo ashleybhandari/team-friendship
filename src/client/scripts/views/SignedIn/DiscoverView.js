@@ -214,6 +214,9 @@ export class DiscoverView {
     #injectInfoWithoutHousing() {
         // about me
         this.#injectCharacteristics();
+
+        // user description
+        this.#injectDescription();
     }
 
     #injectCharacteristics() {
@@ -285,5 +288,10 @@ export class DiscoverView {
         renderList(rentIncludes, h.utilities);
         renderList(amenities, h.amenities);
         notes.innerHTML = `<p>${h.notes}</p>`
+    }
+
+    #injectDescription() {
+        const container = this.#infoSectionElm.querySelector('.bio-description');
+        container.innerText = this.#curProfile.description;
     }
 }

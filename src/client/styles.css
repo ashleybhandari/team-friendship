@@ -1121,7 +1121,7 @@ body {
     display: grid;
     grid-template-columns: 350px auto;
     column-gap: 80px;
-    padding: 60px 20%;
+    padding: 60px 20% 80px;
 }
 
 #discoverElm .buttons {
@@ -1218,6 +1218,10 @@ body {
     color: #F4D06F;
     font-size: 10px;
     margin: 0 8px;
+}
+
+#discoverElm .discover-info .bio-description {
+    margin-top: 70px;
 }
 
 #discoverElm .no-users-msg {
