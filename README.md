@@ -16,7 +16,7 @@ Files pertaining to data structures and mock-backend operations are found in `sr
 - `data_structures` holds data structures used to store information pertaining to each user's profile and roommate/housing preferences.
 - `DatabasePouchDB.js` creates the database and exports functions for CRUD operations.
 
-- **Importing PouchDB turned out to cause several issues that we were not able to fix. Importing it as a dependency caused issues, so did the method we learned in class using just an instance of the database, which did not allow us to use any of the provided db functions. Using "require" to import PouchDB resulted in a "doesn't resolve to a url" error. We tried numerous ways of importing, and tried changing the scripts in index.html after speaking to a TA. None of these changes helped. Our data leader, Rachel, posted in piazza (private question @537), and didn't receive an answer as how to import PouchDB without errors, so we were not able to get it working in time.**
+**Importing PouchDB turned out to cause several issues that we were not able to fix. Importing it as a dependency caused issues, so did the method we learned in class using just an instance of the database, which did not allow us to use any of the provided db functions. Using "require" to import PouchDB resulted in a "doesn't resolve to a url" error. We tried numerous ways of importing, and tried changing the scripts in index.html after speaking to a TA. None of these changes helped. Our data leader, Rachel, posted in piazza (private question @537), and didn't receive an answer as how to import PouchDB without errors, so we were not able to get it working in time.**
 
 ### Views
 The application is mounted onto a single `root` element.
@@ -32,7 +32,9 @@ These containers may be injected with their associated views.
 - "Discover" (`DisplayWithHousingView`, `DisplayWithoutHousingView`), "Matches," and "Settings" views can be injected into `SignedInContainer`.
 - "Sign in" and "Create account" (`CredentialsView`, `ProfileView`, `HousingSituationView`, `NeedHousingView`, `HaveHousingView`) views can be injected into `CreateAccountContainer`.
 
-The publisher-subscriber pattern was used for communication between views. The class for this pattern was implemented by Prof. Tim Richards, found in `src\client\scripts\Events.js`.
+The publisher-subscriber pattern is used for communication between views. The class for this pattern was implemented by Prof. Tim Richards, found in `src\client\scripts\Events.js`.
+
+**Navigation in the navbar and footer works, but the links are blocked on the Discover page due to how Discover was implemented. This could not be fixed due to time constraints. Functionality can be observed by navigating to Settings via the footer first (which isn't blocked).**
 
 ## Setup Instructions
 Clone the project
