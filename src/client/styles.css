@@ -879,7 +879,8 @@ body {
 /* ProfileView.js */
 
 #profileView {
-    margin: 0 auto;
+     margin: 50px auto;
+    padding-bottom: 50px;
     width: 1100px;
 }
 
