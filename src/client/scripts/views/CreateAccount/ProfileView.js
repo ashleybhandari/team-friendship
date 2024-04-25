@@ -4,12 +4,13 @@ import { DropdownInput } from '../../components/DropdownInput.js';
 import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
+import { CheckboxGroup } from '../../components/CheckboxGroup.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
 import { getAllUsers } from '../../../data/DatabasePouchDB.js';
 import { getUserById } from '../../../data/DatabasePouchDB.js';
-import { fields } from '../../helpers/SettingsData.js';
+import { toMap, fields } from '../../helpers/SettingsData.js';
 
 // view: create-2
 export class ProfileView {
@@ -89,48 +90,8 @@ export class ProfileView {
 
         return identityContainer;
     }
-  
 
     async #renderGender() {
-        return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
-    }
-
-    async #renderPronouns() {
-        return await new TextInput('Pronouns', 'text', 118).render();
-    }
-
-    async #renderEducation() {
-        const educationContainer = document.createElement('div');
-
-        educationContainer.appendChild(await new TextInput('Major').render());
-        educationContainer.appendChild(await new TextInput('School').render());
-        educationContainer.appendChild(await new DropdownInput('Level of education', fields.level).render());
-
-        return educationContainer;
-    }
-
-    async #renderSocials() {
-        const socialsContainer = document.createElement('div');
-
-        socialsContainer.appendChild(await new TextInput('Facebook').render());
-        socialsContainer.appendChild(await new TextInput('Instagram').render());
-
-        return socialsContainer;
-    }
-
-    async #renderSliders() {
-        const slidersContainer = document.createElement('div');
-
-        slidersContainer.appendChild(await new SliderInput('Cleanliness*', 'not clean', 'very clean').render());
-        slidersContainer.appendChild(await new SliderInput('Noise when studying*', 'very quiet', 'noise is okay').render());
-        slidersContainer.appendChild(await new SliderInput('Sleeping habits*', 'early bird', 'night owl').render());
-        slidersContainer.appendChild(await new SliderInput('Hosting guests*', 'never', 'frequent').render());
-
-        return slidersContainer;
-    }
-}
-
-    async #re() {
         return await new DropdownInput('Gender identity*', fields.genderId, 149.2).render();
     }
 
