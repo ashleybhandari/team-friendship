@@ -2,9 +2,7 @@
 
 import { Header } from '../../components/Header.js';
 import { Navbar2 } from '../../components/Navbar2.js';
-import { DisplayWithHousingView } from './DisplayWithHousingView.js';
-import { DisplayWithoutHousingView } from './DisplayWithoutHousingView.js';
-// import {DisplayView } from './DisplayView.js';
+import { DiscoverView } from './DiscoverView.js';
 import { MatchesView } from './MatchesView.js';
 import { SettingsView } from './SettingsView.js';
 import { Events } from '../../Events.js';
@@ -16,8 +14,7 @@ import { Events } from '../../Events.js';
 export class SignedInContainer {
     #signedInCntrElm = null;
     #viewContainer = null;
-    #withHousingViewElm = null;
-    #withoutHousingViewElm = null;
+    #discoverViewElm = null;
     #matchesViewElm = null;
     #settingsViewElm = null;
     #events = null;
@@ -38,10 +35,7 @@ export class SignedInContainer {
         this.#signedInCntrElm.appendChild(this.#viewContainer);
 
         // renders views to be injected into viewContainer
-        this.#withHousingViewElm = await new DisplayWithHousingView().render();
-        this.#withoutHousingViewElm = await new DisplayWithoutHousingView().render();
-
-        // this.#withHousingViewElm = await new DisplayView().render();
+        this.#discoverViewElm = await new DiscoverView().render();
         this.#matchesViewElm = await new MatchesView().render();
         this.#settingsViewElm = await new SettingsView().render();
 
@@ -60,9 +54,8 @@ export class SignedInContainer {
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
-        if (view === 'discover') {      // DisplayWithHousingView or DisplayWithoutHousingView
-            // discover changes depending on whether user has housing  // DB TODO: implement when PouchDB works
-            this.#viewContainer.appendChild(this.#withoutHousingViewElm);
+        if (view === 'discover') {      // DiscoverView
+            this.#viewContainer.appendChild(this.#discoverViewElm);
             this.#updateNavbar(view);
         }
         else if (view === 'matches') {  // MatchesView

@@ -1,6 +1,6 @@
 // created by Ashley Bhandari
 
-import { getUser, getMatches } from '../../../data/Backend.js';
+import { users, getUser, getMatches } from '../../../data/Backend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
@@ -16,11 +16,10 @@ export class MatchesView {
     #profileViewElm = null;
     #profileViewContainer = null;
     #user = null;
-    #curMatch = null;
     #events = null;
 
     constructor() {
-        // DB TODO: initialize this.#user when PouchDB works
+        this.#user = users[0];  // DB TODO: initialize properly when PouchDB works
         this.#events = Events.events();
     }
 
@@ -35,8 +34,7 @@ export class MatchesView {
         // initialize view with matches list
         this.#switchView();
 
-        // inject user profile if the Discover page publishes one
-        new DiscoverTmp();
+        // inject user profile from Discover page into expanded match page
         this.#events.subscribe('sendProfile', (elm) => this.#injectProfile(elm));
 
         return this.#matchesViewElm;
@@ -51,7 +49,7 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches(); // DB TODO: replace with below when PouchDB works
+        const matches = await getMatches(this.#user.id) // DB TODO: replace with below when PouchDB works
         // const matches = await db.getMatches(this.#user.id);
 
         // show message if user has no matches
@@ -59,7 +57,7 @@ export class MatchesView {
             const noMatches = document.createElement('div');
             noMatches.id = 'noMatches';
             noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
-            container.appendChild(noMatches);
+            this.#matchesViewElm.appendChild(noMatches);
             return;
         }
 
@@ -118,7 +116,7 @@ export class MatchesView {
      */
     async #renderProfile() {
         this.#profileViewElm = document.createElement('div');
-        this.#profileViewElm.id = 'profileView';
+        this.#profileViewElm.id = 'matchProfileView';
 
         // Back to Matches button, contact info, and Unmatch button
         this.#profileViewElm.appendChild(await this.#renderOptions());
@@ -222,19 +220,5 @@ export class MatchesView {
             this.#profileViewElm.classList.add('hidden');
             window.location.hash = 'matches';
         }
-    }
-}
-
-// TODO: make discover page subscribe('getProfile'), publish('sendProfile')
-// models the injection system until then
-class DiscoverTmp {
-    constructor() {
-        Events.events().subscribe('getProfile', this.#createElm);
-    }
-
-    async #createElm(id) {
-        const elm = document.createElement('div');
-        elm.innerText = `Match id: ${id}`;
-        Events.events().publish('sendProfile', { id, profile: elm});
     }
 }
