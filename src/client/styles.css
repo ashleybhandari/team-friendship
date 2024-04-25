@@ -310,9 +310,57 @@ body {
 
 /* Navbar1.js */
 
+.navbar1 {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    padding: 10px 15px;
+}
+
+.navbar1 a {
+    text-decoration: none;
+    color: black;
+}
+
 .navbar1 .selected {
     font-weight: bold;
 }
+
+.navbar1 .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar1 .logo img {
+    width: 30px;
+}
+
+.navbar1 .logo h2 {
+    margin: 0 0 0 8px;
+}
+
+.navbar1 .links a {
+    margin-left: 20px;
+}
+
+.navbar1 .links a:hover {
+    font-weight: bold;
+}
+
+.navbar1 #nav-sign-in {
+    float: right;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 8px 15px;
+    margin-top: 2px
+}
+
+.navbar1 #nav-sign-in:hover {
+    background-color: #F4D06F;
+    border-color: #F4D06F;
+    color: white;
+}
+
+
 
 /* Navbar2.js */
 
@@ -857,6 +905,10 @@ body {
     border: none;
     border-radius: 2rem;
     cursor: pointer;
+}
+
+.landing-container .join-button:hover {
+    background-color: #f4d16fe1; /* Yellow color */
 }
 
 /* CreateAccountContainer.js */

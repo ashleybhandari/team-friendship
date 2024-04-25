@@ -16,13 +16,18 @@ export class Navbar1 {
         elm.classList.add('navbar1');
 
         elm.innerHTML = `
-        <nav>
-            <a href="#landing" id="nav-landing">Home</a>
-            <a href="#about" id="nav-about">About us</a>
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png">
+            <h2 class="battambang">KeyMate</h2>
+            <div class="links">
+                <a href="#landing" id="nav-landing">Home</a>
+                <a href="#about" id="nav-about">About us</a>
+            </div>
+        </div>
+        <div>
             <a href="#sign-in" id="nav-sign-in">Sign in</a>
-        </nav>
+        </div>
         `;
-        // TODO: style, etc.
 
         // add click event listener to each link
         elm
