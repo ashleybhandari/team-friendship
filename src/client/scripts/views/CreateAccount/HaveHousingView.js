@@ -42,16 +42,20 @@ export class HaveHousingView {
         haveHousingViewElm.appendChild(smallBoxesRow);
 
         const additionalBox = document.createElement('div');
-        additionalBox.textContent = 'Anything else you want to mention!';
-        additionalBox.style.border = '2px solid #CCCCCC'; 
-        additionalBox.style.backgroundColor = '#FFFFFF'; 
-        additionalBox.style.padding = '10px'; 
-        additionalBox.style.width = '500px'; 
-        additionalBox.style.height = '250px'; 
-        additionalBox.style.position = 'absolute'; 
-        additionalBox.style.bottom = '300px'; 
-        additionalBox.style.right = '300px'; 
-        additionalBox.style.borderRadius = '10px'
+        additionalBox.style.backgroundColor = '#FFFFFF';
+        additionalBox.style.padding = '10px';
+        additionalBox.style.width = '500px';
+        additionalBox.style.height = '250px';
+        additionalBox.style.position = 'absolute';
+        additionalBox.style.bottom = '300px';
+        additionalBox.style.right = '300px';
+        additionalBox.style.borderRadius = '10px';
+        
+        const textArea = document.createElement('textarea');
+        textArea.placeholder = 'Anything else you want to mention!';
+        textArea.style.width = '100%';
+        textArea.style.height = '100%';
+        additionalBox.appendChild(textArea);
     
         haveHousingViewElm.appendChild(additionalBox);
 
@@ -118,8 +122,26 @@ export class HaveHousingView {
             box.style.alignItems = 'center';
             box.style.justifyContent = 'center';
             if (i === 0) {
-                box.textContent = "Add Photo";
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*'; // Allow only image files
+                fileInput.style.display = 'none'; // Hide the input visually
+                fileInput.addEventListener('change', handleFileSelect);
+                box.appendChild(fileInput);
+                const addButton = document.createElement('button');
+                addButton.textContent = 'Add Photo';
+                addButton.addEventListener('click', () => fileInput.click());
+                box.appendChild(addButton);
+                // box.textContent = "Add Photo";
             }
+            function handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    // Handle the file upload here, you can send it to the server or preview it, etc.
+                    console.log('Selected file:', file);
+                }
+            }
+
             rowContainer.appendChild(box);
         }
     
