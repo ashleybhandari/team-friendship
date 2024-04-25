@@ -8,7 +8,7 @@ import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
 import { getAllUsers } from '../../../data/DatabasePouchDB.js';
-
+import { getUserById } from '../../../data/DatabasePouchDB.js';
 
 // view: create-2
 export class ProfileView {
@@ -46,6 +46,7 @@ export class ProfileView {
         profileViewElm.appendChild(form);
 
         const nextBtnHandler = async () => {
+            
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
 
@@ -54,18 +55,19 @@ export class ProfileView {
                 const currentUser = allUsers.find(user => user.id === userData.id);
                 const updatedUserData = { ...currentUser, ...userData };
                 
-                await this.#database.updateUser(updatedUserData);
+                await updateUser(updatedUserData);
                 alert('Profile updated successfully!');
                 this.#events.publish('navigateTo', 'create-3');
                 
             } catch (error) {
-        if (error.message) {
+             if (error.message) {
             alert(`Error updating profile: ${error.message}`);
         } else {
             alert('An unknown error occurred while updating the profile.');
         }
     }
-    };
+};
+        
 
         // navigation between account creation pages
         profileViewElm.appendChild(
