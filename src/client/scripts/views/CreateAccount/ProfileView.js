@@ -6,9 +6,6 @@ import { TextInput } from '../../components/TextInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
 import { CheckboxGroup } from '../../components/CheckboxGroup.js';
 import { Navigation } from '../../components/Navigation.js';
-import { Events } from '../../Events.js';
-import { updateUser } from '../../../data/DatabasePouchDB.js';
-import { getAllUsers } from '../../../data/DatabasePouchDB.js';
 import { getUserById } from '../../../data/DatabasePouchDB.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
 
@@ -24,7 +21,6 @@ export class ProfileView {
     #requiredFields = null;
 
     constructor() {
-        this.#events = Events.events();
         localStorage.setItem('user', JSON.stringify(users[5]));
         this.#user = JSON.parse(localStorage.getItem('user')); 
     }
@@ -59,17 +55,17 @@ export class ProfileView {
 
         // render sections
         await this.#credentialsSection.render(
-            await this.#getNextButton(this.#profileViewElm)
+            await this.#getButtons(this.#profileViewElm)
         );
         await this.#profileSection.render(
-            await this.#getNextButton(this.#profileViewElm)
+            await this.#getButtons(this.#profileViewElm)
         );
         this.#user.hasHousing
             ? await this.#housingSection.render(
-                await this.#getNextButton(this.#profileViewElm)
+                await this.#getButtons(this.#profileViewElm)
               )
             : await this.#preferencesSection.render(
-                await this.#getNextButton(this.#profileViewElm)
+                await this.#getButtons(this.#profileViewElm)
               );
 
         // fill HTML fields with the user's saved values
@@ -85,40 +81,54 @@ export class ProfileView {
     }
 
     /**
-     * Render Next button.
+     * Render Revert changes and Save buttons.
      */
-    async #getNextButton() {
+    async #getButtons(parent) {
         const elm = document.createElement('div');
         elm.classList.add('buttons');
 
-        // create next button
-        const nextElm = await new Button(
-            'Next', 80, 'submit'
+        // create buttons
+        const revertElm = await new Button(
+            'Revert changes', 150, 'danger'
         ).render();
-        nextElm.id = 'nextBtn';
+        const saveElm = await new Button(
+            'Save', 80, 'submit'
+        ).render();
+        saveElm.id = 'saveBtn';
 
-        // click event listener
-        nextElm.addEventListener('click', async (e) => {
+        // click event listeners
+        revertElm.addEventListener('click', (e) => {
             e.preventDefault();
-            if (this.#validateForm()) {
-                this.#saveChanges();
-                this.#events.publish('navigateTo', 'create-3');
-            }
+            this.#fillFields();
+        });
+        saveElm.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.#saveChanges();
         });
 
-        elm.appendChild(nextElm);
+        elm.appendChild(revertElm);
+        elm.appendChild(saveElm);
+
         return elm;
     }
 
     /**
      * Fills the HTML elements with the user's saved values. Used for
-     * initialization.
+     * initialization and reverting changes.
      */
     #fillFields() {
         this.#settingsFns.forEach((field) => field.fill());
     }
 
     #saveChanges() {
+        const invalid = this.#requiredFields.some((id) =>
+            !this.#profileViewElm.querySelector(`#settings_${id}`).checkValidity()
+        );
+        if (invalid) {
+            alert('Make sure all required fields are filled out (the starred ones!)');
+            return;
+        }
+
         this.#settingsFns.forEach((field) => field.save());
 
         // save new configuration
