@@ -6,7 +6,7 @@ import { TextInput } from '../../components/TextInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
-import * as db from '../../../data/DatabasePouchDB.js';
+import { updateUser } from '../../../data/DatabasePouchDB.js';
 
 // view: create-2
 export class ProfileView {
@@ -15,7 +15,7 @@ export class ProfileView {
 
     constructor() {
         this.#events = Events.events();
-        this.#database = db.default;
+        this.#database = this.#database = { updateUser };
     }
 
     async render() {
@@ -53,8 +53,12 @@ export class ProfileView {
                 this.#events.publish('navigateTo', 'create-3');
                 
             } catch (error) {
-            alert('Error updating profile: ' + error.message);
-          }
+        if (error.message) {
+            alert(`Error updating profile: ${error.message}`);
+        } else {
+            alert('An unknown error occurred while updating the profile.');
+        }
+    }
     };
 
         // navigation between account creation pages
