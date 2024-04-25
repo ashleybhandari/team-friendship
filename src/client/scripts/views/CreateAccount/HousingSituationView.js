@@ -4,7 +4,6 @@ import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
-import { Events } from '../../Events.js';
 
 /**
  * UI component: Housing Situation Screen
@@ -12,9 +11,6 @@ import { Events } from '../../Events.js';
  * view: create-3
  */
 export class HousingSituationView {
-    constructor() {
-        this.events = Events.events();
-    }
     async render() {
         const housingViewElm = document.createElement('div');
         housingViewElm.id = 'housingView';
@@ -26,8 +22,9 @@ export class HousingSituationView {
          const titleOptionsContainer = document.createElement('div');
          titleOptionsContainer.classList.add('title-options-container');
 
+         //Form
          const form = document.createElement('form');
-         form.id = 'housingSituationForm';
+         form.id = 'housingSituationForm'; // Handle the form submission
         
          // Render the radio input for housing situation choices
          const radioInputElement = await new RadioInput(
@@ -38,31 +35,28 @@ export class HousingSituationView {
         titleOptionsContainer.appendChild(form);
         housingViewElm.appendChild(titleOptionsContainer);
 
-        const nextBtnHandler = async (event) => {
-            event.preventDefault();
+        const nextBtnHandler = async () => {
 
+             // Create a FormData object from the form element
             const formData = new FormData(form);
+            // Convert the form data into a key-value pair object
             const userData = Object.fromEntries(formData.entries());
 
+            // Placeholder values for user ID and revision number
             const userId = 'currentUserId'; 
             const userRev = 'currentUserRev'; 
 
+            // Construct the user object with the updated housing preference
             const updatedUser = {
                 id: userId,
                 _rev: userRev,
                 housing: userData.housing 
             };
-
-            let success = true;
+            // Attempt to update the user document in the database
             try {
                 await updateUser(updatedUser);
             } catch (error) {
                 alert('Error updating housing situation: ' + error.message);
-                success = false;
-            }
-            
-            if (success) {
-                this.events.publish('navigateTo', this.next);
             }
         };
 
