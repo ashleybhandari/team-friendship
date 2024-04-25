@@ -55,7 +55,7 @@ export class MatchesView {
             const noMatches = document.createElement('div');
             noMatches.id = 'noMatches';
             noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
-            container.appendChild(noMatches);
+            this.#matchesViewElm.appendChild(noMatches);
             return;
         }
 
@@ -113,7 +113,7 @@ export class MatchesView {
      */
     async #renderProfile() {
         this.#profileViewElm = document.createElement('div');
-        this.#profileViewElm.id = 'profileView';
+        this.#profileViewElm.id = 'matchProfileView';
 
         // Back to Matches button, contact info, and Unmatch button
         this.#profileViewElm.appendChild(await this.#renderOptions());
