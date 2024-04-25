@@ -1,3 +1,4 @@
+// created by Isha Bang
 import { Navigation } from '../../components/Navigation.js';
 import { TextInput } from '../../components/TextInput.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
@@ -6,7 +7,6 @@ import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { getCurrentUser } from '../../../data/MockBackend.js';
 
 export class HaveHousingView {
-    #viewContainer = null;
     #preferencesSection = null;
     #user = null;
     #queryFns = null;

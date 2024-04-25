@@ -1,13 +1,10 @@
+// created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
 import { getCurrentUser, getAllUsers, getUserById } from '../../../data/MockBackend.js';
 
-/**
- * Created by Ashley Bhandari
- * User can view other users by either liking or rejecting them.
- * view: 'discover'
- */
+// view: 'discover'
 export class DiscoverView {
     #discoverViewElm = null;
     #curUser = null;
@@ -22,6 +19,10 @@ export class DiscoverView {
         this.#events.subscribe('getProfile', async (id) => await this.renderFromId(id));
     }
 
+    /**
+     * User can view other users by either liking or rejecting them.
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render() {
         this.#curUser = await getCurrentUser(); // DB TODO: Replace when PouchDB works
 

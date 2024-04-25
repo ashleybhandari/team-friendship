@@ -2,7 +2,7 @@
 
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
-// import { login } from '../../../data/LogIn.js';
+// import { login } from '../../../data/LogIn.js'; // DB TODO: Uncomment when PouchDB works
 import { Events } from '../../Events.js';
 
 /**
@@ -24,7 +24,7 @@ export class SignInView {
     /**
      * Asynchronously renders the sign-in view with form inputs and sign-in button.
      * It sets up an interactive sign-in form where users can enter their credentials.
-     * @returns {HTMLElement} The rendered sign-in container element.
+     * @returns {Promise<HTMLElement>} The rendered sign-in container element.
      */
     async render() {
         const signInContainer = document.createElement('div');

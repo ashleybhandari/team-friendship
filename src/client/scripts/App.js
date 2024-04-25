@@ -53,6 +53,7 @@ export class App {
     #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
+        // redirects user if necessary
         if (this.#redirect(view)) return;
 
         switch (view) {
@@ -67,7 +68,7 @@ export class App {
             case 'create-4':   // CreateAccount/NeedHousingView or CreateAccount/HaveHousingView
                 this.#viewContainer.appendChild(this.#createAcctCntrElm);
                 break;
-            case 'discover':   // SignedIn/DisplayWithHousing or SignedIn/DisplayWithoutHousing
+            case 'discover':   // SignedIn/DiscoverView
             case 'matches':    // SignedIn/MatchesView
             case 'settings':   // SignedIn/SettingsView
                 this.#viewContainer.appendChild(this.#signedInCntrElm);
