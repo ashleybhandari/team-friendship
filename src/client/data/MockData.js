@@ -46,7 +46,7 @@ const u0 = new User(
     ),
     [], // liked
     [], // rejected
-    []  // matches
+    [1,2]  // matches
 );
 
 const u1 = new User(
@@ -150,7 +150,7 @@ const u3 = new User(
     { major: 'Music', school: 'Umass Amherst', level: 'undergrad' },
     { fb: 'geniefb', ig: 'genebelcher' },
     'Gene. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
-    true, // hasHousing
+    false, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },

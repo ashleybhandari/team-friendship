@@ -14,10 +14,19 @@ async function getUser(id) {
     return null;
 }
 
-async function getMatches() {
-    const noHousing = users.filter((u) => !u.hasHousing);
-    const haveHousing = users.filter((u) => u.hasHousing);
-    return noHousing.map((u) => u.id);
+async function getMatches(id) {
+    const user = await getUser(id);
+    return user.matches;
 }
 
-export { getUsers, getUser, getMatches };
+async function removeMatch(userId, matchId) {
+    const curUser = await getUser(userId);
+    for (const user of await getUsers()) {
+        if (user.id === matchId) {
+            const i = curUser.matches.indexOf(matchId);
+            curUser.matches.splice(i, 1);
+        }
+    }
+}
+
+export { users, getUsers, getUser, getMatches, removeMatch };

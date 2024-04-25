@@ -825,6 +825,10 @@ body {
     height: 40px;
 }
 
+#matchesView #noMatches {
+    margin-top: 75px;
+}
+
 /* SettingsView.js */
 
 #settingsView {
@@ -1117,74 +1121,74 @@ body {
 
 /* DiscoverView.js */
 
-#discoverElm {
+.discoverElm {
     display: grid;
     grid-template-columns: 350px auto;
     column-gap: 80px;
     padding: 60px 20% 80px;
 }
 
-#discoverElm .buttons {
+.discoverElm .buttons {
     display: flex;
     justify-content: center;
 }
 
-#discoverElm .discover-bio {
+.discoverElm .discover-bio {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
 }
 
-#discoverElm .discover-bio img {
+.discoverElm .discover-bio img {
     width: 170px;
     border-radius: 50%;
     border: 2px solid rgba(0, 0, 0, 0.4);
     margin-bottom: 20px;
 }
 
-#discoverElm .discover-bio .bio-name {
+.discoverElm .discover-bio .bio-name {
     font-size: 26px;
     margin: 0;
 }
 
-#discoverElm .discover-bio .bio-titles {
+.discoverElm .discover-bio .bio-titles {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 18px 0 26px;
 }
 
-#discoverElm .discover-bio .bio-titles p {
+.discoverElm .discover-bio .bio-titles p {
     font-size: 18px;
     color: gray;
     margin: 4px 0;
 }
 
-#discoverElm .discover-bio .bio-description {
+.discoverElm .discover-bio .bio-description {
     text-align: center;
 }
 
-#discoverElm .discover-info {
+.discoverElm .discover-info {
     grid-row: 1 / 3;
     grid-column: 2;
     width: 600px;
     margin: auto 0;
 }
 
-#discoverElm .discover-info > div {
+.discoverElm .discover-info > div {
     margin-bottom: 40px;
 }
 
-#discoverElm .discover-info h1 {
+.discoverElm .discover-info h1 {
     font-size: 20px;
 }
 
-#discoverElm .discover-info .about-details {
+.discoverElm .discover-info .about-details {
     display: flex;
 }
 
-#discoverElm .discover-info .about-details div {
+.discoverElm .discover-info .about-details div {
     padding: 7px 15px;
     margin-right: 8px;
     border-radius: 20px;
@@ -1192,38 +1196,39 @@ body {
     color: white;
 }
 
-#discoverElm .discover-info .accommodation-details {
+.discoverElm .discover-info .accommodation-details {
     display: grid;
     grid-template-columns: repeat(2, auto);
     width: 500px;
 }
 
-#discoverElm .discover-info .accommodation-details p {
+.discoverElm .discover-info .accommodation-details p {
     margin: 3px 0;
     font-size: 20px;
 }
 
-#discoverElm .discover-info .accommodation-stats > p {
+.discoverElm .discover-info .accommodation-stats > p {
     margin: 0;
     font-weight: bold;
 }
 
-#discoverElm .discover-info .accommodation-stats > div {
+.discoverElm .discover-info .accommodation-stats > div {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
 }
 
-#discoverElm .discover-info .accommodation-stats i {
+.discoverElm .discover-info .accommodation-stats i {
     color: #F4D06F;
     font-size: 10px;
     margin: 0 8px;
 }
 
-#discoverElm .discover-info .bio-description {
+.discoverElm .discover-info .bio-description {
     margin-top: 70px;
 }
 
-#discoverElm .no-users-msg {
+.discoverElm .no-users-msg {
     grid-column: 1 / 3;
+    text-align: center;
 }

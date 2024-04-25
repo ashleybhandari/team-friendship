@@ -1,6 +1,6 @@
 // created by Ashley Bhandari
 
-import { getUser, getMatches } from '../../../data/Backend.js';
+import { users, getUser, getMatches } from '../../../data/Backend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
@@ -15,9 +15,11 @@ export class MatchesView {
     #listViewElm = null;
     #profileViewElm = null;
     #profileViewContainer = null;
+    #user = null;
     #events = null;
 
     constructor() {
+        this.#user = users[0];
         this.#events = Events.events();
     }
 
@@ -47,7 +49,7 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches(); // DB TODO: use PouchDB
+        const matches = await getMatches(this.#user.id); // DB TODO: use PouchDB
 
         // show message if user has no matches
         if (matches.length === 0) {

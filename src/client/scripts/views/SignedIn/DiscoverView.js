@@ -4,28 +4,25 @@ import { Events } from '../../Events.js';
 import { users } from '../../../data/MockData.js';
 import { getUsers, getUser } from '../../../data/Backend.js';
 
-// view: 'discover'
+/**
+ * Created by Ashley Bhandari
+ * view: 'discover'
+ */
 export class DiscoverView {
     #discoverViewElm = null;
-    #bioSectionElm = null
-    #infoSectionElm = null;
-    #events = null;
-
     #curUser = null;
-    #curProfile = null;
-    #profileIndex = null;
+    #unseenIndex = null;
+    #events = null;
 
     constructor() {
         this.#curUser = users[0];
         this.#events = Events.events();
-        this.#events.subscribe('getProfile', async (id) => {
-            // await this.render(id);
-        });
+        this.#events.subscribe('getProfile', async (id) => await this.renderFromId(id));
     }
 
     async render() {
         this.#discoverViewElm = document.createElement('div');
-        this.#discoverViewElm.id = 'discoverElm';
+        this.#discoverViewElm.classList.add('discoverElm')
 
         // get list of users to render on Discover
         const allUsers = await getUsers();
@@ -38,58 +35,76 @@ export class DiscoverView {
                 !this.#curUser.matches.includes(user.id)
         });
 
-        this.#profileIndex = 0; // index of currently displayed profile in unseen
-        this.#curProfile = unseen[this.#profileIndex];
+        this.#unseenIndex = 0; // index of currently displayed profile in unseen
+        const curProfile = unseen[this.#unseenIndex];
 
         // left side of page: pic, name, bio (depending on housing situation)
-        this.#renderBioSection();
+        const bioSection = this.#renderBioSection();
+        this.#discoverViewElm.appendChild(bioSection);
 
         // right side of page: info abt housing or bio (depending on housing situation)
-        this.#curProfile.hasHousing
+        const hasHousing = curProfile ? curProfile.hasHousing : false; // necessary if unseen is empty
+        const infoSection = hasHousing
             ? this.#renderInfoSectionWithHousing()
             : this.#renderInfoSectionWithoutHousing();
 
+        this.#discoverViewElm.appendChild(infoSection);
+
         // like and reject buttons
-        this.#renderButtons(unseen);
-
-        // inject information into HTML
-        this.#injectProfile();
-
-        this.#events.publish('sendProfile', {
-            id: this.#curProfile.id, profile: this.#discoverViewElm
-        });
-
-        return this.#discoverViewElm;
-    }
-
-    async #renderButtons(unseen) {
-        const elm = document.createElement('div');
-        elm.classList.add('buttons');
+        const buttons = document.createElement('div');
+        buttons.classList.add('buttons');
 
         const rejectBtn = await new DiscoverButton(false).render();
         const likeBtn = await new DiscoverButton(true).render();
 
         rejectBtn.addEventListener('click', () => {
-            this.#curUser.rejected.push(this.#profileIndex.id);
-            this.#curProfile = unseen[++this.#profileIndex];
-            this.#injectProfile();
+            this.#curUser.rejected.push(unseen[this.#unseenIndex].id);
+            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
         likeBtn.addEventListener('click', () => {
-            this.#curUser.liked.push(this.#profileIndex.id);
-            this.#curProfile = unseen[++this.#profileIndex];
-            this.#injectProfile();
+            this.#curUser.rejected.push(unseen[this.#unseenIndex].id);
+            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
 
-        elm.appendChild(rejectBtn);
-        elm.appendChild(likeBtn);
-        this.#discoverViewElm.appendChild(elm);
+        buttons.appendChild(rejectBtn);
+        buttons.appendChild(likeBtn);
+        this.#discoverViewElm.appendChild(buttons);
+
+        // inject information into HTML
+        this.#injectProfile(curProfile, bioSection, infoSection);
+
+        return this.#discoverViewElm;
+    }
+
+    async renderFromId(id) {
+        const elm = document.createElement('div');
+        elm.id = 'discoverProfile'
+        elm.classList.add('discoverElm');
+
+        const user = await getUser(id);
+
+        const bioSection = this.#renderBioSection();
+        const infoSection = user.hasHousing
+            ? this.#renderInfoSectionWithHousing()
+            : this.#renderInfoSectionWithoutHousing();
+        elm.appendChild(bioSection);
+        elm.appendChild(infoSection);
+        
+        this.#injectBio(bioSection, user)
+        user.hasHousing
+            ? this.#injectInfoWithHousing(infoSection, user)
+            : this.#injectInfoWithoutHousing(infoSection, user);
+
+        this.#events.publish('sendProfile', {
+            id: user.id, profile: elm
+        });
     }
 
     #renderBioSection() {
-        this.#bioSectionElm = document.createElement('div');
-        this.#bioSectionElm.classList.add('discover-bio');
+        const elm = document.createElement('div');
+        elm.classList.add('discover-bio');
         
-        this.#bioSectionElm.innerHTML = `
+        elm.innerHTML = `
         <img class="bio-pfp">
         <h1 class="bio-name battambang"></h1>
         <div class="bio-titles">
@@ -102,13 +117,14 @@ export class DiscoverView {
         </div>
         `;
 
-        this.#discoverViewElm.appendChild(this.#bioSectionElm);
+        return elm;
     }
     
     #renderInfoSectionWithHousing() {
-        this.#infoSectionElm = document.createElement('div');
-        this.#infoSectionElm.classList.add('discover-info');
-        this.#infoSectionElm.innerHTML = `
+        const elm = document.createElement('div');
+        elm.classList.add('discover-info');
+
+        elm.innerHTML = `
         <div class="about">
             <h1 class="battambang">About me</h1>
             <div class="about-details"></div>
@@ -129,13 +145,14 @@ export class DiscoverView {
         <div class="pics"></div>
         `;
 
-        this.#discoverViewElm.appendChild(this.#infoSectionElm);
+        return elm;
     }
 
     #renderInfoSectionWithoutHousing() {
-        this.#infoSectionElm = document.createElement('div');
-        this.#infoSectionElm.classList.add('discover-info');
-        this.#infoSectionElm.innerHTML = `
+        const elm = document.createElement('div');
+        elm.classList.add('discover-info');
+
+        elm.innerHTML = `
         <div class="about">
             <h1 class="battambang">About me</h1>
             <div class="about-details"></div>
@@ -144,12 +161,12 @@ export class DiscoverView {
         </div>
         `;
 
-        this.#discoverViewElm.appendChild(this.#infoSectionElm);
+        return elm;
     }
 
-    #injectProfile() {
+    #injectProfile(user, bioSection, infoSection) {
         // shows message if no more users left to display
-        if (!this.#curProfile) {
+        if (!user) {
             this.#discoverViewElm.innerHTML = `
             <p class="no-users-msg">
                 No more users fitting your preferences. Wait and more will come!
@@ -158,69 +175,67 @@ export class DiscoverView {
             return;
         }
 
-        this.#injectBio();
+        this.#injectBio(bioSection, user);
 
-        this.#curProfile.hasHousing 
-            ? this.#injectInfoWithHousing()
-            : this.#injectInfoWithoutHousing();
+        user.hasHousing 
+            ? this.#injectInfoWithHousing(infoSection, user)
+            : this.#injectInfoWithoutHousing(infoSection, user);
     }
 
-    #injectBio() {
-        const p = this.#curProfile;
-
+    #injectBio(container, user) {
         // profile picture
-        this.#bioSectionElm.querySelector('.bio-pfp').src = p.avatar;
+        container.querySelector('.bio-pfp').src = user.avatar;
         
         // name
-        const name = p.name.nname 
-            ? `${p.name.fname} (${p.name.nname})` 
-            : `${p.name.fname}`;
-        this.#bioSectionElm.querySelector('.bio-name').innerText = `${name}, ${p.age}`;
+        const name = user.name.nname 
+            ? `${user.name.fname} (${user.name.nname})` 
+            : `${user.name.fname}`;
+            container.querySelector('.bio-name').innerText = `${name}, ${user.age}`;
 
         // major
-        const major = `${p.education.major} Major`;
-        if (p.education.major) {
-            this.#bioSectionElm.querySelector('.bio-major').innerText = major;
+        const major = `${user.education.major} Major`;
+        if (user.education.major) {
+            container.querySelector('.bio-major').innerText = major;
         }
 
         // level of education
-        const level = `${levelMap.get(p.education.level)} Student`
-        if (p.education.level) {
-            this.#bioSectionElm.querySelector('.bio-level').innerText = level;
+        const level = `${levelMap.get(user.education.level)} Student`
+        if (user.education.level) {
+            container.querySelector('.bio-level').innerText = level;
         }
 
         // school
-        if (p.education.school) {
-            this.#bioSectionElm.querySelector('.bio-school').innerText = p.education.school;
+        if (user.education.school) {
+            container.querySelector('.bio-school').innerText = user.education.school;
         }
 
         // display description in bio section if user has housing
-        if (p.hasHousing && p.description) {
-            this.#bioSectionElm.querySelector('.bio-description').innerText = p.description;
+        if (user.hasHousing && user.description) {
+            container.querySelector('.bio-description').innerText = user.description;
         }
     }
 
-    #injectInfoWithHousing() {
+    #injectInfoWithHousing(container, user) {
         // about me
-        this.#injectCharacteristics();
+        this.#injectCharacteristics(container, user);
 
         // accommodation details
-        this.#injectAccommodationDetails();
+        this.#injectAccommodationDetails(container, user);
 
         // accommodation stats
-        this.#injectAccommodationStats();
+        this.#injectAccommodationStats(container, user);
     }
 
-    #injectInfoWithoutHousing() {
+    #injectInfoWithoutHousing(container, user) {
         // about me
-        this.#injectCharacteristics();
+        this.#injectCharacteristics(container, user);
 
         // user description
-        this.#injectDescription();
+        this.#injectDescription(container, user);
     }
 
-    #injectCharacteristics() {
-        const section = this.#infoSectionElm.querySelector('.about-details');
+    #injectCharacteristics(container, user) {
+        const section = container.querySelector('.about-details');
         section.innerHTML = '';
 
         const render = (trait, value) => {
@@ -230,37 +245,37 @@ export class DiscoverView {
             section.appendChild(elm);
         };
 
-        render('clean', this.#curProfile.character.clean);
-        render('sleep', this.#curProfile.character.sleep);
-        render('noise', this.#curProfile.character.noise);
-        render('guests', this.#curProfile.character.guests);
+        render('clean', user.character.clean);
+        render('sleep', user.character.sleep);
+        render('noise', user.character.noise);
+        render('guests', user.character.guests);
     }
 
-    #injectAccommodationDetails() {
-        const section = this.#infoSectionElm.querySelector('.accommodation-details');
-        const h = this.#curProfile.housing;
+    #injectAccommodationDetails(container, user) {
+        const section = container.querySelector('.accommodation-details');
+        const house = user.housing;
 
         section.innerHTML = `
         <div>
-            <p>${h.city}</p>
-            <p>$${h.rent.price}/${h.rent.period}</p>
-            <p>${houseMap.get(h.leaseLength)} lease</p>
-            <p>${houseMap.get(h.timeframe)} move-in</p>
+            <p>${house.city}</p>
+            <p>$${house.rent.price}/${house.rent.period}</p>
+            <p>${houseMap.get(house.leaseLength)} lease</p>
+            <p>${houseMap.get(house.timeframe)} move-in</p>
         </div>
         <div>
-            <p>${houseMap.get(h.roomType)} room for rent</p>
-            <p>${houseMap.get(h.buildingType)} (${h.beds}BR/${h.baths}BA)</p>
-            <p>${houseMap.get(h.gender)}</p>
+            <p>${houseMap.get(house.roomType)} room for rent</p>
+            <p>${houseMap.get(house.buildingType)} (${house.beds}BR/${house.baths}BA)</p>
+            <p>${houseMap.get(house.gender)}</p>
         </div>
         `;
     }
 
-    #injectAccommodationStats() {
-        const h = this.#curProfile.housing;
+    #injectAccommodationStats(container, user) {
+        const house = user.housing;
 
-        const renderList = (container, attributes) => {
+        const renderList = (cntr, attributes) => {
             const elm = document.createElement('div');
-            container.innerHTML = '';
+            cntr.innerHTML = '';
 
             Object.entries(attributes).forEach(([key, value], i) => {
                 const separator = document.createElement('div');
@@ -272,26 +287,26 @@ export class DiscoverView {
                 attribute.innerText = houseMap.get(key)    
 
                 if (value) {
-                    if (i !== 0) container.appendChild(separator);
-                    container.appendChild(attribute)
+                    if (i !== 0) cntr.appendChild(separator);
+                    cntr.appendChild(attribute)
                 }
             });
             
-            if (container.innerHTML === '') container.innerText = 'None'
-            container.appendChild(elm);
+            if (cntr.innerHTML === '') cntr.innerText = 'None'
+            cntr.appendChild(elm);
         };
 
-        const rentIncludes = this.#infoSectionElm.querySelector('.rent-includes');
-        const amenities = this.#infoSectionElm.querySelector('.amenities');
-        const notes = this.#infoSectionElm.querySelector('.notes');
+        const rentIncludes = container.querySelector('.rent-includes');
+        const amenities = container.querySelector('.amenities');
+        const notes = container.querySelector('.notes');
 
-        renderList(rentIncludes, h.utilities);
-        renderList(amenities, h.amenities);
-        notes.innerHTML = `<p>${h.notes}</p>`
+        renderList(rentIncludes, house.utilities);
+        renderList(amenities, house.amenities);
+        notes.innerHTML = `<p>${house.notes}</p>`
     }
 
-    #injectDescription() {
-        const container = this.#infoSectionElm.querySelector('.bio-description');
-        container.innerText = this.#curProfile.description;
+    #injectDescription(container, user) {
+        const elm = container.querySelector('.bio-description');
+        elm.innerText = user.description;
     }
 }
