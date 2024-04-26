@@ -153,8 +153,10 @@ export class DiscoverView {
         const saveBtn = new Button('Save changes');
         saveBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            // TODO: Grab the values in elm and create a Map<string, boolean> object where keys are the property names in
-            // User/Preferences. Ashley will deal with publishing the map and refreshing the page. As an example:
+            // TODO: Grab the values in elm (use elm.querySelector(#checkbox_id)). Checkboxes are automatically given id's, use
+            // Developer tools inspect element to find it. Create a Map<string, boolean> object where keys are the property names
+            // in User/Preferences and values are whether the box was checked. Ashley will deal with publishing the map and
+            // refreshing the page. As an example:
             // const result = new Map([
             //     ['clean', true],
             //     ['sleep', true],
