@@ -30,15 +30,7 @@ export class DiscoverView {
         this.#discoverViewElm.classList.add('discoverView')
 
         // get list of users to render on Discover
-        const allUsers = await getAllUsers();
-        const unseen = allUsers.filter((user) => {
-            const compatible = this.#curUser.hasHousing !== user.hasHousing;
-            return compatible                             &&
-                user.id !== this.#curUser.id              &&
-                !this.#curUser.liked.includes(user.id)    &&
-                !this.#curUser.rejected.includes(user.id) &&
-                !this.#curUser.matches.includes(user.id)
-        });
+        const unseen = await this.#getUnseenUsers();
 
         // index in unseen - keeps track of what profile to display
         this.#unseenIndex = 0;
@@ -121,6 +113,26 @@ export class DiscoverView {
         });
     }
 
+    /**
+     * Gets an array of users that curUser user (1) hasn't liked or rejected
+     * yet and (2) fit the user's preferences.
+     * @returns {User[]}
+     */
+    async #getUnseenUsers() {
+        const allUsers = await getAllUsers();
+
+        const fitsRequirements = (user) =>
+            // user has housing if curUser doesn't, vice versa
+            this.#curUser.hasHousing !== user.hasHousing &&
+            // user is not curUser
+            user.id !== this.#curUser.id                 &&
+            // curUser has not already liked, rejected, or matched with user
+            !this.#curUser.liked.includes(user.id)       &&
+            !this.#curUser.rejected.includes(user.id)    &&
+            !this.#curUser.matches.includes(user.id);
+            
+        return allUsers.filter(fitsRequirements);
+    }
 
     /**
      * Creates containers for the left side of the page, to be injected with
