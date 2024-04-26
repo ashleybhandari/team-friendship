@@ -3,7 +3,7 @@ import { getUserById, getMatches, getCurrentUser } from '../../../data/MockBacke
 import { DisplayManageUsersHelper as DisplayUser } from '../../helpers/Display/displayManageUsersHelper.js';
 
 // Created by Gauri Arvind
-// not in use
+// doesn't work - not in use
 
 export class DisplayWithoutHousingView {
     /**

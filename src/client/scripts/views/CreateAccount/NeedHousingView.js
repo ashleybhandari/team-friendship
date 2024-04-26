@@ -1,3 +1,4 @@
+// created by Isha Bang
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
@@ -9,7 +10,6 @@ import { getCurrentUser } from '../../../data/MockBackend.js';
 
 
 export class NeedHousingView {
-    #viewContainer = null;
     #preferencesSection = null;
     #user = null;
     #queryFns = null;
@@ -134,7 +134,7 @@ export class PreferencesSection {
 
     /**
      * Renders column 1 of the Preferences section.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async renderCol1() {
         const elm = document.createElement('div');
@@ -171,7 +171,7 @@ export class PreferencesSection {
 
     /**
      * Renders column 2 of the Preferences section.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async renderCol2() {
         const elm = document.createElement('div');
@@ -201,7 +201,7 @@ export class PreferencesSection {
 
     /**
      * Renders column 3 of the Preferences section.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async renderCol3() {
         const elm = document.createElement('div');

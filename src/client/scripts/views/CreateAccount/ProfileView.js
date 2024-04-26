@@ -1,16 +1,14 @@
+// created by Rachel Lahav
 import { ProgressBar } from '../../components/ProgressBar.js';
-import { Button } from '../../components/Button.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
 import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { SliderInput } from '../../components/SliderInput.js';
-import { CheckboxGroup } from '../../components/CheckboxGroup.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
-import { getAllUsers } from '../../../data/DatabasePouchDB.js';
 import { getUserById } from '../../../data/DatabasePouchDB.js';
-import { toMap, fields } from '../../helpers/SettingsData.js';
+import { fields } from '../../helpers/SettingsData.js';
 
 /**
  * ProfileView class
@@ -64,7 +62,6 @@ export class ProfileView {
         const nextBtnHandler = async () => {
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
-            let success = true;
 
             try {
                 const currentUser = await getUserById(userData.id);

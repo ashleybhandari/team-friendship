@@ -1,3 +1,5 @@
+// created by Rachel Lahav
+
 // DB TODO: uncomment when PouchDB works
 //PouchDB.plugin(require('pouchdb-authentication'));
 

@@ -1,3 +1,4 @@
+// created by Isha Bang
 import { Events } from '../Events.js';
 
 /**
@@ -18,7 +19,10 @@ export class Navbar1 {
         elm.innerHTML = `
         <div class="links">
             <div class="logo">
-                <img src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png">
+                <img
+                    src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png"
+                    alt="KeyMate logo"
+                >
                 <h2 class="battambang">KeyMate</h2>
             </div>
             <div class="links">

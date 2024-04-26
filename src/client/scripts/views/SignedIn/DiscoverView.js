@@ -1,13 +1,10 @@
+// created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
 import { getCurrentUser, getAllUsers, getUserById } from '../../../data/MockBackend.js';
 
-/**
- * Created by Ashley Bhandari
- * User can view other users by either liking or rejecting them.
- * view: 'discover'
- */
+// view: 'discover'
 export class DiscoverView {
     #discoverViewElm = null;
     #curUser = null;
@@ -22,11 +19,15 @@ export class DiscoverView {
         this.#events.subscribe('getProfile', async (id) => await this.renderFromId(id));
     }
 
+    /**
+     * User can view other users by either liking or rejecting them.
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render() {
         this.#curUser = await getCurrentUser(); // DB TODO: Replace when PouchDB works
 
         this.#discoverViewElm = document.createElement('div');
-        this.#discoverViewElm.classList.add('discoverElm')
+        this.#discoverViewElm.classList.add('discoverView')
 
         // get list of users to render on Discover
         const allUsers = await getAllUsers();
@@ -91,7 +92,7 @@ export class DiscoverView {
     async renderFromId(id) {
         const elm = document.createElement('div');
         elm.id = 'discoverProfile'
-        elm.classList.add('discoverElm');
+        elm.classList.add('discoverView');
 
         // user to display
         const user = await getUserById(id);
@@ -376,7 +377,9 @@ export class DiscoverView {
                 }
             });
             
-            if (cntr.innerHTML === '') cntr.innerText = 'None'
+            if (cntr.innerHTML === '') {
+                cntr.innerHTML = `<span class="stats-empty">None</span>`
+            }
             cntr.appendChild(elm);
         };
 

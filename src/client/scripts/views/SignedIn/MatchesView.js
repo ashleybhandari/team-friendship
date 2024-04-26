@@ -6,12 +6,7 @@ import { Events } from '../../Events.js';
 import { getCurrentUser } from '../../../data/MockBackend.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
-/**
- * Created by Ashley Bhandari
- * Displays the user's matches as a list of abbreviated profiles (can click on
- * a profile to view more details). Injected into SignedInContainer.
- * view: 'matches'
- */
+// view: 'matches'
 export class MatchesView {
     #matchesViewElm = null;
     #listViewElm = null;
@@ -19,13 +14,18 @@ export class MatchesView {
     #profileViewContainer = null;
     #events = null;
 
-    #user = null;
-    #openedMatchId = null;
+    #user = null;          // current user
+    #openedMatchId = null; // id of match whose profile is open
 
     constructor() {
         this.#events = Events.events();
     }
 
+    /**
+     * Displays the user's matches as a list of abbreviated profiles (can click
+     * on a profile to view more details). Injected into SignedInContainer.
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render() {
         this.#user = await getCurrentUser(); // DB TODO: initialize properly when PouchDB works
 
@@ -137,7 +137,7 @@ export class MatchesView {
 
     /**
      * Render the buttons/info that go at the top of a match's profile.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async #renderOptions() {
         const elm = document.createElement('div');

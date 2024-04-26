@@ -1,12 +1,13 @@
-import { Events } from '../../Events.js';
+// created by Rachel Lahav
 import { BIOS } from '../../../../docs/milestone-01/members.js';
 
-/**
- * About view. Contains contact information, our mission statement, and bios of
- * our team members.
- * view: about
- */
+// view: about
 export class AboutView {
+    /**
+     * About view. Contains contact information, our mission statement, and bios
+     * of our team members.
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render() {
         const aboutViewElm = document.createElement('div');
         aboutViewElm.id = 'aboutView';

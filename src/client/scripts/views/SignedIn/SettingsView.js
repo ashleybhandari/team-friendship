@@ -10,11 +10,7 @@ import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
 import { getCurrentUser } from '../../../data/MockBackend.js';
 
-/**
- * Created by Ashley Bhandari
- * Lets the user change their configuration. Injected into SignedInContainer.
- * view: 'settings'
- */
+// view: 'settings'
 export class SettingsView {
     #settingsViewElm = null;
     #credentialsSection = null;
@@ -26,10 +22,10 @@ export class SettingsView {
     #settingsFns = null;    // functions fill and save each field
     #requiredFields = null; // required fields
 
-    constructor() {
-        
-    }
-
+    /**
+     * Lets the user change their configuration. Injected into SignedInContainer.
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render() {
         // DB TODO: remove users import, replace all localStorage stuff with PouchDB when it works
         const user = await getCurrentUser();
@@ -131,7 +127,7 @@ export class SettingsView {
     }
 
     /**
-     * Save any changes made.
+     * Save any changes made. Alert if a required field was missed.
      */
     #saveChanges() {
         const invalid = this.#requiredFields.some((id) => {
@@ -170,6 +166,9 @@ export class SettingsView {
 }
 
 
+/**
+ * Class containing a render function to render the Credentials section.
+ */
 class CredentialsSection {
     #parent = null;
 
@@ -190,9 +189,11 @@ class CredentialsSection {
         elm.id = 'credentials-section';
         elm.classList.add('section');
         
+        // "Credentials" header
         const header = document.createElement('h3');
         header.innerText = 'Credentials';
 
+        // container for section content
         const section = document.createElement('div');
         section.id = 'credentials';
 
@@ -207,11 +208,13 @@ class CredentialsSection {
 }
 
 
+/**
+ * Class containing a render function to render the Profile section.
+ */
 class ProfileSection {
     #parent = null;
 
     /**
-     * Profile section of the Settings view.
      * @param {HTMLDivElement} parent - Settings view
      */
     constructor(parent) {
@@ -227,9 +230,11 @@ class ProfileSection {
         elm.id = 'profile-section';
         elm.classList.add('section');
 
+        // "Profile" header
         const header = document.createElement('h3');
         header.innerText = 'Profile';
 
+        // container for section content
         const section = document.createElement('div');
         section.id = 'profile';
 
@@ -262,7 +267,7 @@ class ProfileSection {
 
     /**
      * Fields for first name, nickname + age, and gender identity + pronouns.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async #renderIdentity() {
         const elm = document.createElement('div');
@@ -292,7 +297,7 @@ class ProfileSection {
 
     /**
      * Fields for major, school, and level of education.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async #renderEducation() {
         const elm = document.createElement('div');
@@ -308,7 +313,7 @@ class ProfileSection {
 
     /**
      * Fields for Facebook and Instagram.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async #renderSocials() {
         const elm = document.createElement('div');
@@ -321,7 +326,7 @@ class ProfileSection {
 
     /**
      * Fields for slider elements.
-     * @returns {HTMLDivElement} - All 4 sliders
+     * @returns {Promise<HTMLDivElement>} - All 4 sliders
      */
     async #renderSliders() {
         const sliders = document.createElement('div');
@@ -348,11 +353,13 @@ class ProfileSection {
 }
 
 
+/**
+ * Class containing a render function to render the Preferences section.
+ */
 class PreferencesSection {
     #parent = null;
 
     /**
-     * Preferences section of the Settings view.
      * @param {HTMLDivElement} parent - Settings view
      */
     constructor(parent) {
@@ -367,9 +374,11 @@ class PreferencesSection {
         elm.id = 'preferences-section';
         elm.classList.add('section');
 
+        // "Preferences" header
         const header = document.createElement('h3');
         header.innerText = 'Your Preferences';
 
+        // container for section content
         const section = document.createElement('div');
         section.id = 'preferences';
 
@@ -390,7 +399,7 @@ class PreferencesSection {
 
     /**
      * Fields for cities, rent, and number of occupants
-     * @returns {HTMLDivElement1}
+     * @returns {Promise<HTMLDivElement>}
      */
     async renderTextInput() {
         const elm = document.createElement('div');
@@ -417,39 +426,63 @@ class PreferencesSection {
     }
 
     /**
-     * Fields for gender inclusivity
-     * @returns {HTMLDivElement1}
+     * Checkboxes for gender inclusivity
+     * @returns {Promise<HTMLDivElement>}
      */
     async renderGender() {
         const boxes = toMap(fields.genderIncl);
         return await new CheckboxGroup('Gender inclusivity', boxes).render();
     }
 
+    /**
+     * Checkboxes for lease length
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderLeaseLength() {
         const boxes = toMap(fields.leaseLength);
         return await new CheckboxGroup('Lease length', boxes).render();
     }
 
+    /**
+     * Checkboxes for lease type
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderLeaseType() {
         const boxes = toMap(fields.leaseType);
         return await new CheckboxGroup('Lease type', boxes).render();
     }
 
+    /**
+     * Checkboxes for room type
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderRoomType() {
         const boxes = toMap(fields.roomType);
         return await new CheckboxGroup('Room type', boxes).render();
     }
 
+    /**
+     * Checkboxes for building type
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderBuildingType() {
         const boxes = toMap(fields.buildingType);
         return await new CheckboxGroup('Building type', boxes).render();
     }
     
+    /**
+     * Checkboxes for move-in period
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderTimeframe() {
         const boxes = toMap(fields.timeframe);
         return await new CheckboxGroup('Move-in period', boxes).render();
     }
 
+    /**
+     * Checkboxes for gender amenities
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderAmenities() {
         const boxes = toMap(fields.amenities);
 
@@ -466,11 +499,13 @@ class PreferencesSection {
 }
 
 
+/**
+ * Class containing a render function to render the Housing section.
+ */
 class HousingSection {
     #parent = null;
 
     /**
-     * Housing section of the Settings view.
      * @param {HTMLDivElement} parent - Settings view
      */
     constructor(parent) {
@@ -486,9 +521,11 @@ class HousingSection {
         elm.id = 'housing-section';
         elm.classList.add('section');
 
+        // "Your housing" header
         const header = document.createElement('h3');
         header.innerText = 'Your Housing';
 
+        // container for section content
         const section = document.createElement('div');
         section.id = 'housing';
 
@@ -505,6 +542,10 @@ class HousingSection {
         this.#parent.appendChild(elm);
     }
 
+    /**
+     * Fields for city, no. beds, and no. baths
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderCityCol() {
         const elm = document.createElement('div');
 
@@ -521,6 +562,10 @@ class HousingSection {
         return elm;
     }
 
+    /**
+     * Fields for gender inclusivity, move-in period, and lease length
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderGenderCol() {
         const elm = document.createElement('div');
 
@@ -539,6 +584,10 @@ class HousingSection {
         return elm;
     }
 
+    /**
+     * Fields for lease, room, and building types
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderTypeCol() {
         const elm = document.createElement('div');
 
@@ -557,6 +606,10 @@ class HousingSection {
         return elm;
     }    
 
+    /**
+     * Fields for rent and time period
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderRent() {
         const elm = document.createElement('div');
         elm.classList.add('subgroup', 'rent');
@@ -584,6 +637,10 @@ class HousingSection {
         return elm;
     }
 
+    /**
+     * Field for additional user-inputted details
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderDetails() {
         const elm = await new TextAreaInput(
             'Details', 'Anything else you want to mention!'
@@ -592,6 +649,10 @@ class HousingSection {
         return elm;
     }
 
+    /**
+     * Fields for utilities included with rent
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderUtilities() {
         const boxes = toMap(fields.utilities);
         return await new CheckboxGroup(
@@ -599,6 +660,10 @@ class HousingSection {
         ).render();
     }
 
+    /**
+     * Fields for amenities
+     * @returns {Promise<HTMLDivElement>}
+     */
     async renderAmenities() {
         const boxes = toMap(fields.amenities);
 

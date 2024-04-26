@@ -7,10 +7,6 @@ import { MatchesView } from './MatchesView.js';
 import { SettingsView } from './SettingsView.js';
 import { Events } from '../../Events.js';
 
-/**
- * Sets up header and navbar for Discover, Matches, and Settings views.
- * Injected into App.
- */
 export class SignedInContainer {
     #signedInCntrElm = null;
     #viewContainer = null;
@@ -23,6 +19,11 @@ export class SignedInContainer {
         this.#events = Events.events();
     }
 
+    /**
+     * Sets up header and navbar for Discover, Matches, and Settings views.
+     * Injected into App.
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render() {
         this.#signedInCntrElm = document.createElement('div');
         this.#signedInCntrElm.id = 'signedInCntr';

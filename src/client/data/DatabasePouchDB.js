@@ -1,3 +1,5 @@
+// Created by Rachel Lahav and Gauri Arvind
+
 /**
  * Initialize a new PouchDB instance for the roommate-matching database.
  */
