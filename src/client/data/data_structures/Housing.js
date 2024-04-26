@@ -1,4 +1,4 @@
-// created by Ashley Bhandari
+// created by Rachel Lahav and Ashley Bhandari
 
 export class Housing {
     /**

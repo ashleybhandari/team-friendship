@@ -1,7 +1,6 @@
 /**
  * Created by Ashley Bhandari
- * This file has functions to mock backend functionality. It's in use while
- * PouchDB doesn't work.
+ * This file mimics backend functionality. It's in use until PouchDB works.
  */
 
 // DB TODO: delete when PouchDB works

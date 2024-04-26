@@ -5,7 +5,7 @@ html {
 
 body {
     /* room for footer */
-    margin: 0 0 140px;
+    margin: 0 0 137px;
 }
 
 /* fonts */
@@ -73,24 +73,6 @@ body {
     display: flex;
     justify-content: space-evenly;
 }
-
-
-/* CheckboxGroup.js */
-
-.checkbox-group.big-group p {
-    text-align: center;
-}
-
-.checkbox-group .boxes {
-    display: flex;
-    justify-content: space-between;
-}
-
-.checkbox-group.big-group .boxes {
-    display: flex;
-    justify-content: space-evenly;
-}
-
 
 /* CheckboxInput.js */
 
@@ -405,8 +387,6 @@ body {
     color: white;
 }
 
-
-
 /* Navbar2.js */
 
 .navbar2 nav {
@@ -718,9 +698,6 @@ body {
     display: flex;
     justify-content: center;
 }
-
-
-
 
 /* MatchesView.js */
 

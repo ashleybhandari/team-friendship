@@ -16,7 +16,7 @@ export class DiscoverView {
 
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
-        this.#events.subscribe('getProfile', async (id) => await this.renderFromId(id));
+        this.#events.subscribe('getProfile', async (id) => await this.#renderFromId(id));
     }
 
     /**
@@ -40,21 +40,21 @@ export class DiscoverView {
                 !this.#curUser.matches.includes(user.id)
         });
 
-        // index in unseen of the profile to display
+        // index in unseen - keeps track of what profile to display
         this.#unseenIndex = 0;
 
         // profile to display
         const curProfile = unseen[this.#unseenIndex];
 
         // left side of page: pic, name; bio as well if user has housing
-        const bioSection = this.#renderBioSection();
+        const bioSection = this.#addBioSection();
         this.#discoverViewElm.appendChild(bioSection);
 
         // right side of page: info about housing or bio (depending on housing situation)
         const hasHousing = curProfile ? curProfile.hasHousing : false; // necessary if unseen is empty
         const infoSection = hasHousing
-            ? this.#renderInfoSectionWithHousing()
-            : this.#renderInfoSectionWithoutHousing();
+            ? this.#addInfoSectionWithHousing()
+            : this.#addInfoSectionWithoutHousing();
         this.#discoverViewElm.appendChild(infoSection);
 
         // like and reject buttons
@@ -66,11 +66,15 @@ export class DiscoverView {
 
         // handles "liking" or "rejecting" a profile
         rejectBtn.addEventListener('click', () => {
+            // add to user's rejected list
             this.#curUser.rejected.push(unseen[this.#unseenIndex].id);
+            // view the next profile
             this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
         likeBtn.addEventListener('click', () => {
+            // add to user's liked list
             this.#curUser.liked.push(unseen[this.#unseenIndex].id);
+            // view the next profile
             this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
 
@@ -89,7 +93,7 @@ export class DiscoverView {
      * its match profile pages.
      * @param {string} id - id of the user whose profile will be published
      */
-    async renderFromId(id) {
+    async #renderFromId(id) {
         const elm = document.createElement('div');
         elm.id = 'discoverProfile'
         elm.classList.add('discoverView');
@@ -97,11 +101,11 @@ export class DiscoverView {
         // user to display
         const user = await getUserById(id);
 
-        // render HTML
-        const bioSection = this.#renderBioSection();
+        // add HTML
+        const bioSection = this.#addBioSection();
         const infoSection = user.hasHousing
-            ? this.#renderInfoSectionWithHousing()
-            : this.#renderInfoSectionWithoutHousing();
+            ? this.#addInfoSectionWithHousing()
+            : this.#addInfoSectionWithoutHousing();
         elm.appendChild(bioSection);
         elm.appendChild(infoSection);
         
@@ -119,12 +123,12 @@ export class DiscoverView {
 
 
     /**
-     * Renders containers for the left side of the page, to be injected with
+     * Creates containers for the left side of the page, to be injected with
      * information at a later point in time. Holds the user's profile picture,
      * name, education, and a self-written bio.
      * @returns {HTMLDivElement}
      */
-    #renderBioSection() {
+    #addBioSection() {
         const elm = document.createElement('div');
         elm.classList.add('discover-bio');
         
@@ -145,13 +149,13 @@ export class DiscoverView {
     }
     
     /**
-     * Renders containers for the right side of the page, to be injected with
+     * Creates containers for the right side of the page, to be injected with
      * information at a later point in time. Specific to users with housing, it
      * holds their personal characteristics and basic information about their
      * housing.
      * @returns {HTMLDivElement}
      */
-    #renderInfoSectionWithHousing() {
+    #addInfoSectionWithHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
 
@@ -180,12 +184,12 @@ export class DiscoverView {
     }
 
     /**
-     * Renders containers for the right side of the page, to be injected with
+     * Creates containers for the right side of the page, to be injected with
      * information at a later point in time. Specific to users without housing,
      * it holds their personal characteristics and self-written bio.
      * @returns {HTMLDivElement}
      */
-    #renderInfoSectionWithoutHousing() {
+    #addInfoSectionWithoutHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
 
@@ -220,10 +224,10 @@ export class DiscoverView {
             return;
         }
 
-        // inject bio section
+        // inject info into bio section
         this.#injectBio(bioSection, user);
 
-        // inject info section
+        // inject info into info section
         user.hasHousing 
             ? this.#injectInfoWithHousing(infoSection, user)
             : this.#injectInfoWithoutHousing(infoSection, user);
@@ -300,6 +304,11 @@ export class DiscoverView {
         const section = container.querySelector('.about-details');
         section.innerHTML = '';
 
+        /**
+         * Creates a yellow div to display each trait in.
+         * @param {string} trait
+         * @param {string} value
+         */
         const render = (trait, value) => {
             const elm = document.createElement('div');
             elm.classList.add('character-trait');
@@ -350,8 +359,8 @@ export class DiscoverView {
         const house = user.housing;
 
         /**
-         * Goes through a list of string-boolean pairs and creates elements
-         * based on the boolean value.
+         * Goes through a list of string-boolean pairs and renders a list of
+         * elements associated with pairs whose boolean value is true.
          * @param {HTMLDivElement} cntr - Container to hold created elements
          * @param {Object<string, boolean>} attributes - key: property, value: whether user has that property
          */
