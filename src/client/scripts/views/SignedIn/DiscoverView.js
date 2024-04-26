@@ -114,8 +114,8 @@ export class DiscoverView {
     }
 
     /**
-     * Gets profiles that the user hasn't liked or rejected yet and fit the
-     * user's preferences
+     * Gets an array of users that curUser user (1) hasn't liked or rejected
+     * yet and (2) fit the user's preferences.
      * @returns {User[]}
      */
     async #getUnseenUsers() {
