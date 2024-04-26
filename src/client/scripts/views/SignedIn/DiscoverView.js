@@ -153,8 +153,15 @@ export class DiscoverView {
         const saveBtn = new Button('Save changes');
         saveBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            // TODO: create an object with the filter results: ex. { clean: true, cities: ['Sunderland', ...] }
-            // Ashley will deal with publishing the object and refreshing the page
+            // TODO: Grab the values in elm and create a Map<string, boolean> object where keys are the property names in
+            // User/Preferences. Ashley will deal with publishing the map and refreshing the page. As an example:
+            // const result = new Map([
+            //     ['clean', true],
+            //     ['sleep', true],
+            //     ['noise', false],
+            //     ['cities', true],
+            //     etc.
+            // ]);
         });
 
         elm.appendChild(saveBtn);
