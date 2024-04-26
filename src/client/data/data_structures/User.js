@@ -1,4 +1,4 @@
-// created by Ashley Bhandari
+// created by Gauri Arvind and Ashley Bhandari
 
 export class User {
     /**

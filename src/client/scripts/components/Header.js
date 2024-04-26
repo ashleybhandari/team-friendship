@@ -34,6 +34,7 @@ export class Header {
         header.addEventListener('click', async (e) => {
             e.preventDefault();
 
+            // DB TODO: const view = signed in ? 'discover' : 'landing';
             const view = 'landing';
             window.location.hash = view;
             await this.#events.publish('navigateTo', view);

@@ -1,9 +1,11 @@
-// created by Ashley Bhandari
+// created by Gauri Arvind and Ashley Bhandari
 import { User } from './data_structures/User.js';
 import { Preferences } from './data_structures/Preferences.js';
 import { Housing } from './data_structures/Housing.js';
 
-// mock users
+/**
+ * This file contains mock users until we implement backend functionality.
+ */
 
 const u0 = new User(
     0,
