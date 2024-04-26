@@ -38,6 +38,10 @@ export class DiscoverView {
         // profile to display
         const curProfile = unseen[this.#unseenIndex];
 
+        // filter bar
+        const filterBar = await this.#renderFilterBar();
+        this.#discoverViewElm.appendChild(filterBar);
+
         // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#addBioSection();
         this.#discoverViewElm.appendChild(bioSection);
@@ -114,8 +118,8 @@ export class DiscoverView {
     }
 
     /**
-     * Gets an array of users that curUser user (1) hasn't liked or rejected
-     * yet and (2) fit the user's preferences.
+     * Gets an array of users that curUser hasn't liked, rejected, or matched
+     * with yet.
      * @returns {User[]}
      */
     async #getUnseenUsers() {
@@ -133,6 +137,30 @@ export class DiscoverView {
             
         return allUsers.filter(fitsRequirements);
     }
+
+    /**
+     * Creates a bar at the top of the Discover page. The discover feed changes
+     * depending on which options the user selects
+     * @returns {Promise<HTMLDivElement>} 
+     */
+    async #renderFilterBar() { // TODO: Gauri
+        const elm = document.createElement('div');
+
+        // TODO: Render the filter bar - should have checkboxes associated with the character property in the User data structure,
+        // and just a few properties in the Preferences data structure (otherwise it's too much work). Only add the Preferences
+        // properties if !this.#curUser.hasHousing
+
+        const saveBtn = new Button('Save changes');
+        saveBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // TODO: create an object with the filter results: ex. { clean: true, cities: ['Sunderland', ...] }
+            // Ashley will deal with publishing the object and refreshing the page
+        });
+
+        elm.appendChild(saveBtn);
+
+        return elm;
+    };
 
     /**
      * Creates containers for the left side of the page, to be injected with
