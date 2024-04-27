@@ -8,7 +8,7 @@ import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { toMap, fields } from '../../helpers/SettingsData.js';
-import { getCurrentUser } from '../../../data/MockBackend.js';
+import { Events } from '../../Events.js';
 
 // view: 'settings'
 export class SettingsView {
@@ -17,23 +17,39 @@ export class SettingsView {
     #profileSection = null;
     #preferencesSection = null;
     #housingSection = null;
+    #events = null;
 
     #user = null;           // current user
     #settingsFns = null;    // functions fill and save each field
     #requiredFields = null; // required fields
 
+    constructor() {
+        this.#events = Events.events();
+
+        // Published by SignInView, HaveHousingView, and NeedHousing View.
+        // Loads the view according to the user's preferences and saved 
+        // likes/rejects/matches
+        this.#events.subscribe('newUser', (user) => this.render(user));
+    }
     /**
      * Lets the user change their configuration. Injected into SignedInContainer.
      * @returns {Promise<HTMLDivElement>}
      */
-    async render() {
-        // DB TODO: remove users import, replace all localStorage stuff with PouchDB when it works
-        const user = await getCurrentUser();
-        localStorage.setItem('user', JSON.stringify(user));
-        this.#user = JSON.parse(localStorage.getItem('user'));
+    async render(user) {
+        // DB TODO: replace all localStorage stuff with PouchDB when it works
+        
+        // if user has not signed in, SettingsView is an empty div
+        if (!user) {
+            this.#settingsViewElm = document.createElement('div');
+            this.#settingsViewElm.id = 'settingsView';
+            return this.#settingsViewElm;    
+        }
 
-        this.#settingsViewElm = document.createElement('div');
-        this.#settingsViewElm.id = 'settingsView';
+        this.#user = user;
+        this.#settingsViewElm.innerHTML = '';
+
+        localStorage.setItem('user', JSON.stringify(this.#user));
+        // this.#user = JSON.parse(localStorage.getItem('user'));
 
         // page header
         this.#settingsViewElm.innerHTML = `

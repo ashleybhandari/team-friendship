@@ -3,7 +3,7 @@ import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { Button } from '../../components/Button.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
-import { getCurrentUser, getAllUsers, getUserById } from '../../../data/MockBackend.js';
+import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
 
 // view: 'discover'
 export class DiscoverView {
@@ -15,6 +15,11 @@ export class DiscoverView {
     constructor() {
         this.#events = Events.events();
 
+        // Published by SignInView, HaveHousingView, and NeedHousing View.
+        // Loads the view according to the user's preferences and saved 
+        // likes/rejects/matches
+        this.#events.subscribe('newUser', (user) => this.render(user));
+
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
         this.#events.subscribe('getProfile', async (id) => await this.#renderFromId(id));
@@ -22,13 +27,19 @@ export class DiscoverView {
 
     /**
      * User can view other users by either liking or rejecting them.
+     * @param {User} curUser - Currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render() {
-        this.#curUser = await getCurrentUser(); // DB TODO: Replace when PouchDB works
+    async render(curUser) {
+        // if user has not signed in, DiscoverView is an empty div
+        if (!curUser) {
+            this.#discoverViewElm = document.createElement('div');
+            this.#discoverViewElm.classList.add('discoverView')
+            return this.#discoverViewElm;
+        }
 
-        this.#discoverViewElm = document.createElement('div');
-        this.#discoverViewElm.classList.add('discoverView')
+        this.#curUser = curUser;
+        this.#discoverViewElm.innerHTML = '';
 
         // get list of users to render on Discover
         const unseen = await this.#getUnseenUsers();
@@ -40,8 +51,8 @@ export class DiscoverView {
         const curProfile = unseen[this.#unseenIndex];
 
         // filter bar
-        const filterBar = await this.#renderFilterBar();
-        this.#discoverViewElm.appendChild(filterBar);
+        // const filterBar = await this.#renderFilterBar();
+        // this.#discoverViewElm.appendChild(filterBar);
 
         // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#addBioSection();
