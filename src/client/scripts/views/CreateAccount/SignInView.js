@@ -4,6 +4,7 @@ import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 // import { login } from '../../../data/LogIn.js'; // DB TODO: Uncomment when PouchDB works
 import { Events } from '../../Events.js';
+import { users } from '../../../data/MockData.js'; // TODO: delete
 
 /**
  * Provides a UI view for user sign-in. This class is responsible for rendering the
@@ -73,7 +74,7 @@ export class SignInView {
             e.preventDefault();
 
             const signInFns = [
-                () => this.#events.publish('signedIn', emailInputElement.value),
+                () => this.#events.publish('newUser', users[0]), // DB TODO: change to PouchDB
                 () => this.#events.publish('navigateTo', 'discover')
             ];
 

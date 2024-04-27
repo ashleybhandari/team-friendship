@@ -3,8 +3,6 @@
 import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
-import { getCurrentUser } from '../../../data/MockBackend.js';
-import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'matches'
 export class MatchesView {
@@ -19,18 +17,29 @@ export class MatchesView {
 
     constructor() {
         this.#events = Events.events();
+
+        // Published by SignInView, HaveHousingView, and NeedHousing View.
+        // Loads the view according to the user's preferences and saved 
+        // likes/rejects/matches
+        this.#events.subscribe('newUser', (user) => this.render(user));
     }
 
     /**
      * Displays the user's matches as a list of abbreviated profiles (can click
      * on a profile to view more details). Injected into SignedInContainer.
+     * @param {User} user - Currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render() {
-        this.#user = await getCurrentUser(); // DB TODO: initialize properly when PouchDB works
+    async render(user) {
+        // if user has not signed in, MatchesView is an empty div
+        if (!user) {
+            this.#matchesViewElm = document.createElement('div');
+            this.#matchesViewElm.id = 'matchesView';
+            return this.#matchesViewElm;    
+        }
 
-        this.#matchesViewElm = document.createElement('div');
-        this.#matchesViewElm.id = 'matchesView';
+        this.#user = user;
+        this.#matchesViewElm.innerHTML = '';
 
         // matches list, profile container
         await this.#renderList();

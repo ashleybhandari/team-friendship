@@ -7,6 +7,7 @@ import { TextInput } from '../../components/TextInput.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { getCurrentUser } from '../../../data/MockBackend.js';
+import { users } from '../../../data/MockData.js'; // DB TODO: delete
 
 
 export class NeedHousingView {
@@ -56,7 +57,12 @@ export class NeedHousingView {
             console.error("Element with ID 'needHousingForm' not found");
         }
 
-        const navigation = await new Navigation('create-3', 'discover', [], true).render();
+        const createAcctFns = [
+            () => this.#events.publish('newUser', users[0]) // DB TODO: change to PouchDB
+        ]
+        const navigation = await new Navigation(
+            'create-3', 'discover', createAcctFns, true
+        ).render();
         needHousingViewElm.appendChild(navigation);
 
         this.#queryFns = new SettingsFns(needHousingViewElm, this.#user); 

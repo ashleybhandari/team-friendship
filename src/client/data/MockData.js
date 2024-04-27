@@ -7,6 +7,8 @@ import { Housing } from './data_structures/Housing.js';
  * This file contains mock users until we implement backend functionality.
  */
 
+// Discover shows Jimmy (with housing)
+// Matches show Linda, Gene
 const u0 = new User(
     0,
     'bob@gmail.com',
@@ -49,9 +51,11 @@ const u0 = new User(
     ),
     [], // liked
     [], // rejected
-    [1, 2]  // matches
+    [1, 3]  // matches
 );
 
+// Discover shows Tina, Louise (no housing)
+// Matches show Bob
 const u1 = new User(
     1,
     'linda@gmail.com',
@@ -94,9 +98,11 @@ const u1 = new User(
     ),
     [], // liked
     [], // rejected
-    []  // matches
+    [0]  // matches
 );
 
+// Discover shows Linda, Gene (with housing)
+// Matches show nothing
 const u2 = new User(
     2,
     'tina@gmail.com',
@@ -108,7 +114,7 @@ const u2 = new User(
     { major: 'Biology', school: 'Smith', level: 'undergrad' },
     { fb: 'tinytina', ig: 'tt_ig' },
     'Tina. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
-    true, // hasHousing
+    false, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
@@ -137,11 +143,13 @@ const u2 = new User(
         [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
         'Tina housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
-    [], // liked
+    [5], // liked
     [], // rejected
     []  // matches
 );
 
+// Discover shows Tina (no housing)
+// Matches show Bob
 const u3 = new User(
     3,
     'gene@gmail.com',
@@ -183,10 +191,12 @@ const u3 = new User(
         'Gene housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
     [], // liked
-    [], // rejected
-    []  // matches
+    [4], // rejected
+    [0]  // matches
 );
 
+// Discover shows nothing
+// Matches show Jimmy
 const u4 = new User(
     4,
     'louise@gmail.com',
@@ -198,7 +208,7 @@ const u4 = new User(
     { major: 'History', school: 'Amherst College', level: 'undergrad' },
     { fb: 'lulufb', ig: 'louisebelcher' },
     'Louise. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
-    true, // hasHousing
+    false, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
@@ -228,10 +238,12 @@ const u4 = new User(
         'Louise housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
     [], // liked
-    [], // rejected
-    []  // matches
+    [1, 3], // rejected
+    [5]  // matches
 );
 
+// Discover shows Bob, Tina (no housing)
+// Matches show Louise
 const u5 = new User(
     5,
     'jimmy@gmail.com',
@@ -274,7 +286,7 @@ const u5 = new User(
     ),
     [], // liked
     [], // rejected
-    []  // matches
+    [4]  // matches
 );
 
 export const users = [ u0, u1, u2, u3, u4, u5 ];
