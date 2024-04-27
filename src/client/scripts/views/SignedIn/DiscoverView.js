@@ -1,5 +1,6 @@
 // created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
+import { Button } from '../../components/Button.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
 import { getCurrentUser, getAllUsers, getUserById } from '../../../data/MockBackend.js';
@@ -150,7 +151,7 @@ export class DiscoverView {
         // and just a few properties in the Preferences data structure (otherwise it's too much work). Only add the Preferences
         // properties if !this.#curUser.hasHousing
 
-        const saveBtn = new Button('Save changes');
+        const saveBtn = await new Button('Save changes').render();
         saveBtn.addEventListener('click', (e) => {
             e.preventDefault();
             // TODO: Grab the values in elm (use elm.querySelector(#checkbox_id)). Checkboxes are automatically given id's, use
