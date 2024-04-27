@@ -816,24 +816,24 @@ body {
     margin: 25px;
 }
 
-/* ProfileView.js */
+/* ProfileView.js, UserDetailsView.js */
 
-#profileView {
+#profileView, #detailsView {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#profileView .header {
+#profileView .header, #detailsView .header {
     display: flex;
     flex-direction: column;
 }
 
-#profileView .header p {
+#profileView .header p, #detailsView .header p {
     margin: 0;
 }
 
-#profileView form {
+#profileView form, #detailsView form {
     margin: 70px 0 20px;
 }
 
@@ -863,8 +863,8 @@ body {
 }
 
 #housingView .title-options-container #whatIsYourHousiRadioGrp {
-    font-size: 28px;
-    text-align: center;;
+    font-size: 26px;
+    text-align: center;
 }
 
 /* DiscoverView.js */

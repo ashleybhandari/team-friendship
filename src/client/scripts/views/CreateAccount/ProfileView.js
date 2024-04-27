@@ -1,16 +1,13 @@
 // created by Rachel Lahav
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { UserProfile } from '../../components/UserProfile.js';
-import { Events } from '../../Events.js';
-
-
 import { Navigation } from '../../components/Navigation.js';
-import { updateUser } from '../../../data/DatabasePouchDB.js';
-import { getUserById } from '../../../data/DatabasePouchDB.js';
-import { fields } from '../../helpers/SettingsData.js';
+import { Events } from '../../Events.js';
+import { getUserById, updateUser } from '../../../data/DatabasePouchDB.js';
 
 /**
  * ProfileView class
+ * view: 'create-2'
  */
 export class ProfileView {
     #events = null;
@@ -52,14 +49,20 @@ export class ProfileView {
 
         // navigation
         profileViewElm.appendChild(await new Navigation(
-            'create-1', 'create-3', [this.nextBtnHandler(form)]
+            'create-1', 'create-3', this.#nextBtnHandlers(form)
         ).render());
         
         return profileViewElm;
     }
 
-    nextBtnHandler(form) {
-        return async () => {
+    /**
+     * Creates an array of functions to call when "next" is clicked
+     * @param {HTMLFormElement} form 
+     * @returns {function[]}
+     */
+    #nextBtnHandlers(form) {
+        // submit form data
+        const submitForm = async () => {
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
 
@@ -75,6 +78,8 @@ export class ProfileView {
                     console.log('An unknown error occurred while updating the profile.');
                 }
             }
-        }
-    };
+        };
+
+        return [submitForm];
+    }
 }

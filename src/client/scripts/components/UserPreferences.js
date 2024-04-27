@@ -2,7 +2,7 @@
 
 import { createElementId } from '../helpers/createElementId.js';
 
-export class UserHousing {
+export class UserPreferences {
     /**
      * UI component: Input fields for user's preference information.
      * @param {string} page - Page in which component is rendered
