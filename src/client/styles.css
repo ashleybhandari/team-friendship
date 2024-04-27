@@ -623,6 +623,41 @@ body {
     font-size: 12px;
 }
 
+/* UserProfile.js */
+
+.user-profile {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
+    column-gap: 80px;
+    width: 900px;
+}
+
+.user-profile .subgroup {
+    display: flex;
+    justify-content: space-between;
+    width: 306.2px;
+}
+
+.user-profile .text-area-input {
+    grid-column: 1 / 3;
+}
+
+.user-profile textarea {
+    min-height: 82px;
+    width: 616px;
+}
+
+.user-profile .sliders {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: 1 / 4;
+}
+
+.user-profile .sliders .slider-input {
+    margin: 10px auto;
+}
+
 /* AboutView.js */
 
 #aboutView {
@@ -814,6 +849,7 @@ body {
 }
 
 /* SettingsView.js */
+/* TODO: delete #profile stuff */
 
 #settingsView {
     margin: 50px auto;

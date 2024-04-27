@@ -1,19 +1,41 @@
 // created by Rachel Lahav
 import { ProgressBar } from '../../components/ProgressBar.js';
-import { DropdownInput } from '../../components/DropdownInput.js';
-import { TextAreaInput } from '../../components/TextAreaInput.js';
-import { TextInput } from '../../components/TextInput.js';
-import { SliderInput } from '../../components/SliderInput.js';
-import { Navigation } from '../../components/Navigation.js';
+import { UserProfile } from '../../components/UserProfile.js';
 import { Events } from '../../Events.js';
+
+
+import { Navigation } from '../../components/Navigation.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
 import { getUserById } from '../../../data/DatabasePouchDB.js';
 import { fields } from '../../helpers/SettingsData.js';
 
+export class ProfileView {
+    #events = null;
+    
+    constructor() {
+        this.#events = Events.events();
+    }
+
+    async render() {
+        const profileViewElm = document.createElement('div');
+        profileViewElm.id = 'profileViewElm';
+
+        // progress bar
+        profileViewElm.appendChild(await new ProgressBar(2).render());
+
+        // profile content
+        profileViewElm.appendChild(await new UserProfile('profile').render());
+        
+        return profileViewElm;
+    }
+}
+
+
+
 /**
  * ProfileView class
  */
-export class ProfileView {
+class ProfileViewOLD {
     #events = null;
     #database = null;
 
