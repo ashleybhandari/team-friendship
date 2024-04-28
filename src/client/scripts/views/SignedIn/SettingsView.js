@@ -7,7 +7,7 @@ import { SliderInput } from '../../components/SliderInput.js';
 import { TextAreaInput } from '../../components/TextAreaInput.js';
 import { TextInput } from '../../components/TextInput.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
-import { toMap, fields } from '../../helpers/SettingsData.js';
+import { toMap, fields } from '../../helpers/settingsData.js';
 import { Events } from '../../Events.js';
 
 // view: 'settings'

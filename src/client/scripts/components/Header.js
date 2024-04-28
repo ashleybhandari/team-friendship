@@ -14,7 +14,7 @@ export class Header {
 
     async render() {
         const header = document.createElement('header');
-        header.classList.add('header');
+        header.classList.add('site-header');
 
         // logo image
         const logo = document.createElement('img');

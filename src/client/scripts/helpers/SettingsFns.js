@@ -1,6 +1,6 @@
 // created by Ashley Bhandari
 
-import { getFieldFromProp, getPropFromDomValue } from './SettingsData.js';
+import { getFieldFromProp, getPropFromDomValue } from './settingsData.js';
 
 /**
  * Class to create functions that fill and save fields on the Settings page.

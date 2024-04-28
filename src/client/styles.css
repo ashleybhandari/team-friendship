@@ -307,7 +307,7 @@ body {
 
 /* Header.js */
 
-.header {
+.site-header {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -315,13 +315,13 @@ body {
     margin: 20px 0 0;
 }
 
-.header img {
+.site-header img {
     width: 32px;
     height: 32px;
     cursor: pointer;
 }
 
-.header h1 {
+.site-header h1 {
     font-size: 26px;
     margin: 0;
     padding: 6px 5px 0;
@@ -658,6 +658,48 @@ body {
     margin: 10px auto;
 }
 
+/* UserHousing.js */
+
+.user-housing {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 40px;
+    column-gap: 80px;
+    width: 1080px;
+}
+
+.user-housing .subgroup {
+    display: flex;
+    justify-content: space-between;
+    width: 306.2px;
+}
+
+.user-housing .rent {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+}
+
+.user-housing .rent .dollar-sign,
+.user-housing .rent .slash {
+    margin-top: 29px;
+}
+
+.user-housing .details {
+    grid-row: 2;
+    grid-column: 2 / 4;
+}
+
+.user-housing textarea {
+    width: 669px;
+    height: 150px;
+}
+
+.user-housing .amenities {
+    grid-row: 3;
+    grid-column: 1 / 4;
+}
+
+
 /* LandingView.js */
 
 /* The landing container */
@@ -827,6 +869,12 @@ body {
 #profileView .header, #detailsView .header {
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+#profileView .header h1, #detailsView .header h1 {
+    margin: 20px 0 0;
+    font-size: 28px;
 }
 
 #profileView .header p, #detailsView .header p {

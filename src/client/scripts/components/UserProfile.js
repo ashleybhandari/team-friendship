@@ -4,7 +4,7 @@ import { DropdownInput } from './DropdownInput.js';
 import { TextAreaInput } from './TextAreaInput.js';
 import { TextInput } from './TextInput.js';
 import { SliderInput } from './SliderInput.js';
-import { fields } from '../helpers/SettingsData.js';
+import { fields } from '../helpers/settingsData.js';
 
 export class UserProfile {
     /**
@@ -16,8 +16,8 @@ export class UserProfile {
     }
 
     async render() {
-        const profileElm = document.createElement('div');
-        profileElm.classList.add('user-profile');
+        const elm = document.createElement('div');
+        elm.classList.add('user-profile');
 
         const avatar = document.createElement('div');
         avatar.innerHTML = `
@@ -26,24 +26,24 @@ export class UserProfile {
         `;
 
         // row 1: avatar, identity info, education info
-        profileElm.appendChild(avatar);
-        profileElm.appendChild(await this.#renderIdentity());
-        profileElm.appendChild(await this.#renderEducation());
+        elm.appendChild(avatar);
+        elm.appendChild(await this.#renderIdentity());
+        elm.appendChild(await this.#renderEducation());
 
         // row 2: bio, social media
-        profileElm.appendChild(await new TextAreaInput(
+        elm.appendChild(await new TextAreaInput(
             'Tell us about yourself',
             'Lifestyle, hobbies, routines, allergies...'
         ).render());
-        profileElm.appendChild(await this.#renderSocials());
+        elm.appendChild(await this.#renderSocials());
 
         // row 3-4: characteristics, is user looking for roommates or housing
-        profileElm.appendChild(await this.#renderSliders());
+        elm.appendChild(await this.#renderSliders());
 
         // prepend all field id's with page name
-        this.#initIds(profileElm);
+        this.#initIds(elm);
 
-        return profileElm;
+        return elm;
     }
 
     /**
@@ -74,16 +74,19 @@ export class UserProfile {
     }
 
     /**
-     * Prepends all field id's with the page name (changes label accordingly if
-     * necessary). Prevents conflicts if multiple views use this component.
+     * Prepends all field id's with the page name (changes name and label
+     * accordingly if necessary). Prevents conflicts if multiple views use this
+     * component.
      * @param {HTMLDivElement} container 
      */
     #initIds(container) {
         this.getFieldIds().forEach((id) => {
             const elm = container.querySelector(`#${id}`);
             const label = container.querySelector(`label[for="${id}"]`);
-            if (elm) elm.id = `${this.page}_${id}`;
-            if (label) label.htmlFor = elm.id;
+
+            if (elm)      elm.id = `${this.page}_${id}`;
+            if (elm.name) elm.setAttribute('name', elm.id);
+            if (label)    label.htmlFor = elm.id;
         });
     }
 
