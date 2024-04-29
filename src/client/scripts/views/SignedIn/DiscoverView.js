@@ -1,7 +1,5 @@
 // created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
-import { Button } from '../../components/Button.js';
-import { CheckboxGroup } from '../../components/CheckboxGroup.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
 import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
@@ -50,13 +48,6 @@ export class DiscoverView {
 
         // profile to display
         const curProfile = unseen[this.#unseenIndex];
-
-        // filter bar
-        const filterBar = await this.#renderFilterBar();
-        this.#discoverViewElm.appendChild(filterBar);
-
-        // Overarching div (in order to style filter bar) - didn't work
-        // const profileSection = document.createElement("div");
 
         // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#addBioSection();
@@ -157,170 +148,6 @@ export class DiscoverView {
             
         return allUsers.filter(fitsRequirements);
     }
-
-    /**
-     * Creates a bar at the top of the Discover page. The discover feed changes
-     * depending on which options the user selects
-     * @returns {Promise<HTMLDivElement>} 
-     */
-    async #renderFilterBar() { // TODO: Gauri
-        const elm = document.createElement('div');
-        // elm.style.marginBottom = "100px";
-
-        // TODO: Render the filter bar - should have checkboxes associated with the character property in the User data structure,
-        // and just a few properties in the Preferences data structure (otherwise it's too much work). Only add the Preferences
-        // properties if !this.#curUser.hasHousing
-        
-        // Dictionary for filtering users 
-        const filterOptions = {
-            "gender": {
-                "female": false,
-                "male": false,
-                "nonbinary": false
-            },
-            "clean": {
-                "messy": false,
-                "clean": false,
-                "very clean": false
-            },
-            "sleep": {
-                "morning riser": false,
-                "afternoon riser": false,
-                "evening riser": false
-            },
-            "noise": {
-                "low noise": false,
-                "medium noise": false,
-                "loud noise": false
-            },
-            "guests": {
-                "no to less guests": false,
-                "some guests": false,
-                "any number of guests": false
-            },
-            "education level": {
-                "undergrad": false,
-                "postgrad": false,
-                "other": false
-            }
-        };
-
-        // Dictionary to filter users (based on housing preferences)
-        const preferenceOptions = {
-            "room type": {
-                "private": false,
-                "shared": false
-            },
-            "building type": {
-                "dorm": false,
-                "apartment": false,
-                "house": false
-            },
-            // "lease length": {
-            //     "semester": false,
-            //     "month": false,
-            //     "half year": false,
-            //     "full year": false
-            // } // commented out for formatting
-        }
-
-        // Overarching filter
-        const filter = document.createElement("div");
-        filter.classList.add("discover-filter");
-
-        // Creates initial filter option
-        for(let i = 0; i < Object.keys(filterOptions).length; ++i) {
-            const filterKey = Object.keys(filterOptions)[i];
-            const filterValues = filterOptions[filterKey];
-            const filterMap = new Map(Object.entries(filterValues));
-            const filterByOption = await new CheckboxGroup(filterKey, filterMap).render();
-            filter.appendChild(filterByOption);
-        }
-
-        // Appends preference filter if user is looking for roommates
-        if(!this.#curUser.hasHousing) {
-            for(let i = 0; i < Object.keys(preferenceOptions).length; ++i) {
-                const filterKey = Object.keys(preferenceOptions)[i];
-                const filterValues = preferenceOptions[filterKey];
-                const filterMap = new Map(Object.entries(filterValues));
-                const filterByOption = await new CheckboxGroup(filterKey, filterMap).render();
-                filter.appendChild(filterByOption);
-            }
-        }
-
-        elm.appendChild(filter);
-
-        const saveBtn = await new Button('Save changes').render();
-        saveBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            // TODO: Grab the values in elm (use elm.querySelector(#checkbox_id)). Checkboxes are automatically given id's, use
-            // Developer tools inspect element to find it. Create a Map<string, boolean> object where keys are the property names
-            // in User/Preferences and values are whether the box was checked. Ashley will deal with publishing the map and
-            // refreshing the page. As an example:
-            // const result = new Map([
-            //     ['clean', true],
-            //     ['sleep', true],
-            //     ['noise', false],
-            //     ['cities', true],
-            //     etc.
-            // ]);
-
-            // initial map, currently contains all ids
-            const filterMap = new Map([
-                // items from user
-                // items for gender
-                ['femaleBox', elm.querySelector('#femaleBox').checked], // gender.identity === female
-                ['maleBox', elm.querySelector('#maleBox').checked], // gender.identity === male
-                ['nonbinaryBox', elm.querySelector('#nonbinaryBox').checked], // gender.identity === nonbinary
-
-                // items for cleanliness
-                ['messyBox', elm.querySelector('#messyBox').checked], // character.clean === 1
-                ['cleanBox', elm.querySelector('#cleanBox').checked], // character.clean === 2
-                ['veryCleanBox', elm.querySelector('#veryCleanBox').checked], // character.clean === 3
-
-                // items for sleep
-                ['morningRiserBox', elm.querySelector('#morningRiserBox').checked], // character.sleep === 1
-                ['afternoonRiserBox', elm.querySelector('#afternoonRiserBox').checked], // character.sleep === 2
-                ['eveningRiserBox', elm.querySelector('#eveningRiserBox').checked], // character.sleep === 3
-
-                //items for noise
-                ['lowNoiseBox', elm.querySelector('#lowNoiseBox').checked], // character.noise === 1
-                ['mediumNoiseBox', elm.querySelector('#mediumNoiseBox').checked], // character.noise === 2
-                ['loudNoiseBox', elm.querySelector('#loudNoiseBox').checked], // character.noise === 3
-
-                //items for guests
-                ['noToLessGuestsBox', elm.querySelector('#noToLessGuestsBox').checked], // character.guests === 1
-                ['someGuestsBox', elm.querySelector('#someGuestsBox').checked], // character.guests === 2
-                ['anyNumberOfGuesBox', elm.querySelector('#anyNumberOfGuesBox').checked], // character.guests === 3
-
-                // items for education level
-                ['undergradBox', elm.querySelector('#undergradBox').checked], // education.level === "undergrad"
-                ['postgradBox', elm.querySelector('#postgradBox').checked], // education.level === "grad"
-                ['otherBox', elm.querySelector('#otherBox').checked], // education.level === "other"
-
-                // items for preferences
-                // items for room type
-                ['privateBox', elm.querySelector('#privateBox').checked], // roomType.private
-                ['sharedBox', elm.querySelector('#sharedBox').checked], // roomType.shared
-
-                // items for occupants
-                ['dormBox', elm.querySelector('#dormBox').checked], // buildingType.dorm
-                ['apartmentBox', elm.querySelector('#apartmentBox').checked], // buildingType.apt
-                ['houseBox', elm.querySelector('#houseBox').checked], // buildingType.house
-
-                // items for lease length
-                ['semesterBox', elm.querySelector('#semesterBox').checked], // leaseLength.semester
-                ['monthBox', elm.querySelector('#monthBox').checked], // leaseLength.month
-                ['halfYearBox', elm.querySelector('#halfYearBox').checked], // leaseLength.halfYear
-                ['fullYearBox', elm.querySelector('#fullYearBox').checked] // leaseLength.year
-            ]);
-
-        });
-
-        elm.appendChild(saveBtn);
-
-        return elm;
-    };
 
     /**
      * Creates containers for the left side of the page, to be injected with
