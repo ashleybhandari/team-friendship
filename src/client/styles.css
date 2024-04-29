@@ -1229,3 +1229,13 @@ body {
     grid-column: 1 / 3;
     text-align: center;
 }
+
+.discover-filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.bio-social-media {
+    margin-top: 1em;
+}

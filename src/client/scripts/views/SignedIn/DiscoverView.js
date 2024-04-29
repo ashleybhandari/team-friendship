@@ -226,9 +226,6 @@ export class DiscoverView {
         // Overarching filter
         const filter = document.createElement("div");
         filter.classList.add("discover-filter");
-        filter.style.display = "flex";
-        filter.style.flexDirection = "row";
-        filter.style.justifyContent = "space-between";
 
         // Creates initial filter option
         for(let i = 0; i < Object.keys(filterOptions).length; ++i) {
@@ -515,8 +512,6 @@ export class DiscoverView {
         }
 
         // Adds user social media
-        container.querySelector('.bio-social-media').style.marginTop = '1em';
-
         if(user.socials.ig !== "") {
             // Note: image tag is not working, so it's commented out for now.
             // container.querySelector('.discover-instagram-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/instagram.png";
