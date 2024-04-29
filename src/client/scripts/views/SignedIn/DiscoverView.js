@@ -173,32 +173,32 @@ export class DiscoverView {
         
         // Dictionary for filtering users 
         const filterOptions = {
-            "Gender": {
+            "gender": {
                 "female": false,
                 "male": false,
                 "nonbinary": false
             },
-            "Clean": {
+            "clean": {
                 "messy": false,
                 "clean": false,
                 "very clean": false
             },
-            "Sleep": {
+            "sleep": {
                 "morning riser": false,
                 "afternoon riser": false,
                 "evening riser": false
             },
-            "Noise": {
+            "noise": {
                 "low noise": false,
                 "medium noise": false,
                 "loud noise": false
             },
-            "Guests": {
+            "guests": {
                 "no to less guests": false,
                 "some guests": false,
                 "any number of guests": false
             },
-            "Education Level": {
+            "education level": {
                 "undergrad": false,
                 "postgrad": false,
                 "other": false
@@ -207,16 +207,16 @@ export class DiscoverView {
 
         // Dictionary to filter users (based on housing preferences)
         const preferenceOptions = {
-            "Room Type": {
+            "room type": {
                 "private": false,
                 "shared": false
             },
-            "Building Type": {
+            "building type": {
                 "dorm": false,
                 "apartment": false,
                 "house": false
             },
-            // "Lease Length": {
+            // "lease length": {
             //     "semester": false,
             //     "month": false,
             //     "half year": false,
