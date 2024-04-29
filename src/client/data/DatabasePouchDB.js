@@ -3,7 +3,7 @@
 /**
  * Initialize a new PouchDB instance for the roommate-matching database.
  */
-const db = new PouchDB('roommate-matching');
+// const db = new PouchDB('roommate-matching');
 
 /**
  * Fetches all users from the database.

@@ -1,6 +1,7 @@
 // created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { Button } from '../../components/Button.js';
+import { CheckboxGroup } from '../../components/CheckboxGroup.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
 import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
@@ -51,12 +52,16 @@ export class DiscoverView {
         const curProfile = unseen[this.#unseenIndex];
 
         // filter bar
-        // const filterBar = await this.#renderFilterBar();
-        // this.#discoverViewElm.appendChild(filterBar);
+        const filterBar = await this.#renderFilterBar();
+        this.#discoverViewElm.appendChild(filterBar);
+
+        // Overarching div (in order to style filter bar) - didn't work
+        // const profileSection = document.createElement("div");
 
         // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#addBioSection();
         this.#discoverViewElm.appendChild(bioSection);
+        // profileSection.appendChild(bioSection);
 
         // right side of page: info about housing or bio (depending on housing situation)
         const hasHousing = curProfile ? curProfile.hasHousing : false; // necessary if unseen is empty
@@ -64,6 +69,7 @@ export class DiscoverView {
             ? this.#addInfoSectionWithHousing()
             : this.#addInfoSectionWithoutHousing();
         this.#discoverViewElm.appendChild(infoSection);
+        // profileSection.appendChild(infoSection);
 
         // like and reject buttons
         const buttons = document.createElement('div');
@@ -89,6 +95,8 @@ export class DiscoverView {
         buttons.appendChild(rejectBtn);
         buttons.appendChild(likeBtn);
         this.#discoverViewElm.appendChild(buttons);
+        // profileSection.appendChild(buttons);
+        // this.#discoverViewElm.appendChild(profileSection);
 
         // inject user's information into the page
         this.#injectProfile(curProfile, bioSection, infoSection);
@@ -157,10 +165,92 @@ export class DiscoverView {
      */
     async #renderFilterBar() { // TODO: Gauri
         const elm = document.createElement('div');
+        // elm.style.marginBottom = "100px";
 
         // TODO: Render the filter bar - should have checkboxes associated with the character property in the User data structure,
         // and just a few properties in the Preferences data structure (otherwise it's too much work). Only add the Preferences
         // properties if !this.#curUser.hasHousing
+        
+        // Dictionary for filtering users 
+        const filterOptions = {
+            "Gender": {
+                "female": false,
+                "male": false,
+                "nonbinary": false
+            },
+            "Clean": {
+                "messy": false,
+                "clean": false,
+                "very clean": false
+            },
+            "Sleep": {
+                "morning riser": false,
+                "afternoon riser": false,
+                "evening riser": false
+            },
+            "Noise": {
+                "low noise": false,
+                "medium noise": false,
+                "loud noise": false
+            },
+            "Guests": {
+                "no to less guests": false,
+                "some guests": false,
+                "any number of guests": false
+            },
+            "Education Level": {
+                "undergrad": false,
+                "postgraduate": false,
+                "other": false
+            }
+        };
+
+        // Dictionary to filter users (based on housing preferences)
+        const preferenceOptions = {
+            "Rent": {
+                "minimum rent": false,
+                "maximum rent": false
+            },
+            "Occupants": {
+                "minimum occupants": false,
+                "maximum occupants": false
+            },
+            "Lease Length": {
+                "semester": false,
+                "month": false,
+                "half year": false,
+                "full year": false
+            }
+        }
+
+        // Overarching filter
+        const filter = document.createElement("div");
+        filter.classList.add("discover-filter");
+        filter.style.display = "flex";
+        filter.style.flexDirection = "row";
+        filter.style.justifyContent = "space-between";
+
+        // Creates initial filter option
+        for(let i = 0; i < Object.keys(filterOptions).length; ++i) {
+            const filterKey = Object.keys(filterOptions)[i];
+            const filterValues = filterOptions[filterKey];
+            const filterMap = new Map(Object.entries(filterValues));
+            const filterByOption = await new CheckboxGroup(filterKey, filterMap).render();
+            filter.appendChild(filterByOption);
+        }
+
+        // Appends preference filter if user is looking for roommates
+        if(!this.#curUser.hasHousing) {
+            for(let i = 0; i < Object.keys(preferenceOptions).length; ++i) {
+                const filterKey = Object.keys(preferenceOptions)[i];
+                const filterValues = preferenceOptions[filterKey];
+                const filterMap = new Map(Object.entries(filterValues));
+                const filterByOption = await new CheckboxGroup(filterKey, filterMap).render();
+                filter.appendChild(filterByOption);
+            }
+        }
+
+        elm.appendChild(filter);
 
         const saveBtn = await new Button('Save changes').render();
         saveBtn.addEventListener('click', (e) => {
@@ -192,6 +282,7 @@ export class DiscoverView {
     #addBioSection() {
         const elm = document.createElement('div');
         elm.classList.add('discover-bio');
+        elm.style.marginTop = "50px";
         
         elm.innerHTML = `
         <img class="bio-pfp">
@@ -203,6 +294,10 @@ export class DiscoverView {
         </div>
         <div class="bio-description">
             <div class="about"></div>
+        </div>
+        <div class="bio-social-media">
+            <div class="discover-instagram"></div>
+            <div class="discover-facebook"></div>
         </div>
         `;
 
@@ -219,6 +314,7 @@ export class DiscoverView {
     #addInfoSectionWithHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
+        elm.style.marginTop = "450px";
 
         elm.innerHTML = `
         <div class="about">
@@ -253,6 +349,7 @@ export class DiscoverView {
     #addInfoSectionWithoutHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
+        elm.style.marginTop = "450px";
 
         elm.innerHTML = `
         <div class="about">
@@ -329,6 +426,17 @@ export class DiscoverView {
         // display description in bio section if user has housing
         if (user.hasHousing && user.description) {
             container.querySelector('.bio-description').innerText = user.description;
+        }
+
+        // Adds user social media
+        container.querySelector('.bio-social-media').style.marginTop = '1em';
+
+        if(user.socials.ig !== "") {
+            container.querySelector('.discover-instagram').innerText = "Instagram: " + user.socials.ig;
+        }
+
+        if(user.socials.fb !== "") {
+            container.querySelector('.discover-facebook').innerText = "Facebook: " + user.socials.fb;
         }
     }
 
