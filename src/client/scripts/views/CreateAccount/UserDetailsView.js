@@ -41,19 +41,22 @@ export class UserDetailsView {
         // header depends on submitted input to HousingSituationView
         const headerContent = hasHousing
             ? 'Tell us about your housing'
-            : 'Tell us about yourself';
+            : 'Tell us your preferences';
+        const subtitleContent = hasHousing
+            ? 'starred fields are required'
+            : `we'll use this to set up your feed`;
 
         header.innerHTML = `
         <h1 class="battambang">${headerContent}</h1>
-        <p>starred fields are required</p>
+        <p>${subtitleContent}</p>
         `;
         this.#detailsViewElm.appendChild(header);
 
         // page content
         const form = document.createElement('form');
         form.appendChild(hasHousing
-            ? await new UserHousing('details').render()
-            : await new UserPreferences('details').render()
+            ? await new UserHousing('housing').render()
+            : await new UserPreferences('prefs').render()
         );
         this.#detailsViewElm.appendChild(form);
 

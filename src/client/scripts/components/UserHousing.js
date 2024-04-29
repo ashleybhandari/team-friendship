@@ -18,7 +18,7 @@ export class UserHousing {
         const elm = document.createElement('div');
         elm.classList.add('user-housing');
 
-        // renders grid with inputs
+        // render grid with inputs
         elm.appendChild(await this.#renderCityCol());
         elm.appendChild(await this.#renderGenderCol());
         elm.appendChild(await this.#renderTypeCol());
