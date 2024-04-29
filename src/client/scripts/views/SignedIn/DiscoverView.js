@@ -207,13 +207,14 @@ export class DiscoverView {
 
         // Dictionary to filter users (based on housing preferences)
         const preferenceOptions = {
-            "Rent": {
-                "minimum rent": false,
-                "maximum rent": false
+            "Room Type": {
+                "private": false,
+                "shared": false
             },
-            "Occupants": {
-                "minimum occupants": false,
-                "maximum occupants": false
+            "Building Type": {
+                "dorm": false,
+                "apartment": false,
+                "house": false
             },
             // "Lease Length": {
             //     "semester": false,
@@ -264,85 +265,54 @@ export class DiscoverView {
             //     etc.
             // ]);
 
-            // Variables hosting values for each checkbox
-            // for filter
-            const femaleBox = elm.querySelector('#femaleBox');
-            const maleBox = elm.querySelector('#maleBox');
-            const nonbinaryBox = elm.querySelector('#nonbinaryBox');
-            const messyBox = elm.querySelector('#messyBox');
-            const cleanBox = elm.querySelector('#cleanBox');
-            const veryCleanBox = elm.querySelector('#veryCleanBox');
-            const morningBox = elm.querySelector('#morningRiserBox');
-            const afternoonBox = elm.querySelector('#afternoonRiserBox');
-            const eveningBox = elm.querySelector('#eveningRiserBox');
-            const lowNoiseBox = elm.querySelector('#lowNoiseBox');
-            const medNoiseBox = elm.querySelector('#mediumNoiseBox');
-            const highNoiseBox = elm.querySelector('#loudNoiseBox');
-            const lessGuestsBox = elm.querySelector('#noToLessGuestsBox');
-            const medGuestsBox = elm.querySelector('#someGuestsBox');
-            const highGuestsBox = elm.querySelector('#anyNumberOfGuesBox');
-            const undergradBox = elm.querySelector('#undergradBox');
-            const postgradBox = elm.querySelector('#postgradBox');
-            const otherBox = elm.querySelector('#otherBox');
-
-            // for preferences
-            const minRentBox = elm.querySelector('#minimumRentBox');
-            const maxRentBox = elm.querySelector('#maximumRentBox');
-            const minOccupantsBox = elm.querySelector('#minimumOccupantBox');
-            const maxOccupantsBox = elm.querySelector('#maximumOccupantBox');
-            const leaseSemesterBox = elm.querySelector('#semesterBox');
-            const leaseMonthBox = elm.querySelector('#monthBox');
-            const leaseHalfYearBox = elm.querySelector('#halfYearBox');
-            const leaseFullYearBox = elm.querySelector('#fullYearBox');
-
-
-            // initial map, given all elements are false, currently contains all ids
+            // initial map, currently contains all ids
             const filterMap = new Map([
                 // items from user
                 // items for gender
-                ['femaleBox', false], // gender.identity === female
-                ['maleBox', false], // gender.identity === male
-                ['nonbinaryBox', false], // gender.identity === nonbinary
+                ['femaleBox', elm.querySelector('#femaleBox').checked], // gender.identity === female
+                ['maleBox', elm.querySelector('#maleBox').checked], // gender.identity === male
+                ['nonbinaryBox', elm.querySelector('#nonbinaryBox').checked], // gender.identity === nonbinary
 
                 // items for cleanliness
-                ['messyBox', false], // character.clean === 1
-                ['cleanBox', false], // character.clean === 2
-                ['veryCleanBox', false], // character.clean === 3
+                ['messyBox', elm.querySelector('#messyBox').checked], // character.clean === 1
+                ['cleanBox', elm.querySelector('#cleanBox').checked], // character.clean === 2
+                ['veryCleanBox', elm.querySelector('#veryCleanBox').checked], // character.clean === 3
 
                 // items for sleep
-                ['morningRiserBox', false], // character.sleep === 1
-                ['afternoonRiserBox', false], // character.sleep === 2
-                ['eveningRiserBox', false], // character.sleep === 3
+                ['morningRiserBox', elm.querySelector('#morningRiserBox').checked], // character.sleep === 1
+                ['afternoonRiserBox', elm.querySelector('#afternoonRiserBox').checked], // character.sleep === 2
+                ['eveningRiserBox', elm.querySelector('#eveningRiserBox').checked], // character.sleep === 3
 
                 //items for noise
-                ['lowNoiseBox', false], // character.noise === 1
-                ['mediumNoiseBox', false], // character.noise === 2
-                ['loudNoiseBox', false], // character.noise === 3
+                ['lowNoiseBox', elm.querySelector('#lowNoiseBox').checked], // character.noise === 1
+                ['mediumNoiseBox', elm.querySelector('#mediumNoiseBox').checked], // character.noise === 2
+                ['loudNoiseBox', elm.querySelector('#loudNoiseBox').checked], // character.noise === 3
 
                 //items for guests
-                ['noToLessGuestsBox', false], // character.guests === 1
-                ['someGuestsBox', false], // character.guests === 2
-                ['anyNumberOfGuesBox', false], // character.guests === 3
+                ['noToLessGuestsBox', elm.querySelector('#noToLessGuestsBox').checked], // character.guests === 1
+                ['someGuestsBox', elm.querySelector('#someGuestsBox').checked], // character.guests === 2
+                ['anyNumberOfGuesBox', elm.querySelector('#anyNumberOfGuesBox').checked], // character.guests === 3
 
                 // items for education level
-                ['undergradBox', false], // education.level === "undergrad"
-                ['postgradBox', false], // education.level === "grad"
-                ['otherBox', false], // education.level === "other"
+                ['undergradBox', elm.querySelector('#undergradBox').checked], // education.level === "undergrad"
+                ['postgradBox', elm.querySelector('#postgradBox').checked], // education.level === "grad"
+                ['otherBox', elm.querySelector('#otherBox').checked], // education.level === "other"
 
                 // items for preferences
-                // items for rent
-                ['minimumRentBox', false], // rent.min
-                ['maximumRentBox', false], // rent.max
+                // items for room type
+                ['privateBox', elm.querySelector('#privateBox').checked], // roomType.private
+                ['sharedBox', elm.querySelector('#sharedBox').checked], // roomType.shared
 
                 // items for occupants
-                ['minimumOccupantBox', false], // occupants.min
-                ['maximumOccupantBox', false], // occupants.max
+                ['dormBox', elm.querySelector('#dormBox').checked], // buildingType.dorm
+                ['apartmentBox', elm.querySelector('#apartmentBox').checked], // buildingType.apt
+                ['houseBox', elm.querySelector('#houseBox').checked], // buildingType.house
 
                 // items for lease length
-                ['semesterBox', false], // leaseLength.semester
-                ['monthBox', false], // leaseLength.month
-                ['halfYearBox', false], // leaseLength.halfYear
-                ['fullYearBox', false] // leaseLength.year
+                ['semesterBox', elm.querySelector('#semesterBox').checked], // leaseLength.semester
+                ['monthBox', elm.querySelector('#monthBox').checked], // leaseLength.month
+                ['halfYearBox', elm.querySelector('#halfYearBox').checked], // leaseLength.halfYear
+                ['fullYearBox', elm.querySelector('#fullYearBox').checked] // leaseLength.year
             ]);
 
         });
