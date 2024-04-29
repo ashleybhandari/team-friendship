@@ -49,7 +49,7 @@ export class UserDetailsView {
         `;
         this.#detailsViewElm.appendChild(header);
 
-        // profile content
+        // page content
         const form = document.createElement('form');
         form.appendChild(hasHousing
             ? await new UserHousing('details').render()
@@ -80,18 +80,18 @@ export class UserDetailsView {
                 const currentUser = await getUserById(userData.id);
                 const updatedUserData = { ...currentUser, ...userData };
                 await updateUser(updatedUserData);
-                console.log('Details updated successfully!');
+                console.log('User details updated successfully!');
             } catch (error) {
                 if (error.message) {
-                    console.log(`Error updating detail: ${error.message}`);
+                    console.log(`Error updating user details: ${error.message}`);
                 } else {
-                    console.log('An unknown error occurred while updating the profile.');
+                    console.log('An unknown error occurred while updating user details.');
                 }
             }
 
         }
 
-        // publish user details to SignedIn views
+        // publish user info to SignedIn views
         const newUser = () => this.#events.publish('newUser', users[0]); // DB TODO: change to PouchDB
 
         return [submitForm, newUser];

@@ -1,6 +1,6 @@
-import { User } from "../../../data/data_structures/User.js";
-import { getUserById, getMatches, getCurrentUser } from '../../../data/MockBackend.js';
-import { DisplayManageUsersHelper as DisplayUser } from '../../helpers/Display/displayManageUsersHelper.js';
+import { User } from "../../../../data/data_structures/User.js";
+import { getUserById, getMatches, getCurrentUser } from '../../../../data/MockBackend.js';
+import { DisplayManageUsersHelper as DisplayUser } from '../../../helpers/Display/displayManageUsersHelper.js';
 
 // Created by Gauri Arvind
 // doesn't work - not in use

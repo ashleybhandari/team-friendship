@@ -1,5 +1,5 @@
-import { User } from "../../../data/data_structures/User.js";
-import { getUserById, getMatches, getCurrentUser } from '../../../data/MockBackend.js';
+import { User } from "../../../../data/data_structures/User.js";
+import { getUserById, getMatches, getCurrentUser } from '../../../../data/MockBackend.js';
 
 // Created by Gauri Arvind
 // doesn't work - not in use

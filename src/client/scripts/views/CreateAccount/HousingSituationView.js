@@ -68,7 +68,7 @@ export class HousingSituationView {
                 console.log('Error updating housing situation: ' + error.message);
             }
             
-            this.#events.publish('hasHousing', true) // DBT TODO: delete
+            this.#events.publish('hasHousing', false) // DBT TODO: delete
         };
 
         housingViewElm.appendChild(await new Navigation('create-2', 'create-4', [nextBtnHandler]).render());

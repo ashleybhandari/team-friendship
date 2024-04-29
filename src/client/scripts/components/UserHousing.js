@@ -34,10 +34,10 @@ export class UserHousing {
 
     /**
      * List all field id's, prepending with page if a page name is provided.
-     * @param {string} [page] - Name of page
+     * @param {string} [page=null] - Name of page
      * @returns {string[]}
      */
-    getFieldIds(page) {
+    getFieldIds(page = null) {
         const ids = [
             'cityInput',
             'rentForRoomInput',

@@ -48,10 +48,10 @@ export class UserProfile {
 
     /**
      * List all field id's, prepending with page if a page name is provided.
-     * @param {string} [page] - Name of page
+     * @param {string} [page=null] - Name of page
      * @returns {string[]}
      */
-    getFieldIds(page) {
+    getFieldIds(page = null) {
         const ids = [
             'firstNameInput',
             'nicknameInput',
@@ -162,11 +162,11 @@ export class UserProfile {
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Sleeping habits', 'early bird', 'night owl'
+            'Noise when studying', 'very quiet', 'noise is okay'
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Noise when studying', 'very quiet', 'noise is okay'
+            'Sleeping habits', 'early bird', 'night owl'
         ).render());
 
         sliders.appendChild(await new SliderInput(

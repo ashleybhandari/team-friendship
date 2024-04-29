@@ -42,7 +42,7 @@ export class ProfileView {
         `;
         profileViewElm.appendChild(header);
 
-        // profile content
+        // page content
         const form = document.createElement('form');
         form.appendChild(await new UserProfile('profile').render());
         profileViewElm.appendChild(form);
