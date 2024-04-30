@@ -1,26 +1,35 @@
 import express from 'express';
+import bodyParser from 'body-parser'; // For parsing JSON data in POST/PUT requests
+import userRouter from './routes/users.js';
+import matchRouter from './routes/matches.js';
+import housingRouter from './routes/housing.js';
+
 const app = express();
 const PORT = 3000;
 
-// Middleware for parsing JSON - only necessary if you're handling JSON data in POST/PUT requests
-// app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // This is useful only if you're handling URL-encoded data in POST/PUT requests
+// General middleware
+app.use(bodyParser.json()); // Use bodyParser to parse JSON-formatted request bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data with querystring library
 
-// Import routes
-import landingRoute from './routes/landing.js';
-
-// Root route directly in server.js
+// Basic route directly in server.js
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Welcome to the API Server!');
 });
 
-// Use modular route for the landing page
-app.use('/landing', landingRoute);
+// Modular routes for different aspects of the application
+app.use('/api/users', userRouter);       // Handles all user-related API requests
+app.use('/api/matches', matchRouter);    // Handles match-related interactions
+app.use('/api/housing', housingRouter);  // Manages housing data operations
 
-// 404 Not Found Middleware (after all routes)
-// It handles any requests that don't match the defined routes
+// 404 Not Found Middleware for requests that don't match any routes
 app.use((req, res) => {
     res.status(404).send("Sorry, can't find that!");
+});
+
+// Error handling middleware to catch any server errors
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
 });
 
 // Start server
