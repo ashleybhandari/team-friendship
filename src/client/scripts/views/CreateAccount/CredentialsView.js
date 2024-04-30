@@ -1,10 +1,10 @@
+// created by Rachel Lahav
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
-//Rachel
 // view: create-1
 export class CredentialsView {
     #events = null;
@@ -46,11 +46,8 @@ export class CredentialsView {
         credViewElm.appendChild(signUpButtonElement);
 
         signUpButtonElement.addEventListener('click', async (e) => {
-    
-                e.preventDefault();
-
-            // DB TODO: replace with login function below
-           this.#events.publish('navigateTo', 'create-2');
+            e.preventDefault();
+            this.#events.publish('navigateTo', 'create-2');
         });
 
         return credViewElm;

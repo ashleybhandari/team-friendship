@@ -1,7 +1,6 @@
 // This page will have all functions related with displaying housing,
 // given their similar functionality. This will be integrated with the 
 // DisplayWithHousingView.js and DisplayWithoutHousingView.js files. 
-import { User } from "../../data/data_structures/User.js";
 import { DisplayWithHousingView  as displayWith } from "../views/SignedIn/DisplayWithHousingView.js";
 import { DisplayWithoutHousingView as displayWithout } from "../views/SignedIn/DisplayWithoutHousingView.js";
 

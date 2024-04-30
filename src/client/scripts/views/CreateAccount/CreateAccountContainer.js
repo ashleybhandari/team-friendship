@@ -1,3 +1,5 @@
+// created by Ashley Bhandari
+
 import { Header } from '../../components/Header.js';
 import { SignInView } from '../CreateAccount/SignInView.js';
 import { CredentialsView } from '../CreateAccount/CredentialsView.js';
@@ -69,7 +71,7 @@ export class CreateAccountContainer {
             this.#viewContainer.appendChild(this.#situationViewElm);
         }
         else if (view === 'create-4') {   // NeedHousingView or HaveHousingView
-            // create-4 changes depending on whether user has housing  // DB TODO: implement
+            // create-4 changes depending on whether user has housing  // DB TODO: implement when PouchDB works
             this.#viewContainer.appendChild(this.#needHousingViewElm);
         }
         else {                            // invalid view name

@@ -3,9 +3,17 @@ KeyMate is a web application dedicated to helping students find roommates and ho
 
 The Milestone 1 document mentions an in-app messaging system. In the interest of time and producing quality work, we will not be implementing this feature.
 
-**The work for Milestone 2 was distributed equally. Everyone but Ashley (who owns the repo) had trouble running the server, so Ashley made a majority of the commits in place of the other members.**
+## Important notes
+- Importing PouchDB turned out to cause several issues that we were not able to fix. Importing it as a dependency caused issues, as did the method we learned in class using just an instance of the database, which did not allow us to use any of the provided db functions. Using "require" to import PouchDB resulted in a "doesn't resolve to a url" error. **We tried numerous ways of importing and tried changing the scripts in index.html after speaking to a TA. None of these changes helped.** Our data lead, Rachel, posted in Piazza (private question @537) and didn't receive an answer as to how to import PouchDB without errors, so we were not able to get it working in time. As a result:
+  -  Several files use functions in `MockBackend.js` instead of those in `DatabasePouchDB.js` to avoid errors.
+  -  Several functions are commented out, including logging in/authentication and redirecting navigation based on whether the user is signed in.
+  -  The code affected by this is marked with `DB TODO` comments.
+- The work for Milestone 2 was distributed equally. Everyone but Ashley (who owns the repo) had trouble running the server for the majority of this milestone, so Ashley made more commits in place of the other members.
 
-## Project Structure
+## Navigating the application
+Users are initially greeted with the landing page. In the navbar or footer, clicking "About us" navigates to a page with information about the project and team, and clicking "Sign in" navigates to the sign-in page. From the sign-in page, the user can either sign in or sign up. If the user clicks "Sign up," they are guided through the account creation process. If the user clicks "Sign in," they are directed to a view restricted to signed-in users. This view contains the Discover page (where users can "like" or "reject" potential roommates or housing), Matches page (where the user's matches live), and Settings page (where the user can edit their profile, accessible via the dropdown on the far-right of the navbar).
+
+## Project structure
 The project has three major folders: components, data, and views.
 
 ### Components
@@ -15,24 +23,25 @@ The application is component-based. All components are found in `src\client\scri
 Files pertaining to data structures and mock-backend operations are found in `src\client\data`.
 - `data_structures` holds data structures used to store information pertaining to each user's profile and roommate/housing preferences.
 - `DatabasePouchDB.js` creates the database and exports functions for CRUD operations.
+- `MockData.js` and `MockBackend.js` contain mock users and asynchronous operations, used until PouchDB works properly.
 
 ### Views
 The application is mounted onto a single `root` element.
 
-The application's views are found in `src\client\scripts\views`. They can be divided into three groups based on which headers and navbars they share: (1) views when the user is signed out, (2) views when the user is signed in, and (3) views when the user is signing in or creating their account. We created a container for each group to ensure consistency among views with shared components:
+The application's views are found in `src\client\scripts\views`. They can be divided into three groups based on which headers and navbars they share: (1) views when the user is signed out; (2) views when the user is signing in or creating their account; and (3) views when the user is signed in. We created a container for each group to ensure consistency among views with shared components:
 
 - `SignedOutContainer` can be injected into `root`.
-- `SignedInContainer` can be injected into `root`.
 - `CreateAccountContainer` can be injected into `root`.
+- `SignedInContainer` can be injected into `root`.
 
 These containers may be injected with their associated views.
 - "Landing" and "About us" views can be injected into `SignedOutContainer`.
-- "Discover" (`DisplayWithHousingView`, `DisplayWithoutHousingView`), "Matches," and "Settings" views can be injected into `SignedInContainer`.
 - "Sign in" and "Create account" (`CredentialsView`, `ProfileView`, `HousingSituationView`, `NeedHousingView`, `HaveHousingView`) views can be injected into `CreateAccountContainer`.
+- "Discover," "Matches," and "Settings" views can be injected into `SignedInContainer`.
 
-The publisher-subscriber pattern was used for communication between views. The class for this pattern was implemented by Prof. Tim Richards, found in `src\client\scripts\Events.js`.
+The publisher-subscriber pattern is used for communication between views. The class for this pattern was implemented by Prof. Tim Richards, found in `src\client\scripts\Events.js`.
 
-## Setup Instructions
+## Setup instructions
 Clone the project
 ```
   git clone https://github.com/ashleybhandari/team-friendship.git

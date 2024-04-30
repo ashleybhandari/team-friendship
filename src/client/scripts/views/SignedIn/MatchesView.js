@@ -1,13 +1,10 @@
-import { getUser, getMatches } from '../../../data/Backend.js';
+// created by Ashley Bhandari
+
+import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
-import * as db from '../../../data/DatabasePouchDB.js';
 
-/**
- * Displays the user's matches as a list of abbreviated profiles (can click on
- * a profile to view more details). Injected into SignedInContainer.
- * view: 'matches'
- */
+// view: 'matches'
 export class MatchesView {
     #matchesViewElm = null;
     #listViewElm = null;
@@ -15,13 +12,34 @@ export class MatchesView {
     #profileViewContainer = null;
     #events = null;
 
+    #user = null;          // current user
+    #openedMatchId = null; // id of match whose profile is open
+
     constructor() {
         this.#events = Events.events();
+
+        // Published by SignInView, HaveHousingView, and NeedHousing View.
+        // Loads the view according to the user's preferences and saved 
+        // likes/rejects/matches
+        this.#events.subscribe('newUser', (user) => this.render(user));
     }
 
-    async render() {
-        this.#matchesViewElm = document.createElement('div');
-        this.#matchesViewElm.id = 'matchesView';
+    /**
+     * Displays the user's matches as a list of abbreviated profiles (can click
+     * on a profile to view more details). Injected into SignedInContainer.
+     * @param {User} user - Currently signed-in user
+     * @returns {Promise<HTMLDivElement>}
+     */
+    async render(user) {
+        // if user has not signed in, MatchesView is an empty div
+        if (!user) {
+            this.#matchesViewElm = document.createElement('div');
+            this.#matchesViewElm.id = 'matchesView';
+            return this.#matchesViewElm;    
+        }
+
+        this.#user = user;
+        this.#matchesViewElm.innerHTML = '';
 
         // matches list, profile container
         await this.#renderList();
@@ -30,8 +48,8 @@ export class MatchesView {
         // initialize view with matches list
         this.#switchView();
 
-        // inject user profile if the Discover page publishes one
-        new DiscoverTmp();
+        // Published by DiscoverView. Injects the published element (a user
+        // profile) into MatchView's profile view.
         this.#events.subscribe('sendProfile', (elm) => this.#injectProfile(elm));
 
         return this.#matchesViewElm;
@@ -46,22 +64,22 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches();
-        // DB TODO: const matches = await db.getMatches(userId);
+        const matches = await getMatches(this.#user.id) // DB TODO: replace with below when PouchDB works
+        // const matches = await db.getMatches(this.#user.id);
 
         // show message if user has no matches
         if (matches.length === 0) {
             const noMatches = document.createElement('div');
             noMatches.id = 'noMatches';
             noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
-            container.appendChild(noMatches);
+            this.#matchesViewElm.appendChild(noMatches);
             return;
         }
 
         // show list if user has matches
         for (const id of matches) {
-            const user = await getUser(id);
-            // DB TODO: const user = await db.getUserById(matchId);
+            const user = await getUserById(id); // DB TODO: replace with below when PouchDB works
+            // const user = await db.getUserById(id);
             
             // match's entry in list
             const elm = document.createElement('div');
@@ -113,7 +131,7 @@ export class MatchesView {
      */
     async #renderProfile() {
         this.#profileViewElm = document.createElement('div');
-        this.#profileViewElm.id = 'profileView';
+        this.#profileViewElm.id = 'matchProfileView';
 
         // Back to Matches button, contact info, and Unmatch button
         this.#profileViewElm.appendChild(await this.#renderOptions());
@@ -128,7 +146,7 @@ export class MatchesView {
 
     /**
      * Render the buttons/info that go at the top of a match's profile.
-     * @returns {HTMLDivElement}
+     * @returns {Promise<HTMLDivElement>}
      */
     async #renderOptions() {
         const elm = document.createElement('div');
@@ -162,7 +180,8 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            // DB TODO: await db.removeMatch(userId, matchId);
+            await removeMatch(this.#user.id, this.#openedMatchId); // DB TODO: replace with below when PouchDB works
+            // await db.removeMatch(this.#user.id, this.#openedMatchId) ;
             await this.#renderList();
             this.#switchView();
         });
@@ -182,7 +201,9 @@ export class MatchesView {
      */
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
-        const email = (await getUser(id)).email;
+        const email = (await getUserById(id)).email;
+
+        this.#openedMatchId = id;
 
         // contact information
         const contactElm = document.getElementById('matchContact');
@@ -214,19 +235,5 @@ export class MatchesView {
             this.#profileViewElm.classList.add('hidden');
             window.location.hash = 'matches';
         }
-    }
-}
-
-// TODO: make discover page subscribe('getProfile'), publish('sendProfile')
-// models the injection system until then
-class DiscoverTmp {
-    constructor() {
-        Events.events().subscribe('getProfile', this.#createElm);
-    }
-
-    async #createElm(id) {
-        const elm = document.createElement('div');
-        elm.innerText = `Match id: ${id}`;
-        Events.events().publish('sendProfile', { id, profile: elm});
     }
 }

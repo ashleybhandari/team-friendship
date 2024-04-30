@@ -1,5 +1,10 @@
+// created by Ashley Bhandari
+
 import { getFieldFromProp, getPropFromDomValue } from './SettingsData.js';
 
+/**
+ * Class to create functions that fill and save fields on the Settings page.
+ */
 export class SettingsFns {
     #parent = null;
     #user = null;
@@ -34,8 +39,14 @@ export class SettingsFns {
         return [
             ...this.#getGeneralFns(),
             ...this.#getDropdownFns(),
-            ...this.#getCheckboxFns(),
-            ...this.#getRadioFns()
+            ...this.#getCheckboxFns()
+        ];
+    }
+
+    getFields() {
+        return [
+            ...this.#getGeneralFields().map((e) => e[1]),
+            ...this.#getDropdownFields().map((e) => e[1])
         ];
     }
 
@@ -47,8 +58,7 @@ export class SettingsFns {
         const fields = [
             ...this.#getGeneralFields(),
             ...this.#getDropdownFields(),
-            ...this.#getCheckboxFields(),
-            ...this.#getRadioFields()
+            ...this.#getCheckboxFields()
         ];
 
         fields.forEach((field) => {
@@ -168,46 +178,6 @@ export class SettingsFns {
     }
 
     /**
-     * Array of fill and save functions for RadioInput fields
-     * @returns {{Fill, Save}[]}
-     */
-    #getRadioFns() {
-        const fns = [];
-
-        /**
-         * Iterate through all fields and adds their fill and save
-         * functions to fns
-         * @param {User | Preferences | Housing} obj - object containing the field's value
-         * @param {string} id - id of the field's HTML element
-         * @param {string[]} prop - property in obj with the field's value; array to handle nested properties
-         * @param {function} fillFn - applies necessary changes before filling the field
-         * @param {function} saveFn - applies necessary changes before saving the value
-         */
-        this.#getRadioFields().forEach(([obj, id, prop, fillFn, saveFn]) => {
-            // element containing the field
-            const elm = this.#parent.querySelector(`#settings_${id}`);
-            // array of radio options
-            const options = elm.querySelectorAll('input');
-
-            // skip if element DNE
-            if (!elm) return;
-
-            // updates radio options, sets data_value accordingly
-            const fill = () => Array.from(options).forEach((option) => {
-                option.checked = option.value === fillFn()
-                if (option.checked) elm.setAttribute('data_value', option.value)
-            });
-
-            const save = () => obj[prop[0]] = saveFn(elm.getAttribute('data_value'));
-            
-            // adds functions to fn
-            fns.push({ fill, save });
-        });
-
-        return fns;
-    }
-
-    /**
      * Array of arguments to #getGeneralFns. Each element corresponds to an HTML
      * field.
      * @returns {[Object | string | string[] | function][]}
@@ -215,8 +185,8 @@ export class SettingsFns {
     #getGeneralFields() {
         return [
             // Credentials section
-            // TODO: implement password
             [this.#user, 'emailInput', ['email'] ],
+            // TODO: implement password
             // Profile section
             [this.#user, 'firstNameInput', ['name', 'fname']],
             [this.#user, 'nicknameInput', ['name', 'nname']],
@@ -324,21 +294,6 @@ export class SettingsFns {
             [this.#house, 'residentialParkBoxH', ['amenities', 'parking']],
             [this.#house, 'nearbyBusStopBoxH', ['amenities', 'bus']],
             [this.#house, 'petFriendlyBoxH', ['amenities', 'pets']]
-        ];
-    }
-
-    /**
-     * Array of arguments to #getRadioFns. Each element corresponds to an HTML
-     * field.
-     * @returns {[Object | string | string[] | function][]}
-     */
-    #getRadioFields() {
-        return [
-            [
-                this.#user, 'iAmLookingForRadio', ['hasHousing'],
-                () => this.#user.hasHousing ? 'roommates' : 'housing',
-                (v) => v !== 'housing'
-            ]
         ];
     }
 }

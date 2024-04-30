@@ -5,7 +5,7 @@ html {
 
 body {
     /* room for footer */
-    margin: 0 0 140px;
+    margin: 0 0 136px;
 }
 
 /* fonts */
@@ -74,7 +74,6 @@ body {
     justify-content: space-evenly;
 }
 
-
 /* CheckboxInput.js */
 
 .custom-checkbox {
@@ -139,6 +138,44 @@ body {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+/* DiscoverButton.js */
+
+.discover-button {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 2px solid;
+    margin: 0 20px;
+    padding-top: 6px;
+    cursor: pointer;
+}
+
+.discover-button.discover-like {
+    background-color: rgb(125, 210, 174, 0.7);
+    border-color: rgb(125, 210, 174);
+}
+
+.discover-button.discover-like:hover {
+    background-color: rgb(125, 210, 174);
+}
+
+.discover-button.discover-like:active {
+    background-color: rgb(114, 206, 167);
+}
+
+.discover-button.discover-reject {
+    background-color: rgb(255, 113, 91, 0.7);
+    border-color: rgb(255, 113, 91);
+}
+
+.discover-button.discover-reject:hover {
+    background-color: rgb(255, 113, 91);
+}
+
+.discover-button.discover-reject:active {
+    background-color: rgb(247, 102, 80);
 }
 
 /* DropdownInput.js, TextAreaInput.js, TextInput.js */
@@ -293,8 +330,61 @@ body {
 
 /* Navbar1.js */
 
+.navbar1 {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    padding: 10px 15px;
+}
+
+.navbar1 a {
+    text-decoration: none;
+    color: black;
+}
+
 .navbar1 .selected {
     font-weight: bold;
+}
+
+.navbar1 .links {
+    display: flex;
+    align-items: center;
+}
+
+.navbar1 .links a {
+    margin-left: 20px;
+}
+
+.navbar1 .links a:hover {
+    font-weight: bold;
+}
+
+.navbar1 .links .logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.navbar1 .links .logo img {
+    height: 30px;
+    width: 30px;
+}
+
+.navbar1 .links .logo h2 {
+    margin: 0 0 0 8px;
+}
+
+.navbar1 #nav-sign-in {
+    float: right;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 8px 15px;
+    margin-top: 2px
+}
+
+.navbar1 #nav-sign-in:hover {
+    background-color: #F4D06F;
+    border-color: #F4D06F;
+    color: white;
 }
 
 /* Navbar2.js */
@@ -535,35 +625,81 @@ body {
 
 /* AboutView.js */
 
-#aboutView .team-member {
-    display: flex;
-    align-items: flex-start;
+#aboutView {
+    padding: 30px 20% 20px;
+}
+
+#aboutView .section {
+    margin-bottom: 80px;
+}
+
+#aboutView .header {
+    text-align: center;
     margin-bottom: 20px;
 }
 
-#aboutView .member-info {
-    text-align: center;
-    margin-right: 20px;
+#aboutView p {
+    text-align: justify;
 }
 
-#aboutView .member-info img {
+#aboutView .contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#aboutView .contact p {
+    margin: 0;
+}
+
+#aboutView .contact a {
+    margin-top: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #FF715B;
+}
+
+#aboutView .contact a {
+    margin-top: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #FF715B;
+}
+
+#aboutView #teamContainer {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    row-gap: 40px;
+    column-gap: 40px;
+}
+
+#aboutView #teamContainer .pic-role {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#aboutView img {
     width: 150px;
-    height: 150px;
     border-radius: 50%;
-    object-fit: cover;
+    margin-bottom: 20px;
 }
 
-#aboutView .member-bio {
-    flex: 1;
-    text-align: left;
+#aboutView #teamContainer .pic-role h3 {
+    margin: 0;
 }
 
+#aboutView #teamContainer .pic-role p {
+    margin: 5px 0;
+}
+
+#aboutView #teamContainer .bio {
+    display: flex;
+    justify-content: center;
+}
 
 /* MatchesView.js */
-
-#matchesView {
-    padding: 50px 20%;
-}
 
 #matchesView .hidden {
     display: none !important;
@@ -577,6 +713,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
+    padding: 50px 20%;
 }
 
 #matchesView #listView .user {
@@ -628,17 +765,21 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    padding: 15px 20% 30px;
 }
 
-#matchesView #profileView #toMatchesBtn {
+#matchesView #matchProfileView {
+    padding-bottom: 30px;
+}
+
+#matchesView #matchProfileView #toMatchesBtn {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 40px
 }
 
-#matchesView #profileView #toMatchesBtn i {
+#matchesView #matchProfileView #toMatchesBtn i {
     margin-right: 5px;
 }
 
@@ -668,6 +809,10 @@ body {
     height: 40px;
 }
 
+#matchesView #noMatches {
+    margin-top: 75px;
+}
+
 /* SettingsView.js */
 
 #settingsView {
@@ -693,7 +838,7 @@ body {
 }
 
 #settingsView .section {
-    margin: 0 0 100px 45px;
+    margin-bottom: 100px;
 }
 
 #settingsView .buttons {
@@ -740,10 +885,14 @@ body {
     width: 635px;
 }
 
-#settingsView #profile #settings_iAmLookingForRadio {
-    margin: auto;
-    grid-column: 3;
-    grid-row: 3 / 5;
+#settingsView #profile .sliders {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: 1 / 4;
+}
+
+#settingsView #profile .sliders .slider-input {
+    margin: 10px auto;
 }
 
 #settingsView #preferences {
@@ -759,10 +908,6 @@ body {
 #settingsView #preferences .amenities {
     grid-row: 3;
     grid-column: 1 / 5;
-}
-
-#settingsView #preferences .big-group {
-    margin-right: 45px;
 }
 
 #settingsView #housing {
@@ -842,7 +987,9 @@ body {
     cursor: pointer;
 }
 
-/* CreateAccountContainer.js */
+.landing-container .join-button:hover {
+    background-color: #f4d16fe1; /* Yellow color */
+}
 
 /* SignInView.js, CredentialsView.js */
 
@@ -879,7 +1026,8 @@ body {
 /* ProfileView.js */
 
 #profileView {
-    margin: 0 auto;
+    margin: 50px auto;
+    padding-bottom: 50px;
     width: 1100px;
 }
 
@@ -915,13 +1063,17 @@ body {
 }
 
 #profileView textarea {
-    min-height: 82px;
-    width: 635px;
+    height: 150px;
+    width: 300px;
 }
 
 #profileView .sliders-container {
     grid-column: 3;
     grid-row: 3 / 5;
+}
+
+#profileView .socials-container {
+    margin-top: 35px;
 }
 
 #profileView button {
@@ -953,4 +1105,127 @@ body {
     flex-direction: column;
     align-items: center; /* Align radio buttons in the center */
     margin-bottom: 1rem; /* Space after the last option */
+}
+
+#housingView .title-options-container #whatIsYourHousiRadioGrp {
+    font-size: 28px;
+    text-align: center;;
+}
+
+/* DiscoverView.js */
+
+.discoverView {
+    display: grid;
+    grid-template-columns: 350px auto;
+    column-gap: 80px;
+    padding: 60px 20% 80px;
+}
+
+.discoverView .buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.discoverView .discover-bio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.discoverView .discover-bio img {
+    width: 170px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+}
+
+.discoverView .discover-bio .bio-name {
+    font-size: 26px;
+    margin: 0;
+}
+
+.discoverView .discover-bio .bio-titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 18px 0 26px;
+}
+
+.discoverView .discover-bio .bio-titles p {
+    font-size: 18px;
+    color: gray;
+    margin: 4px 0;
+}
+
+.discoverView .discover-bio .bio-description {
+    text-align: center;
+}
+
+.discoverView .discover-info {
+    grid-row: 1 / 3;
+    grid-column: 2;
+    width: 600px;
+    margin: auto 0;
+}
+
+.discoverView .discover-info > div {
+    margin-bottom: 40px;
+}
+
+.discoverView .discover-info h1 {
+    font-size: 20px;
+}
+
+.discoverView .discover-info .about-details {
+    display: flex;
+}
+
+.discoverView .discover-info .about-details div {
+    padding: 7px 15px;
+    margin-right: 8px;
+    border-radius: 20px;
+    background-color: #F4D06F;
+    color: white;
+}
+
+.discoverView .discover-info .accommodation-details {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    width: 500px;
+}
+
+.discoverView .discover-info .accommodation-details p {
+    margin: 3px 0;
+    font-size: 20px;
+}
+
+.discoverView .discover-info .accommodation-stats > p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.discoverView .discover-info .accommodation-stats > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.discoverView .discover-info .accommodation-stats i {
+    color: #F4D06F;
+    font-size: 10px;
+    margin: 0 8px;
+}
+
+.discoverView .discover-info .accommodation-stats .stats-empty {
+    margin: 15px 0 18px;
+}
+
+.discoverView .discover-info .bio-description {
+    margin-top: 70px;
+}
+
+.discoverView .no-users-msg {
+    grid-column: 1 / 3;
+    text-align: center;
 }

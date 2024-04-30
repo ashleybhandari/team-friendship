@@ -1,3 +1,9 @@
+// created by Ashley Bhandari
+
+/**
+ * This file contains helper methods for SettingsFns and SettingsView.
+ */
+
 /**
  * @typedef {Object} Field - contains information about possible values an input field may take
  * @property {string[]} fields - values as displayed in the UI
@@ -187,4 +193,4 @@ function getPropFromDomValue(value) {
     return null;
 }
 
-export { fields, toMap, getFieldFromProp, getPropFromDomValue };
+export { data, fields, toMap, getFieldFromProp, getPropFromDomValue };
