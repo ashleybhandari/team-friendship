@@ -12,10 +12,9 @@ import { users } from '../../../data/MockData.js';
 // view: 'settings'
 export class SettingsView {
     #settingsViewElm = null;
-    #credentialsSection = null;
-    #profileSection = null;
-    #preferencesSection = null;
-    #housingSection = null;
+    #userProfile = null;
+    #userHousing = null;
+    #userPreferences = null;
     #events = null;
 
     #user = null;           // current user
@@ -62,38 +61,31 @@ export class SettingsView {
         `;
 
         // render page sections
-        await this.#renderCredentials(
-            await this.#getButtons(this.#settingsViewElm)
-        );
-        await this.#renderProfile(
-            await this.#getButtons(this.#settingsViewElm)
-        );
+        await this.#renderCredentials();
+        await this.#renderProfile();
         this.#user.hasHousing
-            ? await this.#renderHousing(
-                await this.#getButtons(this.#settingsViewElm)
-              )
-            : await this.#renderPreferences(
-                await this.#getButtons(this.#settingsViewElm)
-              );
+            ? await this.#renderHousing()
+            : await this.#renderPreferences();
 
         // fill HTML fields with the user's saved values
-        const settingsFnsObj = new SettingsFns(
-            this.#settingsViewElm, this.#user
-        );
-        this.#settingsFns = settingsFnsObj.getFns();
-        this.#fillFields(this.#settingsViewElm);
+        // const settingsFnsObj = new SettingsFns(
+        //     this.#settingsViewElm, this.#user
+        // );
+        // this.#settingsFns = settingsFnsObj.getFns();
+        this.#fillFields();
 
         // set up form validation
-        this.#requiredFields = settingsFnsObj.getFields();
-        this.#validationSetup()
+        // this.#requiredFields = settingsFnsObj.getFields();
+        // this.#validationSetup()
         
         return this.#settingsViewElm;
     }
     
     /**
      * Render Revert changes and Save buttons.
+     * @returns {Promise<HTMLDivElement>}
      */
-    async #getButtons() {
+    async #renderButtons() {
         const elm = document.createElement('div');
         elm.classList.add('buttons');
 
@@ -116,7 +108,6 @@ export class SettingsView {
             this.#saveChanges();
         });
 
-
         elm.appendChild(revertElm);
         elm.appendChild(saveElm);
 
@@ -128,7 +119,7 @@ export class SettingsView {
      * initialization and reverting changes.
      */
     #fillFields() {
-        this.#settingsFns.forEach((field) => field.fill());
+        // this.#settingsFns.forEach((field) => field.fill());
     }
 
     /**
@@ -169,7 +160,7 @@ export class SettingsView {
         });
     }
 
-    async #renderCredentials(buttons) {
+    async #renderCredentials() {
         const elm = document.createElement('div');
         elm.id = 'credentials-section';
         elm.classList.add('section');
@@ -181,9 +172,11 @@ export class SettingsView {
         // container for section content
         const section = document.createElement('div');
         section.id = 'credentials-content';
-
         section.appendChild(await new TextInput('Email').render());
         section.appendChild(await new TextInput('Password').render());
+
+        // revert changes and save buttons
+        const buttons = await this.#renderButtons();
 
         elm.appendChild(header);
         elm.appendChild(section);
@@ -191,7 +184,7 @@ export class SettingsView {
         this.#settingsViewElm.appendChild(elm);
     }
 
-    async #renderProfile(buttons) {
+    async #renderProfile() {
         const elm = document.createElement('div');
         elm.id = 'profile-section';
         elm.classList.add('section');
@@ -202,14 +195,16 @@ export class SettingsView {
         elm.appendChild(header);
 
         // section content
-        elm.appendChild(await new UserProfile('settings').render());
+        this.#userProfile = new UserProfile('settings');
+        elm.appendChild(await this.#userProfile.render());
         
-        elm.appendChild(buttons);
+        // revert changes and save buttons
+        elm.appendChild(await this.#renderButtons());
 
         this.#settingsViewElm.appendChild(elm);
     }
 
-    async #renderHousing(buttons) {
+    async #renderHousing() {
         const elm = document.createElement('div');
         elm.id = 'housing-section';
         elm.classList.add('section');
@@ -220,14 +215,16 @@ export class SettingsView {
         elm.appendChild(header);
 
         // section content
-        elm.appendChild(await new UserHousing('settings').render());
+        this.#userHousing = new UserHousing('settings');
+        elm.appendChild(await this.#userHousing.render());
 
-        elm.appendChild(buttons);
+        // revert changes and save buttons
+        elm.appendChild(await this.#renderButtons());
 
         this.#settingsViewElm.appendChild(elm);
     }
 
-    async #renderPreferences(buttons) {
+    async #renderPreferences() {
         const elm = document.createElement('div');
         elm.id = 'preferences-section';
         elm.classList.add('section');
@@ -238,9 +235,11 @@ export class SettingsView {
         elm.appendChild(header);
 
         // section content
-        elm.appendChild(await new UserPreferences('settings').render());
+        this.#userPreferences = new UserPreferences('settings');
+        elm.appendChild(await this.#userPreferences.render());
 
-        elm.appendChild(buttons);
+        // revert changes and save buttons
+        elm.appendChild(await this.#renderButtons());
 
         this.#settingsViewElm.appendChild(elm);
     }

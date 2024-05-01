@@ -1,7 +1,7 @@
 // created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { Button } from '../../components/Button.js';
-import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
+import { levelMap, characterMap, houseMap } from '../../helpers/discoverHelpers.js';
 import { Events } from '../../Events.js';
 import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
 
@@ -279,7 +279,7 @@ export class DiscoverView {
         if (!user) {
             this.#discoverViewElm.innerHTML = `
             <p class="no-users-msg">
-                No more users fitting your preferences. Wait and more will come!
+                No more users fitting your preferences. Wait for more users or adjust your preferences in Settings.
             </p>
             `;
             return;
