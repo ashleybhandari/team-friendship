@@ -1,5 +1,9 @@
 // Created by Rachel Lahav and Gauri Arvind
 
+// Note: the functions listed have been modified to catch errors.
+// For now, errors are console.error but a 500 error can be sent instead
+// Currently, the database has different tables for housing, user, and preferences.
+
 /**
  * Initialize a new PouchDB instance for the roommate-matching database.
  */
@@ -12,7 +16,8 @@ const db = new PouchDB('roommate-matching');
  */
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
-    .then(result => result.rows.map(row => row.doc));
+    .then(result => result.rows.map(row => row.doc)).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -22,7 +27,8 @@ export const getAllUsers = async () => {
  * @returns {Promise} A promise that resolves with a user object or null if the user is not found.
  */
 export const getUserById = async (id) => {
-  return db.get(id);
+  return db.get(id).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -51,7 +57,8 @@ export const addUser = async (user) => {
     matches: user.matches
   };
 
-  return db.put(newUser);
+  return db.put(newUser).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -80,7 +87,8 @@ export const updateUser = async (user) => {
     rejected: user.rejected,
     matches: user.matches
   };
-  return db.put(updatedUser);
+  return db.put(updatedUser).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -91,7 +99,8 @@ export const updateUser = async (user) => {
  */
 export const deleteUser = async (id) => {
   return db.get(id)
-    .then(doc => db.remove(doc));
+    .then(doc => db.remove(doc)).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -101,8 +110,13 @@ export const deleteUser = async (id) => {
  * @returns {Promise} A promise that resolves with an array of match IDs.
  */
 export const getMatches = async (id) => {
-  const user = await getUserById(id);
-  return user.matches;
+  try {
+    const user = await getUserById(id);
+    return user.matches;
+  }
+  catch(error) {
+    console.error(error);
+  }
 }
 
 /**
@@ -113,10 +127,15 @@ export const getMatches = async (id) => {
  * @returns {Promise} A promise that resolves with the updated user object.
  */
 export const removeMatch = async (currUserId, removeUserId) => {
-  const user = await getUserById(currUserId);
-  const removeUserIndex = user.matches.indexOf(removeUserId);
-  user.matches.splice(removeUserIndex, 1);
-  await updateUser(user);
+  try {
+    const user = await getUserById(currUserId);
+    const removeUserIndex = user.matches.indexOf(removeUserId);
+    user.matches.splice(removeUserIndex, 1);
+    await updateUser(user);
+  }
+  catch (error) {
+    console.error(error);
+  }
 }
 
 /**
@@ -126,7 +145,8 @@ export const removeMatch = async (currUserId, removeUserId) => {
  */
 export const getAllHousings = async () => {
   return db.allDocs({ include_docs: true, startkey: 'housing_' })
-    .then(result => result.rows.map(row => row.doc));
+    .then(result => result.rows.map(row => row.doc)).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -136,7 +156,8 @@ export const getAllHousings = async () => {
  * @returns {Promise} A promise that resolves with a housing object or null if the housing is not found.
  */
 export const getHousingById = async (id) => {
-  return db.get(`housing_${id}`);
+  return db.get(`housing_${id}`).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -165,13 +186,101 @@ export const updateHousing = async (housing) => {
     notes: housing.notes
   };
 
-  return db.put(updatedHousing);
+  return db.put(updatedHousing).catch((error) => 
+    console.error(error));
 }
 
+/**
+ * Deletes a user's housing information.
+ * @param {int} id - the user's unique id
+ * @returns {Promise} - confirmation that housing information was deleted or not via a promise
+ */
 export const deleteHousing = async (id) => {
   return db.get(`housing_${id}`)
-    .then(doc => db.remove(doc));
+    .then(doc => db.remove(doc)).catch((error) => 
+    console.error(error));
 }
+
+/**
+ * Gets all the preferences of all users who are looking for housing.
+ * @returns {Promise} - a promise resolving to preference information or an error
+ */
+export const getAllPreferences = async () => {
+    return db.allDocs({ include_docs: true, startkey: 'preference_' })
+      .then(result => result.rows.map(row => row.doc)).catch((error) => 
+      console.error(error));
+};
+
+/**
+ * Gets the preferences of a single user by id.
+ * @param {int} id - the user's id
+ * @returns {Promise} - a promise resolving to the user's preference information or an error
+ */
+export const getPreferenceById = async (id) => {
+    return db.get(`preference_${id}`).catch((error) => 
+      console.error(error));
+};
+
+/**
+ * Adds a user's preferences to their information.
+ * TODO: reformat so that it adds to the User object
+ * @param {object} preference - the object containing the user's preferences
+ * @returns {Promise} - a promise resolving to the added user
+ */
+export const addPreferences = async (preference) => {
+    const newPreference = {
+      _id: `preference_${preference.id}`,
+      cities: preference.cities,
+      rent: preference.rent,
+      occupants: preference.occupants,
+      gender: preference.gender,
+      leaseLength: preference.leaseLength,
+      leaseType: preference.leaseType,
+      roomType: preference.roomType,
+      buildingType: preference.buildingType,
+      timeframe: preference.timeframe,
+      amenities: preference.amenities,
+    }
+
+    return db.put(newPreference).catch((error) => 
+      console.error(error));
+};
+
+/**
+ * Updates the user's preferences.
+ * @param {object} preference - an object containing the user's preferences
+ * @returns {Promise} - the promise resolving to the user's updated preferences
+ */
+export const updatePreferences = async (preference) => {
+    const updatedPreferences = {
+      _id: `preference_${preference.id}`,
+      _rev: preference._rev,
+      cities: preference.cities,
+      rent: preference.rent,
+      occupants: preference.occupants,
+      gender: preference.gender,
+      leaseLength: preference.leaseLength,
+      leaseType: preference.leaseType,
+      roomType: preference.roomType,
+      buildingType: preference.buildingType,
+      timeframe: preference.timeframe,
+      amenities: preference.amenities,
+  }
+  
+  return db.put(updatedPreferences).catch((error) => 
+      console.error(error));
+};
+
+/**
+ * Delete's a user's preferences.
+ * @param {int} id - the user's id 
+ * @returns {Promise} - the promise resolving to a deleted user's preferences
+ */
+export const deletePreference = async (id) => {
+  return db.get(`preference_${id}`)
+      .then(doc => db.remove(doc)).catch((error) => 
+      console.error(error));
+};
 
 export const authenticateUser = async (email, password) => {
   try {
