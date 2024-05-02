@@ -3,7 +3,7 @@
 //var PouchDB = require('pouchdb');
 //var db = new PouchDB('my_database');
 //import PouchDB from 'pouchdb';
-import db from './index.js';
+//import db from './index.js';
 var db = new PouchDB('my_database');
 
 export const getAllUsers = async () => {
