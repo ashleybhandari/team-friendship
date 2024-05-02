@@ -180,15 +180,8 @@ export class UserPreferences {
      */
     async #renderAmenities() {
         const boxes = toMap(fields.amenities);
-
         const elm = await new CheckboxGroup('Amenities', boxes, 4).render();
         elm.classList.add('amenities');
-
-        // to differentiate it from Housing section's amenities
-        elm.id = `${elm.id}P`
-        elm.querySelectorAll('label').forEach((e) => e.htmlFor = `${e.htmlFor}P`);
-        elm.querySelectorAll('input').forEach((e) => e.id = `${e.id}P`);
-
         return elm;
     }
 }

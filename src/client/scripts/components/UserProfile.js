@@ -32,7 +32,7 @@ export class UserProfile {
 
         // row 2: bio, social media
         elm.appendChild(await new TextAreaInput(
-            'Tell us about yourself',
+            'Write a short bio',
             'Lifestyle, hobbies, routines, allergies...'
         ).render());
         elm.appendChild(await this.#renderSocials());

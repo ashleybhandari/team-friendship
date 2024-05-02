@@ -18,6 +18,7 @@ export class SettingsView {
     #events = null;
 
     #user = null;           // current user
+    #configFns = null;
     #settingsFns = null;    // functions fill and save each field
     #requiredFields = null; // required fields
 
@@ -67,6 +68,7 @@ export class SettingsView {
             ? await this.#renderHousing()
             : await this.#renderPreferences();
 
+        this.#userProfile.fillFields(this.#settingsViewElm, this.#user, 'settings')
         // fill HTML fields with the user's saved values
         // const settingsFnsObj = new SettingsFns(
         //     this.#settingsViewElm, this.#user
