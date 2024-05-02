@@ -2,9 +2,6 @@
 import {PouchDB} from "pouchdb";
 const db = new PouchDB('roommate-matching');
 
-import find from 'pouchdb-find'; // 
-PouchDB.plugin(find); 
-
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
     .then(result => result.rows.map(row => row.doc));
