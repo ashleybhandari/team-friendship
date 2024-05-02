@@ -50,6 +50,9 @@ export class CredentialsView {
             const emailInputElement = document.getElementById('emailInput'); 
             const passwordInputElement = document.getElementById('passwordInput'); 
 
+            const email = emailInputElement.value.trim();
+            const password = passwordInputElement.value.trim();
+
             if (!email.trim() || !password.trim())  {
                 alert('Please enter a valid email and password.');
                 return;
