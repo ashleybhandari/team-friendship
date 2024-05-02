@@ -4,7 +4,6 @@ import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 // import { login } from '../../../data/LogIn.js'; // DB TODO: Uncomment when PouchDB works
 import { users } from '../../../data/MockData.js'; // TODO: delete
-=======
 import { Events } from '../../Events.js';
 //import { authenticateUser } from '../../../data/DatabasePouchDB.js';
 import * as db from '../../../data/DatabasePouchDB.js';
