@@ -66,7 +66,7 @@ export class CredentialsView {
 
             try {
                 await addUser({
-                    _id: user.id, // Use the user's id as the document _id
+                    _id: null, // Use the user's id as the document _id
                     email: email,
                     avatar: null,
                     name: null,
