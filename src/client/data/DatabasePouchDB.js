@@ -4,6 +4,7 @@
 //var db = new PouchDB('my_database');
 //import PouchDB from 'pouchdb';
 import db from './index.js';
+var db = new PouchDB('my_database');
 
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
