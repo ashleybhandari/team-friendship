@@ -1,7 +1,9 @@
 // DB TODO: uncomment
-import PouchDB from "pouchdb";
+//import PouchDB from "pouchdb";
 //var PouchDB = require('pouchdb');
-var db = new PouchDB('my_database');
+//var db = new PouchDB('my_database');
+import PouchDB from 'pouchdb';
+const db = new PouchDB('my_database');
 
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
