@@ -73,10 +73,10 @@ export class SignInView {
             e.preventDefault();
 
             try {
-                const user = await authenticateUser {
+                const user = await authenticateUser (
                     emailInputElement.value,
                     passwordInputElement.value
-                };
+                );
 
            this.#events.publish('newUser', user);
 
