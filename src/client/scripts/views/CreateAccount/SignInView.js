@@ -72,8 +72,21 @@ export class SignInView {
         signInButtonElement.addEventListener('click', (e) => {
             e.preventDefault();
 
+            try {
+                const user = await authenticateUser {
+                    emailInputElement.value,
+                    passwordInputElement.value
+                };
+
+           this.#events.publish('newUser', user);
+
             // DB TODO: replace with login function below
             this.#events.publish('navigateTo', 'discover')
+
+            catch {
+                console.log('Login Failed', error message);
+                 alert('Login failed. Double-check your credentials.');
+            }
             // login(
             //     emailInputElement.value,
             //     passwordInputElement.value,
