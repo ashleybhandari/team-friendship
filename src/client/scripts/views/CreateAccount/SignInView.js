@@ -3,7 +3,7 @@
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
-import { authenticateUser } from '../../../data/DatabasePouchDB.js';
+//import { authenticateUser } from '../../../data/DatabasePouchDB.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 
