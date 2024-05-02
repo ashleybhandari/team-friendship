@@ -66,9 +66,9 @@ export class CredentialsView {
 
             try {
                 await addUser({
-                    id: email, 
-                    email,
-                    password
+                    _id: user.id, // Use the user's id as the document _id
+                    email: user.email,
+                    password: user.password
                 });
 
                 this.#events.publish('navigateTo', 'create-2');
