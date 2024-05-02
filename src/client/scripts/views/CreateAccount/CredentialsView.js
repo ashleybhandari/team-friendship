@@ -69,7 +69,7 @@ export class CredentialsView {
 
                 this.#events.publish('navigateTo', 'create-2');
             } catch (error) {
-                console.error('Error saving user:', error);
+                console.error('Error saving user:', error.message);
                 alert('An error occurred while creating your account. Please try again later.');
             }
         });
