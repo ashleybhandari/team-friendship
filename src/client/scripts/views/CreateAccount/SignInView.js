@@ -83,7 +83,6 @@ export class SignInView {
             this.#events.publish('navigateTo', 'discover');
 
             } catch {
-                console.error('Login Failed', error.message);
                  alert('Login failed. Double-check your credentials.');
             }
             // login(
