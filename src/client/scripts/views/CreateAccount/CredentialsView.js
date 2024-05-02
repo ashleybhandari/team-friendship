@@ -55,6 +55,11 @@ export class CredentialsView {
                 return;
             }
 
+            console.log(email);
+            console.log("hi");
+            console.log(password);
+            
+
             try {
                 await addUser({
                     id: email, 
