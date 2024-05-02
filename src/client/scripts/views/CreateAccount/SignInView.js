@@ -2,7 +2,6 @@
 
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
-import { login } from '../../../data/LogIn.js';
 import { Events } from '../../Events.js';
 import { authenticateUser } from '../../../data/DatabasePouchDB.js';
 
