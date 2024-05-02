@@ -71,7 +71,7 @@ export class SignInView {
         });
 
         // Event listener for sign-in button to validate credentials and sign in
-        signInButtonElement.addEventListener('click', (e) => {
+        signInButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
 
             try {
