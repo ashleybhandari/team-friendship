@@ -1,8 +1,14 @@
 import { App } from './App.js';
 const PouchDB = require('pouchdb');
-const db = new PouchDB('my_database');
+const PouchDB = require('pouchdb');
 
-module.exports = db;
+// Function to create and return a PouchDB instance
+function createDB(dbName) {
+    return new PouchDB(dbName);
+}
+
+module.exports = { createDB };
+
 
 // Mount the application to the root element.
 const app = new App();
