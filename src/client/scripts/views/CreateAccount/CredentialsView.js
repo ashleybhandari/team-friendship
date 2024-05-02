@@ -2,10 +2,7 @@ import { ProgressBar } from '../../components/ProgressBar.js';
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
-//import * as db from '../../../data/DatabasePouchDB.js';
-
-const { createDB } = require('../../helpers/pouchdbHelper');
-const db = createDB('my_database');
+import * as db from '../../../data/DatabasePouchDB.js';
 
 //Rachel
 // view: create-1
