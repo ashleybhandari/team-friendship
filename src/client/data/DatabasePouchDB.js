@@ -1,9 +1,6 @@
 // DB TODO: uncomment
 import PouchDB from "pouchdb";
-const db = new PouchDB('roommate-matching');
-
-import PouchDBFind from 'pouchdb-find';
-PouchDB.plugin(PouchDBFind);
+const db = new PouchDB("roommate-matching");
 
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
