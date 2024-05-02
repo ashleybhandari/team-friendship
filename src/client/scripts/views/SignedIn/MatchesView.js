@@ -1,8 +1,8 @@
 // created by Ashley Bhandari
 
-import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
+import { getUserById, getMatches, removeMatch } from '../../../data/DatabasePouchDB.js';
 
 // view: 'matches'
 export class MatchesView {
@@ -64,8 +64,7 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches(this.#user.id) // DB TODO: replace with below when PouchDB works
-        // const matches = await db.getMatches(this.#user.id);
+        const matches = await getMatches(this.#user.id);
 
         // show message if user has no matches
         if (matches.length === 0) {
@@ -78,8 +77,7 @@ export class MatchesView {
 
         // show list if user has matches
         for (const id of matches) {
-            const user = await getUserById(id); // DB TODO: replace with below when PouchDB works
-            // const user = await db.getUserById(id);
+            const user = await getUserById(id);
             
             // match's entry in list
             const elm = document.createElement('div');
@@ -180,8 +178,7 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await removeMatch(this.#user.id, this.#openedMatchId); // DB TODO: replace with below when PouchDB works
-            // await db.removeMatch(this.#user.id, this.#openedMatchId) ;
+            await removeMatch(this.#user.id, this.#openedMatchId);
             await this.#renderList();
             this.#switchView();
         });

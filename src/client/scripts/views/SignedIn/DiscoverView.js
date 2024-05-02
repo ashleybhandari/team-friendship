@@ -3,7 +3,7 @@ import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { Button } from '../../components/Button.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
 import { Events } from '../../Events.js';
-import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
+import { getAllUsers, getUserById } from '../../../data/DatabasePouchDB.js';
 
 // view: 'discover'
 export class DiscoverView {
