@@ -77,8 +77,6 @@ export class SignInView {
             try {
                 const user = await authenticateUser (emailInputElement.value, passwordInputElement.value);
 
-           this.#events.publish('newUser', user);
-
             // DB TODO: replace with login function below
             this.#events.publish('navigateTo', 'discover');
 
