@@ -27,8 +27,7 @@ export const getAllUsers = async () => {
  * @returns {Promise} A promise that resolves with a user object or null if the user is not found.
  */
 export const getUserById = async (id) => {
-  return db.get(id).catch((error) => 
-    console.error(error));
+  return db.get(id);
 }
 
 /**
@@ -57,8 +56,7 @@ export const addUser = async (user) => {
     matches: user.matches
   };
 
-  return db.put(newUser).catch((error) => 
-    console.error(error));
+  return db.put(newUser);
 }
 
 /**
@@ -87,8 +85,7 @@ export const updateUser = async (user) => {
     rejected: user.rejected,
     matches: user.matches
   };
-  return db.put(updatedUser).catch((error) => 
-    console.error(error));
+  return db.put(updatedUser);
 }
 
 /**
@@ -99,8 +96,7 @@ export const updateUser = async (user) => {
  */
 export const deleteUser = async (id) => {
   return db.get(id)
-    .then(doc => db.remove(doc)).catch((error) => 
-    console.error(error));
+    .then(doc => db.remove(doc));
 }
 
 /**
@@ -110,13 +106,8 @@ export const deleteUser = async (id) => {
  * @returns {Promise} A promise that resolves with an array of match IDs.
  */
 export const getMatches = async (id) => {
-  try {
     const user = await getUserById(id);
     return user.matches;
-  }
-  catch(error) {
-    console.error(error);
-  }
 }
 
 /**
@@ -127,15 +118,10 @@ export const getMatches = async (id) => {
  * @returns {Promise} A promise that resolves with the updated user object.
  */
 export const removeMatch = async (currUserId, removeUserId) => {
-  try {
     const user = await getUserById(currUserId);
     const removeUserIndex = user.matches.indexOf(removeUserId);
     user.matches.splice(removeUserIndex, 1);
     await updateUser(user);
-  }
-  catch (error) {
-    console.error(error);
-  }
 }
 
 /**
@@ -145,8 +131,7 @@ export const removeMatch = async (currUserId, removeUserId) => {
  */
 export const getAllHousings = async () => {
   return db.allDocs({ include_docs: true, startkey: 'housing_' })
-    .then(result => result.rows.map(row => row.doc)).catch((error) => 
-    console.error(error));
+    .then(result => result.rows.map(row => row.doc));
 }
 
 /**
@@ -156,8 +141,7 @@ export const getAllHousings = async () => {
  * @returns {Promise} A promise that resolves with a housing object or null if the housing is not found.
  */
 export const getHousingById = async (id) => {
-  return db.get(`housing_${id}`).catch((error) => 
-    console.error(error));
+  return db.get(`housing_${id}`);
 }
 
 /**
@@ -186,8 +170,7 @@ export const updateHousing = async (housing) => {
     notes: housing.notes
   };
 
-  return db.put(updatedHousing).catch((error) => 
-    console.error(error));
+  return db.put(updatedHousing);
 }
 
 /**
@@ -197,8 +180,7 @@ export const updateHousing = async (housing) => {
  */
 export const deleteHousing = async (id) => {
   return db.get(`housing_${id}`)
-    .then(doc => db.remove(doc)).catch((error) => 
-    console.error(error));
+    .then(doc => db.remove(doc));
 }
 
 /**
@@ -207,8 +189,7 @@ export const deleteHousing = async (id) => {
  */
 export const getAllPreferences = async () => {
     return db.allDocs({ include_docs: true, startkey: 'preference_' })
-      .then(result => result.rows.map(row => row.doc)).catch((error) => 
-      console.error(error));
+      .then(result => result.rows.map(row => row.doc));
 };
 
 /**
@@ -217,8 +198,7 @@ export const getAllPreferences = async () => {
  * @returns {Promise} - a promise resolving to the user's preference information or an error
  */
 export const getPreferenceById = async (id) => {
-    return db.get(`preference_${id}`).catch((error) => 
-      console.error(error));
+    return db.get(`preference_${id}`);
 };
 
 /**
@@ -242,8 +222,7 @@ export const addPreferences = async (preference) => {
       amenities: preference.amenities,
     }
 
-    return db.put(newPreference).catch((error) => 
-      console.error(error));
+    return db.put(newPreference);
 };
 
 /**
@@ -267,8 +246,7 @@ export const updatePreferences = async (preference) => {
       amenities: preference.amenities,
   }
   
-  return db.put(updatedPreferences).catch((error) => 
-      console.error(error));
+  return db.put(updatedPreferences);
 };
 
 /**
@@ -278,8 +256,7 @@ export const updatePreferences = async (preference) => {
  */
 export const deletePreference = async (id) => {
   return db.get(`preference_${id}`)
-      .then(doc => db.remove(doc)).catch((error) => 
-      console.error(error));
+      .then(doc => db.remove(doc));
 };
 
 export const authenticateUser = async (email, password) => {

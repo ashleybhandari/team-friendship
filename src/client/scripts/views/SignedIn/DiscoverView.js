@@ -108,25 +108,27 @@ export class DiscoverView {
 
         // user to display
         const user = await getUserById(id);
-
-        // add HTML
-        const bioSection = this.#addBioSection();
-        const infoSection = user.hasHousing
-            ? this.#addInfoSectionWithHousing()
-            : this.#addInfoSectionWithoutHousing();
-        elm.appendChild(bioSection);
-        elm.appendChild(infoSection);
         
-        // inject user's info into the HTML
-        this.#injectBio(bioSection, user)
-        user.hasHousing
-            ? this.#injectInfoWithHousing(infoSection, user)
-            : this.#injectInfoWithoutHousing(infoSection, user);
+        if(user !== undefined) {
+            // add HTML
+            const bioSection = this.#addBioSection();
+            const infoSection = user.hasHousing
+                ? this.#addInfoSectionWithHousing()
+                : this.#addInfoSectionWithoutHousing();
+            elm.appendChild(bioSection);
+            elm.appendChild(infoSection);
+            
+            // inject user's info into the HTML
+            this.#injectBio(bioSection, user)
+            user.hasHousing
+                ? this.#injectInfoWithHousing(infoSection, user)
+                : this.#injectInfoWithoutHousing(infoSection, user);
 
-        // send the profile to MatchesView
-        this.#events.publish('sendProfile', {
-            id: user.id, profile: elm
-        });
+            // send the profile to MatchesView
+            this.#events.publish('sendProfile', {
+                id: user.id, profile: elm
+            });
+        }
     }
 
     /**
@@ -135,7 +137,14 @@ export class DiscoverView {
      * @returns {User[]}
      */
     async #getUnseenUsers() {
-        const allUsers = await getAllUsers();
+        let allUsers = ""; // removed constant for error handling
+        try {
+            allUsers = await getAllUsers();
+        }
+       catch(error) {
+            // TODO: render this on frontend
+            console.error("Error with obtaining users to display.");
+       }
 
         const fitsRequirements = (user) =>
             // user has housing if curUser doesn't, vice versa
