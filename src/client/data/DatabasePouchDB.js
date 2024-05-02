@@ -133,6 +133,11 @@ export const deleteHousing = async (id) => {
     .then(doc => db.remove(doc));
 }
 
+export async function loadAllUsers() {
+  const result = await db.allDocs({ include_docs: true });
+  return result.rows.map((row) => row.doc);
+}
+
 export const authenticateUser = async (email, password) => {
   try {
     const user = await db.get(`user_${email}`);
