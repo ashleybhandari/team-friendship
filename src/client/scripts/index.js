@@ -1,7 +1,5 @@
 import { App } from './App.js';
 const PouchDB = require('pouchdb');
-const PouchDB = require('pouchdb');
-
 // Function to create and return a PouchDB instance
 function createDB(dbName) {
     return new PouchDB(dbName);
