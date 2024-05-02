@@ -3,6 +3,8 @@ import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
+import PouchDB from 'pouchdb';
+const db = new PouchDB(remoteDBURL);
 
 //Rachel
 // view: create-1
