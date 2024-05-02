@@ -79,7 +79,7 @@ export class SignInView {
            this.#events.publish('newUser', user);
 
             // DB TODO: replace with login function below
-            this.#events.publish('navigateTo', 'discover')
+            this.#events.publish('navigateTo', 'discover');
 
             } catch {
                 console.log('Login Failed', error message);
