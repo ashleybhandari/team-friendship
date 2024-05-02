@@ -1,9 +1,8 @@
-// Created by Rachel Lahav and Gauri Arvind
 
-/**
- * Initialize a new PouchDB instance for the roommate-matching database.
- */
-const db = new PouchDB('roommate-matching');
+// DB TODO: uncomment
+// import PouchDB from "pouchdb";
+var PouchDB = require('pouchdb');
+var db = new PouchDB('my_database');
 
 /**
  * Fetches all users from the database.
@@ -171,6 +170,11 @@ export const updateHousing = async (housing) => {
 export const deleteHousing = async (id) => {
   return db.get(`housing_${id}`)
     .then(doc => db.remove(doc));
+}
+
+export async function loadAllUsers() {
+  const result = await db.allDocs({ include_docs: true });
+  return result.rows.map((row) => row.doc);
 }
 
 export const authenticateUser = async (email, password) => {

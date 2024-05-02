@@ -3,8 +3,11 @@
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 // import { login } from '../../../data/LogIn.js'; // DB TODO: Uncomment when PouchDB works
-import { Events } from '../../Events.js';
 import { users } from '../../../data/MockData.js'; // TODO: delete
+=======
+import { Events } from '../../Events.js';
+//import { authenticateUser } from '../../../data/DatabasePouchDB.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
  * Provides a UI view for user sign-in. This class is responsible for rendering the
@@ -70,15 +73,18 @@ export class SignInView {
         });
 
         // Event listener for sign-in button to validate credentials and sign in
-        signInButtonElement.addEventListener('click', (e) => {
+        signInButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
 
-            const signInFns = [
-                () => this.#events.publish('newUser', users[0]), // DB TODO: change to PouchDB
-                () => this.#events.publish('navigateTo', 'discover')
-            ];
+            try {
+                const user = await authenticateUser (emailInputElement.value, passwordInputElement.value);
 
-            signInFns.forEach((fn) => fn()); // DB TODO: replace with below when PouchDB works
+            // DB TODO: replace with login function below
+            this.#events.publish('navigateTo', 'discover');
+
+            } catch {
+                 alert('Login failed. Double-check your credentials.');
+            }
             // login(
             //     emailInputElement.value,
             //     passwordInputElement.value,
