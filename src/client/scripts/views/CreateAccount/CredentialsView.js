@@ -46,13 +46,28 @@ export class CredentialsView {
         credViewElm.appendChild(signUpButtonElement);
 
         signUpButtonElement.addEventListener('click', async (e) => {
-    
-                e.preventDefault();
+            e.preventDefault();
+            const email = emailInputElement.value;
+            const password = passwordInputElement.value;
 
-            // DB TODO: replace with login function below
-           this.#events.publish('navigateTo', 'create-2');
+            if (!email || !password) {
+                alert('Please enter a valid email and password.');
+                return;
+            }
+
+            try {
+                await addUser({
+                    id: email, 
+                    email,
+                    password
+                });
+
+                this.#events.publish('navigateTo', 'create-2');
+            } catch (error) {
+                console.error('Error saving user:', error);
+                alert('An error occurred while creating your account. Please try again later.');
+            }
         });
-
         return credViewElm;
     }
 }
