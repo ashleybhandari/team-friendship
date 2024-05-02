@@ -5,7 +5,7 @@
 //import PouchDB from 'pouchdb';
 //import db from './index.js';
 
-import PouchDB from "pouchdb";
+//import PouchDB from "pouchdb";
 const db = new PouchDB("roommate-matching");
 
 
