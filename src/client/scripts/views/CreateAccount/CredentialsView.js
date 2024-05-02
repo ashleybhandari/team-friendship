@@ -47,8 +47,8 @@ export class CredentialsView {
 
         signUpButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
-            const email = emailInputElement.value;
-            const password = passwordInputElement.value;
+            const emailInputElement = document.getElementById('emailInput'); 
+            const passwordInputElement = document.getElementById('passwordInput'); 
 
             if (!email.trim() || !password.trim())  {
                 alert('Please enter a valid email and password.');
