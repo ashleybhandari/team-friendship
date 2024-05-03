@@ -88,8 +88,8 @@ export class CredentialsView {
         await addUser(newUser);
         this.#events.publish('navigateTo', 'create-2');
     } catch (error) {
-        // console.error('Error saving user:', error.message);
-        alert('An error occurred while creating your account. Please try again later.');
+        console.error('Error saving user:', error.message);
+        //alert('An error occurred while creating your account. Please try again later.');
     }
 });
 return credViewElm;
