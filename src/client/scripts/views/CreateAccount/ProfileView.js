@@ -14,15 +14,18 @@ import { fields } from '../../helpers/SettingsData.js';
  * ProfileView class
  */
 export class ProfileView {
-    #events = null;
     #database = null;
+    #events = null;
+    #userId = null;
 
     /**
      * Creates an instance of ProfileView.
      */
     constructor() {
-        this.#events = Events.events();
         this.#database = { updateUser };
+
+        this.#events = Events.events();
+        this.#events.subscribe('createUser', (id) => this.#userId = id);
     }
 
     /**

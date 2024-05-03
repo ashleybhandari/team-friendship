@@ -3,6 +3,7 @@
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
+import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
 
 /**
@@ -11,6 +12,15 @@ import { updateUser } from '../../../data/DatabasePouchDB.js';
  * view: create-3
  */
 export class HousingSituationView {
+    #database = null;
+    #events = null;
+    #userId = null;
+
+    constructor() {
+        this.#events = Events.events();
+        this.#events.subscribe('createUser', (id) => this.#userId = id);
+    }
+
     async render() {
         const housingViewElm = document.createElement('div');
         housingViewElm.id = 'housingView';

@@ -3,20 +3,17 @@ import { ProgressBar } from '../../components/ProgressBar.js';
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
+import { User } from '../../../data/data_structures/User.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
-import {addUser} from '../../../data/DatabasePouchDB.js';
-
-//import { User } from '../data../User.js';
-import { User } from '../../../data/data_structures/User.js';
 // view: create-1
 export class CredentialsView {
-    #events = null;
     #database = null;
+    #events = null;
 
     constructor() {
-        this.#events = Events.events();
         this.#database = db.default;
+        this.#events = Events.events();
     }
 
     async render() {
@@ -50,50 +47,58 @@ export class CredentialsView {
         credViewElm.appendChild(signUpButtonElement);
 
         signUpButtonElement.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const emailInputElement = document.getElementById('emailInput'); 
-    const passwordInputElement = document.getElementById('passwordInput'); 
+            e.preventDefault();
+            const emailInputElement = document.getElementById('emailInput'); 
+            const passwordInputElement = document.getElementById('passwordInput'); 
 
-    const email = emailInputElement.value.trim();
-    const password = passwordInputElement.value.trim();
+            const email = emailInputElement.value.trim();
+            const password = passwordInputElement.value.trim();
 
-    // This part works
-    if (!email.trim() || !password.trim())  {
-        alert('Please enter a valid email and password.');
-        return;
+            // This part works
+            if (!email.trim() || !password.trim())  {
+                alert('Please enter a valid email and password.');
+                return;
+            }
+
+            console.log(email);
+            console.log("hi");
+            console.log(password);
+                    
+            try {
+                // TODO: make addUser return the value of _id
+                // const userId = await db.addUser(this.#createUser); 
+                const userId = 'temp';
+                await db.addUser(this.#createUser()); 
+
+                this.#events.publish('createUser', userId);
+                this.#events.publish('navigateTo', 'create-2');
+            } catch (error) {
+                console.error('Error saving user:', error.message);
+                //alert('An error occurred while creating your account. Please try again later.');
+            }
+        });
+
+        return credViewElm;
     }
 
-    console.log(email);
-    console.log("hi");
-    console.log(password);
-            
-    const newUser = new User(
-    null, // id
-    null, // email
-    null, // avatar
-    null, // name
-    null, // age
-    null, // gender
-    null, // character
-    null, // education
-    null, // socials
-    null, // description
-    false, // hasHousing
-    null, // preferences
-    null, // housing
-    [], // liked
-    [], // rejected
-    [] // matches
-);
-
-    try {
-        await addUser(newUser);
-        this.#events.publish('navigateTo', 'create-2');
-    } catch (error) {
-        console.error('Error saving user:', error.message);
-        //alert('An error occurred while creating your account. Please try again later.');
-    }
-});
-return credViewElm;
+    #createUser() {
+        return new User(
+            null, // id
+            null, // email
+            null, // avatar
+            null, // name
+            null, // age
+            null, // gender
+            null, // character
+            null, // education
+            null, // socials
+            null, // description
+            false, // hasHousing
+            null, // preferences
+            null, // housing
+            [], // liked
+            [], // rejected
+            [] // matches
+        );
     }
 }
