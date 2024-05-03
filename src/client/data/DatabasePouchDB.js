@@ -1,7 +1,7 @@
 
 // DB TODO: uncomment
 // import PouchDB from "pouchdb";
-var PouchDB = require('pouchdb');
+//var PouchDB = require('pouchdb');
 var db = new PouchDB('my_database');
 
 /**
