@@ -1,3 +1,5 @@
+import { createElementId } from './createElementId.js';
+
 export function getProfileFields(page = null) {
     const fields = [
         { id: 'firstNameInput',        prop1: 'name',      prop2: 'fname'    },
@@ -29,6 +31,18 @@ export function fillProfileFields(container, user, page = null) {
         const elm = container.querySelector('#' + id);
         if (prop2) elm.value = user[prop1][prop2];
         else       elm.value = user[prop1];
+    });
+}
+
+export function saveProfileFields(container, user, page = null) {
+    getProfileFields(page).forEach(({ id, prop1, prop2 }) => {
+        const elm = container.querySelector('#' + id);
+        const value = id.endsWith('Drpdwn')
+            ? createElementId(elm.value)
+            : elm.value;
+
+        if (prop2) user[prop1][prop2] = value;
+        else       user[prop1] = value;
     });
 }
 
@@ -73,10 +87,24 @@ export function getHousingFields(page = null) {
 export function fillHousingFields(container, user, page = null) {
     getHousingFields(page).forEach(({ id, prop1, prop2 }) => {
         const elm = container.querySelector('#' + id);
-        const value = id.endsWith('Box') ? 'checked' : 'value';
+        const prop = id.endsWith('Box') ? 'checked' : 'value';
 
-        if (prop2) elm[value] = user.housing[prop1][prop2];
-        else       elm[value] = user.housing[prop1];
+        if (prop2) elm[prop] = user.housing[prop1][prop2];
+        else       elm[prop] = user.housing[prop1];
+    });
+}
+
+export function saveHousingFields(container, user, page = null) {
+    getHousingFields(page).forEach(({ id, prop1, prop2 }) => {
+        const elm = container.querySelector('#' + id);
+        let value;
+
+        if (id.endsWith('Box'))         value = elm.checked;
+        else if (id.endsWith('Drpdwn')) value = createElementId(elm.value);
+        else                            value = elm.value;
+
+        if (prop2) user.housing[prop1][prop2] = value;
+        else       user.housing[prop1] = value;
     });
 }
 
@@ -130,14 +158,29 @@ export function getPreferencesFields(page = null) {
 export function fillPreferencesFields(container, user, page = null) {
     getPreferencesFields(page).forEach(({ id, prop1, prop2, fill }) => {
         const elm = container.querySelector('#' + id);
-        const value = id.endsWith('Box') ? 'checked' : 'value';
+        const prop = id.endsWith('Box') ? 'checked' : 'value';
         
         if (prop2) {
-            elm[value] = user.preferences[prop1][prop2];
+            elm[prop] = user.preferences[prop1][prop2];
         } else {
-            elm[value] = fill
+            elm[prop] = fill
                 ? fill(user.preferences[prop1])
                 : user.preferences[prop1];
         }
+    });
+}
+
+export function savePreferencesFields(container, user, page = null) {
+    getPreferencesFields(page).forEach(({ id, prop1, prop2, save }) => {
+        const elm = container.querySelector('#' + id);
+        let value;
+
+        if (id.endsWith('Box'))         value = elm.checked;
+        else if (id.endsWith('Drpdwn')) value = createElementId(elm.value);
+        else if (save)                  value = save(elm.value);
+        else                            value = elm.value;
+
+        if (prop2) user.preferences[prop1][prop2] = value;
+        else       user.preferences[prop1] = value;
     });
 }

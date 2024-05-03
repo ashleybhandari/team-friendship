@@ -231,7 +231,7 @@ const u4 = new User(
         'yearly',
         'rent',
         'private',
-        'apt',
+        'apartment',
         'fall',
         {},
         ['https://www.slashfilm.com/img/gallery/bobs-burgers-12-best-tina-belcher-episodes/l-intro-1683233064.jpg', 'https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/03/Bobs-Burgers-Tina-Boys.jpg'],

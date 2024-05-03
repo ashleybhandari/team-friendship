@@ -10,7 +10,7 @@ export class Housing {
      *   @param {string} rent.period - "semester", "month", "year"
      * @param {number} beds
      * @param {number} baths
-     * @param {string} gender - Gender inclusivity: "female", "male", "mixed"
+     * @param {string} gender - Gender inclusivity: "allFemale", "allMale", "mixed"
      * @param {Object} utilities - Utilities included in rent (multi-select)
      *   @param {boolean} utilities.electric
      *   @param {boolean} utilities.gas
@@ -22,7 +22,7 @@ export class Housing {
      * @param {string} leaseLength - "perSemester", "monthly", "halfYear", "yearly"
      * @param {string} leaseType - "rent", "sublet"
      * @param {string} roomType - "private", "shared"
-     * @param {string} buildingType - "dorm", "apt", "house"
+     * @param {string} buildingType - "dorm", "apartment", "house"
      * @param {string} timeframe - Move-in period: "fall", "winter", "spring", "summer"
      * @param {Object} amenities - Housing amenities (multi-select, can select none)
      *   @param {boolean} amenities.aircon - Air conditioning

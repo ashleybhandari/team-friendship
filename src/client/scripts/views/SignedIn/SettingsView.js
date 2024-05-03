@@ -5,7 +5,6 @@ import { TextInput } from '../../components/TextInput.js';
 import { UserHousing } from '../../components/UserHousing.js';
 import { UserPreferences } from '../../components/UserPreferences.js';
 import { UserProfile } from '../../components/UserProfile.js';
-import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { Events } from '../../Events.js';
 import * as helper from '../../helpers/userConfigHelper.js';
 import { users } from '../../../data/MockData.js';
@@ -19,8 +18,6 @@ export class SettingsView {
     #events = null;
 
     #user = null;           // current user
-    #configFns = null;
-    #settingsFns = null;    // functions fill and save each field
     #requiredFields = null; // required fields
 
     constructor() {
@@ -42,14 +39,14 @@ export class SettingsView {
         if (!user) {
             this.#settingsViewElm = document.createElement('div');
             this.#settingsViewElm.id = 'settingsView';
-            this.#user = users[0];
+            this.#user = users[1];
         } else {
             this.#user = user;
             this.#settingsViewElm.innerHTML = '';
         }
 
         localStorage.setItem('user', JSON.stringify(this.#user));
-        // this.#user = JSON.parse(localStorage.getItem('user'));
+        this.#user = JSON.parse(localStorage.getItem('user'));
 
         // page header
         this.#settingsViewElm.innerHTML = `
@@ -66,13 +63,9 @@ export class SettingsView {
             : await this.#renderPreferences();
 
         // fill HTML fields with the user's saved values
-        // const settingsFnsObj = new SettingsFns(
-        //     this.#settingsViewElm, this.#user
-        // );
-        // this.#settingsFns = settingsFnsObj.getFns();
         this.#fillFields();
 
-        // set up form validation
+        // set up form validation // TODO
         // this.#requiredFields = settingsFnsObj.getFields();
         // this.#validationSetup()
         
@@ -117,38 +110,44 @@ export class SettingsView {
      * initialization and reverting changes.
      */
     #fillFields() {
-        helper.fillProfileFields(this.#settingsViewElm, this.#user, 'settings');
+        const args = [this.#settingsViewElm, this.#user, 'settings'];
 
+        // fill email field
+        this.#settingsViewElm.querySelector('#emailInput').value = this.#user.email;
+
+        // fill Profile section
+        helper.fillProfileFields(...args);
+
+        // fill Housing or Preferences section
         this.#user.hasHousing
-            ? helper.fillHousingFields(this.#settingsViewElm, this.#user, 'settings')
-            : helper.fillPreferencesFields(this.#settingsViewElm, this.#user, 'settings');
+            ? helper.fillHousingFields(...args)
+            : helper.fillPreferencesFields(...args);
     }
 
     /**
      * Save any changes made. Alert if a required field was missed.
      */
     #saveChanges() {
-        const invalid = this.#requiredFields.some((id) => {
-            const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
-            if (elm) return !elm.checkValidity()
-            return false;
-        }
+        // const invalid = this.#requiredFields.some((id) => {
+        //     const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
+        //     if (elm) return !elm.checkValidity()
+        //     return false;
+        // } // TODO
             
-        );
-        if (invalid) {
-            alert('Make sure all fields are filled out!');
-            return;
-        }
+        // );
+        // if (invalid) {
+        //     alert('Make sure all required fields are filled out (the starred ones)!');
+        //     return;
+        // }
 
-        this.#settingsFns.forEach((field) => field.save());
+        helper.saveProfileFields(this.#settingsViewElm, this.#user, 'settings');
+
+        this.#user.hasHousing
+            ? helper.saveHousingFields(this.#settingsViewElm, this.#user, 'settings')
+            : helper.savePreferencesFields(this.#settingsViewElm, this.#user, 'settings');
 
         // save new configuration
         localStorage.setItem('user', JSON.stringify(this.#user));
-
-        // get settings functions with new user value
-        this.#settingsFns = new SettingsFns(
-            this.#settingsViewElm, this.#user
-        ).getFns();
     }
 
     /**
