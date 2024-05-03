@@ -62,27 +62,55 @@ export class CredentialsView {
             console.log(email);
             console.log("hi");
             console.log(password);
+
+             const newUser = new User(
+        null, // _id: null, Use the user's id as the document _id
+        email,
+        null, // avatar
+        { fname: null, nname: null }, // name
+        null, // age
+        { identity: null, pronouns: null }, // gender
+        { clean: null, sleep: null, noise: null, guests: null }, // character
+        { major: null, school: null, level: null }, // education
+        { fb: null, ig: null }, // socials
+        null, // description
+        false, // hasHousing
+        new Preferences(
+            [], // cities
+            { min: null, max: null }, // rent
+            { min: null, max: null }, // occupants
+            { female: null, male: null, mixed: null }, // genderInclusivity
+            { semester: null, year: null }, // moveInPeriod
+            { rent: null }, // leaseLength
+            { private: null }, // leaseType
+            { apt: null, house: null }, // roomType
+            { fall: null }, // buildingType
+            { laundry: null, parking: null } // amenities
+        ),
+        new Housing(
+            null, // location
+            { price: null, period: null }, // rent
+            null, // occupants
+            null, // rooms
+            null, // gender
+            {}, // utilities
+            null, // leaseLength
+            null, // leaseType
+            null, // roomType
+            null, // buildingType
+            null, // moveInPeriod
+            {}, // amenities
+            [], // images
+            null // notes
+        ),
+        [], // liked
+        [], // rejected
+        [] // matches
+    );
             
 
             try {
-                await addUser({
-                    _id: null, // Use the user's id as the document _id
-                    email: email,
-                    avatar: null,
-                    name: null,
-                    age: null,
-                    gender: null,
-                    character: null,
-                    education: null,
-                    socials: null,
-                    description: null,
-                    hasHousing: null,
-                    preferences: null,
-                    housing: null,
-                    liked: null,
-                    rejected: null,
-                    matches: null
-                });
+                await addUser(newUser);
 
                 this.#events.publish('navigateTo', 'create-2');
             } catch (error) {
