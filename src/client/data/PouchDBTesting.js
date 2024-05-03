@@ -1,7 +1,5 @@
-import {addUser, updateUser, removeMatch, deleteUser} from 'DatabasePouchDB.js';
 import { users } from './MockData';
-import { deleteUser } from './DatabasePouchDB';
-
+import * as db from '../../../data/DatabasePouchDB.js';
 /**
  * This module can be used to test and see if information can be sent, retrieved, 
  * updated, or deleted from PouchDB. 
@@ -21,7 +19,7 @@ async function testAddUser() {
     const user = users[0];
     
     try {
-        const res = await addUser(user);
+        const res = await db.addUser(user);
         console.log(res);
     }
     catch(error) {
@@ -37,7 +35,7 @@ async function testUpdateUser() {
     user.email = "robert@gmail.com";
 
     try {
-        const res = await updateUser(user);
+        const res = await db.updateUser(user);
         console.log(res);
     }
     catch(error) {
@@ -53,7 +51,7 @@ async function testRemoveMatch() {
     const matchToRemove = 1; // match chosen from MockData.js
 
     try {
-        const res = removeMatch(user.id, matchToRemove);
+        const res = await db.removeMatch(user.id, matchToRemove);
         console.log(res);
     }
     catch(error) {
@@ -67,7 +65,7 @@ async function testRemoveMatch() {
 async function testDeleteMatch() {
     const user = users[0];
     try {
-        const res = deleteUser(user.id);
+        const res = await db.deleteUser(user.id);
         console.log(res);
     }
     catch(error) {
@@ -75,9 +73,20 @@ async function testDeleteMatch() {
     }
 }
 
+/**
+ * Loads information about the current database. doc_count will show the number 
+ * of undeleted records in the database and db_name will show the name 
+ * of the database.
+ */
+async function getDBInfo() {
+    const dbInfo = await db.info();
+    console.log(dbInfo);
+}
+
 export {
     testAddUser,
     testDeleteMatch,
     testRemoveMatch,
-    testUpdateUser
+    testUpdateUser,
+    getDBInfo
 }
