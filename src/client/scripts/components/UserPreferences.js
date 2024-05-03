@@ -2,7 +2,7 @@
 import { CheckboxGroup } from './CheckboxGroup.js';
 import { TextInput } from './TextInput.js';
 import { getPreferencesFields } from '../helpers/userConfigHelper.js';
-import { fields, toMap } from '../helpers/settingsData.js';
+import { fields, toMap } from '../helpers/userConfigFields.js';
 
 export class UserPreferences {
     /**

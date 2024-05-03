@@ -1,5 +1,5 @@
 // created by Ashley Bhandari
-import { data } from './settingsData.js';
+import { data } from './userConfigFields.js';
 
 /**
  * This file consists of maps used to display data elegantly on the Discover

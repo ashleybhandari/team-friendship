@@ -5,7 +5,7 @@ import { TextAreaInput } from './TextAreaInput.js';
 import { TextInput } from './TextInput.js';
 import { SliderInput } from './SliderInput.js';
 import { getProfileFields } from '../helpers/userConfigHelper.js';
-import { fields } from '../helpers/settingsData.js';
+import { fields } from '../helpers/userConfigFields.js';
 
 export class UserProfile {
     /**
