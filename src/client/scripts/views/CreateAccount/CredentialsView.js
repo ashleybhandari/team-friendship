@@ -120,3 +120,4 @@ export class CredentialsView {
 });
 return credViewElm;
     }
+}
