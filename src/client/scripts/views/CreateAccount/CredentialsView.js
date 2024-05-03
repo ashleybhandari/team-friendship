@@ -5,6 +5,8 @@ import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
+import (addUser} from '../../../data/DatabasePouchDB.js';
+
 //import { User } from '../data../User.js';
 import { User } from '../../../data/data_structures/User.js';
 // view: create-1
