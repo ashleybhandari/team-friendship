@@ -41,7 +41,7 @@ export class SettingsView {
         if (!user) {
             this.#settingsViewElm = document.createElement('div');
             this.#settingsViewElm.id = 'settingsView';
-            this.#user = users[1];
+            this.#user = users[0];
         } else {
             this.#user = user;
             this.#settingsViewElm.innerHTML = '';
