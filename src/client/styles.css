@@ -74,6 +74,24 @@ body {
     justify-content: space-evenly;
 }
 
+
+/* CheckboxGroup.js */
+
+.checkbox-group.big-group p {
+    text-align: center;
+}
+
+.checkbox-group .boxes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox-group.big-group .boxes {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
 /* CheckboxInput.js */
 
 .custom-checkbox {
@@ -1065,6 +1083,7 @@ body {
 #profileView textarea {
     height: 150px;
     width: 300px;
+ 
 }
 
 #profileView .sliders-container {
@@ -1081,6 +1100,286 @@ body {
     margin: 0 auto;
     margin-top: 40px;
 }
+
+/* Display Pages Styling */
+/* Display Container Styling */
+.display-split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  .display-user-block {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    background-color: linen;
+  }
+  
+  
+  /* Display Styling */
+  .housing-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #F4D06F;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: row;
+    margin-left: 8px;
+  }
+  
+  #housing-images {
+    width: 125;
+    height: 126;
+    border: 2px solid #7D7D7D;
+    border-radius: 8px;
+  }
+  
+  /* Styling for Both Displays */
+  .left-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 0px
+  }
+  
+  /* There's some issues with this container, but for now it works */
+  .right-container { 
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-left: 400px
+  }
+  
+  .user-profile-image {
+    box-sizing: border-box;
+    width: 125px;
+    height: 125px;
+    position: absolute;
+  
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    margin-bottom: 4em;
+  }
+  
+  /* Flag Button Styling - temporary */
+  .flag-user {
+    width: 60px;
+    height: 60px;
+    background-color: #ffce5bcd;
+    outline: 2px solid #ffce5b;
+    border-radius: 50%;
+    border: none;
+    margin-left: 7em;
+    margin-top: 10em;
+  }
+  
+  .flag-user:active {
+    background-color:#c7c7c5;
+    outline: 2px solid #a4a4a4;
+  }
+  
+  /* User Profile Image Styling */
+  .display-center-profile {
+    margin-top: 20px;
+    margin-left: 200px;
+  }
+  
+  .user-profile-image {
+    margin-top: 12em;
+    margin-left: 7em;
+  }
+  
+  .user-name {
+   margin-top: 8em;
+   margin-left: 17.25em;
+  }
+  
+  .user-school {
+    margin-top: 1em;
+    margin-left: 17.5em;
+  }
+  
+  /* convert to JS element */
+  .user-school-info {
+    margin: 10px;
+  }
+  
+  #user-description-housing {
+    width: fit-content;
+    margin-top: 1em;
+    margin-left: 4em;
+    margin-bottom: 2em;
+  }
+  
+  /* View Button Styling */
+  .display-personal-button {
+    /* width: 103px;
+    height: 33px; */
+    background-color: #F4D06F;
+    color: white;
+    padding: 7px;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    display: inline;
+    margin-right: 0.5em;
+  }
+  
+  /* Accept Button Styling */
+  .accept-user {
+    width: 60px;
+    height: 60px;
+    background-color: #7dd2afc8;
+    outline: 2px solid #7DD2AE;
+    border-radius: 50%;
+    border: none;
+    margin-left: 18em;
+  }
+  
+  .accept-user:active {
+    background-color: #72c1a0;
+  }
+  
+  /* Reject Button Styling */
+  .reject-user {
+    width: 60px;
+    height: 60px;
+    background-color: #ff715bcd;
+    outline: 2px solid #FF715B;
+    border-radius: 50%;
+    border: none;
+    margin-left: 4em;
+  }
+  
+  .reject-user:active {
+    background-color: #e96652;
+    outline: 2px solid #FF715B;
+  }
+  
+/* Next Button Styling */
+.next-user {
+    width: 60px;
+    height: 60px;
+    background-color: #eeb963c8;
+    outline: 2px solid #cc9e55c8;
+    border-radius: 50%;
+    border: none;
+    margin-top: 2em;  
+    margin-left: 14em;
+  }
+  
+  .next-user:active {
+    background-color: #cc9e55c8;
+  }
+
+  /* View Button Styling */
+   .display-personal-button1 {
+    width: 103px;
+    height: 33px;
+  }
+  
+  .be-vietnam-700 {
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .user-about {
+    margin-top: 7em;
+    margin-bottom: 2em;
+  }
+  
+  .display-personal-button {
+    margin-top: 1em;
+  }
+  
+  .user-accommodation {
+    margin-bottom: 1em;
+    display: flex;
+  }
+  
+  .user-accommodation-left {
+    position: relative;
+    display: flex;
+    flex: 0;
+    justify-content: flex-start space-around;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 1em;
+  }
+  
+  .user-accommodation-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 1em;
+  }
+  
+  .user-acc-left-child {
+    margin-bottom: 0.5em;
+  }
+  
+  .user-acc-right-child {
+    margin-bottom: 0.5em;
+  }
+  
+  .user-house-rent {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1em;
+  }
+  
+  .view-inner-text .housing-dot{
+    position: absolute;
+    display: inline;
+  }
+  
+  .view-list-element {
+    position: relative;
+    display: flex;
+    justify-content: flex-start space-around;
+  }
+  
+  .view-inner-text {
+    margin-left: 8px;
+  }
+  
+  .user-house-amenities {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1em;
+  }
+  
+  .user-house-notes {
+    margin-bottom: 2em;
+  }
+  
+  .housing-images {
+    margin-top: 1em;
+    margin-right: 1em;
+  }
+  
+  
+  
+  /* Display Styling for DisplayRoommateHelper */
+  .right-container-roommate {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-left: 500px;
+  }
+  
+  .user-about-roommate {
+    margin-left: 4em;
+    margin-top: 13em;
+    margin-bottom: 2em;
+  }
 
 /* HousingSituationView.js */
 

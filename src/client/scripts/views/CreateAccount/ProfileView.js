@@ -62,6 +62,7 @@ export class ProfileView {
         const nextBtnHandler = async () => {
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
+            let success = true;
 
             try {
                 const currentUser = await getUserById(userData.id);
@@ -203,3 +204,4 @@ export class ProfileView {
         return slidersContainer;
     }
 }
+
