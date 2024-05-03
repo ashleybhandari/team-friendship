@@ -42,7 +42,7 @@ export class Navbar1 {
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const view = e.target.getAttribute('href').replace('#', '');
-                    window.location.hash = view;
+                    window.location.hash = view; // URL TODO: remove
                     await this.#events.publish('navigateTo', view);
                 })
             );
@@ -51,7 +51,7 @@ export class Navbar1 {
         elm.querySelector('.logo').addEventListener('click', async (e) => {
             e.preventDefault();
             const view = 'landing';
-            window.location.hash = view;
+            window.location.hash = view; // URL TODO: remove
             await this.#events.publish('navigateTo', view);
         })
         

@@ -58,21 +58,24 @@ export class SignedInContainer {
         if (view === 'discover') {      // DiscoverView
             this.#viewContainer.appendChild(this.#discoverViewElm);
             this.#updateNavbar(view);
+            // URL TODO: url should be 'index.html/discover'
         }
         else if (view === 'matches') {  // MatchesView
             this.#viewContainer.appendChild(this.#matchesViewElm);
             this.#updateNavbar(view);
+            // URL TODO: url should be 'index.html/matches'
         }
         else if (view === 'settings') { // SettingsView
             this.#viewContainer.appendChild(this.#settingsViewElm);
             this.#updateNavbar(view);
+            // URL TODO: url should be 'index.html/settings'
         }
         else {                          // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
             this.#updateNavbar(view);
         }
         
-        window.location.hash = view;
+        window.location.hash = view; // URL TODO: remove
     }
 
     /**

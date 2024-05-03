@@ -69,7 +69,7 @@ export class Footer {
      * @param {string} view
      */
     async #navigate(view) {
-        window.location.hash = view;
+        window.location.hash = view; // URL TODO: remove
         await this.#events.publish('navigateTo', view);
     }
 }
