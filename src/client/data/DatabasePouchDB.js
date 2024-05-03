@@ -39,7 +39,7 @@ export const getUserById = async (id) => {
 export const addUser = async (user) => {
   const newUser = {
     // Only include _id if user.id is present and truthy
-    ...(user.id && { _id: user.id }),
+    _id: user.id || `user_${Date.now()}`,
     email: user.email,
     avatar: user.avatar,
     name: user.name,
