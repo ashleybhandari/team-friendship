@@ -38,7 +38,7 @@ export class User {
         socials, description, hasHousing, preferences, housing, liked,
         rejected, matches
     ) {
-        this.id = id ? id.toString() : null;
+        this.id = id ? id.toString();
         this.email = email;
         this.avatar = avatar;
         this.name = name;
