@@ -6,7 +6,7 @@ import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 //import { User } from '../data../User.js';
-
+import { User } from '../../data/User.js';
 // view: create-1
 export class CredentialsView {
     #events = null;
