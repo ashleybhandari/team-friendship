@@ -7,6 +7,7 @@ import { UserPreferences } from '../../components/UserPreferences.js';
 import { UserProfile } from '../../components/UserProfile.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { Events } from '../../Events.js';
+import * as helper from '../../helpers/userConfigHelper.js';
 import { users } from '../../../data/MockData.js';
 
 // view: 'settings'
@@ -116,7 +117,11 @@ export class SettingsView {
      * initialization and reverting changes.
      */
     #fillFields() {
-        // this.#settingsFns.forEach((field) => field.fill());
+        helper.fillProfileFields(this.#settingsViewElm, this.#user, 'settings');
+
+        this.#user.hasHousing
+            ? helper.fillHousingFields(this.#settingsViewElm, this.#user, 'settings')
+            : helper.fillPreferencesFields(this.#settingsViewElm, this.#user, 'settings');
     }
 
     /**

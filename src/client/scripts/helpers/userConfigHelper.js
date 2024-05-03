@@ -14,14 +14,7 @@ export function getProfileFields(page = null) {
         { id: 'noiseWhenStudyiSldr',   prop1: 'character', prop2: 'noise'    },
         { id: 'hostingGuestsSldr',     prop1: 'character', prop2: 'guests'   },
         { id: 'genderIdentityDrpdwn',  prop1: 'gender',    prop2: 'identity' },
-        { id: 'levelOfEducatioDrpdwn', prop1: 'education', prop2: 'level'    },
-        { id: 'periodDrpdwn',          prop1: 'rent',      prop2: 'period'   },
-        { id: 'genderInclusiviDrpdwn', prop1: 'gender'                       },
-        { id: 'moveInPeriodDrpdwn',    prop1: 'timeframe'                    },
-        { id: 'leaseLengthDrpdwn',     prop1: 'leaseLength'                  },
-        { id: 'leaseTypeDrpdwn',       prop1: 'leaseType'                    },
-        { id: 'roomTypeDrpdwn',        prop1: 'roomType'                     },
-        { id: 'buildingTypeDrpdwn',    prop1: 'buildingType'                 }
+        { id: 'levelOfEducatioDrpdwn', prop1: 'education', prop2: 'level'    }
     ];
 
     fields.forEach((field) =>
@@ -29,6 +22,14 @@ export function getProfileFields(page = null) {
     );
 
     return fields;
+}
+
+export function fillProfileFields(container, user, page = null) {
+    getProfileFields(page).forEach(({ id, prop1, prop2 }) => {
+        const elm = container.querySelector('#' + id);
+        if (prop2) elm.value = user[prop1][prop2];
+        else       elm.value = user[prop1];
+    });
 }
 
 export function getHousingFields(page = null) {
@@ -67,6 +68,16 @@ export function getHousingFields(page = null) {
     );
 
     return fields;
+}
+
+export function fillHousingFields(container, user, page = null) {
+    getHousingFields(page).forEach(({ id, prop1, prop2 }) => {
+        const elm = container.querySelector('#' + id);
+        const value = id.endsWith('Box') ? 'checked' : 'value';
+
+        if (prop2) elm[value] = user.housing[prop1][prop2];
+        else       elm[value] = user.housing[prop1];
+    });
 }
 
 export function getPreferencesFields(page = null) {
@@ -114,4 +125,19 @@ export function getPreferencesFields(page = null) {
     );
 
     return fields;
+}
+
+export function fillPreferencesFields(container, user, page = null) {
+    getPreferencesFields(page).forEach(({ id, prop1, prop2, fill }) => {
+        const elm = container.querySelector('#' + id);
+        const value = id.endsWith('Box') ? 'checked' : 'value';
+        
+        if (prop2) {
+            elm[value] = user.preferences[prop1][prop2];
+        } else {
+            elm[value] = fill
+                ? fill(user.preferences[prop1])
+                : user.preferences[prop1];
+        }
+    });
 }

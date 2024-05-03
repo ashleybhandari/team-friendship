@@ -22,7 +22,7 @@ export class UserProfile {
 
         const avatar = document.createElement('div');
         avatar.innerHTML = `
-        <p>Change your avatar:</p>
+        <p>Upload your avatar:</p>
         <input type="file" id="avatar" name="avatar">
         `;
 
@@ -57,7 +57,6 @@ export class UserProfile {
         getProfileFields()
             .map((field) => field.id)
             .forEach((id) => {
-                console.log(id)
                 const elm = container.querySelector(`#${id}`);
                 const label = container.querySelector(`label[for="${id}"]`);
 
