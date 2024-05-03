@@ -47,9 +47,49 @@ export class CredentialsView {
 
         signUpButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
-            this.#events.publish('navigateTo', 'create-2');
-        });
+            const emailInputElement = document.getElementById('emailInput'); 
+            const passwordInputElement = document.getElementById('passwordInput'); 
 
+            const email = emailInputElement.value.trim();
+            const password = passwordInputElement.value.trim();
+
+            //This part works
+            if (!email.trim() || !password.trim())  {
+                alert('Please enter a valid email and password.');
+                return;
+            }
+
+            console.log(email);
+            console.log("hi");
+            console.log(password);
+            
+
+            try {
+                await addUser({
+                    _id: null, // Use the user's id as the document _id
+                    email: email,
+                    avatar: null,
+                    name: null,
+                    age: null,
+                    gender: null,
+                    character: null,
+                    education: null,
+                    socials: null,
+                    description: null,
+                    hasHousing: null,
+                    preferences: null,
+                    housing: null,
+                    liked: null,
+                    rejected: null,
+                    matches: null
+                });
+
+                this.#events.publish('navigateTo', 'create-2');
+            } catch (error) {
+              //  console.error('Error saving user:', error.message);
+                alert('An error occurred while creating your account. Please try again later.');
+            }
+        });
         return credViewElm;
     }
 }
