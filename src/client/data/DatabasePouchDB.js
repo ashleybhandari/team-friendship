@@ -38,7 +38,8 @@ export const getUserById = async (id) => {
  */
 export const addUser = async (user) => {
   const newUser = {
-    _id: user.id, // Use the user's id as the document _id
+    // Only include _id if user.id is present and truthy
+    ...(user.id && { _id: user.id }),
     email: user.email,
     avatar: user.avatar,
     name: user.name,
@@ -57,7 +58,7 @@ export const addUser = async (user) => {
   };
 
   return db.put(newUser);
-}
+};
 
 /**
  * Updates an existing user in the database.
