@@ -5,7 +5,7 @@ import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
-//import { User } from './User.js';
+import { User } from './User.js';
 
 // view: create-1
 export class CredentialsView {
