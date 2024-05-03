@@ -48,24 +48,24 @@ export class CredentialsView {
         credViewElm.appendChild(signUpButtonElement);
 
         signUpButtonElement.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const emailInputElement = document.getElementById('emailInput'); 
-            const passwordInputElement = document.getElementById('passwordInput'); 
+    e.preventDefault();
+    const emailInputElement = document.getElementById('emailInput'); 
+    const passwordInputElement = document.getElementById('passwordInput'); 
 
-            const email = emailInputElement.value.trim();
-            const password = passwordInputElement.value.trim();
+    const email = emailInputElement.value.trim();
+    const password = passwordInputElement.value.trim();
 
-            //This part works
-            if (!email.trim() || !password.trim())  {
-                alert('Please enter a valid email and password.');
-                return;
-            }
+    // This part works
+    if (!email.trim() || !password.trim())  {
+        alert('Please enter a valid email and password.');
+        return;
+    }
 
-            console.log(email);
-            console.log("hi");
-            console.log(password);
+    console.log(email);
+    console.log("hi");
+    console.log(password);
 
-             const newUser = new User(
+    const newUser = new User(
         null, // _id: null, Use the user's id as the document _id
         email,
         null, // avatar
@@ -109,17 +109,14 @@ export class CredentialsView {
         [], // rejected
         [] // matches
     );
-            
 
-            try {
-                await addUser(newUser);
-
-                this.#events.publish('navigateTo', 'create-2');
-            } catch (error) {
-              //  console.error('Error saving user:', error.message);
-                alert('An error occurred while creating your account. Please try again later.');
-            }
-        });
-        return credViewElm;
+    try {
+        await addUser(newUser);
+        this.#events.publish('navigateTo', 'create-2');
+    } catch (error) {
+        // console.error('Error saving user:', error.message);
+        alert('An error occurred while creating your account. Please try again later.');
     }
-}
+});
+return credViewElm;
+    }
