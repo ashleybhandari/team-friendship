@@ -1,6 +1,7 @@
 // created by Ashley Bhandari
 import { CheckboxGroup } from './CheckboxGroup.js';
 import { TextInput } from './TextInput.js';
+import { getPreferencesFields } from '../helpers/userConfigHelper.js';
 import { fields, toMap } from '../helpers/settingsData.js';
 
 export class UserPreferences {
@@ -33,66 +34,24 @@ export class UserPreferences {
     }
 
     /**
-     * List all field id's, prepending with page if a page name is provided.
-     * @param {string} [page=null] - Name of page
-     * @returns {string[]}
-     */
-    getFieldIds(page = null) {
-        const ids = [
-            'citiesCommaSepaInput',
-            'minRentInput',
-            'maxRentInput',
-            'minOccupantsInput',
-            'maxOccupantsInput',
-            'allFemaleBox',
-            'allMaleBox',
-            'mixedBox',
-            'fallBox',
-            'winterBox',
-            'springBox',
-            'summerBox',
-            'perSemesterBox',
-            'monthlyBox',
-            'sixMonthsBox',
-            'yearlyBox',
-            'rentBox',
-            'subletBox',
-            'privateBox',
-            'sharedBox',
-            'dormBox',
-            'apartmentBox',
-            'houseBox',
-            'airConditioningBoxP',
-            'dishwasherBoxP',
-            'hardwoodFloorsBoxP',
-            'carpetFloorsBoxP',
-            'onSiteLaundryBoxP',
-            'residentialParkBoxP',
-            'nearbyBusStopBoxP',
-            'petFriendlyBoxP'
-        ];
-
-        return ids.map((id) => page ? `${page}_${id}` : `${id}`);
-    }
-
-    /**
      * Prepends all field id's with the page name (changes name and label
      * accordingly if necessary). Prevents conflicts if multiple views use this
      * component.
      * @param {HTMLDivElement} container 
      */
     #initIds(container) {
-        this.getFieldIds().forEach((id) => {
-            const elm = container.querySelector(`#${id}`);
-            const label = container.querySelector(`label[for="${id}"]`);
+        getPreferencesFields()
+            .map((field) => field.id)
+            .forEach((id) => {
+                const elm = container.querySelector(`#${id}`);
+                const label = container.querySelector(`label[for="${id}"]`);
 
-            if (elm) {
-                elm.id = `${this.page}_${id}`;
-
-                if (elm.name) elm.setAttribute('name', elm.id);
-                if (label)    label.htmlFor = elm.id;
-            }
-        });
+                if (elm) {
+                    elm.id = `${this.page}_${id}`;
+                    if (elm.name) elm.setAttribute('name', elm.id);
+                    if (label)    label.htmlFor = elm.id;
+                }
+            });
     }
 
     /**
