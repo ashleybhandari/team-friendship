@@ -54,7 +54,7 @@ export class NeedHousingView {
         if (needHousingForm) {
             needHousingForm.addEventListener('submit', this.handleSubmit.bind(this));
         } else {
-            console.error("Element with ID 'needHousingForm' not found");
+           console.error("Element with ID 'needHousingForm' not found");
         }
 
         const createAcctFns = [

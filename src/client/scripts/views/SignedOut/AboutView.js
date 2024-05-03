@@ -1,5 +1,5 @@
 // created by Rachel Lahav
-import { BIOS } from '../../../../docs/milestone-01/members.js';
+import { TEAM } from '../../helpers/teamMembers.js';
 
 // view: about
 export class AboutView {
@@ -48,7 +48,7 @@ export class AboutView {
         team.appendChild(teamContainer);
 
         // adds members to container
-        BIOS.forEach((e) => {
+        TEAM.forEach((e) => {
             // pic, name, and role
             const pic = document.createElement('div');
             pic.classList.add('pic-role');
