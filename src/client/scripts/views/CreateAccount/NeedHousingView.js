@@ -31,31 +31,31 @@ export class NeedHousingView {
 
         needHousingViewElm.appendChild(await new ProgressBar(4).render());
 
-        const headerContainer = document.createElement('div');
-        headerContainer.style.textAlign = 'center'; 
+        // const headerContainer = document.createElement('div');
+        // headerContainer.style.textAlign = 'center'; 
     
-        const preferencesHeader = document.createElement('h1');
-        preferencesHeader.innerText = 'Tell us your preferences';
-        preferencesHeader.classList.add('preferences-header', 'battambang');
-        headerContainer.appendChild(preferencesHeader);
+        // const preferencesHeader = document.createElement('h1');
+        // preferencesHeader.innerText = 'Tell us your preferences';
+        // preferencesHeader.classList.add('preferences-header', 'battambang');
+        // headerContainer.appendChild(preferencesHeader);
 
-        const preferencesNote = document.createElement('p');
-        preferencesNote.innerText = "we'll use this to set up your feed";
-        preferencesNote.classList.add('preferences-note');
-        headerContainer.appendChild(preferencesNote);
+        // const preferencesNote = document.createElement('p');
+        // preferencesNote.innerText = "we'll use this to set up your feed";
+        // preferencesNote.classList.add('preferences-note');
+        // headerContainer.appendChild(preferencesNote);
     
-        needHousingViewElm.appendChild(headerContainer);
+        // needHousingViewElm.appendChild(headerContainer);
 
-        this.#preferencesSection = new PreferencesSection(needHousingViewElm);
+        // this.#preferencesSection = new PreferencesSection(needHousingViewElm);
         
-        await this.#preferencesSection.render();
+        // await this.#preferencesSection.render();
 
-        const needHousingForm = needHousingViewElm.querySelector('#needHousingForm');
-        if (needHousingForm) {
-            needHousingForm.addEventListener('submit', this.handleSubmit.bind(this));
-        } else {
-           console.error("Element with ID 'needHousingForm' not found");
-        }
+        // const needHousingForm = needHousingViewElm.querySelector('#needHousingForm');
+        // if (needHousingForm) {
+        //     needHousingForm.addEventListener('submit', this.handleSubmit.bind(this));
+        // } else {
+        //    console.error("Element with ID 'needHousingForm' not found");
+        // }
 
         const createAcctFns = [
             () => this.#events.publish('newUser', users[0]) // DB TODO: change to PouchDB
@@ -65,9 +65,9 @@ export class NeedHousingView {
         ).render();
         needHousingViewElm.appendChild(navigation);
 
-        this.#queryFns = new SettingsFns(needHousingViewElm, this.#user); 
+        // this.#queryFns = new SettingsFns(needHousingViewElm, this.#user); 
 
-        this.#validationSetup(needHousingViewElm);
+        // this.#validationSetup(needHousingViewElm);
         
         return needHousingViewElm;
     }

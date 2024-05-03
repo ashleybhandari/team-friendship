@@ -33,9 +33,10 @@ export class SettingsView {
     }
     /**
      * Lets the user change their configuration. Injected into SignedInContainer.
+     * @param {User} [user] - Currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(user) {
+    async render(user = null) {
         // DB TODO: replace all localStorage stuff with PouchDB when it works
         
         // if user has not signed in, SettingsView is an empty div
