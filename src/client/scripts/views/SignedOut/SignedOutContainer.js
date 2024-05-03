@@ -1,11 +1,10 @@
+// created by Ashley Bhandari
+
 import { Navbar1 } from '../../components/Navbar1.js';
 import { LandingView } from './LandingView.js';
 import { AboutView } from './AboutView.js';
 import { Events } from '../../Events.js';
 
-/**
- * Sets up navbar for Landing and About views. Injected into App.
- */
 export class SignedOutContainer {
     #signedOutCntrElm = null;
     #viewContainer = null;
@@ -17,6 +16,10 @@ export class SignedOutContainer {
         this.#events = Events.events();
     }
 
+    /**
+     * Sets up navbar for Landing and About views. Injected into App.
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render() {
         this.#signedOutCntrElm = document.createElement('div');
         this.#signedOutCntrElm.id = 'signedOutCntr';

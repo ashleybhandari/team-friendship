@@ -1,3 +1,4 @@
+// created by Isha Bang
 import { Events } from '../Events.js';
 
 /**
@@ -16,13 +17,23 @@ export class Navbar1 {
         elm.classList.add('navbar1');
 
         elm.innerHTML = `
-        <nav>
-            <a href="#landing" id="nav-landing">Home</a>
-            <a href="#about" id="nav-about">About us</a>
+        <div class="links">
+            <div class="logo">
+                <img
+                    src="https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/logo.png"
+                    alt="KeyMate logo"
+                >
+                <h2 class="battambang">KeyMate</h2>
+            </div>
+            <div class="links">
+                <a href="#landing" id="nav-landing">Home</a>
+                <a href="#about" id="nav-about">About us</a>
+            </div>
+        </div>
+        <div>
             <a href="#sign-in" id="nav-sign-in">Sign in</a>
-        </nav>
+        </div>
         `;
-        // TODO: style, etc.
 
         // add click event listener to each link
         elm
@@ -31,23 +42,19 @@ export class Navbar1 {
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const view = e.target.getAttribute('href').replace('#', '');
-                    this.#navigate(view);
+                    window.location.hash = view;
+                    await this.#events.publish('navigateTo', view);
                 })
             );
+
+        // clicking the logo takes you to the landing
+        elm.querySelector('.logo').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const view = 'landing';
+            window.location.hash = view;
+            await this.#events.publish('navigateTo', view);
+        })
         
         return elm;
-    }
-
-    /**
-     * Navigates to v. If the user is already signed in, clicking the Sign in
-     * button redirects them to the Discover page.
-     * @param {string} v - View to navigate to
-     */
-    async #navigate(v) {
-        const view = v;
-        // DB TODO: replace with const view = (v === 'sign-in' && signed in) ? 'discover' : v;
-
-        window.location.hash = view;
-        await this.#events.publish('navigateTo', view);
     }
 }

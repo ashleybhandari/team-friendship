@@ -1,37 +1,9 @@
-// used to add each member's pic/name/role to the Team Members section
-function displayMembers(container) {
-    BIOS.forEach((bio, i) => {
-        let member, img, profile, name, role;
-
-        member = document.createElement('div');
-        member.classList.add('team-member');
-        // member's index in BIOS and getElementsByClassName('team-member')
-        member.setAttribute('data-member-index', i);
-        
-        img = document.createElement('img');
-        img.src = bio.pic;
-        img.alt = `Portrait of ${bio.name}`;
-        
-        profile = document.createElement('div');
-        profile.classList.add('profile');
-        
-        name = document.createElement('div');
-        name.classList.add('name');
-        name.textContent = bio.name;
-        
-        role = document.createElement('div');
-        role.textContent = bio.role;
-
-        member.appendChild(img);
-        member.appendChild(profile);
-        profile.appendChild(name);
-        profile.appendChild(role);
-        container.appendChild(member);
-    });
-}
-
-// member pics and bios
-const BIOS = [
+/**
+ * This file contains an array of objects. Each objects contains a team
+ * member's pic, name, role, and bio.
+ * @type {Object[]}
+ */
+export const TEAM = [
     {
         pic:  'https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/members_gauri.jpg',
         name: 'Gauri Arvind',
@@ -131,6 +103,4 @@ const BIOS = [
     }
 ];
 
-Object.freeze(BIOS);
-
-export { displayMembers, BIOS };
+Object.freeze(TEAM);
