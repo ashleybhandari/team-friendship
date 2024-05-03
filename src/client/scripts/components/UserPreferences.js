@@ -86,9 +86,12 @@ export class UserPreferences {
             const elm = container.querySelector(`#${id}`);
             const label = container.querySelector(`label[for="${id}"]`);
 
-            if (elm)      elm.id = `${this.page}_${id}`;
-            if (elm.name) elm.setAttribute('name', elm.id);
-            if (label)    label.htmlFor = elm.id;
+            if (elm) {
+                elm.id = `${this.page}_${id}`;
+
+                if (elm.name) elm.setAttribute('name', elm.id);
+                if (label)    label.htmlFor = elm.id;
+            }
         });
     }
 

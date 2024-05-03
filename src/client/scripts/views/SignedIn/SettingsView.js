@@ -37,19 +37,15 @@ export class SettingsView {
     async render(user) {
         // DB TODO: replace all localStorage stuff with PouchDB when it works
         
-        // if user has not signed in, SettingsView is an empty div
-        // if (!user) { // TODO uncomment
-        //     this.#settingsViewElm = document.createElement('div');
-        //     this.#settingsViewElm.id = 'settingsView';
-        //     return this.#settingsViewElm;    
-        // }
-
-        // this.#user = user; // TODO uncomment
-        // this.#settingsViewElm.innerHTML = '';
-        this.#user = users[1];
-        this.#settingsViewElm = document.createElement('div');
-        this.#settingsViewElm.id = 'settingsView';
-        this.#settingsViewElm.innerHTML = '';
+        // if user has not signed in, mock user is used for backdoor entry
+        if (!user) {
+            this.#settingsViewElm = document.createElement('div');
+            this.#settingsViewElm.id = 'settingsView';
+            this.#user = users[0];
+        } else {
+            this.#user = user;
+            this.#settingsViewElm.innerHTML = '';
+        }
 
         localStorage.setItem('user', JSON.stringify(this.#user));
         // this.#user = JSON.parse(localStorage.getItem('user'));
@@ -68,7 +64,7 @@ export class SettingsView {
             ? await this.#renderHousing()
             : await this.#renderPreferences();
 
-        this.#userProfile.fillFields(this.#settingsViewElm, this.#user, 'settings')
+        // this.#userProfile.fillFields(this.#settingsViewElm, this.#user, 'settings')
         // fill HTML fields with the user's saved values
         // const settingsFnsObj = new SettingsFns(
         //     this.#settingsViewElm, this.#user

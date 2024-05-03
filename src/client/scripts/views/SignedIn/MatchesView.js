@@ -3,6 +3,7 @@
 import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
+import { users } from '../../../data/MockData.js';
 
 // view: 'matches'
 export class MatchesView {
@@ -31,15 +32,15 @@ export class MatchesView {
      * @returns {Promise<HTMLDivElement>}
      */
     async render(user) {
-        // if user has not signed in, MatchesView is an empty div
+        // if user has not signed in, mock user is used for backdoor entry
         if (!user) {
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
-            return this.#matchesViewElm;    
+            this.#user = users[0];
+        } else {
+            this.#user = user;
+            this.#matchesViewElm.innerHTML = '';
         }
-
-        this.#user = user;
-        this.#matchesViewElm.innerHTML = '';
 
         // matches list, profile container
         await this.#renderList();
