@@ -1,4 +1,10 @@
-import { createElementId } from './createElementId.js';
+function saveInt(num) {
+    return parseInt(num.replace(/[^\d.-]+/g, ''));
+}
+
+function saveFloat(num) {
+    return parseFloat(num.replace(/[^\d.-]+/g, ''));
+}
 
 export function getProfileFields(page = null) {
     const fields = [
@@ -37,21 +43,23 @@ export function fillProfileFields(container, user, page = null) {
 export function saveProfileFields(container, user, page = null) {
     getProfileFields(page).forEach(({ id, prop1, prop2 }) => {
         const elm = container.querySelector('#' + id);
-        const value = id.endsWith('Drpdwn')
-            ? createElementId(elm.value)
-            : elm.value;
 
-        if (prop2) user[prop1][prop2] = value;
-        else       user[prop1] = value;
+        if (prop2) user[prop1][prop2] = elm.value;
+        else       user[prop1] = elm.value;
     });
 }
 
 export function getHousingFields(page = null) {
     const fields = [
+        { 
+            id: 'rentForRoomInput',
+            prop1: 'rent',
+            prop2: 'price',
+            save: saveFloat
+        },
         { id: 'cityInput',             prop1: 'city'                           },
-        { id: 'rentForRoomInput',      prop1: 'rent',      prop2: 'price'      },
-        { id: 'noBedsInput',           prop1: 'beds'                           },
-        { id: 'noBathsInput',          prop1: 'baths'                          },
+        { id: 'noBedsInput',           prop1: 'beds',      save: saveFloat     },
+        { id: 'noBathsInput',          prop1: 'baths',     save: saveFloat     },
         { id: 'detailsArea',           prop1: 'notes'                          },
         { id: 'electricityBox',        prop1: 'utilities', prop2: 'electric'   },
         { id: 'gasBox',                prop1: 'utilities', prop2: 'gas'        },
@@ -95,13 +103,13 @@ export function fillHousingFields(container, user, page = null) {
 }
 
 export function saveHousingFields(container, user, page = null) {
-    getHousingFields(page).forEach(({ id, prop1, prop2 }) => {
+    getHousingFields(page).forEach(({ id, prop1, prop2, save }) => {
         const elm = container.querySelector('#' + id);
         let value;
 
-        if (id.endsWith('Box'))         value = elm.checked;
-        else if (id.endsWith('Drpdwn')) value = createElementId(elm.value);
-        else                            value = elm.value;
+        if (id.endsWith('Box')) value = elm.checked;
+        else if (save)          value = save(elm.value);
+        else                    value = elm.value;
 
         if (prop2) user.housing[prop1][prop2] = value;
         else       user.housing[prop1] = value;
@@ -116,10 +124,10 @@ export function getPreferencesFields(page = null) {
             fill: (v) => v.join(', '),
             save: (v) => v.split(', ')
         },
-        { id: 'minRentInput',       prop1: 'rent',         prop2: 'min'        },
-        { id: 'maxRentInput',       prop1: 'rent',         prop2: 'max'        },
-        { id: 'minOccupantsInput',  prop1: 'occupants',    prop2: 'min'        },
-        { id: 'maxOccupantsInput',  prop1: 'occupants',    prop2: 'max'        },
+        { id: 'minRentInput',       prop1: 'rent',         prop2: 'min', save: saveFloat },
+        { id: 'maxRentInput',       prop1: 'rent',         prop2: 'max', save: saveFloat },
+        { id: 'minOccupantsInput',  prop1: 'occupants',    prop2: 'min', save: saveInt   },
+        { id: 'maxOccupantsInput',  prop1: 'occupants',    prop2: 'max', save: saveInt   },
         { id: 'allFemaleBox',       prop1: 'gender',       prop2: 'female'     },
         { id: 'allMaleBox',         prop1: 'gender',       prop2: 'male'       },
         { id: 'mixedBox',           prop1: 'gender',       prop2: 'mixed'      },
@@ -175,10 +183,9 @@ export function savePreferencesFields(container, user, page = null) {
         const elm = container.querySelector('#' + id);
         let value;
 
-        if (id.endsWith('Box'))         value = elm.checked;
-        else if (id.endsWith('Drpdwn')) value = createElementId(elm.value);
-        else if (save)                  value = save(elm.value);
-        else                            value = elm.value;
+        if (id.endsWith('Box')) value = elm.checked;
+        else if (save)          value = save(elm.value);
+        else                    value = elm.value;
 
         if (prop2) user.preferences[prop1][prop2] = value;
         else       user.preferences[prop1] = value;

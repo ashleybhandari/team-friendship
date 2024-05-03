@@ -1,13 +1,12 @@
 // created by Ashley Bhandari
-
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { UserHousing } from '../../components/UserHousing.js';
 import { UserPreferences } from '../../components/UserPreferences.js';
 import { UserProfile } from '../../components/UserProfile.js';
 import { Events } from '../../Events.js';
-import * as helper from '../../helpers/userConfigHelper.js';
 import { users } from '../../../data/MockData.js';
+import * as helper from '../../helpers/userConfigHelper.js';
 
 // view: 'settings'
 export class SettingsView {
@@ -112,13 +111,13 @@ export class SettingsView {
     #fillFields() {
         const args = [this.#settingsViewElm, this.#user, 'settings'];
 
-        // fill email field
+        // email field
         this.#settingsViewElm.querySelector('#emailInput').value = this.#user.email;
 
-        // fill Profile section
+        // Profile section
         helper.fillProfileFields(...args);
 
-        // fill Housing or Preferences section
+        // Housing or Preferences section
         this.#user.hasHousing
             ? helper.fillHousingFields(...args)
             : helper.fillPreferencesFields(...args);
@@ -128,23 +127,28 @@ export class SettingsView {
      * Save any changes made. Alert if a required field was missed.
      */
     #saveChanges() {
+        // TODO: validity
         // const invalid = this.#requiredFields.some((id) => {
         //     const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
         //     if (elm) return !elm.checkValidity()
         //     return false;
-        // } // TODO
-            
-        // );
+        // });
         // if (invalid) {
         //     alert('Make sure all required fields are filled out (the starred ones)!');
         //     return;
         // }
 
-        helper.saveProfileFields(this.#settingsViewElm, this.#user, 'settings');
+        const args = [this.#settingsViewElm, this.#user, 'settings'];
 
+        // Profile section
+        helper.saveProfileFields(...args);
+
+        // Housing or Preferences section
         this.#user.hasHousing
-            ? helper.saveHousingFields(this.#settingsViewElm, this.#user, 'settings')
-            : helper.savePreferencesFields(this.#settingsViewElm, this.#user, 'settings');
+            ? helper.saveHousingFields(...args)
+            : helper.savePreferencesFields(...args);
+
+        // TODO: save password
 
         // save new configuration
         localStorage.setItem('user', JSON.stringify(this.#user));
