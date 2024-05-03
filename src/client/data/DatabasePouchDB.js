@@ -61,7 +61,6 @@ export const addUser = async (user) => {
  */
 export const updateUser = async (user) => {
   const updatedUser = {
-    _id: user.id,
     _rev: user._rev, // Include the _rev property for updates
     email: user.email,
     avatar: user.avatar,
@@ -78,6 +77,11 @@ export const updateUser = async (user) => {
     liked: user.liked,
     rejected: user.rejected,
     matches: user.matches
+
+    if (user.id) {
+    newUser._id = user.id;
+  }
+  
   };
   return db.put(updatedUser);
 }
