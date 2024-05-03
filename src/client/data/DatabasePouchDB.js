@@ -112,6 +112,19 @@ export const getMatches = async (id) => {
 }
 
 /**
+ * Adds a match to a user.
+ * TODO: find where to add function (probably in DiscoverView)
+ * 
+ * @param {string} currUserId  - the ID of the current user.
+ * @param {string} addUserId - the ID of the user to add to the user's matched list
+ */
+export const addMatch = async (currUserId, addUserId) => {
+  const user = await getUserById(currUserId);
+  user.matches.push(addUserId);
+  await updateUser(user);
+}
+
+/**
  * Removes a match between two users.
  *
  * @param {string} currUserId - The ID of the current user.
