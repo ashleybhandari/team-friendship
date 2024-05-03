@@ -1,13 +1,12 @@
 // Created by Rachel Lahav and Gauri Arvind
-
 // Note: the functions listed have been modified to catch errors.
 // For now, errors are console.error but a 500 error can be sent instead
 // Currently, the database has different tables for housing, user, and preferences.
 
-/**
- * Initialize a new PouchDB instance for the roommate-matching database.
- */
-const db = new PouchDB('roommate-matching');
+// DB TODO: uncomment
+// import PouchDB from "pouchdb";
+//var PouchDB = require('pouchdb');
+var db = new PouchDB('my_database');
 
 /**
  * Fetches all users from the database.
@@ -67,7 +66,6 @@ export const addUser = async (user) => {
  */
 export const updateUser = async (user) => {
   const updatedUser = {
-    _id: user.id,
     _rev: user._rev, // Include the _rev property for updates
     email: user.email,
     avatar: user.avatar,
@@ -84,9 +82,12 @@ export const updateUser = async (user) => {
     liked: user.liked,
     rejected: user.rejected,
     matches: user.matches
-  };
+
+    // if (user.id) {
+    // newUser._id = user.id; // dunno about this but I put it here for now
+  }
   return db.put(updatedUser);
-}
+};
 
 /**
  * Deletes a user from the database by their ID.
@@ -182,82 +183,6 @@ export const deleteHousing = async (id) => {
   return db.get(`housing_${id}`)
     .then(doc => db.remove(doc));
 }
-
-/**
- * Gets all the preferences of all users who are looking for housing.
- * @returns {Promise} - a promise resolving to preference information or an error
- */
-export const getAllPreferences = async () => {
-    return db.allDocs({ include_docs: true, startkey: 'preference_' })
-      .then(result => result.rows.map(row => row.doc));
-};
-
-/**
- * Gets the preferences of a single user by id.
- * @param {int} id - the user's id
- * @returns {Promise} - a promise resolving to the user's preference information or an error
- */
-export const getPreferenceById = async (id) => {
-    return db.get(`preference_${id}`);
-};
-
-/**
- * Adds a user's preferences to their information.
- * TODO: reformat so that it adds to the User object
- * @param {object} preference - the object containing the user's preferences
- * @returns {Promise} - a promise resolving to the added user
- */
-export const addPreferences = async (preference) => {
-    const newPreference = {
-      _id: `preference_${preference.id}`,
-      cities: preference.cities,
-      rent: preference.rent,
-      occupants: preference.occupants,
-      gender: preference.gender,
-      leaseLength: preference.leaseLength,
-      leaseType: preference.leaseType,
-      roomType: preference.roomType,
-      buildingType: preference.buildingType,
-      timeframe: preference.timeframe,
-      amenities: preference.amenities,
-    }
-
-    return db.put(newPreference);
-};
-
-/**
- * Updates the user's preferences.
- * @param {object} preference - an object containing the user's preferences
- * @returns {Promise} - the promise resolving to the user's updated preferences
- */
-export const updatePreferences = async (preference) => {
-    const updatedPreferences = {
-      _id: `preference_${preference.id}`,
-      _rev: preference._rev,
-      cities: preference.cities,
-      rent: preference.rent,
-      occupants: preference.occupants,
-      gender: preference.gender,
-      leaseLength: preference.leaseLength,
-      leaseType: preference.leaseType,
-      roomType: preference.roomType,
-      buildingType: preference.buildingType,
-      timeframe: preference.timeframe,
-      amenities: preference.amenities,
-  }
-  
-  return db.put(updatedPreferences);
-};
-
-/**
- * Delete's a user's preferences.
- * @param {int} id - the user's id 
- * @returns {Promise} - the promise resolving to a deleted user's preferences
- */
-export const deletePreference = async (id) => {
-  return db.get(`preference_${id}`)
-      .then(doc => db.remove(doc));
-};
 
 export const authenticateUser = async (email, password) => {
   try {

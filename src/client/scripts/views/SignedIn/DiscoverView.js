@@ -27,10 +27,10 @@ export class DiscoverView {
 
     /**
      * User can view other users by either liking or rejecting them.
-     * @param {User} curUser - Currently signed-in user
+     * @param {User} [curUser] - Currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(curUser) {
+    async render(curUser = null) {
         // if user has not signed in, DiscoverView is an empty div
         if (!curUser) {
             this.#discoverViewElm = document.createElement('div');
