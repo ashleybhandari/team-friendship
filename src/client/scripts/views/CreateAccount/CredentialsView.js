@@ -64,25 +64,25 @@ export class CredentialsView {
     console.log(email);
     console.log("hi");
     console.log(password);
-
+            
     const newUser = new User(
-        id = null;
-        email = null;
-        avatar = null;
-        name = null;
-        age = null;
-        gender = null;
-        character = null;
-        education = null;
-        socials = null;
-        description = null;
-        hasHousing = null;
-        preferences = null;
-        housing = null;
-        liked = null;
-        rejected = null;
-        matches = null;
-    );
+    null, // id
+    null, // email
+    null, // avatar
+    null, // name
+    null, // age
+    null, // gender
+    null, // character
+    null, // education
+    null, // socials
+    null, // description
+    false, // hasHousing
+    null, // preferences
+    null, // housing
+    [], // liked
+    [], // rejected
+    [] // matches
+);
 
     try {
         await addUser(newUser);
