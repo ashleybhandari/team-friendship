@@ -57,22 +57,18 @@ export class CreateAccountContainer {
     
         if (view === 'sign-in') {         // SignInView
             this.#viewContainer.appendChild(this.#signInViewElm);
-            // URL TODO: url should be 'index.html/sign-in'
             history.replaceState(null, "sign-in", "/index.html/sign-in");
         }
         else if (view === 'create-1') {   // CredentialsView
             this.#viewContainer.appendChild(this.#credViewElm);
-            // URL TODO: url should be 'index.html/create-account'
             history.replaceState(null, "create-1", "/index.html/create-account");
         }
         else if (view === 'create-2') {   // ProfileView
             this.#viewContainer.appendChild(this.#profileViewElm);
-            // URL TODO: url should be 'index.html/create-account'
             history.replaceState(null, "create-2", "/index.html/create-account");
         }
         else if (view === 'create-3') {   // HousingSituationView
             this.#viewContainer.appendChild(this.#situationViewElm);
-            // URL TODO: url should be 'index.html/create-account'
             history.replaceState(null, "create-3", "/index.html/create-account");
         }
         else if (view === 'create-4') {   // UserDetailsView

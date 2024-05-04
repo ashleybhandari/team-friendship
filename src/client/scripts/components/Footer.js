@@ -56,20 +56,10 @@ export class Footer {
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const view = e.target.getAttribute('href').replace('#', '');
-                    this.#navigate(view);
+                    await this.#events.publish('navigateTo', view);
                 })
             );
 
         return elm;
-    }
-
-    /**
-     * Navigates to v. If a signed out user clicks a link that requires an
-     * account, redirects them to the Sign in page.
-     * @param {string} view
-     */
-    async #navigate(view) {
-        window.location.hash = view; // URL TODO: remove
-        await this.#events.publish('navigateTo', view);
     }
 }

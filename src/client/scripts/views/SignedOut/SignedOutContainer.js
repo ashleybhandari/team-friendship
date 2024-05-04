@@ -52,13 +52,11 @@ export class SignedOutContainer {
         if (view === 'landing') {    // LandingView
             this.#viewContainer.appendChild(this.#landingViewElm);
             this.#updateNavbar(view);
-            // URL TODO: url should be 'index.html'
             history.replaceState(null, "", "/index.html");
         }
         else if (view === 'about') { // AboutView
             this.#viewContainer.appendChild(this.#aboutViewElm);
             this.#updateNavbar(view);
-            // URL TODO: url should be 'index.html/about'
             history.replaceState(null, "about", "/index.html/about");
         }
         else {                       // invalid view name
