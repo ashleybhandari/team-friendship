@@ -1240,12 +1240,6 @@ body {
     margin: 0 10px;
 }
 
-.discover-filter {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
 .bio-social-media {
     margin-top: 1em;
 }

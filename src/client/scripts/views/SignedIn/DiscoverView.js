@@ -54,7 +54,6 @@ export class DiscoverView {
         // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#addBioSection();
         this.#discoverViewElm.appendChild(bioSection);
-        // profileSection.appendChild(bioSection);
 
         // right side of page: info about housing or bio (depending on housing situation)
         const hasHousing = curProfile ? curProfile.hasHousing : false; // necessary if unseen is empty
@@ -62,7 +61,6 @@ export class DiscoverView {
             ? this.#addInfoSectionWithHousing()
             : this.#addInfoSectionWithoutHousing();
         this.#discoverViewElm.appendChild(infoSection);
-        // profileSection.appendChild(infoSection);
 
         // like and reject buttons
         const buttons = document.createElement('div');
@@ -88,8 +86,6 @@ export class DiscoverView {
         buttons.appendChild(rejectBtn);
         buttons.appendChild(likeBtn);
         this.#discoverViewElm.appendChild(buttons);
-        // profileSection.appendChild(buttons);
-        // this.#discoverViewElm.appendChild(profileSection);
 
         // inject user's information into the page
         this.#injectProfile(curProfile, bioSection, infoSection);
@@ -160,7 +156,6 @@ export class DiscoverView {
     #addBioSection() {
         const elm = document.createElement('div');
         elm.classList.add('discover-bio');
-        elm.style.marginTop = "50px";
         
         elm.innerHTML = `
         <img class="bio-pfp">
@@ -196,7 +191,6 @@ export class DiscoverView {
     #addInfoSectionWithHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
-        elm.style.marginTop = "450px";
 
         elm.innerHTML = `
         <div class="about">
