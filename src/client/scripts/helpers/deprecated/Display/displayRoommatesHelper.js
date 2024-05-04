@@ -1,4 +1,4 @@
-import { User } from '../../../data/data_structures/User.js';
+import { User } from '../../../../data/data_structures/User.js';
 import { DisplayManageUsersHelper as DisplayUser } from './displayManageUsersHelper.js';
 
 // Created by Gauri Arvind

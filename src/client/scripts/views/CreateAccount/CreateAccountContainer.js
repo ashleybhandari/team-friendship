@@ -5,8 +5,7 @@ import { SignInView } from '../CreateAccount/SignInView.js';
 import { CredentialsView } from '../CreateAccount/CredentialsView.js';
 import { ProfileView } from '../CreateAccount/ProfileView.js';
 import { HousingSituationView } from '../CreateAccount/HousingSituationView.js';
-import { NeedHousingView } from '../CreateAccount/NeedHousingView.js';
-import { HaveHousingView } from '../CreateAccount/HaveHousingView.js';
+import { UserDetailsView } from '../CreateAccount/UserDetailsView.js';
 import { Events } from '../../Events.js';
 
 /**
@@ -18,8 +17,7 @@ export class CreateAccountContainer {
     #credViewElm = null;
     #profileViewElm = null;
     #situationViewElm = null;
-    #needHousingViewElm = null;
-    #haveHousingViewElm = null;
+    #detailsViewElm = null;
     #events = null;
 
     constructor() {
@@ -41,8 +39,7 @@ export class CreateAccountContainer {
         this.#credViewElm = await new CredentialsView().render();
         this.#profileViewElm = await new ProfileView().render();
         this.#situationViewElm = await new HousingSituationView().render();
-        this.#needHousingViewElm = await new NeedHousingView().render();
-        this.#haveHousingViewElm = await new HaveHousingView().render();
+        this.#detailsViewElm = await new UserDetailsView().render();
         
         // initializes view container
         this.#navigateTo('sign-in');
@@ -78,10 +75,8 @@ export class CreateAccountContainer {
             // URL TODO: url should be 'index.html/create-account'
             history.replaceState(null, "create-3", "/index.html/create-account");
         }
-        else if (view === 'create-4') {   // NeedHousingView or HaveHousingView
-            // create-4 changes depending on whether user has housing  // DB TODO: implement when PouchDB works
-            this.#viewContainer.appendChild(this.#needHousingViewElm);
-            // URL TODO: url should be 'index.html/create-account'
+        else if (view === 'create-4') {   // UserDetailsView
+            this.#viewContainer.appendChild(this.#detailsViewElm);
             history.replaceState(null, "create-4", "/index.html/create-account");
         }
         else {                            // invalid view name

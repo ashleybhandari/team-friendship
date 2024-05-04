@@ -38,6 +38,7 @@ export class Navigation {
         });
         nextBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            // DB TODO: move next 2 lines into a try-catch
             this.nextHandlers.forEach((handler) => handler(e));
             this.#events.publish('navigateTo', this.next);
         });
