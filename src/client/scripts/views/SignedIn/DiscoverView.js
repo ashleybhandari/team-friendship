@@ -225,7 +225,6 @@ export class DiscoverView {
     #addInfoSectionWithoutHousing() {
         const elm = document.createElement('div');
         elm.classList.add('discover-info');
-        elm.style.marginTop = "450px";
 
         elm.innerHTML = `
         <div class="about">
