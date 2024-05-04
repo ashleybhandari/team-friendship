@@ -51,10 +51,6 @@ export class DiscoverView {
         // profile to display
         const curProfile = unseen[this.#unseenIndex];
 
-        // filter bar
-        // const filterBar = await this.#renderFilterBar();
-        // this.#discoverViewElm.appendChild(filterBar);
-
         // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#addBioSection();
         this.#discoverViewElm.appendChild(bioSection);
@@ -152,39 +148,6 @@ export class DiscoverView {
     }
 
     /**
-     * Creates a bar at the top of the Discover page. The discover feed changes
-     * depending on which options the user selects
-     * @returns {Promise<HTMLDivElement>} 
-     */
-    async #renderFilterBar() { // TODO: Gauri
-        const elm = document.createElement('div');
-
-        // TODO: Render the filter bar - should have checkboxes associated with the character property in the User data structure,
-        // and just a few properties in the Preferences data structure (otherwise it's too much work). Only add the Preferences
-        // properties if !this.#curUser.hasHousing
-
-        const saveBtn = await new Button('Save changes').render();
-        saveBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            // TODO: Grab the values in elm (use elm.querySelector(#checkbox_id)). Checkboxes are automatically given id's, use
-            // Developer tools inspect element to find it. Create a Map<string, boolean> object where keys are the property names
-            // in User/Preferences and values are whether the box was checked. Ashley will deal with publishing the map and
-            // refreshing the page. As an example:
-            // const result = new Map([
-            //     ['clean', true],
-            //     ['sleep', true],
-            //     ['noise', false],
-            //     ['cities', true],
-            //     etc.
-            // ]);
-        });
-
-        elm.appendChild(saveBtn);
-
-        return elm;
-    };
-
-    /**
      * Creates containers for the left side of the page, to be injected with
      * information at a later point in time. Holds the user's profile picture,
      * name, education, and a self-written bio.
@@ -204,6 +167,14 @@ export class DiscoverView {
         </div>
         <div class="bio-description">
             <div class="about"></div>
+        </div>
+        <div class="bio-social-media">
+            <div class="discover-instagram">
+                <div class="discover-instagram-text"></div>
+            </div>
+            <div class="discover-facebook">
+                <div class="discover-facebook-text"></div>
+            </div>
         </div>
         `;
 
@@ -330,6 +301,23 @@ export class DiscoverView {
         // display description in bio section if user has housing
         if (user.hasHousing && user.description) {
             container.querySelector('.bio-description').innerText = user.description;
+        }
+
+        // Adds user social media
+        if(user.socials.ig !== "") {
+            // Note: image tag is not working, so it's commented out for now.
+            // container.querySelector('.discover-instagram-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/instagram.png";
+            // container.querySelector('.discover-instagram-icon').style.width = "18px";
+            // container.querySelector('.discover-instagram-icon').style.height = "18px";
+            container.querySelector('.discover-instagram-text').innerText = "Instagram: " + user.socials.ig;
+        }
+
+        if(user.socials.fb !== "") {
+            // Note: image tag is not working, so it's commented out for now.
+            // container.querySelector('.discover-facebook-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/facebook.png";
+            // container.querySelector('.discover-facebook-icon').style.width = "18px";
+            // container.querySelector('.discover-facebook-icon').style.height = "18px";
+            container.querySelector('.discover-facebook-text').innerText = "Facebook: " + user.socials.fb;
         }
     }
 
