@@ -1085,6 +1085,10 @@ body {
     text-align: center;
 }
 
+#matchesView #errorMatch {
+    text-align: center;
+}
+
 #matchesView #listView {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

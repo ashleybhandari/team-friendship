@@ -1,3 +1,7 @@
+// Created by Rachel Lahav and Gauri Arvind
+// Note: the functions listed have been modified to catch errors.
+// For now, errors are console.error but a 500 error can be sent instead
+// Currently, the database has different tables for housing, user, and preferences.
 
 // DB TODO: uncomment
 // import PouchDB from "pouchdb";
@@ -11,7 +15,8 @@ var db = new PouchDB('my_database');
  */
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
-    .then(result => result.rows.map(row => row.doc));
+    .then(result => result.rows.map(row => row.doc)).catch((error) => 
+    console.error(error));
 }
 
 /**
@@ -84,7 +89,7 @@ export const updateUser = async (user) => {
   
   };
   return db.put(updatedUser);
-}
+};
 
 /**
  * Deletes a user from the database by their ID.
@@ -104,8 +109,21 @@ export const deleteUser = async (id) => {
  * @returns {Promise} A promise that resolves with an array of match IDs.
  */
 export const getMatches = async (id) => {
-  const user = await getUserById(id);
-  return user.matches;
+    const user = await getUserById(id);
+    return user.matches;
+}
+
+/**
+ * Adds a match to a user.
+ * TODO: find where to add function (probably in DiscoverView)
+ * 
+ * @param {string} currUserId  - the ID of the current user.
+ * @param {string} addUserId - the ID of the user to add to the user's matched list
+ */
+export const addMatch = async (currUserId, addUserId) => {
+  const user = await getUserById(currUserId);
+  user.matches.push(addUserId);
+  await updateUser(user);
 }
 
 /**
@@ -116,10 +134,10 @@ export const getMatches = async (id) => {
  * @returns {Promise} A promise that resolves with the updated user object.
  */
 export const removeMatch = async (currUserId, removeUserId) => {
-  const user = await getUserById(currUserId);
-  const removeUserIndex = user.matches.indexOf(removeUserId);
-  user.matches.splice(removeUserIndex, 1);
-  await updateUser(user);
+    const user = await getUserById(currUserId);
+    const removeUserIndex = user.matches.indexOf(removeUserId);
+    user.matches.splice(removeUserIndex, 1);
+    await updateUser(user);
 }
 
 /**
@@ -171,14 +189,14 @@ export const updateHousing = async (housing) => {
   return db.put(updatedHousing);
 }
 
+/**
+ * Deletes a user's housing information.
+ * @param {int} id - the user's unique id
+ * @returns {Promise} - confirmation that housing information was deleted or not via a promise
+ */
 export const deleteHousing = async (id) => {
   return db.get(`housing_${id}`)
     .then(doc => db.remove(doc));
-}
-
-export async function loadAllUsers() {
-  const result = await db.allDocs({ include_docs: true });
-  return result.rows.map((row) => row.doc);
 }
 
 export const authenticateUser = async (email, password) => {
