@@ -53,13 +53,13 @@ export class SignedOutContainer {
             this.#viewContainer.appendChild(this.#landingViewElm);
             this.#updateNavbar(view);
             // URL TODO: url should be 'index.html'
-            history.pushState(null, "", "/index.html");
+            history.replaceState(null, "", "/index.html");
         }
         else if (view === 'about') { // AboutView
             this.#viewContainer.appendChild(this.#aboutViewElm);
             this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/about'
-            history.pushState(null, "about", "/index.html/about");
+            history.replaceState(null, "about", "/index.html/about");
         }
         else {                       // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
