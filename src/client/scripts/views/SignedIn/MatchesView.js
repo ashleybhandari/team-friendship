@@ -64,7 +64,7 @@ export class MatchesView {
     async #renderList() {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
-        let matches = ""; // removed constant for error handling
+        let matches;
 
         try {
             matches = await getMatches(this.#user.id);
@@ -90,7 +90,7 @@ export class MatchesView {
         for (const id of matches) {
             const user = await getUserById(id);
             
-            if(user !== undefined) {
+            if (user) {
                 // match's entry in list
                 const elm = document.createElement('div');
                 elm.id = `user${user.id}`;
