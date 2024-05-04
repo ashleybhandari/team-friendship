@@ -4,8 +4,6 @@ import { Navbar1 } from '../../components/Navbar1.js';
 import { LandingView } from './LandingView.js';
 import { AboutView } from './AboutView.js';
 import { Events } from '../../Events.js';
-import express from 'express';
-const router = express.Router();
 
 export class SignedOutContainer {
     #signedOutCntrElm = null;
@@ -52,37 +50,20 @@ export class SignedOutContainer {
         this.#viewContainer.innerHTML = '';
         
         if (view === 'landing') {    // LandingView
+            this.#viewContainer.appendChild(this.#landingViewElm);
+            this.#updateNavbar(view);
             // URL TODO: url should be 'index.html'
-            router.get("index.html", async (req, res) => {
-                try {
-                    const discover = this.#landingViewElm;
-                    res.json(discover);
-                }
-                catch(error) {
-                    res.status(500).json({
-                        error: error.message
-                    })
-                }
-            });
+            history.pushState(null, "", "/index.html");
         }
         else if (view === 'about') { // AboutView
+            this.#viewContainer.appendChild(this.#aboutViewElm);
+            this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/about'
-            router.get("index.html/about", async (req, res) => {
-                try {
-                    const about = this.#aboutViewElm;
-                    res.json(about);
-                }
-                catch(error) {
-                    res.status(500).json({
-                        error: error.message
-                    })
-                }
-            });
+            history.pushState(null, "about", "/index.html/about");
         }
         else {                       // invalid view name
-            router.all("*", async (req, res) => {
-                res.status(404).send('<h2>404 Page Not Found</h2>');
-            });
+            this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
+            this.#updateNavbar(view);
         }
     }
 
