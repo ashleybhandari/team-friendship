@@ -59,19 +59,19 @@ export class SignedInContainer {
             this.#viewContainer.appendChild(this.#discoverViewElm);
             this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/discover'
-            history.replaceState(null, "/index.html/discover", "index.html/discover");
+            history.replaceState(null, "/index.html/discover", "/index.html/discover");
         }
         else if (view === 'matches') {  // MatchesView
             this.#viewContainer.appendChild(this.#matchesViewElm);
             this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/matches'
-            history.replaceState(null, "/index.html/matches", "index.html/matches");
+            history.replaceState(null, "/index.html/matches", "/index.html/matches");
         }
         else if (view === 'settings') { // SettingsView
             this.#viewContainer.appendChild(this.#settingsViewElm);
             this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/settings'
-            history.replaceState(null, "/index.html/settings", "index.html/settings");
+            history.replaceState(null, "/index.html/settings", "/index.html/settings");
         }
         else {                          // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
