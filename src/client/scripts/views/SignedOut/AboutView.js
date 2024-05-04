@@ -8,7 +8,7 @@ export class AboutView {
      * of our team members.
      * @returns {Promise<HTMLDivElement>}
      */
-    async render() {
+    async render(){
         const aboutViewElm = document.createElement('div');
         aboutViewElm.id = 'aboutView';
 
