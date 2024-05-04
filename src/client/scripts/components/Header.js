@@ -36,7 +36,7 @@ export class Header {
 
             // DB TODO: const view = signed in ? 'discover' : 'landing';
             const view = 'landing';
-            window.location.hash = view;
+            window.location.hash = view; // URL TODO: remove
             await this.#events.publish('navigateTo', view);
         });
 

@@ -237,13 +237,13 @@ export class MatchesView {
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            window.location.hash = `match${matchId}`;
+            window.location.hash = `match${matchId}`; // URL TODO: url should be `index.html/matches/${matchId}`
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            window.location.hash = 'matches';
+            window.location.hash = 'matches'; // URL TODO: url should be 'index.html/matches'
         }
     }
 }

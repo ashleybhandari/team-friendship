@@ -83,9 +83,11 @@ export const updateUser = async (user) => {
     rejected: user.rejected,
     matches: user.matches
 
-    // if (user.id) {
-    // newUser._id = user.id; // dunno about this but I put it here for now
-  }
+  //   if (user.id) {
+  //   newUser._id = user.id;
+  // }
+  
+  };
   return db.put(updatedUser);
 };
 
