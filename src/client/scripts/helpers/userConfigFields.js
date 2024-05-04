@@ -1,16 +1,16 @@
 // created by Ashley Bhandari
 
 /**
- * This file contains helper methods for SettingsFns and SettingsView.
+ * This file contains helpers for SettingsView, UserProfile, UserHousing, and
+ * UserPreferences.
  */
 
 /**
  * @typedef {Object} Field - contains information about possible values an input field may take
  * @property {string[]} fields - values as displayed in the UI
- * @property {string[]} [domValue] - values as coded by the DOM (only needed for Dropdown components)
  * @property {string[]} dataProps - values as stored in User/Preferences/Housing
  * Each possible value for the field is at a specific index in each array. That
- * is, for any i, fields[i] corresponds to domValue[i] and dataProps[i].
+ * is, for any i, fields[i] corresponds to dataProps[i].
  */
 
 /**
@@ -24,71 +24,62 @@ const data = new Map([
     [
         'genderId', // User.gender.identity
         {
-            fields: ['Woman', 'Man', 'Nonbinary'],
-            domValue: ['woman', 'man', 'nonbinary'],
+            fields:    ['Woman', 'Man', 'Nonbinary'],
             dataProps: ['woman', 'man', 'nonbinary']
         }
     ],
     [
         'level', // User.education.level
         {
-            fields: ['Undergrad', 'Grad', 'Other'],
-            domValue: ['undergrad', 'grad', 'other'],
+            fields:    ['Undergrad', 'Grad', 'Other'],
             dataProps: ['undergrad', 'grad', 'other']
         }
     ],
     [
         'rentPeriod', // Housing.rent.period
         {
-            fields: ['Semester', 'Month', 'Year'],
-            domValue: ['semester', 'month', 'year'],
+            fields:    ['Semester', 'Month', 'Year'],
             dataProps: ['semester', 'month', 'year']
         }
     ],
     [
         'genderIncl', // Housing.gender
         {
-            fields: ['All-female', 'All-male', 'Mixed'],
-            domValue: ['allFemale', 'allMale', 'mixed'],
-            dataProps: ['female', 'male', 'mixed']
+            fields:    ['All-female', 'All-male', 'Mixed'],
+            dataProps: ['allFemale', 'allMale', 'mixed']
         }
     ],
     [
         'leaseLength', // Housing.leaseLength
         {
-            fields:   ['Per semester', 'Monthly', 'Six months', 'Yearly'],
-            domValue: ['perSemester', 'monthly', 'sixMonths', 'yearly'],
-            dataProps: ['perSemester', 'monthly', 'halfYear', 'yearly']
+            fields:    ['Per semester', 'Monthly', 'Six months', 'Yearly'],
+            dataProps: ['perSemester', 'monthly', 'sixMonths', 'yearly']
         }
     ],
     [
         'leaseType', // Housing.leaseType
         {
-            fields: ['Rent', 'Sublet'],
-            domValue: ['rent', 'sublet'],
+            fields:    ['Rent', 'Sublet'],
             dataProps: ['rent', 'sublet']
         }
     ],
     [
         'roomType', { // Housing.roomType
-            fields: ['Private', 'Shared'],
-            domValue: ['private', 'shared'],
+            fields:    ['Private', 'Shared'],
             dataProps: ['private', 'shared']
         }
     ],
     [
         'buildingType', // Housing.buildingType
         {
-            fields:   ['Dorm', 'Apartment', 'House'],
-            domValue: ['dorm', 'apartment', 'house'],
-            dataProps: ['dorm', 'apt', 'house']
+            fields:    ['Dorm', 'Apartment', 'House'],
+            dataProps: ['dorm', 'apartment', 'house']
         }
     ],
     [
         'timeframe', // Housing.timeframe
             {
-            fields: ['Fall', 'Winter', 'Spring', 'Summer'],
-            domValue: ['fall', 'winter', 'spring', 'summer'],
+            fields:    ['Fall', 'Winter', 'Spring', 'Summer'],
             dataProps: ['fall', 'winter', 'spring', 'summer']
         }
     ],
@@ -149,8 +140,8 @@ const data = new Map([
  * @type {Object.<string, string>}
  */
 const fields = {};
-for (const [field, props] of data) {
-    fields[field] = props.fields;
+for (const [name, props] of data) {
+    fields[name] = props.fields;
 }
 
 /**
@@ -163,34 +154,4 @@ function toMap(arr) {
     return new Map(arr.map((e) => [e]));
 }
 
-/**
- * Given a value as stored in a User/Preferences/Housing object, returns its
- * corresponding value as stored in the DOM. Intended to be used to fill
- * Dropdown elements.
- * @param {string} prop - Object property value
- * @returns {string | null} - DOM value associated with prop
- */
-function getFieldFromProp(prop) {
-    for (const [field, props] of data) {
-        const i = props.dataProps.indexOf(prop);
-        if (i >= 0) return props.domValue[i];
-    }
-    return null;
-}
-
-/**
- * Given the value of an HTML option element, returns its corresponding value
- * as stored in a User/Preferences/Housing object. Intended to be used to save
- * a Dropdown element's current value.
- * @param {string} value - Value of HTML option element
- * @returns {string | null} - Object property value associated with value
- */
-function getPropFromDomValue(value) {
-    for (const [field, props] of data) {
-        const i = props.domValue.indexOf(value);
-        if (i >= 0) return props.dataProps[i];
-    }
-    return null;
-}
-
-export { data, fields, toMap, getFieldFromProp, getPropFromDomValue };
+export { data, fields, toMap };
