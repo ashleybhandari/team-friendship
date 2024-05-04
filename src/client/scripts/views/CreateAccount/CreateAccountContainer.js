@@ -8,6 +8,8 @@ import { HousingSituationView } from '../CreateAccount/HousingSituationView.js';
 import { NeedHousingView } from '../CreateAccount/NeedHousingView.js';
 import { HaveHousingView } from '../CreateAccount/HaveHousingView.js';
 import { Events } from '../../Events.js';
+import express from 'express';
+const router = express.Router();
 
 /**
  * Injected into App.js. Can be injected with Sign in and Create account views.
@@ -56,33 +58,83 @@ export class CreateAccountContainer {
      * @param {string} view
      */
     #navigateTo(view) {
-        this.#viewContainer.innerHTML = '';
+     //   this.#viewContainer.innerHTML = '';
     
         if (view === 'sign-in') {         // SignInView
-            this.#viewContainer.appendChild(this.#signInViewElm);
             // URL TODO: url should be 'index.html/sign-in'
+            router.get("index.html/sign-in", async (req, res) => {
+                try {
+                    const signIn = this.#signInViewElm;
+                    res.json(signIn);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            });
         }
         else if (view === 'create-1') {   // CredentialsView
-            this.#viewContainer.appendChild(this.#credViewElm);
             // URL TODO: url should be 'index.html/create-account'
+            router.get("index.html/create-account", async (req, res) => {
+                try {
+                    const credView = this.#credViewElm;
+                    res.json(credView);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            });
         }
         else if (view === 'create-2') {   // ProfileView
-            this.#viewContainer.appendChild(this.#profileViewElm);
             // URL TODO: url should be 'index.html/create-account'
+            router.get("index.html/create-account", async (req, res) => {
+                try {
+                    const credView = this.#credViewElm;
+                    res.json(credView);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            });
         }
         else if (view === 'create-3') {   // HousingSituationView
-            this.#viewContainer.appendChild(this.#situationViewElm);
             // URL TODO: url should be 'index.html/create-account'
+            router.get("index.html/create-account", async (req, res) => {
+                try {
+                    const credView = this.#credViewElm;
+                    res.json(credView);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            });
         }
         else if (view === 'create-4') {   // NeedHousingView or HaveHousingView
             // create-4 changes depending on whether user has housing  // DB TODO: implement when PouchDB works
-            this.#viewContainer.appendChild(this.#needHousingViewElm);
             // URL TODO: url should be 'index.html/create-account'
+            router.get("index.html/create-account", async (req, res) => {
+                try {
+                    const credView = this.#credViewElm;
+                    res.json(credView);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            });
         }
         else {                            // invalid view name
-            this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
+            router.all("*", async (req, res) => {
+                res.status(404).send('<h2>404 Page Not Found</h2>');
+            });
         }
-
-        window.location.hash = view; // URL TODO: remove
     }
 }

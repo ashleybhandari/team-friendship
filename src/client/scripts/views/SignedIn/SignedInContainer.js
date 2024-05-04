@@ -6,6 +6,8 @@ import { DiscoverView } from './DiscoverView.js';
 import { MatchesView } from './MatchesView.js';
 import { SettingsView } from './SettingsView.js';
 import { Events } from '../../Events.js';
+import express from 'express';
+const router = express.Router();
 
 export class SignedInContainer {
     #signedInCntrElm = null;
@@ -53,29 +55,55 @@ export class SignedInContainer {
      * @param {string} view
      */
     #navigateTo(view) {
-        this.#viewContainer.innerHTML = '';
+      //  this.#viewContainer.innerHTML = '';
 
         if (view === 'discover') {      // DiscoverView
-            this.#viewContainer.appendChild(this.#discoverViewElm);
-            this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/discover'
+            router.get("index.html/discover", async (req, res) => {
+                try {
+                    const discover = this.#discoverViewElm;
+                    res.json(discover);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            });
         }
         else if (view === 'matches') {  // MatchesView
-            this.#viewContainer.appendChild(this.#matchesViewElm);
-            this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/matches'
+            router.get("index.html/discover", async (req, res) => {
+                try {
+                    const matches = this.#matchesViewElm;
+                    res.json(matches);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            }); 
         }
         else if (view === 'settings') { // SettingsView
-            this.#viewContainer.appendChild(this.#settingsViewElm);
-            this.#updateNavbar(view);
             // URL TODO: url should be 'index.html/settings'
+            router.get("index.html/settings", async (req, res) => {
+                try {
+                    const settings = this.#settingsViewElm;
+                    res.json(settings);
+                }
+                catch(error) {
+                    res.status(500).json({
+                        error: error.message
+                    })
+                }
+            });
         }
         else {                          // invalid view name
-            this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
-            this.#updateNavbar(view);
+            router.all("*", async (req, res) => {
+                res.status(404).send('<h2>404 Page Not Found</h2>');
+            });
         }
-        
-        window.location.hash = view; // URL TODO: remove
     }
 
     /**
