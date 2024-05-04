@@ -1,9 +1,10 @@
 // created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { Button } from '../../components/Button.js';
-import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
+import { levelMap, characterMap, houseMap } from '../../helpers/discoverHelper.js';
 import { Events } from '../../Events.js';
 import { getAllUsers, getUserById } from '../../../data/DatabasePouchDB.js';
+import { users } from '../../../data/MockData.js';
 
 // view: 'discover'
 export class DiscoverView {
@@ -31,15 +32,15 @@ export class DiscoverView {
      * @returns {Promise<HTMLDivElement>}
      */
     async render(curUser = null) {
-        // if user has not signed in, DiscoverView is an empty div
+        // if user has not signed in, mock user is used for backdoor entry
         if (!curUser) {
             this.#discoverViewElm = document.createElement('div');
             this.#discoverViewElm.classList.add('discoverView')
-            return this.#discoverViewElm;
+            this.#curUser = users[0];
+        } else {
+            this.#curUser = curUser;
+            this.#discoverViewElm.innerHTML = '';
         }
-
-        this.#curUser = curUser;
-        this.#discoverViewElm.innerHTML = '';
 
         // get list of users to render on Discover
         const unseen = await this.#getUnseenUsers();
@@ -288,7 +289,7 @@ export class DiscoverView {
         if (!user) {
             this.#discoverViewElm.innerHTML = `
             <p class="no-users-msg">
-                No more users fitting your preferences. Wait and more will come!
+                No more users fitting your preferences. Wait for more users or adjust your preferences in Settings.
             </p>
             `;
             return;
