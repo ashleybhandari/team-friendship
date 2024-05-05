@@ -5,6 +5,7 @@ import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
 import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
+import { Events } from '../../Events.js';
 
 /**
  * UI component: Housing Situation Screen
@@ -12,13 +13,10 @@ import { updateUser } from '../../../data/DatabasePouchDB.js';
  * view: create-3
  */
 export class HousingSituationView {
-    #database = null;
     #events = null;
-    #userId = null;
 
     constructor() {
         this.#events = Events.events();
-        this.#events.subscribe('createUser', (id) => this.#userId = id);
     }
 
     async render() {
@@ -66,9 +64,12 @@ export class HousingSituationView {
             // Attempt to update the user document in the database
             try {
                 await updateUser(updatedUser);
+                // this.#events.publish('hasHousing', userData.housing) // DBT TODO: uncomment
             } catch (error) {
                 console.log('Error updating housing situation: ' + error.message);
             }
+            
+            this.#events.publish('hasHousing', false) // DBT TODO: delete
         };
 
         housingViewElm.appendChild(await new Navigation('create-2', 'create-4', [nextBtnHandler]).render());

@@ -38,7 +38,6 @@ export class Navbar2 {
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const view = e.currentTarget.getAttribute('href').replace('#', '');
-                    window.location.hash = view;
                     await this.#events.publish('navigateTo', view);
                 })
             );

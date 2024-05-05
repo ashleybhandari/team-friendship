@@ -3,6 +3,7 @@
 import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
+import { users } from '../../../data/MockData.js';
 
 // view: 'matches'
 export class MatchesView {
@@ -27,19 +28,19 @@ export class MatchesView {
     /**
      * Displays the user's matches as a list of abbreviated profiles (can click
      * on a profile to view more details). Injected into SignedInContainer.
-     * @param {User} user - Currently signed-in user
+     * @param {User} [user] - Currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(user) {
-        // if user has not signed in, MatchesView is an empty div
+    async render(user = null) {
+        // if user has not signed in, mock user is used for backdoor entry
         if (!user) {
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
-            return this.#matchesViewElm;    
+            this.#user = users[0];
+        } else {
+            this.#user = user;
+            this.#matchesViewElm.innerHTML = '';
         }
-
-        this.#user = user;
-        this.#matchesViewElm.innerHTML = '';
 
         // matches list, profile container
         await this.#renderList();
@@ -227,13 +228,13 @@ export class MatchesView {
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            window.location.hash = `match${matchId}`;
+            history.replaceState(null, "match-id", `/index.html/matches/${matchId}`);
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            window.location.hash = 'matches';
+            history.replaceState(null, "match", '/index.html/matches');
         }
     }
 }

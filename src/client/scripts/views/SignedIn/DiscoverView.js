@@ -1,9 +1,10 @@
 // created by Ashley Bhandari
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { Button } from '../../components/Button.js';
-import { levelMap, characterMap, houseMap } from '../../helpers/DiscoverData.js';
+import { levelMap, characterMap, houseMap } from '../../helpers/discoverHelper.js';
 import { Events } from '../../Events.js';
 import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
+import { users } from '../../../data/MockData.js';
 
 // view: 'discover'
 export class DiscoverView {
@@ -27,19 +28,19 @@ export class DiscoverView {
 
     /**
      * User can view other users by either liking or rejecting them.
-     * @param {User} curUser - Currently signed-in user
+     * @param {User} [curUser] - Currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(curUser) {
-        // if user has not signed in, DiscoverView is an empty div
+    async render(curUser = null) {
+        // if user has not signed in, mock user is used for backdoor entry
         if (!curUser) {
             this.#discoverViewElm = document.createElement('div');
             this.#discoverViewElm.classList.add('discoverView')
-            return this.#discoverViewElm;
+            this.#curUser = users[0];
+        } else {
+            this.#curUser = curUser;
+            this.#discoverViewElm.innerHTML = '';
         }
-
-        this.#curUser = curUser;
-        this.#discoverViewElm.innerHTML = '';
 
         // get list of users to render on Discover
         const unseen = await this.#getUnseenUsers();
@@ -49,10 +50,6 @@ export class DiscoverView {
 
         // profile to display
         const curProfile = unseen[this.#unseenIndex];
-
-        // filter bar
-        // const filterBar = await this.#renderFilterBar();
-        // this.#discoverViewElm.appendChild(filterBar);
 
         // left side of page: pic, name; bio as well if user has housing
         const bioSection = this.#addBioSection();
@@ -151,39 +148,6 @@ export class DiscoverView {
     }
 
     /**
-     * Creates a bar at the top of the Discover page. The discover feed changes
-     * depending on which options the user selects
-     * @returns {Promise<HTMLDivElement>} 
-     */
-    async #renderFilterBar() { // TODO: Gauri
-        const elm = document.createElement('div');
-
-        // TODO: Render the filter bar - should have checkboxes associated with the character property in the User data structure,
-        // and just a few properties in the Preferences data structure (otherwise it's too much work). Only add the Preferences
-        // properties if !this.#curUser.hasHousing
-
-        const saveBtn = await new Button('Save changes').render();
-        saveBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            // TODO: Grab the values in elm (use elm.querySelector(#checkbox_id)). Checkboxes are automatically given id's, use
-            // Developer tools inspect element to find it. Create a Map<string, boolean> object where keys are the property names
-            // in User/Preferences and values are whether the box was checked. Ashley will deal with publishing the map and
-            // refreshing the page. As an example:
-            // const result = new Map([
-            //     ['clean', true],
-            //     ['sleep', true],
-            //     ['noise', false],
-            //     ['cities', true],
-            //     etc.
-            // ]);
-        });
-
-        elm.appendChild(saveBtn);
-
-        return elm;
-    };
-
-    /**
      * Creates containers for the left side of the page, to be injected with
      * information at a later point in time. Holds the user's profile picture,
      * name, education, and a self-written bio.
@@ -203,6 +167,14 @@ export class DiscoverView {
         </div>
         <div class="bio-description">
             <div class="about"></div>
+        </div>
+        <div class="bio-social-media">
+            <div class="discover-instagram">
+                <div class="discover-instagram-text"></div>
+            </div>
+            <div class="discover-facebook">
+                <div class="discover-facebook-text"></div>
+            </div>
         </div>
         `;
 
@@ -279,7 +251,7 @@ export class DiscoverView {
         if (!user) {
             this.#discoverViewElm.innerHTML = `
             <p class="no-users-msg">
-                No more users fitting your preferences. Wait and more will come!
+                No more users fitting your preferences. Wait for more users or adjust your preferences in Settings.
             </p>
             `;
             return;
@@ -329,6 +301,23 @@ export class DiscoverView {
         // display description in bio section if user has housing
         if (user.hasHousing && user.description) {
             container.querySelector('.bio-description').innerText = user.description;
+        }
+
+        // Adds user social media
+        if(user.socials.ig !== "") {
+            // Note: image tag is not working, so it's commented out for now.
+            // container.querySelector('.discover-instagram-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/instagram.png";
+            // container.querySelector('.discover-instagram-icon').style.width = "18px";
+            // container.querySelector('.discover-instagram-icon').style.height = "18px";
+            container.querySelector('.discover-instagram-text').innerText = "Instagram: " + user.socials.ig;
+        }
+
+        if(user.socials.fb !== "") {
+            // Note: image tag is not working, so it's commented out for now.
+            // container.querySelector('.discover-facebook-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/facebook.png";
+            // container.querySelector('.discover-facebook-icon').style.width = "18px";
+            // container.querySelector('.discover-facebook-icon').style.height = "18px";
+            container.querySelector('.discover-facebook-text').innerText = "Facebook: " + user.socials.fb;
         }
     }
 
