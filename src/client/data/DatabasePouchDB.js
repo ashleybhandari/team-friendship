@@ -39,7 +39,7 @@ export const getUserById = async (id) => {
 export const addUser = async (user) => {
   const newUser = {
     // Only include _id if user.id is present and truthy
-    _id: user.id || `user_${Date.now()}`,
+     _id: user.id || generateRandomId(),
     email: user.email,
     avatar: user.avatar,
     name: user.name,
@@ -59,6 +59,10 @@ export const addUser = async (user) => {
 
   return db.put(newUser);
 };
+
+function generateRandomId() {
+  return 'user_' + Math.random().toString(36).substring(2, 10);
+}
 
 /**
  * Updates an existing user in the database.
