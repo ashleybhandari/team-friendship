@@ -5,7 +5,6 @@ import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
 import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
-import { Events } from '../../Events.js';
 
 /**
  * UI component: Housing Situation Screen
