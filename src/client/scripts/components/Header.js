@@ -14,7 +14,7 @@ export class Header {
 
     async render() {
         const header = document.createElement('header');
-        header.classList.add('header');
+        header.classList.add('site-header');
 
         // logo image
         const logo = document.createElement('img');
@@ -36,7 +36,6 @@ export class Header {
 
             // DB TODO: const view = signed in ? 'discover' : 'landing';
             const view = 'landing';
-            window.location.hash = view;
             await this.#events.publish('navigateTo', view);
         });
 

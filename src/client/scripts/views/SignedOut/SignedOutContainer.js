@@ -52,17 +52,17 @@ export class SignedOutContainer {
         if (view === 'landing') {    // LandingView
             this.#viewContainer.appendChild(this.#landingViewElm);
             this.#updateNavbar(view);
+            history.replaceState(null, "", "/index.html");
         }
         else if (view === 'about') { // AboutView
             this.#viewContainer.appendChild(this.#aboutViewElm);
             this.#updateNavbar(view);
+            history.replaceState(null, "", "/index.html/about");
         }
         else {                       // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
             this.#updateNavbar(view);
         }
-
-        window.location.hash = view;
     }
 
     /**

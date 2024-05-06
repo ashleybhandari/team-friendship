@@ -3,6 +3,7 @@
 import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
+import { users } from '../../../data/MockData.js';
 
 // view: 'matches'
 export class MatchesView {
@@ -31,15 +32,15 @@ export class MatchesView {
      * @returns {Promise<HTMLDivElement>}
      */
     async render(user = null) {
-        // if user has not signed in, MatchesView is an empty div
+        // if user has not signed in, mock user is used for backdoor entry
         if (!user) {
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
-            return this.#matchesViewElm;    
+            this.#user = users[0];
+        } else {
+            this.#user = user;
+            this.#matchesViewElm.innerHTML = '';
         }
-
-        this.#user = user;
-        this.#matchesViewElm.innerHTML = '';
 
         // matches list, profile container
         await this.#renderList();
@@ -227,13 +228,13 @@ export class MatchesView {
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            window.location.hash = `match${matchId}`;
+            history.replaceState(null, '', `/index.html/${this.#user.id}/matches/${matchId}`);
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            window.location.hash = 'matches';
+            history.replaceState(null, '', `/index.html/${this.#user.id}/matches`);
         }
     }
 }
