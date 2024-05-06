@@ -228,13 +228,13 @@ export class MatchesView {
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            history.replaceState(null, "match-id", `/index.html/matches/${matchId}`);
+            history.replaceState(null, '', `/index.html/${this.#user.id}/matches/${matchId}`);
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            history.replaceState(null, "match", '/index.html/matches');
+            history.replaceState(null, '', `/index.html/${this.#user.id}/matches`);
         }
     }
 }

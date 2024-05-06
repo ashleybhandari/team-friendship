@@ -57,23 +57,23 @@ export class CreateAccountContainer {
     
         if (view === 'sign-in') {         // SignInView
             this.#viewContainer.appendChild(this.#signInViewElm);
-            history.replaceState(null, "sign-in", "/index.html/sign-in");
+            history.replaceState(null, "", "/index.html/sign-in");
         }
         else if (view === 'create-1') {   // CredentialsView
             this.#viewContainer.appendChild(this.#credViewElm);
-            history.replaceState(null, "create-1", "/index.html/create-account");
+            history.replaceState(null, "", "/index.html/create-account");
         }
         else if (view === 'create-2') {   // ProfileView
             this.#viewContainer.appendChild(this.#profileViewElm);
-            history.replaceState(null, "create-2", "/index.html/create-account");
+            history.replaceState(null, "", "/index.html/create-account");
         }
         else if (view === 'create-3') {   // HousingSituationView
             this.#viewContainer.appendChild(this.#situationViewElm);
-            history.replaceState(null, "create-3", "/index.html/create-account");
+            history.replaceState(null, "", "/index.html/create-account");
         }
         else if (view === 'create-4') {   // UserDetailsView
             this.#viewContainer.appendChild(this.#detailsViewElm);
-            history.replaceState(null, "create-4", "/index.html/create-account");
+            history.replaceState(null, "", "/index.html/create-account");
         }
         else {                            // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
