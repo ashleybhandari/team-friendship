@@ -5,6 +5,8 @@ import { CreateAccountContainer } from './views/CreateAccount/CreateAccountConta
 import { SignedInContainer } from './views/SignedIn/SignedInContainer.js';
 import { SignedOutContainer } from './views/SignedOut/SignedOutContainer.js';
 import { Events } from './Events.js';
+import { users } from '../data/MockData.js';
+import { addUser } from '../data/DatabasePouchDB.js';
 
 /**
  * Sets up headers and footers for account creation, signed in, and signed out
@@ -43,6 +45,9 @@ export class App {
 
         rootElm.appendChild(this.#viewContainer);
         rootElm.appendChild(await new Footer().render());
+
+        // initializes database
+        await this.#initDB();
     }
 
     /**
@@ -112,5 +117,21 @@ export class App {
         }
 
         return redirect;
+    }
+
+    /**
+     * Initializes the PouchDB database with users from MockData.js
+     */
+    async #initDB() {
+        for(let i = 0; i < users.length; ++i) {
+            try {
+                const user = users[i];
+                const res = await addUser(user);
+                console.log(res); // for testing purposes, isn't necessary
+            }
+            catch(error) {
+                console.error(error); // also for testing purposes
+            }
+        }
     }
 }
