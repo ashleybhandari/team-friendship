@@ -6,7 +6,7 @@ import { SignedInContainer } from './views/SignedIn/SignedInContainer.js';
 import { SignedOutContainer } from './views/SignedOut/SignedOutContainer.js';
 import { Events } from './Events.js';
 import { users } from '../data/MockData.js';
-import { addUser } from '../data/DatabasePouchDB.js';
+import * as db from '../data/DatabasePouchDB.js';
 
 /**
  * Sets up headers and footers for account creation, signed in, and signed out
@@ -48,6 +48,10 @@ export class App {
 
         // initializes database
         await this.#initDB();
+
+        // checks status of database - for testing purposes, not working
+        // const res = await this.#checkUsers(); 
+        // console.log(res);
     }
 
     /**
@@ -124,14 +128,18 @@ export class App {
      */
     async #initDB() {
         for(let i = 0; i < users.length; ++i) {
-            try {
-                const user = users[i];
-                const res = await addUser(user);
-                console.log(res); // for testing purposes, isn't necessary
-            }
-            catch(error) {
-                console.error(error); // also for testing purposes
-            }
+            const user = users[i];
+            user.id = user.id.toString();
+            await db.addUser(user); 
         }
     }
+
+    /**
+    * Loads all users currently stored in the database.
+    * Note: currently does not work, status of database is unknown (at least on my end)
+    */
+    // async #checkUsers() {
+    //     const res =  await db.getAllUsers();
+    //     return res;
+    // }
 }
