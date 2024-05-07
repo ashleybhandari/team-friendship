@@ -8,6 +8,7 @@ import { UserProfile } from '../../components/UserProfile.js';
 import { Events } from '../../Events.js';
 import { users } from '../../../data/MockData.js';
 import * as configHelper from '../../helpers/userConfigHelper.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'settings'
 export class SettingsView {
@@ -24,23 +25,23 @@ export class SettingsView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('newUser', (user) => this.render(user));
+        this.#events.subscribe('authenticated', (user) => this.render(user));
     }
     /**
      * Lets the user change their configuration. Injected into SignedInContainer.
-     * @param {User} [user] - Currently signed-in user
+     * @param {string} [userId] - id of currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(user = null) {
+    async render(userId = null) {
         // DB TODO: replace all localStorage stuff with PouchDB when it works
         
         // if user has not signed in, mock user is used for backdoor entry
-        if (!user) {
+        if (!userId) {
             this.#settingsViewElm = document.createElement('div');
             this.#settingsViewElm.id = 'settingsView';
             this.#user = users[1];
         } else {
-            this.#user = user;
+            this.#user = db.getUserById(userId);
             this.#settingsViewElm.innerHTML = '';
         }
 

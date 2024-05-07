@@ -4,6 +4,7 @@ import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 import { users } from '../../../data/MockData.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'matches'
 export class MatchesView {
@@ -22,23 +23,23 @@ export class MatchesView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('newUser', (user) => this.render(user));
+        this.#events.subscribe('authenticated', (id) => this.render(id));
     }
 
     /**
      * Displays the user's matches as a list of abbreviated profiles (can click
      * on a profile to view more details). Injected into SignedInContainer.
-     * @param {User} [user] - Currently signed-in user
+     * @param {string} [userId] - id of currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(user = null) {
+    async render(userId = null) {
         // if user has not signed in, mock user is used for backdoor entry
-        if (!user) {
+        if (!userId) {
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
             this.#user = users[0];
         } else {
-            this.#user = user;
+            this.#user = await db.getUserById(userId);
             this.#matchesViewElm.innerHTML = '';
         }
 

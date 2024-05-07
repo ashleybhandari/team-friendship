@@ -5,6 +5,8 @@ import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import { User } from '../../../data/data_structures/User.js';
+import { Housing } from '../../../data/data_structures/Housing.js';
+import { Preferences } from '../../../data/data_structures/Preferences.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: create-1
@@ -88,23 +90,53 @@ export class CredentialsView {
      * @returns {User}
      */
     #createUser(email = null) {
+        const housing = new Housing(
+            null, // city
+            {}, // rent
+            null, // beds
+            null, // baths
+            null, // gender
+            {}, // utilities
+            null, // leaseLength
+            null, // leaseType
+            null, // roomType
+            null, // buildingType
+            null, // timeframe
+            {}, // amenities
+            [], // pics
+            null // notes
+        );
+
+        const prefs = new Preferences(
+            [], // cities
+            {}, // rent
+            {}, // occupants
+            {}, // gender
+            {}, // leaseLength
+            {}, // leaseType
+            {}, // roomType
+            {}, // buildingType
+            {}, // timeframe
+            {} // amenities
+        );
+        
         return new User(
-            null,  // id
-            email, // email
-            null,  // avatar
-            {},    // name
-            null,  // age
-            {},    // gender
-            {},    // character
-            {},    // education
-            {},    // socials
-            null,  // description
-            false, // hasHousing
-            null,  // preferences
-            null,  // housing
-            [],    // liked
-            [],    // rejected
-            []     // matches
+            null,     // id
+            email,    // email
+            null,     // avatar
+            {},       // name
+            null,     // age
+            {},       // gender
+            {},       // character
+            {},       // education
+            {},       // socials
+            null,     // description
+            false,    // hasHousing
+            prefs,    // preferences
+            housing,  // housing
+            [],       // liked
+            [],       // rejected
+            []        // matches
         );
     }
 }

@@ -4,7 +4,7 @@
  * @returns {number}
  */
 function saveInt(num) {
-    return parseInt(num.replace(/[^\d.-]+/g, ''));
+    return num === '' ? null : parseInt(num.replace(/[^\d.-]+/g, ''));
 }
 
 /**
@@ -13,7 +13,7 @@ function saveInt(num) {
  * @returns {number}
  */
 function saveFloat(num) {
-    return parseFloat(num.replace(/[^\d.-]+/g, ''));
+    return num === '' ? null : parseFloat(num.replace(/[^\d.-]+/g, ''));
 }
 
 /**
