@@ -109,6 +109,52 @@ export const deleteUser = async (id) => {
 }
 
 /**
+ * Gets a user's Housing property.
+ *
+ * @param {string} id - The ID of the user.
+ * @returns {Promise} A promise that resolves with a Housing instance.
+ */
+export const getHousing = async (id) => {
+  const user = await getUserById(id);
+  return user.housing;
+}
+
+/**
+ * Updates a user's Housing property.
+ *
+ * @param {string} id - The ID of the current user.
+ * @param {Housing} housing - The new Housing object
+ */
+export const updateHousing = async (id, housing) => {
+  const user = await getUserById(id);
+  user.housing = housing;
+  await updateUser(user);
+}
+
+/**
+ * Gets a user's Preferences property.
+ *
+ * @param {string} id - The ID of the user.
+ * @returns {Promise} A promise that resolves with a Preferences instance.
+ */
+export const getPreferences = async (id) => {
+  const user = await getUserById(id);
+  return user.preferences;
+}
+
+/**
+ * Updates a user's Preferences property.
+ *
+ * @param {string} id - The ID of the current user.
+ * @param {Preferences} prefs - The new Preferences object
+ */
+export const updatePreferences = async (id, prefs) => {
+  const user = await getUserById(id);
+  user.preferences = prefs;
+  await updateUser(user);
+}
+
+/**
  * Fetches all matches for a user.
  *
  * @param {string} id - The ID of the user.
@@ -122,74 +168,21 @@ export const getMatches = async (id) => {
 /**
  * Removes a match between two users.
  *
- * @param {string} currUserId - The ID of the current user.
- * @param {string} removeUserId - The ID of the user to remove as a match.
- * @returns {Promise} A promise that resolves with the updated user object.
+ * @param {string} curUserId - The ID of the current user.
+ * @param {string} matchId - The ID of the user to unmatch.
  */
-export const removeMatch = async (currUserId, removeUserId) => {
-  const user = await getUserById(currUserId);
-  const removeUserIndex = user.matches.indexOf(removeUserId);
-  user.matches.splice(removeUserIndex, 1);
-  await updateUser(user);
-}
+export const removeMatch = async (curUserId, matchId) => {
+  const curUser = await getUserById(curUserId);
+  const match = await getUserById(matchId);
 
-/**
- * Fetches all housings from the database.
- *
- * @returns {Promise} A promise that resolves with an array of housing objects.
- */
-export const getAllHousings = async () => {
-  return db.allDocs({ include_docs: true, startkey: 'housing_' })
-    .then(result => result.rows.map(row => row.doc));
-}
+  const matchIndex = user.matches.indexOf(matchId);
+  curUser.matches.splice(matchIndex, 1);
 
-/**
- * Fetches a housing by its ID from the database.
- *
- * @param {string} id - The ID of the housing to fetch.
- * @returns {Promise} A promise that resolves with a housing object or null if the housing is not found.
- */
-export const getHousingById = async (id) => {
-  return db.get(`housing_${id}`);
-}
+  const curUserIndex = match.matches.indexOf(curUserId);
+  match.matches.splice(curUserIndex, 1);
 
-/**
- * Adds a new housing to the database.
- *
- * @param {object} housing - The housing object to add.
- * @returns {Promise} A promise that resolves with the added housing object.
- */
-export const updateHousing = async (housing) => {
-  const updatedHousing = {
-    _id: `housing_${housing.id}`,
-    _rev: housing._rev, // Include the _rev property for updates
-    city: housing.city,
-    rent: housing.rent,
-    beds: housing.beds,
-    baths: housing.baths,
-    gender: housing.gender,
-    utilities: housing.utilities,
-    leaseLength: housing.leaseLength,
-    leaseType: housing.leaseType,
-    roomType: housing.roomType,
-    buildingType: housing.buildingType,
-    timeframe: housing.timeframe,
-    amenities: housing.amenities,
-    pics: housing.pics,
-    notes: housing.notes
-  };
-
-  return db.put(updatedHousing);
-}
-
-export const deleteHousing = async (id) => {
-  return db.get(`housing_${id}`)
-    .then(doc => db.remove(doc));
-}
-
-export async function loadAllUsers() {
-  const result = await db.allDocs({ include_docs: true });
-  return result.rows.map((row) => row.doc);
+  await updateUser(curUser);
+  await updateUser(match);
 }
 
 export const authenticateUser = async (email, password) => {
@@ -208,3 +201,62 @@ export const authenticateUser = async (email, password) => {
     }
   }
 }
+
+// /**
+//  * Fetches all housings from the database.
+//  *
+//  * @returns {Promise} A promise that resolves with an array of housing objects.
+//  */
+// export const getAllHousings = async () => {
+//   return db.allDocs({ include_docs: true, startkey: 'housing_' })
+//     .then(result => result.rows.map(row => row.doc));
+// }
+
+// /**
+//  * Fetches a housing by its ID from the database.
+//  *
+//  * @param {string} id - The ID of the housing to fetch.
+//  * @returns {Promise} A promise that resolves with a housing object or null if the housing is not found.
+//  */
+// export const getHousingById = async (id) => {
+//   return db.get(`housing_${id}`);
+// }
+
+// /**
+//  * Adds a new housing to the database.
+//  *
+//  * @param {object} housing - The housing object to add.
+//  * @returns {Promise} A promise that resolves with the added housing object.
+//  */
+// export const updateHousing = async (housing) => {
+//   const updatedHousing = {
+//     _id: `housing_${housing.id}`,
+//     _rev: housing._rev, // Include the _rev property for updates
+//     city: housing.city,
+//     rent: housing.rent,
+//     beds: housing.beds,
+//     baths: housing.baths,
+//     gender: housing.gender,
+//     utilities: housing.utilities,
+//     leaseLength: housing.leaseLength,
+//     leaseType: housing.leaseType,
+//     roomType: housing.roomType,
+//     buildingType: housing.buildingType,
+//     timeframe: housing.timeframe,
+//     amenities: housing.amenities,
+//     pics: housing.pics,
+//     notes: housing.notes
+//   };
+
+//   return db.put(updatedHousing);
+// }
+
+// export const deleteHousing = async (id) => {
+//   return db.get(`housing_${id}`)
+//     .then(doc => db.remove(doc));
+// }
+
+// export async function loadAllUsers() {
+//   const result = await db.allDocs({ include_docs: true });
+//   return result.rows.map((row) => row.doc);
+// }
