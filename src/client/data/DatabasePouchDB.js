@@ -16,7 +16,7 @@ function generateRandomId() {
 /**
  * Fetches all users from the database.
  *
- * @returns {Promise} A promise that resolves with an array of user objects.
+ * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
  */
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
@@ -27,7 +27,7 @@ export const getAllUsers = async () => {
  * Fetches a user by their ID from the database.
  *
  * @param {string} id - The ID of the user to fetch.
- * @returns {Promise} A promise that resolves with a user object or null if the user is not found.
+ * @returns {Promise<User>} A promise that resolves with a user object or null if the user is not found.
  */
 export const getUserById = async (id) => {
   return db.get(id);
@@ -36,15 +36,15 @@ export const getUserById = async (id) => {
 /**
  * Adds a new user to the database.
  *
- * @param {object} user - The user object to add.
+ * @param {User} user - The user object to add.
+ * @returns {Promise<{user: User, id: string}>} A promise that resolves with the updated user object and its id.
  * @returns {string} - The id of the new user.
  */
 export const addUser = async (user) => {
-  // Only include _id if user.id is present and truthy
   const id = user.id || generateRandomId();
 
   const newUser = {
-     _id: id,
+    _id: id,
     email: user.email,
     avatar: user.avatar,
     name: user.name,
@@ -62,19 +62,18 @@ export const addUser = async (user) => {
     matches: user.matches
   };
 
-  db.put(newUser);
-
-  return id;
+  return { user: db.put(newUser), id };
 };
 
 /**
  * Updates an existing user in the database.
  *
- * @param {object} user - The updated user object.
- * @returns {Promise} A promise that resolves with the updated user object.
+ * @param {User} user - The updated user object.
+ * @returns {Promise<User>} A promise that resolves with the updated user object.
  */
 export const updateUser = async (user) => {
   const updatedUser = {
+    _id: user._id,
     _rev: user._rev, // Include the _rev property for updates
     email: user.email,
     avatar: user.avatar,
@@ -91,12 +90,9 @@ export const updateUser = async (user) => {
     liked: user.liked,
     rejected: user.rejected,
     matches: user.matches
-
-  //   if (user.id) {
-  //   newUser._id = user.id;
-  // }
-  
   };
+  console.log(updatedUser)
+
   return db.put(updatedUser);
 }
 
@@ -104,7 +100,7 @@ export const updateUser = async (user) => {
  * Deletes a user from the database by their ID.
  *
  * @param {string} id - The ID of the user to delete.
- * @returns {Promise} A promise that resolves with the deleted user object or null if the user is not found.
+ * @returns {Promise<User>} A promise that resolves with the deleted user object or null if the user is not found.
  */
 export const deleteUser = async (id) => {
   return db.get(id)
@@ -112,56 +108,10 @@ export const deleteUser = async (id) => {
 }
 
 /**
- * Gets a user's Housing property.
- *
- * @param {string} id - The ID of the user.
- * @returns {Promise} A promise that resolves with a Housing instance.
- */
-export const getHousing = async (id) => {
-  const user = await getUserById(id);
-  return user.housing;
-}
-
-/**
- * Updates a user's Housing property.
- *
- * @param {string} id - The ID of the current user.
- * @param {Housing} housing - The new Housing object
- */
-export const updateHousing = async (id, housing) => {
-  const user = await getUserById(id);
-  user.housing = housing;
-  await updateUser(user);
-}
-
-/**
- * Gets a user's Preferences property.
- *
- * @param {string} id - The ID of the user.
- * @returns {Promise} A promise that resolves with a Preferences instance.
- */
-export const getPreferences = async (id) => {
-  const user = await getUserById(id);
-  return user.preferences;
-}
-
-/**
- * Updates a user's Preferences property.
- *
- * @param {string} id - The ID of the current user.
- * @param {Preferences} prefs - The new Preferences object
- */
-export const updatePreferences = async (id, prefs) => {
-  const user = await getUserById(id);
-  user.preferences = prefs;
-  await updateUser(user);
-}
-
-/**
  * Fetches all matches for a user.
  *
  * @param {string} id - The ID of the user.
- * @returns {Promise} A promise that resolves with an array of match IDs.
+ * @returns {Promise<number[]>} A promise that resolves with an array of match IDs.
  */
 export const getMatches = async (id) => {
   const user = await getUserById(id);

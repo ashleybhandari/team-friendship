@@ -33,20 +33,24 @@ export class CredentialsView {
         const input = document.createElement('div');
         input.classList.add('input');
 
+        // email field
         const emailInput = new TextInput('Email');
         const emailInputElement = await emailInput.render();
         input.appendChild(emailInputElement);
 
+        // password field
         const passwordInput = new TextInput('Password', 'password');
         const passwordInputElement = await passwordInput.render();
         input.appendChild(passwordInputElement);
 
         credViewElm.appendChild(input);
 
+        // sign up button
         const signUpButton = new Button('Next');
         const signUpButtonElement = await signUpButton.render();
         credViewElm.appendChild(signUpButtonElement);
 
+        // listener for click event
         signUpButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
             const emailInputElement = document.getElementById('emailInput'); 
@@ -55,14 +59,19 @@ export class CredentialsView {
             const email = emailInputElement.value.trim();
             const password = passwordInputElement.value.trim();
 
+            // alert user if email or password was not filled out
             if (!email.trim() || !password.trim())  {
                 alert('Please enter a valid email and password.');
                 return;
             }
                     
             try {
-                const userId = await db.addUser(this.#createUser(email)); 
-                this.#events.publish('createUser', userId);
+                // add to DB
+                const newUser = this.#createUser(email);
+                const userId = (await db.addUser(newUser)).id; 
+                // publish user id to the other Create Account views
+                this.#events.publish('newUser', userId);
+                // navigate to next page
                 this.#events.publish('navigateTo', 'create-2');
             } catch (error) {
                 console.error('Error saving user:', error.message);
@@ -75,27 +84,27 @@ export class CredentialsView {
 
     /**
      * Creates a new User instance to be added to the DB.
-     * @param {string} email 
+     * @param {string} [email] 
      * @returns {User}
      */
-    #createUser(email) {
+    #createUser(email = null) {
         return new User(
-            null,   // id
-            email,  // email
-            null,   // avatar
-            null,   // name
-            null,   // age
-            null,   // gender
-            null,   // character
-            null,   // education
-            null,   // socials
-            null,   // description
-            false,  // hasHousing
-            null,   // preferences
-            null,   // housing
-            [],     // liked
-            [],     // rejected
-            []      // matches
+            null,  // id
+            email, // email
+            null,  // avatar
+            {},    // name
+            null,  // age
+            {},    // gender
+            {},    // character
+            {},    // education
+            {},    // socials
+            null,  // description
+            false, // hasHousing
+            null,  // preferences
+            null,  // housing
+            [],    // liked
+            [],    // rejected
+            []     // matches
         );
     }
 }
