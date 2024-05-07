@@ -5,7 +5,6 @@ import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
 import { Events } from '../../Events.js';
 import { updateUser } from '../../../data/DatabasePouchDB.js';
-import { Events } from '../../Events.js';
 
 /**
  * UI component: Housing Situation Screen
@@ -43,6 +42,11 @@ export class HousingSituationView {
         form.appendChild(radioInputElement);
         titleOptionsContainer.appendChild(form);
         housingViewElm.appendChild(titleOptionsContainer);
+
+        /**
+     * Event handler for when the 'next' button is clicked
+     * User data is updated
+     */
 
         const nextBtnHandler = async () => {
 
