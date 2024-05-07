@@ -923,7 +923,7 @@ body {
     margin: 0;
 }
 
-#profileView form, #detailsView form {
+#profileView .content, #detailsView .content {
     margin: 70px 0 20px;
 }
 
