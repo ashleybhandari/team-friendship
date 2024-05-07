@@ -1,11 +1,12 @@
 // created by Isha Bang
+
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { UserPreferences } from '../../components/UserPreferences.js';
 import { UserHousing } from '../../components/UserHousing.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
 import { getUserById, updateUser } from '../../../data/DatabasePouchDB.js';
-import { users } from '../../../data/MockData.js'; // TODO: delete
+import { users } from '../../../data/MockData.js';
 
 // view: 'create-4'
 export class UserDetailsView {
@@ -18,17 +19,26 @@ export class UserDetailsView {
         this.#events = Events.events();
         this.#database = { updateUser };
 
+        // Published by HousingSituationView. Renders the page depending on
+        // whether the user selected they are looking for housing.
         this.#events.subscribe(
             'hasHousing', (hasHousing) => this.render(hasHousing)
         );
     }
 
+    /**
+     * Renders fields for the user to input information about their housing (if
+     * they need roommates) or their housing preferences (if they need housing).
+     * @param {boolean} [hasHousing] - Whether the user has housing
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render(hasHousing = null) {
         if (hasHousing === null) {
             this.#detailsViewElm = document.createElement('div');
             this.#detailsViewElm.id = 'detailsView';
         }
         else {
+            // element if emptied if render is called again
             this.#detailsViewElm.innerHTML = '';
         }
 
@@ -108,9 +118,15 @@ export class UserDetailsView {
         return [submitForm, newUser];
     };
 
+    /**
+     * Alerts the user if they left a required field empty.
+     * @returns {boolean} - If any required field is empty
+     */
     #isInvalid() {
+        // UserPreferences doesn't have required fields
         if (!this.#userHousing) return false;
 
+        // check all fields for validity
         const invalid = this.#userHousing
             .getRequiredIds('housing')
             .some((id) => {
@@ -118,6 +134,7 @@ export class UserDetailsView {
                 return elm ? !elm.checkValidity() : false;
             });
 
+        // alert user if invalid field found
         if (invalid) {
             alert('Make sure all required fields are filled out (the starred ones)!');
         }

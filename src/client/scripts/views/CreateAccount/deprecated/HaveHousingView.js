@@ -5,7 +5,9 @@ import { DropdownInput } from '../../components/DropdownInput.js';
 import { CheckboxInput } from '../../components/CheckboxInput.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { getCurrentUser } from '../../../data/MockBackend.js';
-import { users } from '../../../data/MockData.js'; // DB TODO: delete
+import { users } from '../../../data/MockData.js';
+
+// not in use
 
 export class HaveHousingView {
     #preferencesSection = null;
@@ -66,7 +68,7 @@ export class HaveHousingView {
         await this.#preferencesSection.render();
 
         const createAcctFns = [
-            () => this.#events.publish('newUser', users[0]) // DB TODO: change to PouchDB
+            () => this.#events.publish('newUser', users[0])
         ]
         const navigation = await new Navigation(
             'create-3', 'discover', createAcctFns, true

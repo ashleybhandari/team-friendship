@@ -1,4 +1,5 @@
 // created by Rachel Lahav
+
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
@@ -54,51 +55,47 @@ export class CredentialsView {
             const email = emailInputElement.value.trim();
             const password = passwordInputElement.value.trim();
 
-            // This part works
             if (!email.trim() || !password.trim())  {
                 alert('Please enter a valid email and password.');
                 return;
             }
-
-            console.log(email);
-            console.log("hi");
-            console.log(password);
                     
             try {
-                // TODO: make addUser return the value of _id
-                // const userId = await db.addUser(this.#createUser); 
-                const userId = 0; // temp
-                await db.addUser(this.#createUser()); 
-
+                const userId = await db.addUser(this.#createUser(email)); 
                 this.#events.publish('createUser', userId);
                 this.#events.publish('navigateTo', 'create-2');
             } catch (error) {
                 console.error('Error saving user:', error.message);
-                //alert('An error occurred while creating your account. Please try again later.');
+                alert('An error occurred while creating your account. Please try again later.');
             }
         });
 
         return credViewElm;
     }
 
-    #createUser() {
+    /**
+     * Creates a new User instance to be added to the DB.
+     * @param {string} email 
+     * @returns {User}
+     */
+    #createUser(email) {
         return new User(
-            null, // id
-            null, // email
-            null, // avatar
-            null, // name
-            null, // age
-            null, // gender
-            null, // character
-            null, // education
-            null, // socials
-            null, // description
-            false, // hasHousing
-            null, // preferences
-            null, // housing
-            [], // liked
-            [], // rejected
-            [] // matches
+            null,   // id
+            email,  // email
+            null,   // avatar
+            null,   // name
+            null,   // age
+            null,   // gender
+            null,   // character
+            null,   // education
+            null,   // socials
+            null,   // description
+            false,  // hasHousing
+            null,   // preferences
+            null,   // housing
+            [],     // liked
+            [],     // rejected
+            []      // matches
         );
     }
 }

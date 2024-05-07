@@ -1,4 +1,5 @@
 // created by Rachel Lahav
+
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { UserProfile } from '../../components/UserProfile.js';
 import { Navigation } from '../../components/Navigation.js';
@@ -72,21 +73,21 @@ export class ProfileView {
                 throw new Error('Required field(s) empty');
             }
 
-            const formData = new FormData(form);
-            const userData = Object.fromEntries(formData.entries());
+            // const formData = new FormData(form);
+            // const userData = Object.fromEntries(formData.entries());
 
-            try {
-                const currentUser = await getUserById(userData.id);
-                const updatedUserData = { ...currentUser, ...userData };
-                await updateUser(updatedUserData);
-                console.log('Profile updated successfully!');
-            } catch (error) {
-                if (error.message) {
-                    console.log(`Error updating profile: ${error.message}`);
-                } else {
-                    console.log('An unknown error occurred while updating the profile.');
-                }
-            }
+            // try {
+            //     const currentUser = await getUserById(userData.id);
+            //     const updatedUserData = { ...currentUser, ...userData };
+            //     await updateUser(updatedUserData);
+            //     console.log('Profile updated successfully!');
+            // } catch (error) {
+            //     if (error.message) {
+            //         console.log(`Error updating profile: ${error.message}`);
+            //     } else {
+            //         console.log('An unknown error occurred while updating the profile.');
+            //     }
+            // }
         };
 
         return [submitForm];

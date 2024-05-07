@@ -1,4 +1,5 @@
 // created by Ashley Bhandari
+
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { UserHousing } from '../../components/UserHousing.js';
@@ -6,7 +7,7 @@ import { UserPreferences } from '../../components/UserPreferences.js';
 import { UserProfile } from '../../components/UserProfile.js';
 import { Events } from '../../Events.js';
 import { users } from '../../../data/MockData.js';
-import * as helper from '../../helpers/userConfigHelper.js';
+import * as configHelper from '../../helpers/userConfigHelper.js';
 
 // view: 'settings'
 export class SettingsView {
@@ -111,12 +112,12 @@ export class SettingsView {
         emailElm.value = this.#user.email;
 
         // Profile section
-        helper.fillProfileFields(...args);
+        configHelper.fillProfileFields(...args);
 
         // Housing or Preferences section
         this.#user.hasHousing
-            ? helper.fillHousingFields(...args)
-            : helper.fillPreferencesFields(...args);
+            ? configHelper.fillHousingFields(...args)
+            : configHelper.fillPreferencesFields(...args);
     }
 
     /**
@@ -141,12 +142,12 @@ export class SettingsView {
         const args = [this.#settingsViewElm, this.#user, 'settings'];
 
         // save Profile section
-        helper.saveProfileFields(...args);
+        configHelper.saveProfileFields(...args);
 
         // save Housing or Preferences section
         this.#user.hasHousing
-            ? helper.saveHousingFields(...args)
-            : helper.savePreferencesFields(...args);
+            ? configHelper.saveHousingFields(...args)
+            : configHelper.savePreferencesFields(...args);
 
         // save new configuration
         localStorage.setItem('user', JSON.stringify(this.#user));

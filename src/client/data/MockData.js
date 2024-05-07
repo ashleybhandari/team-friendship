@@ -1,4 +1,5 @@
 // created by Gauri Arvind and Ashley Bhandari
+
 import { User } from './data_structures/User.js';
 import { Preferences } from './data_structures/Preferences.js';
 import { Housing } from './data_structures/Housing.js';

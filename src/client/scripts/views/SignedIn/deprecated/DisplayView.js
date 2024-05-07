@@ -2,7 +2,7 @@ import { findUsersToDisplay, displayUsers } from "../../helpers/Display/displayH
 import { getCurrentUser } from '../../../data/MockBackend.js';
 
 // Created by Gauri Arvind
-// doesn't work - not in use
+// not in use
 
 export class DisplayView {
     #displayView = null;
