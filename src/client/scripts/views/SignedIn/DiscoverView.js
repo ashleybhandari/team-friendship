@@ -143,8 +143,22 @@ export class DiscoverView {
             !this.#curUser.liked.includes(user.id)       &&
             !this.#curUser.rejected.includes(user.id)    &&
             !this.#curUser.matches.includes(user.id);
-            
-        return allUsers.filter(fitsRequirements);
+
+        const fitsPreferences = (user) =>
+            this.#curUser.hasHousing !== user.hasHousing &&
+            user.id !== this.#curUser.id && 
+            this.#curUser.preferences.cities.includes(user.housing.city) &&
+            user.housing.rent <= this.#curUser.preferences.rent.max &&
+            this.#curUser.preferences.gender[user.housing.gender] &&
+            this.#curUser.preferences.leaseLength[user.housing.leaseLength] &&
+            this.#curUser.preferences.leaseType[user.housing.leaseType] &&
+            this.#curUser.preferences.roomType[user.housing.roomType] &&
+            this.#curUser.preferences.buildingType[user.housing.buildingType] &&
+            this.#curUser.preferences.timeframe[user.housing.timeframe] &&
+             Object.keys(this.#curUser.preferences.amenities).some(
+            amenity => this.#curUser.preferences.amenities[amenity] && user.housing.amenities.includes(amenity)
+        );
+        return allUsers.filter(fitsRequirements).filter(fitsPreferences);
     }
 
     /**
