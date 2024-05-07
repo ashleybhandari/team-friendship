@@ -43,6 +43,11 @@ export class HousingSituationView {
         titleOptionsContainer.appendChild(form);
         housingViewElm.appendChild(titleOptionsContainer);
 
+        /**
+     * Event handler for when the 'next' button is clicked
+     * User data is updated
+     */
+
         const nextBtnHandler = async () => {
 
              // Create a FormData object from the form element
