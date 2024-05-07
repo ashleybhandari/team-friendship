@@ -67,7 +67,7 @@ export class CredentialsView {
             try {
                 // TODO: make addUser return the value of _id
                 // const userId = await db.addUser(this.#createUser); 
-                const userId = 'temp';
+                const userId = 0; // temp
                 await db.addUser(this.#createUser()); 
 
                 this.#events.publish('createUser', userId);

@@ -104,7 +104,7 @@ export class MatchesView {
                 const housing = document.createElement('h3');
                 housing.innerText = `${user.housing.city} - `
                     + `$${user.housing.rent.price}/${user.housing.rent.period}`;
-                elm.getElementsByClassName('bio')[0].appendChild(housing);
+                elm.querySelector('.bio').appendChild(housing);
             }
             
             // (truncated) description if match wrote one
@@ -113,7 +113,7 @@ export class MatchesView {
                 description.innerText = user.description
                     .replaceAll('\n', ' ')
                     .slice(0, 120) + '...';
-                elm.getElementsByClassName('bio')[0].appendChild(description);
+                elm.querySelector('.bio').appendChild(description);
             }
 
             // switch to profile view if match is clicked
