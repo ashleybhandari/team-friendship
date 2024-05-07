@@ -146,6 +146,7 @@ export class DiscoverView {
 
         const fitsPreferences = (user) =>
             this.#curUser.hasHousing !== user.hasHousing &&
+            !this.#curUser.hasHousing &&
             user.id !== this.#curUser.id && 
             this.#curUser.preferences.cities.includes(user.housing.city) &&
             user.housing.rent <= this.#curUser.preferences.rent.max &&
