@@ -1243,3 +1243,7 @@ body {
 #settingsView #credentials-content .text-input {
     margin: 0 10px;
 }
+
+.bio-social-media {
+    margin-top: 1em;
+}

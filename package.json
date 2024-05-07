@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "leveldown": "^6.1.1",
     "pouchdb": "^8.0.1"
   }
 }

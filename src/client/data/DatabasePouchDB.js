@@ -4,9 +4,15 @@
 // Currently, the database has different tables for housing, user, and preferences.
 
 // DB TODO: uncomment
-// import PouchDB from "pouchdb";
+//import PouchDB from "pouchdb";
 //var PouchDB = require('pouchdb');
-var db = new PouchDB('my_database');
+//var db = new PouchDB('my_database');
+//import PouchDB from 'pouchdb';
+//import db from './index.js';
+
+//import PouchDB from "pouchdb";
+const db = new PouchDB("roommate-matching");
+
 
 /**
  * Fetches all users from the database.
@@ -37,7 +43,8 @@ export const getUserById = async (id) => {
  */
 export const addUser = async (user) => {
   const newUser = {
-    _id: user.id, // Use the user's id as the document _id
+    // Only include _id if user.id is present and truthy
+     _id: user.id || generateRandomId(),
     email: user.email,
     avatar: user.avatar,
     name: user.name,
@@ -56,6 +63,10 @@ export const addUser = async (user) => {
   };
 
   return db.put(newUser);
+};
+
+function generateRandomId() {
+  return 'user_' + Math.random().toString(36).substring(2, 10);
 }
 
 /**

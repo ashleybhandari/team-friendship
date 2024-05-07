@@ -53,22 +53,23 @@ export class SignedInContainer {
      * @param {string} view
      */
     #navigateTo(view) {
+        const userId = 0; // DB TODO: replace with current user's id
         this.#viewContainer.innerHTML = '';
 
         if (view === 'discover') {      // DiscoverView
             this.#viewContainer.appendChild(this.#discoverViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "/index.html/discover", "/index.html/discover");
+            history.replaceState(null, "", `/index.html/${userId}/discover`);
         }
         else if (view === 'matches') {  // MatchesView
             this.#viewContainer.appendChild(this.#matchesViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "/index.html/matches", "/index.html/matches");
+            history.replaceState(null, "", `/index.html/${userId}/matches`);
         }
         else if (view === 'settings') { // SettingsView
             this.#viewContainer.appendChild(this.#settingsViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "/index.html/settings", "/index.html/settings");
+            history.replaceState(null, "", `/index.html/${userId}/settings`);
         }
         else {                          // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'

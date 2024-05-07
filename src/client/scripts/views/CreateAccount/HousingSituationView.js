@@ -3,8 +3,8 @@
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
-import { updateUser } from '../../../data/DatabasePouchDB.js';
 import { Events } from '../../Events.js';
+import { updateUser } from '../../../data/DatabasePouchDB.js';
 
 /**
  * UI component: Housing Situation Screen
