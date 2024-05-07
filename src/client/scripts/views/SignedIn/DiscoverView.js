@@ -20,7 +20,7 @@ export class DiscoverView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('authenticated', (id) => this.render(id));
+        // this.#events.subscribe('authenticated', (id) => this.render(id));
 
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
@@ -37,7 +37,7 @@ export class DiscoverView {
         if (!userId) {
             this.#discoverViewElm = document.createElement('div');
             this.#discoverViewElm.classList.add('discoverView')
-            this.#curUser = users[0];
+            this.#curUser = users[0]; // TODO replace w pouchDB
         } else {
             this.#curUser = await db.getUserById(userId);
             this.#discoverViewElm.innerHTML = '';

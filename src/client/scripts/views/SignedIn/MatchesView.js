@@ -23,7 +23,7 @@ export class MatchesView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('authenticated', (id) => this.render(id));
+        // this.#events.subscribe('authenticated', (id) => this.render(id));
     }
 
     /**
@@ -37,7 +37,7 @@ export class MatchesView {
         if (!userId) {
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
-            this.#user = users[0];
+            this.#user = users[0]; // TODO replace w pouchDB
         } else {
             this.#user = await db.getUserById(userId);
             this.#matchesViewElm.innerHTML = '';

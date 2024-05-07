@@ -25,7 +25,7 @@ export class SettingsView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('authenticated', (user) => this.render(user));
+        // this.#events.subscribe('authenticated', (id) => this.render(id));
     }
     /**
      * Lets the user change their configuration. Injected into SignedInContainer.
@@ -39,9 +39,9 @@ export class SettingsView {
         if (!userId) {
             this.#settingsViewElm = document.createElement('div');
             this.#settingsViewElm.id = 'settingsView';
-            this.#user = users[1];
+            this.#user = users[1]; // TODO replace w pouchDB
         } else {
-            this.#user = db.getUserById(userId);
+            this.#user = await db.getUserById(userId);
             this.#settingsViewElm.innerHTML = '';
         }
 

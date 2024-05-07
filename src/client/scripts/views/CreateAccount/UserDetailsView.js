@@ -143,6 +143,6 @@ export class UserDetailsView {
      * @returns {function}
      */
     #publishUser() {
-        return () => {}//this.#events.publish('authenticated', this.#userId);
+        return () => this.#events.publish('authenticated', this.#userId);
     }
 }

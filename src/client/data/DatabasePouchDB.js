@@ -91,7 +91,6 @@ export const updateUser = async (user) => {
     rejected: user.rejected,
     matches: user.matches
   };
-  console.log(updatedUser)
 
   return db.put(updatedUser);
 }
