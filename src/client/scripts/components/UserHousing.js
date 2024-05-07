@@ -44,12 +44,9 @@ export class UserHousing {
      * @returns {string[]}
      */
     getRequiredIds(page) {
-        const ids = [
-            'cityInput',
-            'rentForRoomInput',
-            'noBedsInput',
-            'noBathsInput'
-        ];
+        const ids = getHousingFields()
+            .map((field) => field.id)
+            .filter((id) => id.endsWith('Input') || id.endsWith('Drpdwn'));
         
         return page ? ids.map((id) =>`${page}_${id}`) : ids;
     }

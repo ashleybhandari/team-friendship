@@ -60,21 +60,6 @@ export class ProfileView {
         return this.#profileViewElm;
     }
 
-    #isInvalid() {
-        const invalid = this.#userProfile
-            .getRequiredIds('profile')
-            .some((id) => {
-                const elm = this.#profileViewElm.querySelector('#' + id);
-                return elm ? !elm.checkValidity() : false;
-            });
-
-        if (invalid) {
-            alert('Make sure all required fields are filled out (the starred ones)!');
-        }
-
-        return invalid;
-    }
-
     /**
      * Creates an array of functions to call when "next" is clicked
      * @param {HTMLFormElement} form 
@@ -105,6 +90,21 @@ export class ProfileView {
         };
 
         return [submitForm];
+    }
+
+    #isInvalid() {
+        const invalid = this.#userProfile
+            .getRequiredIds('profile')
+            .some((id) => {
+                const elm = this.#profileViewElm.querySelector('#' + id);
+                return elm ? !elm.checkValidity() : false;
+            });
+
+        if (invalid) {
+            alert('Make sure all required fields are filled out (the starred ones)!');
+        }
+
+        return invalid;
     }
 }
 

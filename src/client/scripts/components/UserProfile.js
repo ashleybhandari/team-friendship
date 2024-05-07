@@ -60,7 +60,8 @@ export class UserProfile {
     getRequiredIds(page) {
         const ids = [
             'firstNameInput',
-            'ageInput'
+            'ageInput',
+            'genderIdentityDrpdwn'
         ];
         
         return page ? ids.map((id) =>`${page}_${id}`) : ids;

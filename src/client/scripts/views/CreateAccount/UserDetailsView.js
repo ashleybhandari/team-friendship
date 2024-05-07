@@ -10,6 +10,7 @@ import { users } from '../../../data/MockData.js'; // TODO: delete
 // view: 'create-4'
 export class UserDetailsView {
     #detailsViewElm = null;
+    #userHousing = null;
     #events = null;
     #database = null;
 
@@ -54,10 +55,13 @@ export class UserDetailsView {
 
         // page content
         const form = document.createElement('form');
-        form.appendChild(hasHousing
-            ? await new UserHousing('housing').render()
-            : await new UserPreferences('prefs').render()
-        );
+        if (hasHousing) {
+            this.#userHousing = new UserHousing('housing');
+            form.appendChild(await this.#userHousing.render());
+        }
+        else {
+            form.appendChild(await new UserPreferences('prefs').render())
+        }
         this.#detailsViewElm.appendChild(form);
 
         // navigation
@@ -76,6 +80,10 @@ export class UserDetailsView {
     #nextBtnHandlers(form) {
         // submit form data
         const submitForm = async () => {
+            if (this.#isInvalid()) {
+                throw new Error('Required field(s) empty');
+            }
+
             const formData = new FormData(form);
             const userData = Object.fromEntries(formData.entries());
 
@@ -99,4 +107,21 @@ export class UserDetailsView {
 
         return [submitForm, newUser];
     };
+
+    #isInvalid() {
+        if (!this.#userHousing) return false;
+
+        const invalid = this.#userHousing
+            .getRequiredIds('housing')
+            .some((id) => {
+                const elm = this.#detailsViewElm.querySelector('#' + id);
+                return elm ? !elm.checkValidity() : false;
+            });
+
+        if (invalid) {
+            alert('Make sure all required fields are filled out (the starred ones)!');
+        }
+
+        return invalid;
+    }
 }

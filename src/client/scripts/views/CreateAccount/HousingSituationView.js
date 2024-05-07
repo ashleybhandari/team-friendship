@@ -44,6 +44,7 @@ export class HousingSituationView {
         housingViewElm.appendChild(titleOptionsContainer);
 
         const nextBtnHandler = async () => {
+            this.#events.publish('hasHousing', true); // TODO: move
 
              // Create a FormData object from the form element
             const formData = new FormData(form);
@@ -68,7 +69,6 @@ export class HousingSituationView {
                 console.log('Error updating housing situation: ' + error.message);
             }
             
-            this.#events.publish('hasHousing', false) // DBT TODO: delete
         };
 
         housingViewElm.appendChild(await new Navigation('create-2', 'create-4', [nextBtnHandler]).render());
