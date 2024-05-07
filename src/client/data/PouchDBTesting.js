@@ -17,6 +17,7 @@ import * as db from '../../../data/DatabasePouchDB.js';
 async function testAddUser() {
     // Information of a user based on mock data
     const user = users[0];
+    user.id = user.id.toString();
     
     try {
         const res = await db.addUser(user);
@@ -32,6 +33,7 @@ async function testAddUser() {
  */
 async function testUpdateUser() {
     const user = users[0];
+    user.id = user.id.toString();
     user.email = "robert@gmail.com";
 
     try {
@@ -48,6 +50,7 @@ async function testUpdateUser() {
  */
 async function testRemoveMatch() {
     const user = users[0];
+    user.id = user.id.toString();
     const matchToRemove = 1; // match chosen from MockData.js
 
     try {
@@ -64,6 +67,7 @@ async function testRemoveMatch() {
  */
 async function testDeleteMatch() {
     const user = users[0];
+    user.id = user.id.toString();
     try {
         const res = await db.deleteUser(user.id);
         console.log(res);
@@ -79,7 +83,7 @@ async function testDeleteMatch() {
  * of the database.
  */
 async function getDBInfo() {
-    const dbInfo = await db.info();
+    const dbInfo = await db.info(); // note: dunno if info works...
     console.log(dbInfo);
 }
 
