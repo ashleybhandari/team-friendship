@@ -9,6 +9,9 @@
 //import PouchDB from "pouchdb";
 const db = new PouchDB("roommate-matching");
 
+function generateRandomId() {
+  return 'user_' + Math.random().toString(36).substring(2, 10);
+}
 
 /**
  * Fetches all users from the database.
@@ -34,12 +37,14 @@ export const getUserById = async (id) => {
  * Adds a new user to the database.
  *
  * @param {object} user - The user object to add.
- * @returns {Promise} A promise that resolves with the added user object.
+ * @returns {string} - The id of the new user.
  */
 export const addUser = async (user) => {
+  // Only include _id if user.id is present and truthy
+  const id = user.id || generateRandomId();
+
   const newUser = {
-    // Only include _id if user.id is present and truthy
-     _id: user.id || generateRandomId(),
+     _id: id,
     email: user.email,
     avatar: user.avatar,
     name: user.name,
@@ -57,12 +62,10 @@ export const addUser = async (user) => {
     matches: user.matches
   };
 
-  return db.put(newUser);
-};
+  db.put(newUser);
 
-function generateRandomId() {
-  return 'user_' + Math.random().toString(36).substring(2, 10);
-}
+  return id;
+};
 
 /**
  * Updates an existing user in the database.
