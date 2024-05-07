@@ -14,10 +14,8 @@ export class SettingsView {
     #userProfile = null;
     #userHousing = null;
     #userPreferences = null;
+    #user = null;
     #events = null;
-
-    #user = null;           // current user
-    #requiredFields = null; // required fields
 
     constructor() {
         this.#events = Events.events();
@@ -65,10 +63,6 @@ export class SettingsView {
         // fill HTML fields with the user's saved values
         this.#fillFields();
 
-        // set up form validation // TODO
-        // this.#requiredFields = settingsFnsObj.getFields();
-        // this.#validationSetup()
-        
         return this.#settingsViewElm;
     }
     
@@ -113,7 +107,8 @@ export class SettingsView {
         const args = [this.#settingsViewElm, this.#user, 'settings'];
 
         // email field
-        this.#settingsViewElm.querySelector('#emailInput').value = this.#user.email;
+        const emailElm = this.#settingsViewElm.querySelector('#settings_emailInput');
+        emailElm.value = this.#user.email;
 
         // Profile section
         helper.fillProfileFields(...args);
@@ -128,42 +123,48 @@ export class SettingsView {
      * Save any changes made. Alert if a required field was missed.
      */
     #saveChanges() {
-        // TODO: validity
-        // const invalid = this.#requiredFields.some((id) => {
-        //     const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
-        //     if (elm) return !elm.checkValidity()
-        //     return false;
-        // });
-        // if (invalid) {
-        //     alert('Make sure all required fields are filled out (the starred ones)!');
-        //     return;
-        // }
+        const invalid = this.#getRequiredIds().some((id) => {
+            const elm = this.#settingsViewElm.querySelector('#' + id);
+            return elm ? !elm.checkValidity() : false;
+        });
+        if (invalid) {
+            alert('Make sure all required fields are filled out (the starred ones)!');
+            return;
+        }
+
+        // save email
+        const emailElm = this.#settingsViewElm.querySelector('#settings_emailInput');
+        this.#user.email = emailElm.value;
+
+        // TODO: save password
 
         const args = [this.#settingsViewElm, this.#user, 'settings'];
 
-        // Profile section
+        // save Profile section
         helper.saveProfileFields(...args);
 
-        // Housing or Preferences section
+        // save Housing or Preferences section
         this.#user.hasHousing
             ? helper.saveHousingFields(...args)
             : helper.savePreferencesFields(...args);
-
-        // TODO: save password
 
         // save new configuration
         localStorage.setItem('user', JSON.stringify(this.#user));
     }
 
-    /**
-     * Sets up form validation.
-     */
-    #validationSetup() {
-        // set required property on required fields to true
-        this.#requiredFields.forEach((id) => {
-            const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
-            if (elm) elm.required = true
-        });
+    #getRequiredIds() {
+        const ids = [];
+
+        // email id
+        ids.push('settings_emailInput');
+
+        // Profile section ids
+        ids.push(...this.#userProfile.getRequiredIds('settings'));
+
+        // Housing section ids if section is rendered
+        if (this.#user.hasHousing) ids.push(...this.#userHousing.getRequiredIds('settings'));
+
+        return ids;
     }
 
     async #renderCredentials() {
@@ -178,7 +179,15 @@ export class SettingsView {
         // container for section content
         const section = document.createElement('div');
         section.id = 'credentials-content';
-        section.appendChild(await new TextInput('Email').render());
+
+        // email field
+        const emailElm = await new TextInput('Email').render();
+        emailElm.querySelector('label').htmlFor = 'settings_emailInput';
+        emailElm.querySelector('input').id = 'settings_emailInput';
+        emailElm.querySelector('input').required = true;
+        section.appendChild(emailElm);
+
+        // password field
         section.appendChild(await new TextInput('Password').render());
 
         // revert changes and save buttons

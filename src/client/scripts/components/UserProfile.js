@@ -8,6 +8,8 @@ import { getProfileFields } from '../helpers/userConfigHelper.js';
 import { fields } from '../helpers/userConfigFields.js';
 
 export class UserProfile {
+    #userProfileElm = null;
+
     /**
      * UI component: Input fields for user's profile information.
      * @param {string} page - Page in which the component is rendered
@@ -17,8 +19,8 @@ export class UserProfile {
     }
 
     async render() {
-        const elm = document.createElement('div');
-        elm.classList.add('user-profile');
+        this.#userProfileElm = document.createElement('div');
+        this.#userProfileElm.classList.add('user-profile');
 
         const avatar = document.createElement('div');
         avatar.innerHTML = `
@@ -27,38 +29,63 @@ export class UserProfile {
         `;
 
         // row 1: avatar, identity info, education info
-        elm.appendChild(avatar);
-        elm.appendChild(await this.#renderIdentity());
-        elm.appendChild(await this.#renderEducation());
+        this.#userProfileElm.appendChild(avatar);
+        this.#userProfileElm.appendChild(await this.#renderIdentity());
+        this.#userProfileElm.appendChild(await this.#renderEducation());
 
         // row 2: bio, social media
-        elm.appendChild(await new TextAreaInput(
+        this.#userProfileElm.appendChild(await new TextAreaInput(
             'Write a short bio',
             'Lifestyle, hobbies, routines, allergies...'
         ).render());
-        elm.appendChild(await this.#renderSocials());
+        this.#userProfileElm.appendChild(await this.#renderSocials());
 
         // row 3-4: characteristics, is user looking for roommates or housing
-        elm.appendChild(await this.#renderSliders());
+        this.#userProfileElm.appendChild(await this.#renderSliders());
+
+        // make some fields required
+        this.#setupValidation();
 
         // prepend all field id's with page name
-        this.#initIds(elm);
+        this.#initIds();
 
-        return elm;
+        return this.#userProfileElm;
+    }
+
+    /**
+     * Gets a list of ids for required fields
+     * @param {string} [page] - page with which ids should be prepended
+     * @returns {string[]}
+     */
+    getRequiredIds(page) {
+        const ids = [
+            'firstNameInput',
+            'ageInput'
+        ];
+        
+        return page ? ids.map((id) =>`${page}_${id}`) : ids;
+    }
+
+    /**
+     * Sets "required" property of required fields to true.
+     */
+    #setupValidation() {
+        this.getRequiredIds().forEach((id) => {
+            this.#userProfileElm.querySelector('#' + id).required = true;
+        });
     }
     
     /**
      * Prepends all field id's with the page name (changes name and label
      * accordingly if necessary). Prevents conflicts if multiple views use this
      * component.
-     * @param {HTMLDivElement} container 
      */
-    #initIds(container) {
+    #initIds() {
         getProfileFields()
             .map((field) => field.id)
             .forEach((id) => {
-                const elm = container.querySelector(`#${id}`);
-                const label = container.querySelector(`label[for="${id}"]`);
+                const elm = this.#userProfileElm.querySelector(`#${id}`);
+                const label = this.#userProfileElm.querySelector(`label[for="${id}"]`);
 
                 if (elm) {
                     elm.id = `${this.page}_${id}`;
@@ -76,19 +103,19 @@ export class UserProfile {
         const elm = document.createElement('div');
 
         // first name
-        elm.appendChild(await new TextInput('First name').render());
+        elm.appendChild(await new TextInput('First name*').render());
 
         // subgroup (inputs are half-width): nickname + age
         const grp1 = document.createElement('div');
         grp1.classList.add('subgroup');
         grp1.appendChild(await new TextInput('Nickname', 'text', 118).render());
-        grp1.appendChild(await new TextInput('Age', 'text', 118).render());
+        grp1.appendChild(await new TextInput('Age*', 'text', 118).render());
 
         // subgroup (inputs are half-width): gender identity + pronouns
         const grp2 = document.createElement('div');
         grp2.classList.add('subgroup');
         grp2.appendChild(await new DropdownInput(
-            'Gender identity', fields.genderId, 149.2
+            'Gender identity*', fields.genderId, 149.2
         ).render());
         grp2.appendChild(await new TextInput('Pronouns', 'text', 118).render());
         
@@ -136,19 +163,19 @@ export class UserProfile {
         sliders.classList.add('sliders');
 
         sliders.appendChild(await new SliderInput(
-            'Cleanliness', 'not clean', 'very clean'
+            'Cleanliness*', 'not clean', 'very clean'
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Noise when studying', 'very quiet', 'noise is okay'
+            'Noise when studying*', 'very quiet', 'noise is okay'
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Sleeping habits', 'early bird', 'night owl'
+            'Sleeping habits*', 'early bird', 'night owl'
         ).render());
 
         sliders.appendChild(await new SliderInput(
-            'Hosting guests', 'never', 'frequent'
+            'Hosting guests*', 'never', 'frequent'
         ).render());
 
         return sliders;
