@@ -182,15 +182,35 @@ export const updateHousing = async (housing) => {
   return db.put(updatedHousing);
 }
 
+/**
+ * Deletes a housing object from the database by its ID.
+ *
+ * @param {string} id - The ID of the housing to delete.
+ * @returns {Promise<Object|null>} A promise that resolves with the deleted housing object or null if the housing is not found.
+ */
 export const deleteHousing = async (id) => {
   return db.get(`housing_${id}`)
     .then(doc => db.remove(doc));
 }
 
+/**
+ * Loads all users from the database.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves with an array of all user objects.
+ */
 export async function loadAllUsers() {
   const result = await db.allDocs({ include_docs: true });
   return result.rows.map((row) => row.doc);
 }
+
+/**
+ * Authenticates a user by their email and password.
+ *
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<Object>} A promise that resolves with the authenticated user object.
+ * @throws {Error} If the email or password is invalid.
+ */
 
 export const authenticateUser = async (email, password) => {
   try {
