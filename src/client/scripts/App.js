@@ -5,6 +5,8 @@ import { CreateAccountContainer } from './views/CreateAccount/CreateAccountConta
 import { SignedInContainer } from './views/SignedIn/SignedInContainer.js';
 import { SignedOutContainer } from './views/SignedOut/SignedOutContainer.js';
 import { Events } from './Events.js';
+import { users } from '../data/MockData.js';
+import * as db from '../data/DatabasePouchDB.js';
 
 /**
  * Sets up headers and footers for account creation, signed in, and signed out
@@ -43,6 +45,34 @@ export class App {
 
         rootElm.appendChild(this.#viewContainer);
         rootElm.appendChild(await new Footer().render());
+
+        // initializes database
+        await this.#initDB();
+
+        // // checks initial status of database
+        const res1 = await this.#checkUsers(); 
+        console.log(res1);
+
+        // checks updateUser - working
+        // res1[8].name.fname = "Rose";
+        // db.updateUser(res1["8"]);
+        // db.addUser(users[0]);
+
+        // checks removeMatch - not working
+        db.removeMatch("4", "5");
+
+        // checks addMatch - not working
+        db.addMatch("4", "2");
+
+        // checks deleteUser - promise is fulfilling but it isn't working
+        console.log(db.deleteUser("3"));
+
+        // checks getUserById - working on users before id 5
+        console.log(db.getUserById("4")); 
+
+        // checks status of database - for testing purposes
+        const res = await this.#checkUsers(); 
+        console.log(res);
     }
 
     /**
@@ -112,5 +142,27 @@ export class App {
         }
 
         return redirect;
+    }
+
+    /**
+     * Initializes the PouchDB database with users from MockData.js
+     */
+    async #initDB() {
+        console.log(users.length);
+        for(let i = 0; i < users.length; ++i) {
+            const user = users[i];
+            user.id = user.id.toString();
+            await db.addUser(user); 
+            console.log("Attempt: " + i);
+        }
+    }
+
+    // /**
+    // * Loads all users currently stored in the database.
+    // * This function currently acts as a function to check the status of the database.
+    // */
+    async #checkUsers() {
+        const res =  await db.getAllUsers();
+        return res;
     }
 }

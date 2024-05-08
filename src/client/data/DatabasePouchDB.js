@@ -146,10 +146,10 @@ export const removeMatch = async (curUserId, matchId) => {
   const match = await getUserById(matchId);
 
   const matchIndex = user.matches.indexOf(matchId);
-  curUser.matches.splice(matchIndex, 1);
+  curUser.matches.splice(parseInt(matchIndex), 1);
 
   const curUserIndex = match.matches.indexOf(curUserId);
-  match.matches.splice(curUserIndex, 1);
+  match.matches.splice(parseInt(curUserIndex), 1);
 
   await updateUser(curUser);
   await updateUser(match);
