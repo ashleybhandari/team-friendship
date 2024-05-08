@@ -137,6 +137,15 @@ export const removeMatch = async (curUserId, matchId) => {
   await updateUser(match);
 }
 
+/**
+ * Authenticates a user by their email and password.
+ *
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<Object>} A promise that resolves with the authenticated user object.
+ * @throws {Error} If the email or password is invalid.
+ */
+
 export const authenticateUser = async (email, password) => {
   try {
     const user = await db.get(`user_${email}`);

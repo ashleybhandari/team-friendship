@@ -9,6 +9,11 @@ import { Housing } from '../../../data/data_structures/Housing.js';
 import { Preferences } from '../../../data/data_structures/Preferences.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
+/**
+ * The CredentialsView class represents the first step of the account creation process.
+ * It displays a form for the user to enter their email and password.
+ */
+
 // view: create-1
 export class CredentialsView {
     #database = null;
@@ -18,6 +23,11 @@ export class CredentialsView {
         this.#database = db.default;
         this.#events = Events.events();
     }
+     /**
+     * Renders the CredentialsView and sets up event listeners.
+     *
+     * @returns {Promise<HTMLDivElement>} A promise that resolves with the rendered CredentialsView element.
+     */
 
     async render() {
         const credViewElm = document.createElement('div');
