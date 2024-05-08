@@ -4,7 +4,7 @@ export class User {
     /**
      * Data structure: A user's profile information. Parameters in brackets are
      * optional.
-     * @param {number} id
+     * @param {string} id
      * @param {string} email
      * @param {string} avatar - Picture
      * @param {Object} name

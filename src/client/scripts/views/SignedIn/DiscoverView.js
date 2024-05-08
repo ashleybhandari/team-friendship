@@ -1,10 +1,11 @@
 // created by Ashley Bhandari
+
 import { DiscoverButton } from '../../components/DiscoverButton.js';
-import { Button } from '../../components/Button.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/discoverHelper.js';
 import { Events } from '../../Events.js';
 import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
 import { users } from '../../../data/MockData.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'discover'
 export class DiscoverView {
@@ -19,7 +20,7 @@ export class DiscoverView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('newUser', (user) => this.render(user));
+        // this.#events.subscribe('authenticated', (id) => this.render(id));
 
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
@@ -28,17 +29,17 @@ export class DiscoverView {
 
     /**
      * User can view other users by either liking or rejecting them.
-     * @param {User} [curUser] - Currently signed-in user
+     * @param {string} [userId] - id of currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(curUser = null) {
+    async render(userId = null) {
         // if user has not signed in, mock user is used for backdoor entry
-        if (!curUser) {
+        if (!userId) {
             this.#discoverViewElm = document.createElement('div');
             this.#discoverViewElm.classList.add('discoverView')
-            this.#curUser = users[0];
+            this.#curUser = users[0]; // TODO replace w pouchDB
         } else {
-            this.#curUser = curUser;
+            this.#curUser = await db.getUserById(userId);
             this.#discoverViewElm.innerHTML = '';
         }
 

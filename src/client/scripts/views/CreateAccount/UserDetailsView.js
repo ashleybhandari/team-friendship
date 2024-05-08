@@ -1,34 +1,49 @@
 // created by Isha Bang
+
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { UserPreferences } from '../../components/UserPreferences.js';
 import { UserHousing } from '../../components/UserHousing.js';
 import { Navigation } from '../../components/Navigation.js';
 import { Events } from '../../Events.js';
-import { getUserById, updateUser } from '../../../data/DatabasePouchDB.js';
-import { users } from '../../../data/MockData.js'; // TODO: delete
+import * as configHelper from '../../helpers/userConfigHelper.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'create-4'
 export class UserDetailsView {
     #detailsViewElm = null;
+    #userId = null;
+    #hasHousing = null;
     #events = null;
-    #database = null;
 
     constructor() {
         this.#events = Events.events();
-        this.#database = { updateUser };
 
+        // Published by CredentialsView so all Create Account pages update the
+        // same user.
+        this.#events.subscribe('newUser', (id) => this.#userId = id);
+
+        // Published by HousingSituationView. Renders the page depending on
+        // whether the user selected they are looking for housing.
         this.#events.subscribe(
             'hasHousing', (hasHousing) => this.render(hasHousing)
         );
     }
 
+    /**
+     * Renders fields for the user to input information about their housing (if
+     * they need roommates) or their housing preferences (if they need housing).
+     * @param {boolean} [hasHousing] - Whether the user has housing
+     * @returns {Promise<HTMLDivElement>}
+     */
     async render(hasHousing = null) {
         if (hasHousing === null) {
             this.#detailsViewElm = document.createElement('div');
             this.#detailsViewElm.id = 'detailsView';
         }
         else {
+            // element if emptied if render is called again
             this.#detailsViewElm.innerHTML = '';
+            this.#hasHousing = hasHousing;
         }
 
         // progress bar
@@ -53,50 +68,81 @@ export class UserDetailsView {
         this.#detailsViewElm.appendChild(header);
 
         // page content
-        const form = document.createElement('form');
-        form.appendChild(hasHousing
-            ? await new UserHousing('housing').render()
-            : await new UserPreferences('prefs').render()
-        );
-        this.#detailsViewElm.appendChild(form);
+        const pageContent = hasHousing
+            ? await new UserHousing('create').render()
+            : await new UserPreferences('create').render();
+        pageContent.classList.add('content');
+        this.#detailsViewElm.appendChild(pageContent);
 
         // navigation
         this.#detailsViewElm.appendChild(await new Navigation(
-            'create-3', 'discover', this.#nextBtnHandlers(form), true
+            'create-3',
+            'discover',
+            [this.#checkValidity(), this.#saveFields(), this.#publishUser()],
+            true
         ).render());
         
         return this.#detailsViewElm;
     }
 
     /**
-     * Creates an array of functions to call when "next" is clicked
-     * @param {HTMLFormElement} form 
-     * @returns {function[]}
+     * Returns a closure that checks whether all required fields have been
+     * filled out (alerting the user if necessary).
+     * @returns {function}
      */
-    #nextBtnHandlers(form) {
-        // submit form data
-        const submitForm = async () => {
-            const formData = new FormData(form);
-            const userData = Object.fromEntries(formData.entries());
+    #checkValidity() {
+        return () => {
+            // UserPreferences doesn't have required fields
+            if (!this.#hasHousing) return false;
 
-            try {
-                const currentUser = await getUserById(userData.id);
-                const updatedUserData = { ...currentUser, ...userData };
-                await updateUser(updatedUserData);
-                console.log('User details updated successfully!');
-            } catch (error) {
-                if (error.message) {
-                    console.log(`Error updating user details: ${error.message}`);
-                } else {
-                    console.log('An unknown error occurred while updating user details.');
-                }
+            // check if all fields are valid
+            const invalid = new UserHousing()
+                .getRequiredIds('create')
+                .some((id) => {
+                    const elm = this.#detailsViewElm.querySelector('#' + id);
+                    return elm ? !elm.checkValidity() : false;
+                });
+
+            // alert user and throw error if at least 1 field is invalid
+            if (invalid) {
+                alert('Make sure all required fields are filled out (the starred ones)!');
+                throw new Error('Required field(s) empty');
             }
-
         }
+    }
 
-        // publish user info to SignedIn views
-        const newUser = () => this.#events.publish('newUser', users[0]); // DB TODO: change to PouchDB
+    /**
+     * Returns a closure that saves the user-inputted data to the DB.
+     * @returns {function}
+     */
+    #saveFields() {
+        return async () => {
+            try {
+                // get user from the DB
+                const user = await db.getUserById(this.#userId);
 
-        return [submitForm, newUser];
-    };
+                // save inputted data
+                const args = [this.#detailsViewElm, user, 'create'];
+                this.#hasHousing
+                    ? configHelper.saveHousingFields(...args)
+                    : configHelper.savePreferencesFields(...args);
+
+                // update in DB
+                await db.updateUser(user);
+            } catch (error) {
+                console.log(error.message
+                    ? `Error updating user details: ${error.message}`
+                    : 'An unknown error occurred while updating the user details.'
+                );
+            }
+        }
+    }
+
+    /**
+     * Returns a closure that publishes the user's id to SignedInViews.
+     * @returns {function}
+     */
+    #publishUser() {
+        return () => this.#events.publish('authenticated', this.#userId);
+    }
 }

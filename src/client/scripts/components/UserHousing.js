@@ -1,4 +1,5 @@
 // created by Ashley Bhandari
+
 import { DropdownInput } from './DropdownInput.js';
 import { CheckboxGroup } from './CheckboxGroup.js';
 import { TextAreaInput } from './TextAreaInput.js';
@@ -7,6 +8,8 @@ import { getHousingFields } from '../helpers/userConfigHelper.js';
 import { fields, toMap } from '../helpers/userConfigFields.js';
 
 export class UserHousing {
+    #userHousingElm = null;
+
     /**
      * UI component: Input fields for user's housing information.
      * @param {string} page - Page in which component is rendered
@@ -16,35 +19,59 @@ export class UserHousing {
     }
 
     async render() {
-        const elm = document.createElement('div');
-        elm.classList.add('user-housing');
+        this.#userHousingElm = document.createElement('div');
+        this.#userHousingElm.classList.add('user-housing');
 
         // render grid with inputs
-        elm.appendChild(await this.#renderCityCol());
-        elm.appendChild(await this.#renderGenderCol());
-        elm.appendChild(await this.#renderTypeCol());
-        elm.appendChild(await this.#renderUtilities());
-        elm.appendChild(await this.#renderDetails());
-        elm.appendChild(await this.#renderAmenities());
+        this.#userHousingElm.appendChild(await this.#renderCityCol());
+        this.#userHousingElm.appendChild(await this.#renderGenderCol());
+        this.#userHousingElm.appendChild(await this.#renderTypeCol());
+        this.#userHousingElm.appendChild(await this.#renderUtilities());
+        this.#userHousingElm.appendChild(await this.#renderDetails());
+        this.#userHousingElm.appendChild(await this.#renderAmenities());
+
+        // make some fields required
+        this.#setupValidation();
 
         // prepend all field id's with page name
-        this.#initIds(elm);
+        this.#initIds();
 
-        return elm;
+        return this.#userHousingElm;
+    }
+
+    /**
+     * Gets a list of ids for required fields
+     * @param {string} [page] - page with which ids should be prepended
+     * @returns {string[]}
+     */
+    getRequiredIds(page) {
+        const ids = getHousingFields()
+            .map((field) => field.id)
+            .filter((id) => id.endsWith('Input') || id.endsWith('Drpdwn'));
+        
+        return page ? ids.map((id) =>`${page}_${id}`) : ids;
+    }
+
+    /**
+     * Sets "required" property of required fields to true.
+     */
+    #setupValidation() {
+        this.getRequiredIds().forEach((id) => {
+            this.#userHousingElm.querySelector('#' + id).required = true;
+        });
     }
 
     /**
      * Prepends all field id's with the page name (changes name and label
      * accordingly if necessary). Prevents conflicts if multiple views use this
      * component.
-     * @param {HTMLDivElement} container 
      */
-    #initIds(container) {
+    #initIds() {
         getHousingFields()
             .map((field) => field.id)
             .forEach((id) => {
-                const elm = container.querySelector(`#${id}`);
-                const label = container.querySelector(`label[for="${id}"]`);
+                const elm = this.#userHousingElm.querySelector(`#${id}`);
+                const label = this.#userHousingElm.querySelector(`label[for="${id}"]`);
 
                 if (elm) {
                     elm.id = `${this.page}_${id}`;
@@ -61,14 +88,14 @@ export class UserHousing {
     async #renderCityCol() {
         const elm = document.createElement('div');
 
-        elm.appendChild(await new TextInput('City').render());
+        elm.appendChild(await new TextInput('City*').render());
         elm.appendChild(await this.#renderRent());
 
         // subgroup (inputs are half-width): number of beds and baths
         const brba = document.createElement('div');
         brba.classList.add('subgroup');
-        brba.appendChild(await new TextInput('No. beds', 'text', 118).render());
-        brba.appendChild(await new TextInput('No. baths', 'text', 118).render());
+        brba.appendChild(await new TextInput('No. beds*', 'text', 118).render());
+        brba.appendChild(await new TextInput('No. baths*', 'text', 118).render());
         elm.appendChild(brba);
 
         return elm;
@@ -82,15 +109,15 @@ export class UserHousing {
         const elm = document.createElement('div');
 
         elm.appendChild(await new DropdownInput(
-            'Gender inclusivity', fields.genderIncl
+            'Gender inclusivity*', fields.genderIncl
         ).render());
 
         elm.appendChild(await new DropdownInput(
-            'Move-in period', fields.timeframe
+            'Move-in period*', fields.timeframe
         ).render());
 
         elm.appendChild(await new DropdownInput(
-            'Lease length', fields.leaseLength
+            'Lease length*', fields.leaseLength
         ).render());
 
         return elm;
@@ -104,15 +131,15 @@ export class UserHousing {
         const elm = document.createElement('div');
 
         elm.appendChild(await new DropdownInput(
-            'Lease type', fields.leaseType
+            'Lease type*', fields.leaseType
         ).render());
 
         elm.appendChild(await new DropdownInput(
-            'Room type', fields.roomType
+            'Room type*', fields.roomType
         ).render());
         
         elm.appendChild(await new DropdownInput(
-            'Building type', fields.buildingType
+            'Building type*', fields.buildingType
         ).render());
 
         return elm;
@@ -137,13 +164,13 @@ export class UserHousing {
         elm.appendChild(dollarSign);
 
         elm.appendChild(await new TextInput(
-            'Rent for room', 'text', 103
+            'Rent for room*', 'text', 103
         ).render());
 
         elm.appendChild(slash);
 
         elm.appendChild(await new DropdownInput(
-            'Period', fields.rentPeriod, 133
+            'Period*', fields.rentPeriod, 133
         ).render());
 
         return elm;
@@ -168,7 +195,7 @@ export class UserHousing {
     async #renderUtilities() {
         const boxes = toMap(fields.utilities);
         return await new CheckboxGroup(
-            'Utilities included in rent', boxes, 2
+            'Utilities included in rent*', boxes, 2
         ).render();
     }
 
@@ -178,7 +205,7 @@ export class UserHousing {
      */
     async #renderAmenities() {
         const boxes = toMap(fields.amenities);
-        const elm = await new CheckboxGroup('Amenities', boxes, 4).render();
+        const elm = await new CheckboxGroup('Amenities*', boxes, 4).render();
         elm.classList.add('amenities');
         return elm;
     }
