@@ -1,11 +1,27 @@
+/**
+ * Removes non-numeric characters from a string, and returns the resulting int
+ * @param {string} num 
+ * @returns {number}
+ */
 function saveInt(num) {
-    return parseInt(num.replace(/[^\d.-]+/g, ''));
+    return num === '' ? null : parseInt(num.replace(/[^\d.-]+/g, ''));
 }
 
+/**
+ * Removes non-numeric characters from a string, and returns the resulting float
+ * @param {string} num 
+ * @returns {number}
+ */
 function saveFloat(num) {
-    return parseFloat(num.replace(/[^\d.-]+/g, ''));
+    return num === '' ? null : parseFloat(num.replace(/[^\d.-]+/g, ''));
 }
 
+/**
+ * Returns an array of all fields in the Profile section; each field object
+ * contains the field's id and associated properties in the User data structure.
+ * @param {string} [page] - String with which ids in the object will be prepended
+ * @returns {Object[]} - Array of fields
+ */
 export function getProfileFields(page = null) {
     const fields = [
         { id: 'firstNameInput',        prop1: 'name',      prop2: 'fname'    },
@@ -25,6 +41,7 @@ export function getProfileFields(page = null) {
         { id: 'levelOfEducatioDrpdwn', prop1: 'education', prop2: 'level'    }
     ];
 
+    // prepend id's if necessary
     fields.forEach((field) =>
         field.id = page ? `${page}_${field.id}` : `${field.id}`
     );
@@ -32,6 +49,12 @@ export function getProfileFields(page = null) {
     return fields;
 }
 
+/**
+ * Fills fields in the Profile section.
+ * @param {HTMLDivElement} container - Container holding profile fields
+ * @param {User} user - User instance whose data being used
+ * @param {string} [page] - Page with which ids are prepended
+ */
 export function fillProfileFields(container, user, page = null) {
     getProfileFields(page).forEach(({ id, prop1, prop2 }) => {
         const elm = container.querySelector('#' + id);
@@ -40,6 +63,12 @@ export function fillProfileFields(container, user, page = null) {
     });
 }
 
+/**
+ * Saves fields in the Profile section.
+ * @param {HTMLDivElement} container - Container holding profile fields
+ * @param {User} user - User instance to which values will be saved
+ * @param {string} [page] - Page with which ids are prepended
+ */
 export function saveProfileFields(container, user, page = null) {
     getProfileFields(page).forEach(({ id, prop1, prop2 }) => {
         const elm = container.querySelector('#' + id);
@@ -49,6 +78,14 @@ export function saveProfileFields(container, user, page = null) {
     });
 }
 
+/**
+ * Returns an array of all fields in the Housing section; each field object
+ * contains the field's id, associated properties in the Housing data
+ * structure, and a "save" function to transform the data before saving it to
+ * the DB (if necessary).
+ * @param {string} [page] - String with which ids in the object will be prepended
+ * @returns {Object[]} - Array of fields
+ */
 export function getHousingFields(page = null) {
     const fields = [
         { 
@@ -85,6 +122,7 @@ export function getHousingFields(page = null) {
         { id: 'buildingTypeDrpdwn',    prop1: 'buildingType'                   }
     ];
 
+    // prepend id's if necessary
     fields.forEach((field) =>
         field.id = page ? `${page}_${field.id}` : `${field.id}`
     );
@@ -92,9 +130,16 @@ export function getHousingFields(page = null) {
     return fields;
 }
 
+/**
+ * Fills fields in the Housing section.
+ * @param {HTMLDivElement} container - Container holding housing fields
+ * @param {User} user - User instance whose data being used
+ * @param {string} [page] - Page with which ids are prepended
+ */
 export function fillHousingFields(container, user, page = null) {
     getHousingFields(page).forEach(({ id, prop1, prop2 }) => {
         const elm = container.querySelector('#' + id);
+        // the way it's filled changes depending on if elm is a checkbox
         const prop = id.endsWith('Box') ? 'checked' : 'value';
 
         if (prop2) elm[prop] = user.housing[prop1][prop2];
@@ -102,11 +147,19 @@ export function fillHousingFields(container, user, page = null) {
     });
 }
 
+/**
+ * Saves fields in the Housing section.
+ * @param {HTMLDivElement} container - Container holding housing fields
+ * @param {User} user - User instance to which values will be saved
+ * @param {string} [page] - Page with which ids are prepended
+ */
 export function saveHousingFields(container, user, page = null) {
     getHousingFields(page).forEach(({ id, prop1, prop2, save }) => {
         const elm = container.querySelector('#' + id);
         let value;
 
+        // value to save depends on whether elm is a checkbox and if a save
+        // function is available
         if (id.endsWith('Box')) value = elm.checked;
         else if (save)          value = save(elm.value);
         else                    value = elm.value;
@@ -116,6 +169,14 @@ export function saveHousingFields(container, user, page = null) {
     });
 }
 
+/**
+ * Returns an array of all fields in the Preferences section; each field object
+ * contains the field's id, associated properties in the Preferences data
+ * structure, and "fill/save" functions to transform the data before filling
+ * the field or saving its value to the DB (if necessary).
+ * @param {string} [page] - String with which ids in the object will be prepended
+ * @returns {Object[]} - Array of fields
+ */
 export function getPreferencesFields(page = null) {
     const fields = [
         {
@@ -156,6 +217,7 @@ export function getPreferencesFields(page = null) {
         { id: 'petFriendlyBox',     prop1: 'amenities',    prop2: 'pets'       }
     ];
 
+    // prepend id's if necessary
     fields.forEach((field) =>
         field.id = page ? `${page}_${field.id}` : `${field.id}`
     );
@@ -163,9 +225,16 @@ export function getPreferencesFields(page = null) {
     return fields;
 }
 
+/**
+ * Fills fields in the Preferences section.
+ * @param {HTMLDivElement} container - Container holding preferences fields
+ * @param {User} user - User instance whose data being used
+ * @param {string} [page] - Page with which ids are prepended
+ */
 export function fillPreferencesFields(container, user, page = null) {
     getPreferencesFields(page).forEach(({ id, prop1, prop2, fill }) => {
         const elm = container.querySelector('#' + id);
+        // the way it's filled changes depending on if elm is a checkbox
         const prop = id.endsWith('Box') ? 'checked' : 'value';
         
         if (prop2) {
@@ -178,11 +247,19 @@ export function fillPreferencesFields(container, user, page = null) {
     });
 }
 
+/**
+ * Saves fields in the Preferences section.
+ * @param {HTMLDivElement} container - Container holding preferences fields
+ * @param {User} user - User instance to which values will be saved
+ * @param {string} [page] - Page with which ids are prepended
+ */
 export function savePreferencesFields(container, user, page = null) {
     getPreferencesFields(page).forEach(({ id, prop1, prop2, save }) => {
         const elm = container.querySelector('#' + id);
         let value;
 
+        // value to save depends on whether elm is a checkbox and if a save
+        // function is available
         if (id.endsWith('Box')) value = elm.checked;
         else if (save)          value = save(elm.value);
         else                    value = elm.value;

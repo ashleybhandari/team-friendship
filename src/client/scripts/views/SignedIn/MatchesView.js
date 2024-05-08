@@ -4,6 +4,7 @@ import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 import { getUserById, getMatches, removeMatch } from '../../../data/DatabasePouchDB.js';
 import { users } from '../../../data/MockData.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'matches'
 export class MatchesView {
@@ -22,23 +23,23 @@ export class MatchesView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('newUser', (user) => this.render(user));
+        // this.#events.subscribe('authenticated', (id) => this.render(id));
     }
 
     /**
      * Displays the user's matches as a list of abbreviated profiles (can click
      * on a profile to view more details). Injected into SignedInContainer.
-     * @param {User} [user] - Currently signed-in user
+     * @param {string} [userId] - id of currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(user = null) {
+    async render(userId = null) {
         // if user has not signed in, mock user is used for backdoor entry
-        if (!user) {
+        if (!userId) {
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
-            this.#user = users[0];
+            this.#user = users[0]; // TODO replace w pouchDB
         } else {
-            this.#user = user;
+            this.#user = await db.getUserById(userId);
             this.#matchesViewElm.innerHTML = '';
         }
 
@@ -108,22 +109,22 @@ export class MatchesView {
                 </div>
                 `;
 
-                // location if match has housing
-                if (user.hasHousing) {
-                    const housing = document.createElement('h3');
-                    housing.innerText = `${user.housing.city} - `
-                        + `$${user.housing.rent.price}/${user.housing.rent.period}`;
-                    elm.getElementsByClassName('bio')[0].appendChild(housing);
-                }
+            // location if match has housing
+            if (user.hasHousing) {
+                const housing = document.createElement('h3');
+                housing.innerText = `${user.housing.city} - `
+                    + `$${user.housing.rent.price}/${user.housing.rent.period}`;
+                elm.querySelector('.bio').appendChild(housing);
+            }
             
-                // (truncated) description if match wrote one
-                if (user.description) {
-                    const description = document.createElement('p');
-                    description.innerText = user.description
-                        .replaceAll('\n', ' ')
-                        .slice(0, 120) + '...';
-                    elm.getElementsByClassName('bio')[0].appendChild(description);
-                }
+            // (truncated) description if match wrote one
+            if (user.description) {
+                const description = document.createElement('p');
+                description.innerText = user.description
+                    .replaceAll('\n', ' ')
+                    .slice(0, 120) + '...';
+                elm.querySelector('.bio').appendChild(description);
+            }
 
                 // switch to profile view if match is clicked
                 elm.addEventListener('click', (e) => {

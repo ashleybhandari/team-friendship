@@ -7,7 +7,9 @@ import { TextInput } from '../../components/TextInput.js';
 import { DropdownInput } from '../../components/DropdownInput.js';
 import { SettingsFns } from '../../helpers/SettingsFns.js';
 import { getCurrentUser } from '../../../data/MockBackend.js';
-import { users } from '../../../data/MockData.js'; // DB TODO: delete
+import { users } from '../../../data/MockData.js';
+
+// not in use
 
 
 export class NeedHousingView {
@@ -58,7 +60,7 @@ export class NeedHousingView {
         // }
 
         const createAcctFns = [
-            () => this.#events.publish('newUser', users[0]) // DB TODO: change to PouchDB
+            () => this.#events.publish('newUser', users[0])
         ]
         const navigation = await new Navigation(
             'create-3', 'discover', createAcctFns, true

@@ -36,11 +36,16 @@ export class Navigation {
             e.preventDefault();
             this.#events.publish('navigateTo', this.back);
         });
-        nextBtn.addEventListener('click', (e) => {
+        nextBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            // DB TODO: move next 2 lines into a try-catch
-            this.nextHandlers.forEach((handler) => handler(e));
-            this.#events.publish('navigateTo', this.next);
+            try {
+                for (const handler of this.nextHandlers) {
+                    await handler();
+                }
+                this.#events.publish('navigateTo', this.next);
+            } catch (error) {
+                console.log(error.message);
+            }
         });
         
         elm.appendChild(backBtn);

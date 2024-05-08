@@ -76,15 +76,13 @@ export class SignInView {
             e.preventDefault();
 
             try {
-                const user = await authenticateUser (emailInputElement.value, passwordInputElement.value);
-
-            // DB TODO: replace with login function below
-            this.#events.publish('navigateTo', 'discover');
-
+                const user = await authenticateUser(emailInputElement.value, passwordInputElement.value);
+                this.#events.publish('authenticated', user.id);
+                this.#events.publish('navigateTo', 'discover');
             } catch {
                  alert('Login failed. Double-check your credentials.');
             }
-            // login(
+            // login( // DB TODO: use??
             //     emailInputElement.value,
             //     passwordInputElement.value,
             //     signInFns,

@@ -1,10 +1,18 @@
 // created by Rachel Lahav
+
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import { User } from '../../../data/data_structures/User.js';
+import { Housing } from '../../../data/data_structures/Housing.js';
+import { Preferences } from '../../../data/data_structures/Preferences.js';
 import * as db from '../../../data/DatabasePouchDB.js';
+
+/**
+ * The CredentialsView class represents the first step of the account creation process.
+ * It displays a form for the user to enter their email and password.
+ */
 
 // view: create-1
 export class CredentialsView {
@@ -15,6 +23,11 @@ export class CredentialsView {
         this.#database = db.default;
         this.#events = Events.events();
     }
+     /**
+     * Renders the CredentialsView and sets up event listeners.
+     *
+     * @returns {Promise<HTMLDivElement>} A promise that resolves with the rendered CredentialsView element.
+     */
 
     async render() {
         const credViewElm = document.createElement('div');
@@ -32,20 +45,24 @@ export class CredentialsView {
         const input = document.createElement('div');
         input.classList.add('input');
 
+        // email field
         const emailInput = new TextInput('Email');
         const emailInputElement = await emailInput.render();
         input.appendChild(emailInputElement);
 
+        // password field
         const passwordInput = new TextInput('Password', 'password');
         const passwordInputElement = await passwordInput.render();
         input.appendChild(passwordInputElement);
 
         credViewElm.appendChild(input);
 
+        // sign up button
         const signUpButton = new Button('Next');
         const signUpButtonElement = await signUpButton.render();
         credViewElm.appendChild(signUpButtonElement);
 
+        // listener for click event
         signUpButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
             const emailInputElement = document.getElementById('emailInput'); 
@@ -54,51 +71,82 @@ export class CredentialsView {
             const email = emailInputElement.value.trim();
             const password = passwordInputElement.value.trim();
 
-            // This part works
+            // alert user if email or password was not filled out
             if (!email.trim() || !password.trim())  {
                 alert('Please enter a valid email and password.');
                 return;
             }
-
-            console.log(email);
-            console.log("hi");
-            console.log(password);
                     
             try {
-                // TODO: make addUser return the value of _id
-                // const userId = await db.addUser(this.#createUser); 
-                const userId = 'temp';
-                await db.addUser(this.#createUser()); 
-
-                this.#events.publish('createUser', userId);
+                // add to DB
+                const newUser = this.#createUser(email);
+                const userId = (await db.addUser(newUser)).id; 
+                // publish user id to the other Create Account views
+                this.#events.publish('newUser', userId);
+                // navigate to next page
                 this.#events.publish('navigateTo', 'create-2');
             } catch (error) {
                 console.error('Error saving user:', error.message);
-                //alert('An error occurred while creating your account. Please try again later.');
+                alert('An error occurred while creating your account. Please try again later.');
             }
         });
 
         return credViewElm;
     }
 
-    #createUser() {
-        return new User(
-            null, // id
-            null, // email
-            null, // avatar
-            null, // name
-            null, // age
+    /**
+     * Creates a new User instance to be added to the DB.
+     * @param {string} [email] 
+     * @returns {User}
+     */
+    #createUser(email = null) {
+        const housing = new Housing(
+            null, // city
+            {}, // rent
+            null, // beds
+            null, // baths
             null, // gender
-            null, // character
-            null, // education
-            null, // socials
-            null, // description
-            false, // hasHousing
-            null, // preferences
-            null, // housing
-            [], // liked
-            [], // rejected
-            [] // matches
+            {}, // utilities
+            null, // leaseLength
+            null, // leaseType
+            null, // roomType
+            null, // buildingType
+            null, // timeframe
+            {}, // amenities
+            [], // pics
+            null // notes
+        );
+
+        const prefs = new Preferences(
+            [], // cities
+            {}, // rent
+            {}, // occupants
+            {}, // gender
+            {}, // leaseLength
+            {}, // leaseType
+            {}, // roomType
+            {}, // buildingType
+            {}, // timeframe
+            {} // amenities
+        );
+        
+        return new User(
+            null,     // id
+            email,    // email
+            null,     // avatar
+            {},       // name
+            null,     // age
+            {},       // gender
+            {},       // character
+            {},       // education
+            {},       // socials
+            null,     // description
+            false,    // hasHousing
+            prefs,    // preferences
+            housing,  // housing
+            [],       // liked
+            [],       // rejected
+            []        // matches
         );
     }
 }

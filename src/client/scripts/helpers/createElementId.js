@@ -1,6 +1,5 @@
-// created by Ashley Bhandari
-
 /**
+ * Created by Ashley Bhandari
  * Given a string, removes its non-alphanumeric characters and converts it to
  * camel case. Used for creating the id of an HTML element from the element's
  * value.

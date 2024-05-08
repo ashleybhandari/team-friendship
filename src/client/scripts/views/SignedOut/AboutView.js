@@ -1,4 +1,5 @@
 // created by Rachel Lahav
+
 import { TEAM } from '../../helpers/teamMembers.js';
 
 // view: about

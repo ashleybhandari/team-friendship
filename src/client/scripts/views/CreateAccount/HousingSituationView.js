@@ -4,7 +4,7 @@ import { ProgressBar } from '../../components/ProgressBar.js';
 import { Navigation } from '../../components/Navigation.js';
 import { RadioInput } from '../../components/RadioInput.js';
 import { Events } from '../../Events.js';
-import { updateUser } from '../../../data/DatabasePouchDB.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
  * UI component: Housing Situation Screen
@@ -12,67 +12,66 @@ import { updateUser } from '../../../data/DatabasePouchDB.js';
  * view: create-3
  */
 export class HousingSituationView {
+    #housingViewElm = null;
+    #userId = null;
     #events = null;
 
     constructor() {
         this.#events = Events.events();
+
+        // Published by CredentialsView so all Create Account pages update the
+        // same user.
+        this.#events.subscribe('newUser', (id) => this.#userId = id);
     }
 
     async render() {
-        const housingViewElm = document.createElement('div');
-        housingViewElm.id = 'housingView';
+        this.#housingViewElm = document.createElement('div');
+        this.#housingViewElm.id = 'housingView';
         
         // progress bar
-        housingViewElm.appendChild(await new ProgressBar(3).render());
+        this.#housingViewElm.appendChild(await new ProgressBar(3).render());
 
-         // Title
-         const titleOptionsContainer = document.createElement('div');
-         titleOptionsContainer.classList.add('title-options-container');
+        // Title
+        const titleOptionsContainer = document.createElement('div');
+        titleOptionsContainer.classList.add('title-options-container');
 
-         //Form
-         const form = document.createElement('form');
-         form.id = 'housingSituationForm'; // Handle the form submission
-        
-         // Render the radio input for housing situation choices
-         const radioInputElement = await new RadioInput(
+        // Render the radio input for housing situation choices
+        const radioInputElement = await new RadioInput(
             'What is your housing situation?', 
             ['I am looking for housing', 'I have housing and am looking for roommates']
         ).render();
-        radioInputElement.querySelector('#whatIsYourHousiRadioGrp').classList.add('battambang')
-        form.appendChild(radioInputElement);
-        titleOptionsContainer.appendChild(form);
-        housingViewElm.appendChild(titleOptionsContainer);
+        radioInputElement.querySelector('#whatIsYourHousiRadioGrp').classList.add('battambang');
+        titleOptionsContainer.appendChild(radioInputElement);
+        this.#housingViewElm.appendChild(titleOptionsContainer);
 
-        const nextBtnHandler = async () => {
+        this.#housingViewElm.appendChild(await new Navigation(
+            'create-2', 'create-4', [this.#saveFields()]
+        ).render());
 
-             // Create a FormData object from the form element
-            const formData = new FormData(form);
-            // Convert the form data into a key-value pair object
-            const userData = Object.fromEntries(formData.entries());
+        return this.#housingViewElm;
+    }
 
-            // Placeholder values for user ID and revision number
-            const userId = 'currentUserId'; 
-            const userRev = 'currentUserRev'; 
-
-            // Construct the user object with the updated housing preference
-            const updatedUser = {
-                id: userId,
-                _rev: userRev,
-                housing: userData.housing 
-            };
-            // Attempt to update the user document in the database
+    /**
+     * Returns a closure that saves the user-inputted data to the DB.
+     * @returns {function}
+     */
+    #saveFields() {
+        return async () => {
             try {
-                await updateUser(updatedUser);
-                // this.#events.publish('hasHousing', userData.housing) // DBT TODO: uncomment
+                // get user from the DB
+                const user = await db.getUserById(this.#userId);
+                // save inputted data
+                const elm = this.#housingViewElm.querySelector('#whatIsYourHousiRadio');
+                user.hasHousing = elm.getAttribute('data_value').includes('have housing');
+                this.#events.publish('hasHousing', user.hasHousing);
+                // update DB
+                await db.updateUser(user);
             } catch (error) {
-                console.log('Error updating housing situation: ' + error.message);
+                console.log(error.message
+                    ? `Error updating housing situation: ${error.message}`
+                    : 'An unknown error occurred while updating the housing situation.'
+                );
             }
-            
-            this.#events.publish('hasHousing', false) // DBT TODO: delete
-        };
-
-        housingViewElm.appendChild(await new Navigation('create-2', 'create-4', [nextBtnHandler]).render());
-
-        return housingViewElm;
+        }
     }
 }
