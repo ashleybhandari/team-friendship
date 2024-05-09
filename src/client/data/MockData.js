@@ -8,7 +8,7 @@ import { Housing } from './data_structures/Housing.js';
  * This file contains mock users until we implement backend functionality.
  */
 
-// Discover shows Jimmy (with housing)
+// Discover shows Jimmy
 // Matches show Linda, Gene
 const u0 = new User(
     'user_0',
@@ -55,7 +55,7 @@ const u0 = new User(
     ['user_1', 'user_3']  // matches
 );
 
-// Discover shows Tina, Louise (no housing)
+// Discover shows Tina, Louise
 // Matches show Bob
 const u1 = new User(
     'user_1',
@@ -102,7 +102,7 @@ const u1 = new User(
     ['user_0']  // matches
 );
 
-// Discover shows Linda, Gene (with housing)
+// Discover shows Linda, Gene
 // Matches show nothing
 const u2 = new User(
     'user_2',
@@ -149,7 +149,7 @@ const u2 = new User(
     []  // matches
 );
 
-// Discover shows Tina (no housing)
+// Discover shows Tina
 // Matches show Bob
 const u3 = new User(
     'user_3',
@@ -191,7 +191,7 @@ const u3 = new User(
         ['https://ew.com/thmb/sOFfYRph6EmGoA_O5qJ-QuvJifM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bobs-burgers1-db2ce51b2c0b4ad2b6b81dc2913227d9.jpg'],
         'Gene housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
-    [], // liked
+    ['user_demo'], // liked
     ['user_4'], // rejected
     ['user_0']  // matches
 );
@@ -243,7 +243,7 @@ const u4 = new User(
     ['user_5']  // matches
 );
 
-// Discover shows Bob, Tina (no housing)
+// Discover shows Bob, Tina
 // Matches show Louise
 const u5 = new User(
     'user_5',
@@ -285,9 +285,30 @@ const u5 = new User(
         [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
         'Jimmy Jr. housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
-    [], // liked
+    ['user_demo'], // liked
     [], // rejected
     ['user_4']  // matches
 );
 
-export const users = [ u0, u1, u2, u3, u4, u5 ];
+// Discover shows Linda, Gene (liked), Jimmy (liked)
+// Matches show nothing
+const u6 = new User(
+    'user_demo',
+    'ashley@gmail.com',
+    null,
+    { fname: 'Ashley' },
+    22,
+    { identity: 'woman', pronouns: 'she/her' },
+    { clean: 3, sleep: 3, noise: 1, guests: 1 },
+    { major: 'CS', school: 'UMass Amherst' },
+    {},
+    'Demo user - no housing',
+    false, // hasHousing
+    new Preferences(),
+    new Housing(),
+    [], // liked
+    [], // rejected
+    []  // matches
+);
+
+export const users = [ u0, u1, u2, u3, u4, u5, u6 ];

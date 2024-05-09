@@ -49,15 +49,15 @@ export class Preferences {
     constructor(cities, rent, occupants, gender, leaseLength, leaseType,
         roomType, buildingType, timeframe, amenities
     ) {
-        this.cities = cities;
-        this.rent = rent;
-        this.occupants = occupants;
-        this.gender = gender;
-        this.leaseLength = leaseLength;
-        this.leaseType = leaseType;
-        this.roomType = roomType;
-        this.buildingType = buildingType;
-        this.timeframe = timeframe;
-        this.amenities = amenities;
+        this.cities       = cities       ? cities       : [];
+        this.rent         = rent         ? rent         : {};
+        this.occupants    = occupants    ? occupants    : {};
+        this.gender       = gender       ? gender       : {};
+        this.leaseLength  = leaseLength  ? leaseLength  : {};
+        this.leaseType    = leaseType    ? leaseType    : {};
+        this.roomType     = roomType     ? roomType     : {};
+        this.buildingType = buildingType ? buildingType : {};
+        this.timeframe    = timeframe    ? timeframe    : {};
+        this.amenities    = amenities    ? amenities    : {};
     }
 }

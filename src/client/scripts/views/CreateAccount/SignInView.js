@@ -73,7 +73,7 @@ export class SignInView {
             e.preventDefault();
 
             // TODO: delete once authentication works
-            this.#events.publish('authenticated', 'user_0'); 
+            this.#events.publish('authenticated', 'user_demo'); 
             this.#events.publish('navigateTo', 'discover');
 
             // TODO: uncomment (temporarily commented out for access to signed in views)
