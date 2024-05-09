@@ -123,8 +123,6 @@ export class App {
      * Initializes DB with mock users.
      */
     async #initDB() {
-        await db.resetDB();
-
         for (const user of users) {
             try {
                 await db.addUser(user);

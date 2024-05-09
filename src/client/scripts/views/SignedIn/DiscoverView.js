@@ -102,7 +102,7 @@ export class DiscoverView {
 
         // send the profile to MatchesView
         this.#events.publish('sendProfile', {
-            id: user._id, profile: elm
+            id, profile: elm
         });
     }
 
@@ -141,8 +141,9 @@ export class DiscoverView {
         const rejectBtn = await new DiscoverButton(false).render();
         const likeBtn = await new DiscoverButton(true).render();
 
+        // add profile to liked/rejected and view next profile
         const handler = async (userList) => {
-            // add profile to userList ('liked' or 'rejected')
+            // add current profile to user's 'liked' or 'rejected' list
             try {
                 const user = await db.getUserById(this.#curUser._id);
                 user[userList].push(unseen[this.#unseenIndex]._id);
@@ -320,19 +321,11 @@ export class DiscoverView {
         }
 
         // Adds user social media
-        if(user.socials.ig !== "") {
-            // Note: image tag is not working, so it's commented out for now.
-            // container.querySelector('.discover-instagram-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/instagram.png";
-            // container.querySelector('.discover-instagram-icon').style.width = "18px";
-            // container.querySelector('.discover-instagram-icon').style.height = "18px";
+        if (user.socials.ig) {
             container.querySelector('.discover-instagram-text').innerText = "Instagram: " + user.socials.ig;
         }
 
-        if(user.socials.fb !== "") {
-            // Note: image tag is not working, so it's commented out for now.
-            // container.querySelector('.discover-facebook-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/facebook.png";
-            // container.querySelector('.discover-facebook-icon').style.width = "18px";
-            // container.querySelector('.discover-facebook-icon').style.height = "18px";
+        if (user.socials.fb) {
             container.querySelector('.discover-facebook-text').innerText = "Facebook: " + user.socials.fb;
         }
     }
