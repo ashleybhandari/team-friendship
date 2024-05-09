@@ -11,7 +11,7 @@ import landingRoute from './routes/landing.js';
 
 // Root route directly in server.js
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+   app.use('/landing', landingRoute);
 });
 
 // Use modular route for the landing page
