@@ -13,10 +13,12 @@ export class SignedInContainer {
     #discoverViewElm = null;
     #matchesViewElm = null;
     #settingsViewElm = null;
+    #userId = null;
     #events = null;
 
     constructor() {
         this.#events = Events.events();
+        this.#events.subscribe('authenticated', (id) => this.#userId = id);
     }
 
     /**
@@ -53,23 +55,22 @@ export class SignedInContainer {
      * @param {string} view
      */
     #navigateTo(view) {
-        const userId = 0; // DB TODO: replace with current user's id
         this.#viewContainer.innerHTML = '';
 
         if (view === 'discover') {      // DiscoverView
             this.#viewContainer.appendChild(this.#discoverViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, '', `/${userId}/discover`);
+            history.replaceState(null, '', `/${this.#userId}/discover`);
         }
         else if (view === 'matches') {  // MatchesView
             this.#viewContainer.appendChild(this.#matchesViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, '', `/${userId}/matches`);
+            history.replaceState(null, '', `/${this.#userId}/matches`);
         }
         else if (view === 'settings') { // SettingsView
             this.#viewContainer.appendChild(this.#settingsViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, '', `/${userId}/settings`);
+            history.replaceState(null, '', `/${this.#userId}/settings`);
         }
         else {                          // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'
