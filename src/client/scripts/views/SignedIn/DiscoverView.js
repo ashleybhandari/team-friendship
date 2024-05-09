@@ -20,7 +20,7 @@ export class DiscoverView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        // this.#events.subscribe('authenticated', (id) => this.render(id));
+        this.#events.subscribe('authenticated', (id) => this.render(id));
 
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
@@ -33,11 +33,10 @@ export class DiscoverView {
      * @returns {Promise<HTMLDivElement>}
      */
     async render(userId = null) {
-        // if user has not signed in, mock user is used for backdoor entry
         if (!userId) {
             this.#discoverViewElm = document.createElement('div');
-            this.#discoverViewElm.classList.add('discoverView')
-            this.#curUser = users[0]; // TODO replace w pouchDB
+            this.#discoverViewElm.classList.add('discoverView');
+            return this.#discoverViewElm;
         } else {
             this.#curUser = await db.getUserById(userId);
             this.#discoverViewElm.innerHTML = '';
@@ -136,31 +135,16 @@ export class DiscoverView {
         const allUsers = await getAllUsers();
 
         const fitsRequirements = (user) =>
-            // user has housing if curUser doesn't, vice versa
-            this.#curUser.hasHousing !== user.hasHousing &&
             // user is not curUser
-            user._id !== this.#curUser._id                 &&
+            user._id !== this.#curUser._id                &&
+            // user has housing if curUser doesn't, vice versa
+            this.#curUser.hasHousing !== user.hasHousing  &&
             // curUser has not already liked, rejected, or matched with user
             !this.#curUser.liked.includes(user._id)       &&
             !this.#curUser.rejected.includes(user._id)    &&
             !this.#curUser.matches.includes(user._id);
 
-        const fitsPreferences = (user) =>
-            this.#curUser.hasHousing !== user.hasHousing &&
-            !this.#curUser.hasHousing &&
-            user._id !== this.#curUser._id && 
-            this.#curUser.preferences.cities.includes(user.housing.city) &&
-            user.housing.rent <= this.#curUser.preferences.rent.max &&
-            this.#curUser.preferences.gender[user.housing.gender] &&
-            this.#curUser.preferences.leaseLength[user.housing.leaseLength] &&
-            this.#curUser.preferences.leaseType[user.housing.leaseType] &&
-            this.#curUser.preferences.roomType[user.housing.roomType] &&
-            this.#curUser.preferences.buildingType[user.housing.buildingType] &&
-            this.#curUser.preferences.timeframe[user.housing.timeframe] &&
-             Object.keys(this.#curUser.preferences.amenities).some(
-            amenity => this.#curUser.preferences.amenities[amenity] && user.housing.amenities.includes(amenity)
-        );
-        return allUsers.filter(fitsRequirements).filter(fitsPreferences);
+        return allUsers.filter(fitsRequirements);
     }
 
     /**
@@ -181,9 +165,6 @@ export class DiscoverView {
             <p class="bio-level"></p>
             <p class="bio-school"></p>
         </div>
-        <div class="bio-description">
-            <div class="about"></div>
-        </div>
         <div class="bio-social-media">
             <div class="discover-instagram">
                 <div class="discover-instagram-text"></div>
@@ -191,6 +172,9 @@ export class DiscoverView {
             <div class="discover-facebook">
                 <div class="discover-facebook-text"></div>
             </div>
+        </div>
+        <div class="bio-description">
+            <div class="about"></div>
         </div>
         `;
 
