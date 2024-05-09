@@ -4,7 +4,7 @@ export class User {
     /**
      * Data structure: A user's profile information. Parameters in brackets are
      * optional.
-     * @param {number} id
+     * @param {string} _id
      * @param {string} email
      * @param {string} avatar - Picture
      * @param {Object} name
@@ -38,7 +38,7 @@ export class User {
         socials, description, hasHousing, preferences, housing, liked,
         rejected, matches
     ) {
-        this.id = id;
+        this._id = id;
         this.email = email;
         this.avatar = avatar;
         this.name = name;

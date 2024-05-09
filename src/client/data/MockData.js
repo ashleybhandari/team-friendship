@@ -1,4 +1,5 @@
 // created by Gauri Arvind and Ashley Bhandari
+
 import { User } from './data_structures/User.js';
 import { Preferences } from './data_structures/Preferences.js';
 import { Housing } from './data_structures/Housing.js';
@@ -10,21 +11,21 @@ import { Housing } from './data_structures/Housing.js';
 // Discover shows Jimmy (with housing)
 // Matches show Linda, Gene
 const u0 = new User(
-    0,
+    'user_0',
     'bob@gmail.com',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHUpMwkylu5pmA8BUZIcvYlNFYF_uChkis9u9O-izKNA&s',
     { fname: 'Robert', nname: 'Bob' },
     46,
     { identity: 'man', pronouns: 'he/him' },
     { clean: 1, sleep: 2, noise: 2, guests: 1 },
-    { major: 'Culinary Arts', school: 'Umass Amherst', level: 'grad' },
-    { fb: 'fbobob', ig: 'bobig'},
+    { major: 'Culinary Arts', school: 'Umass Amherst' },
+    {},
     'Bob. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
     false, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
-        { min: 1, max: 3 },
+        {},
         { female: false, male: true, mixed: true },
         { semester: true, year: true },
         { rent: true },
@@ -51,13 +52,13 @@ const u0 = new User(
     ),
     [], // liked
     [], // rejected
-    [1, 3]  // matches
+    ['user_1', 'user_3']  // matches
 );
 
 // Discover shows Tina, Louise (no housing)
 // Matches show Bob
 const u1 = new User(
-    1,
+    'user_1',
     'linda@gmail.com',
     'https://external-preview.redd.it/aQ6RAxPRAgAXfejqdYUY9WojpdHS3QYk_pTJeo4Prc4.jpg?auto=webp&s=610291f0a836bac7cf280d67fdf776e023869347',
     { fname: 'Linda', nname: 'Lin' },
@@ -98,16 +99,16 @@ const u1 = new User(
     ),
     [], // liked
     [], // rejected
-    [0]  // matches
+    ['user_0']  // matches
 );
 
 // Discover shows Linda, Gene (with housing)
 // Matches show nothing
 const u2 = new User(
-    2,
+    'user_2',
     'tina@gmail.com',
     'https://pbs.twimg.com/profile_images/2268200472/xg34b9qgfjmf1g6oyynl_400x400.png',
-    { fname: 'Tina', nname: 'Teeny' },
+    { fname: 'Tina' },
     13,
     { identity: 'nonbinary', pronouns: 'they/them' },
     { clean: 3, sleep: 1, noise: 1, guests: 3 },
@@ -143,7 +144,7 @@ const u2 = new User(
         [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
         'Tina housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
-    [5], // liked
+    ['user_5'], // liked
     [], // rejected
     []  // matches
 );
@@ -151,7 +152,7 @@ const u2 = new User(
 // Discover shows Tina (no housing)
 // Matches show Bob
 const u3 = new User(
-    3,
+    'user_3',
     'gene@gmail.com',
     'https://openpsychometrics.org/tests/characters/test-resources/pics/BOBB/4.jpg',
     { fname: 'Eugene', nname: 'Gene' },
@@ -191,17 +192,17 @@ const u3 = new User(
         'Gene housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
     [], // liked
-    [4], // rejected
-    [0]  // matches
+    ['user_4'], // rejected
+    ['user_0']  // matches
 );
 
 // Discover shows nothing
 // Matches show Jimmy
 const u4 = new User(
-    4,
+    'user_4',
     'louise@gmail.com',
     'https://pbs.twimg.com/profile_images/3637982405/d4433bb7717739e9a6d589e69f0fb7d8_400x400.jpeg',
-    { fname: 'Louise', nname: 'Miss Missy' },
+    { fname: 'Louise' },
     9,
     { identity: 'woman', pronouns: 'she/her' },
     { clean: 3, sleep: 3, noise: 3, guests: 2 },
@@ -238,14 +239,14 @@ const u4 = new User(
         'Louise housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
     [], // liked
-    [1, 3], // rejected
-    [5]  // matches
+    ['user_1', 'user_3'], // rejected
+    ['user_5']  // matches
 );
 
 // Discover shows Bob, Tina (no housing)
 // Matches show Louise
 const u5 = new User(
-    5,
+    'user_5',
     'jimmy@gmail.com',
     'https://preview.redd.it/kz19pbh77fk61.jpg?auto=webp&s=8a533474d98b9d82c7ffda0902d98ee2c50c2677',
     { fname: 'Jimmy Jr.', nname: 'J-Ju' },
@@ -286,7 +287,7 @@ const u5 = new User(
     ),
     [], // liked
     [], // rejected
-    [4]  // matches
+    ['user_4']  // matches
 );
 
 export const users = [ u0, u1, u2, u3, u4, u5 ];

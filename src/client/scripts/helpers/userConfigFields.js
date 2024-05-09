@@ -1,6 +1,5 @@
-// created by Ashley Bhandari
-
 /**
+ * Created by Ashley Bhandari
  * This file contains helpers for SettingsView, UserProfile, UserHousing, and
  * UserPreferences.
  */

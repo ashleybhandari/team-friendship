@@ -1,4 +1,5 @@
 // created by Ashley Bhandari
+
 import { data } from './userConfigFields.js';
 
 /**
@@ -52,8 +53,8 @@ const houseMap = new Map([
     ['monthly', '1-month'],
     ['halfYear', '6-month'],
     ['yearly', '1-year'],
-    ['female', 'All-female'],
-    ['male', 'All-male'],
+    ['allFemale', 'All-female'],
+    ['allMale', 'All-male'],
     ['mixed', 'Mixed gender'],
     ...getIterable('timeframe'),
     ...getIterable('roomType'),

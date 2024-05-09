@@ -52,12 +52,12 @@ export class SignedOutContainer {
         if (view === 'landing') {    // LandingView
             this.#viewContainer.appendChild(this.#landingViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "", "/index.html");
+            history.replaceState(null, '', '/');
         }
         else if (view === 'about') { // AboutView
             this.#viewContainer.appendChild(this.#aboutViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "", "/index.html/about");
+            history.replaceState(null, '', '/about');
         }
         else {                       // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'

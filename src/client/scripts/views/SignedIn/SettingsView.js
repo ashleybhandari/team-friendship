@@ -1,12 +1,13 @@
 // created by Ashley Bhandari
+
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { UserHousing } from '../../components/UserHousing.js';
 import { UserPreferences } from '../../components/UserPreferences.js';
 import { UserProfile } from '../../components/UserProfile.js';
 import { Events } from '../../Events.js';
-import { users } from '../../../data/MockData.js';
-import * as helper from '../../helpers/userConfigHelper.js';
+import * as configHelper from '../../helpers/userConfigHelper.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'settings'
 export class SettingsView {
@@ -14,10 +15,8 @@ export class SettingsView {
     #userProfile = null;
     #userHousing = null;
     #userPreferences = null;
+    #user = null;
     #events = null;
-
-    #user = null;           // current user
-    #requiredFields = null; // required fields
 
     constructor() {
         this.#events = Events.events();
@@ -25,28 +24,29 @@ export class SettingsView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        this.#events.subscribe('newUser', (user) => this.render(user));
+        this.#events.subscribe('authenticated', (id) => this.render(id));
     }
     /**
      * Lets the user change their configuration. Injected into SignedInContainer.
-     * @param {User} [user] - Currently signed-in user
+     * @param {string} [userId] - id of currently signed-in user
      * @returns {Promise<HTMLDivElement>}
      */
-    async render(user = null) {
-        // DB TODO: replace all localStorage stuff with PouchDB when it works
-        
-        // if user has not signed in, mock user is used for backdoor entry
-        if (!user) {
+    async render(userId = null) {
+        if (!userId) {
+            // page is empty if user hasn't signed in
             this.#settingsViewElm = document.createElement('div');
             this.#settingsViewElm.id = 'settingsView';
-            this.#user = users[1];
+            return this.#settingsViewElm;
         } else {
-            this.#user = user;
-            this.#settingsViewElm.innerHTML = '';
+            // get user if signed in
+            try {
+                this.#user = await db.getUserById(userId);
+                this.#settingsViewElm.innerHTML = '';
+            } catch (error) {
+                console.log(`Error fetching ${userId}: ${error.message}`);
+                return this.#settingsViewElm;
+            }
         }
-
-        localStorage.setItem('user', JSON.stringify(this.#user));
-        this.#user = JSON.parse(localStorage.getItem('user'));
 
         // page header
         this.#settingsViewElm.innerHTML = `
@@ -63,12 +63,8 @@ export class SettingsView {
             : await this.#renderPreferences();
 
         // fill HTML fields with the user's saved values
-        this.#fillFields();
+        await this.#fillFields();
 
-        // set up form validation // TODO
-        // this.#requiredFields = settingsFnsObj.getFields();
-        // this.#validationSetup()
-        
         return this.#settingsViewElm;
     }
     
@@ -90,13 +86,13 @@ export class SettingsView {
         saveElm.id = 'saveBtn';
 
         // click event listeners
-        revertElm.addEventListener('click', (e) => {
+        revertElm.addEventListener('click', async (e) => {
             e.preventDefault();
-            this.#fillFields();
+            await this.#fillFields();
         });
-        saveElm.addEventListener('click', (e) => {
+        saveElm.addEventListener('click', async (e) => {
             e.preventDefault();
-            this.#saveChanges();
+            await this.#saveChanges();
         });
 
         elm.appendChild(revertElm);
@@ -109,61 +105,86 @@ export class SettingsView {
      * Fills the HTML elements with the user's saved values. Used for
      * initialization and reverting changes.
      */
-    #fillFields() {
-        const args = [this.#settingsViewElm, this.#user, 'settings'];
+    async #fillFields() {
+        try {
+            const user = await db.getUserById(this.#user._id);
+            const args = [this.#settingsViewElm, user, 'settings'];
 
-        // email field
-        this.#settingsViewElm.querySelector('#emailInput').value = this.#user.email;
+            // email field
+            const emailElm = this.#settingsViewElm.querySelector('#settings_emailInput');
+            emailElm.value = user.email;
 
-        // Profile section
-        helper.fillProfileFields(...args);
+            // empty password field
+            const passwordElm = this.#settingsViewElm.querySelector('#settings_passwordInput');
+            passwordElm.value = '';
 
-        // Housing or Preferences section
-        this.#user.hasHousing
-            ? helper.fillHousingFields(...args)
-            : helper.fillPreferencesFields(...args);
+            // Profile section
+            configHelper.fillProfileFields(...args);
+
+            // Housing or Preferences section
+            user.hasHousing
+                ? configHelper.fillHousingFields(...args)
+                : configHelper.fillPreferencesFields(...args);
+        } catch (error) {
+            console.log(`Error filling fields: ${error.message}`);
+        }
     }
 
     /**
      * Save any changes made. Alert if a required field was missed.
      */
-    #saveChanges() {
-        // TODO: validity
-        // const invalid = this.#requiredFields.some((id) => {
-        //     const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
-        //     if (elm) return !elm.checkValidity()
-        //     return false;
-        // });
-        // if (invalid) {
-        //     alert('Make sure all required fields are filled out (the starred ones)!');
-        //     return;
-        // }
+    async #saveChanges() {
+        const invalid = this.#getRequiredIds().some((id) => {
+            const elm = this.#settingsViewElm.querySelector('#' + id);
+            return elm ? !elm.checkValidity() : false;
+        });
 
-        const args = [this.#settingsViewElm, this.#user, 'settings'];
+        if (invalid) {
+            alert('Make sure all required fields are filled out (the starred ones)!');
+            return;
+        }
 
-        // Profile section
-        helper.saveProfileFields(...args);
+        try {
+            // get user from DB
+            const user = await db.getUserById(this.#user._id);
+            const args = [this.#settingsViewElm, user, 'settings'];
 
-        // Housing or Preferences section
-        this.#user.hasHousing
-            ? helper.saveHousingFields(...args)
-            : helper.savePreferencesFields(...args);
+            // save email
+            const emailElm = this.#settingsViewElm.querySelector('#settings_emailInput');
+            user.email = emailElm.value;
 
-        // TODO: save password
+            // TODO: save password
 
-        // save new configuration
-        localStorage.setItem('user', JSON.stringify(this.#user));
+            // save Profile section
+            configHelper.saveProfileFields(...args);
+
+            // save Housing or Preferences section
+            user.hasHousing
+                ? configHelper.saveHousingFields(...args)
+                : configHelper.savePreferencesFields(...args);
+
+            // save new configuration
+            await db.updateUser(user);
+        } catch (error) {
+            console.log(`Error updating settings: ${error.message}`);
+        }
     }
 
-    /**
-     * Sets up form validation.
-     */
-    #validationSetup() {
-        // set required property on required fields to true
-        this.#requiredFields.forEach((id) => {
-            const elm = this.#settingsViewElm.querySelector(`#settings_${id}`);
-            if (elm) elm.required = true
-        });
+    #getRequiredIds() {
+        const ids = [];
+
+        // email id
+        ids.push('settings_emailInput');
+
+        // Profile section ids
+        ids.push(...this.#userProfile.getRequiredIds('settings'));
+
+        // Housing section ids if section is rendered
+        if (this.#user.hasHousing) {
+            ids.push(...this.#userHousing.getRequiredIds('settings'));
+        }
+
+        return ids;
     }
 
     async #renderCredentials() {
@@ -178,8 +199,19 @@ export class SettingsView {
         // container for section content
         const section = document.createElement('div');
         section.id = 'credentials-content';
-        section.appendChild(await new TextInput('Email').render());
-        section.appendChild(await new TextInput('Password').render());
+
+        // email field
+        const emailElm = await new TextInput('Email').render();
+        emailElm.querySelector('label').htmlFor = 'settings_emailInput';
+        emailElm.querySelector('input').id = 'settings_emailInput';
+        emailElm.querySelector('input').required = true;
+        section.appendChild(emailElm);
+
+        // password field
+        const passwordElm = await new TextInput('Password').render();
+        passwordElm.querySelector('label').htmlFor = 'settings_passwordInput';
+        passwordElm.querySelector('input').id = 'settings_passwordInput';
+        section.appendChild(passwordElm);
 
         // revert changes and save buttons
         const buttons = await this.#renderButtons();
