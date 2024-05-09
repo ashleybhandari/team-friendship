@@ -120,11 +120,14 @@ export const removeMatch = async (curUserId, matchId) => {
   const curUser = await getUserById(curUserId);
   const match = await getUserById(matchId);
 
-  const matchIndex = user.matches.indexOf(matchId);
+  // for both users, remove from matches and add to rejected
+  const matchIndex = curUser.matches.indexOf(matchId);
   curUser.matches.splice(matchIndex, 1);
+  curUser.rejected.push(matchId);
 
   const curUserIndex = match.matches.indexOf(curUserId);
   match.matches.splice(curUserIndex, 1);
+  match.rejected.push(curUserId);
 
   await updateUser(curUser);
   await updateUser(match);

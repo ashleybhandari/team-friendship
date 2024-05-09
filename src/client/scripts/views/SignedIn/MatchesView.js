@@ -1,6 +1,5 @@
 // created by Ashley Bhandari
 
-import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
 import { users } from '../../../data/MockData.js';
@@ -23,7 +22,7 @@ export class MatchesView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        // this.#events.subscribe('authenticated', (id) => this.render(id));
+        this.#events.subscribe('authenticated', (id) => this.render(id));
     }
 
     /**
@@ -33,11 +32,11 @@ export class MatchesView {
      * @returns {Promise<HTMLDivElement>}
      */
     async render(userId = null) {
-        // if user has not signed in, mock user is used for backdoor entry
         if (!userId) {
+            // page is empty if user hasn't signed in
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
-            this.#user = users[0]; // TODO replace w pouchDB
+            return this.#matchesViewElm;
         } else {
             this.#user = await db.getUserById(userId);
             this.#matchesViewElm.innerHTML = '';
@@ -66,8 +65,7 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches(this.#user._id) // DB TODO: replace with below when PouchDB works
-        // const matches = await db.getMatches(this.#user._id);
+        const matches = await db.getMatches(this.#user._id);
 
         // show message if user has no matches
         if (matches.length === 0) {
@@ -80,8 +78,7 @@ export class MatchesView {
 
         // show list if user has matches
         for (const id of matches) {
-            const user = await getUserById(id); // DB TODO: replace with below when PouchDB works
-            // const user = await db.getUserById(id);
+            const user = await db.getUserById(id);
             
             // match's entry in list
             const elm = document.createElement('div');
@@ -182,8 +179,7 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await removeMatch(this.#user._id, this.#openedMatchId); // DB TODO: replace with below when PouchDB works
-            // await db.removeMatch(this.#user._id, this.#openedMatchId) ;
+            await db.removeMatch(this.#user._id, this.#openedMatchId) ;
             await this.#renderList();
             this.#switchView();
         });
@@ -199,11 +195,11 @@ export class MatchesView {
      * Injects the page with the selected match's Discover profile.
      * @param {Object} match - Discover page's publisher message
      * @param {number} match.id - Selected match's id
-     * @param {HTMLDivElement} match.id - Selected match's profile
+     * @param {HTMLDivElement} match.profile - Selected match's profile
      */
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
-        const email = (await getUserById(id)).email;
+        const email = (await db.getUserById(id)).email;
 
         this.#openedMatchId = id;
 
