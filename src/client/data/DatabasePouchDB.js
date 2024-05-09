@@ -1,16 +1,41 @@
-
-// DB TODO: uncomment
-//import PouchDB from "pouchdb";
-//var PouchDB = require('pouchdb');
-//var db = new PouchDB('my_database');
-//import PouchDB from 'pouchdb';
-//import db from './index.js';
-
-//import PouchDB from "pouchdb";
 const db = new PouchDB("roommate-matching");
 
+/**
+ * Generates an id for a PouchDB doc.
+ * 
+ * @returns {string} - id
+ */
 function generateRandomId() {
   return 'user_' + Math.random().toString(36).substring(2, 10);
+}
+
+/**
+ * Sets 'curUser' in PouchDB to id.
+ * 
+ * @param {string} id - user id
+ * @returns {Promise<string>} - Promise that resolves to created/updated doc
+ */
+export const setCurUser = async (id) => {
+  const doc = await db.get('curUser');
+
+  if (doc) {
+    // curUser exists in DB (modify userId to keep _rev)
+    doc.id = id;
+    return db.put(doc);
+  }
+  else {
+    // curUser doesn't exist in DB
+    return db.put({ _id: 'curUser', id });
+  }
+}
+
+/**
+ * Fetches current user's id as set by setCurUser.
+ * 
+ * @returns {Promise<Object>} - curUser doc
+ */
+export const getCurUser = async () => {
+  return db.get('curUser');
 }
 
 /**
