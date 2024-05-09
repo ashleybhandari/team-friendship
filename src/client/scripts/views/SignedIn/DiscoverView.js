@@ -120,27 +120,7 @@ export class DiscoverView {
      * with yet.
      * @returns {User[]}
      */
-    async #getUnseenUsers() {
-        try {
-            const allUsers = await db.getAllUsers();
-
-            const fitsRequirements = (user) =>
-                // user is not curUser
-                user._id !== this.#curUser._id                &&
-                // user has housing if curUser doesn't, vice versa
-                this.#curUser.hasHousing !== user.hasHousing  &&
-                // curUser has not already liked, rejected, or matched with user
-                !this.#curUser.liked.includes(user._id)       &&
-                !this.#curUser.rejected.includes(user._id)    &&
-                !this.#curUser.matches.includes(user._id);
-
-            return allUsers.filter(fitsRequirements);
-        } catch (error) {
-            console.log(`Failed to get unseen users: ${error.message}`);
-            return [];
-        }
-    }
-
+  
     /**
      * Renders like and reject buttons.
      * @param {User[]} unseen - array of unseen users
@@ -183,6 +163,97 @@ export class DiscoverView {
 
         return elm;
     }
+  /**
+ * Gets an array of users that the current user hasn't liked, rejected, or matched with yet,
+ * and whose housing preferences match the current user's preferences.
+ *
+ * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
+ */
+async #getUnseenUsersWithoutHousing() {
+    const allUsers = await getAllUsers();
+
+    const fitsRequirements = (user) =>
+        // user has housing if curUser doesn't, vice versa
+        this.#curUser.hasHousing !== user.hasHousing &&
+        // user is not curUser
+        user.id !== this.#curUser.id &&
+        // curUser has not already liked, rejected, or matched with user
+        !this.#curUser.liked.includes(user.id) &&
+        !this.#curUser.rejected.includes(user.id) &&
+        !this.#curUser.matches.includes(user.id);
+
+    const fitsPreferences = (user) =>
+        this.#curUser.hasHousing !== user.hasHousing &&
+        !this.#curUser.hasHousing &&
+        user.id !== this.#curUser.id &&
+        this.#curUser.preferences.cities.includes(user.housing.city) &&
+        user.housing.rent <= this.#curUser.preferences.rent.max &&
+        this.#curUser.preferences.gender[user.housing.gender] &&
+        this.#curUser.preferences.leaseLength[user.housing.leaseLength] &&
+        this.#curUser.preferences.leaseType[user.housing.leaseType] &&
+        this.#curUser.preferences.roomType[user.housing.roomType] &&
+        this.#curUser.preferences.buildingType[user.housing.buildingType] &&
+        this.#curUser.preferences.timeframe[user.housing.timeframe] &&
+        Object.keys(this.#curUser.preferences.amenities).some(
+            amenity => this.#curUser.preferences.amenities[amenity] && user.housing.amenities.includes(amenity)
+        );
+
+    return allUsers.filter(fitsRequirements).filter(fitsPreferences);
+}
+
+/**
+ * Gets an array of users that the current user hasn't liked, rejected, or matched with yet,
+ * and whose housing matches the current user's housing preferences.
+ *
+ * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
+ */
+async #getUnseenUsersWithHousing() {
+    const allUsers = await getAllUsers();
+
+    const fitsRequirements = (user) =>
+        // user has housing if curUser doesn't, vice versa
+        this.#curUser.hasHousing !== user.hasHousing &&
+        // user is not curUser
+        user.id !== this.#curUser.id &&
+        // curUser has not already liked, rejected, or matched with user
+        !this.#curUser.liked.includes(user.id) &&
+        !this.#curUser.rejected.includes(user.id) &&
+        !this.#curUser.matches.includes(user.id);
+
+    const fitsPreferences = (user) =>
+        this.#curUser.hasHousing !== user.hasHousing &&
+        user.id !== this.#curUser.id &&
+        this.#curUser.preferences.cities.includes(user.housing.city) &&
+        user.housing.rent <= this.#curUser.preferences.rent.max &&
+        this.#curUser.preferences.gender[user.housing.gender] &&
+        this.#curUser.preferences.leaseLength[user.housing.leaseLength] &&
+        this.#curUser.preferences.leaseType[user.housing.leaseType] &&
+        this.#curUser.preferences.roomType[user.housing.roomType] &&
+        this.#curUser.preferences.buildingType[user.housing.buildingType] &&
+        this.#curUser.preferences.timeframe[user.housing.timeframe] &&
+        Object.keys(this.#curUser.preferences.amenities).some(
+            amenity => this.#curUser.preferences.amenities[amenity] && user.housing.amenities.includes(amenity)
+        ) &&
+        this.#curUser.housing.city === user.housing.city &&
+        this.#curUser.housing.rent <= user.housing.rent &&
+        this.#curUser.housing.gender === user.housing.gender;
+
+    return allUsers.filter(fitsRequirements).filter(fitsPreferences);
+}
+
+/**
+ * Gets an array of users that the current user hasn't liked, rejected, or matched with yet,
+ * and whose housing preferences match the current user's preferences.
+ *
+ * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
+ */
+async #getUnseenUsers() {
+    if (this.#curUser.hasHousing) {
+        return this.#getUnseenUsersWithHousing();
+    } else {
+        return this.#getUnseenUsersWithoutHousing();
+    }
+}
 
     /**
      * Creates containers for the left side of the page, to be injected with

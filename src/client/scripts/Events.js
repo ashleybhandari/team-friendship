@@ -4,6 +4,7 @@
  * ensure that only one instance exists throughout the application. Implemented
  * by Prof. Tim Richards.
  */
+
 export class Events {
     /**
      * @private
