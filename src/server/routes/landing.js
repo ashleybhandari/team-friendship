@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { LandingView } from './views/LandingView.js';
+import { LandingView } from './LandingView.js';
 
 /**
  * Defines the routes for the Landing Page.
