@@ -156,6 +156,7 @@ export class DiscoverView {
         elm.appendChild(likeBtn);
 
         return elm;
+    }
   /**
  * Gets an array of users that the current user hasn't liked, rejected, or matched with yet,
  * and whose housing preferences match the current user's preferences.
