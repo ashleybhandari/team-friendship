@@ -72,13 +72,18 @@ export class SignInView {
         signInButtonElement.addEventListener('click', async (e) => {
             e.preventDefault();
 
-            try {
-                const user = await db.authenticateUser(emailInputElement.value, passwordInputElement.value);
-                this.#events.publish('authenticated', user._id);
-                this.#events.publish('navigateTo', 'discover');
-            } catch {
-                 alert('Login failed. Double-check your credentials.');
-            }
+            // TODO: delete once authentication works
+            this.#events.publish('authenticated', 'user_0'); 
+            this.#events.publish('navigateTo', 'discover');
+
+            // TODO: uncomment (temporarily commented out for access to signed in views)
+            // try {
+            //     const user = await db.authenticateUser(emailInputElement.value, passwordInputElement.value);
+            //     this.#events.publish('authenticated', user._id);
+            //     this.#events.publish('navigateTo', 'discover');
+            // } catch {
+            //      alert('Login failed. Double-check your credentials.');
+            // }
         });
 
         return signInContainer;  // Return the complete sign-in container element
