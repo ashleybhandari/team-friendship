@@ -42,7 +42,7 @@ export class MatchesView {
                 this.#user = await db.getUserById(userId);
                 this.#matchesViewElm.innerHTML = '';
             } catch (error) {
-                console.log(`Error fetching ${userId}: ${error}`);
+                console.log(`Error fetching ${userId}: ${error.message}`);
                 return this.#matchesViewElm;
             }
         }
@@ -128,7 +128,7 @@ export class MatchesView {
                 this.#listViewElm.appendChild(elm);
             }   
         } catch (error) {
-            console.log(`Error to rendering matches list: ${error}`);
+            console.log(`Error to rendering matches list: ${error.message}`);
         }
 
         this.#matchesViewElm.appendChild(this.#listViewElm);
@@ -193,7 +193,7 @@ export class MatchesView {
                 await this.#renderList();
                 this.#switchView();
             } catch (error) {
-                console.log(`Error unmatching ${this.#openedMatchId}: ${error}`);
+                console.log(`Error unmatching ${this.#openedMatchId}: ${error.message}`);
             }
         });
 
@@ -217,7 +217,7 @@ export class MatchesView {
         try {
             email = (await db.getUserById(id)).email;
         } catch (error) {
-            console.log(`Error fetching ${id}'s email: ${error}`);
+            console.log(`Error fetching ${id}'s email: ${error.message}`);
         }
         
         this.#openedMatchId = id;

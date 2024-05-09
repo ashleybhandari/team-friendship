@@ -43,7 +43,7 @@ export class SettingsView {
                 this.#user = await db.getUserById(userId);
                 this.#settingsViewElm.innerHTML = '';
             } catch (error) {
-                console.log(`Error fetching ${userId}: ${error}`);
+                console.log(`Error fetching ${userId}: ${error.message}`);
                 return this.#settingsViewElm;
             }
         }
@@ -126,7 +126,7 @@ export class SettingsView {
                 ? configHelper.fillHousingFields(...args)
                 : configHelper.fillPreferencesFields(...args);
         } catch (error) {
-            console.log(`Error filling fields: ${error}`);
+            console.log(`Error filling fields: ${error.message}`);
         }
     }
 
@@ -166,7 +166,7 @@ export class SettingsView {
             // save new configuration
             await db.updateUser(user);
         } catch (error) {
-            console.log(`Error updating settings: ${error}`);
+            console.log(`Error updating settings: ${error.message}`);
         }
     }
 

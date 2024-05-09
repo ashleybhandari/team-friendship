@@ -3,13 +3,6 @@ KeyMate is a web application dedicated to helping students find roommates and ho
 
 The Milestone 1 document mentions an in-app messaging system. In the interest of time and producing quality work, we will not be implementing this feature.
 
-## Important notes
-- Importing PouchDB turned out to cause several issues that we were not able to fix. Importing it as a dependency caused issues, as did the method we learned in class using just an instance of the database, which did not allow us to use any of the provided db functions. Using "require" to import PouchDB resulted in a "doesn't resolve to a url" error. **We tried numerous ways of importing and tried changing the scripts in index.html after speaking to a TA. None of these changes helped.** Our data lead, Rachel, posted in Piazza (private question @537) and didn't receive an answer as to how to import PouchDB without errors, so we were not able to get it working in time. As a result:
-  -  Several files use functions in `MockBackend.js` instead of those in `DatabasePouchDB.js` to avoid errors.
-  -  Several functions are commented out, including logging in/authentication and redirecting navigation based on whether the user is signed in.
-  -  The code affected by this is marked with `DB TODO` comments.
-- The work for Milestone 2 was distributed equally. Everyone but Ashley (who owns the repo) had trouble running the server for the majority of this milestone, so Ashley made more commits in place of the other members.
-
 ## Navigating the application
 Users are initially greeted with the landing page. In the navbar or footer, clicking "About us" navigates to a page with information about the project and team, and clicking "Sign in" navigates to the sign-in page. From the sign-in page, the user can either sign in or sign up. If the user clicks "Sign up," they are guided through the account creation process. If the user clicks "Sign in," they are directed to a view restricted to signed-in users. This view contains the Discover page (where users can "like" or "reject" potential roommates or housing), Matches page (where the user's matches live), and Settings page (where the user can edit their profile, accessible via the dropdown on the far-right of the navbar).
 
@@ -20,10 +13,10 @@ The project has three major folders: components, data, and views.
 The application is component-based. All components are found in `src\client\scripts\components`.
 
 ### Data
-Files pertaining to data structures and mock-backend operations are found in `src\client\data`.
+Files pertaining to data structures and backend operations are found in `src\client\data`.
 - `data_structures` holds data structures used to store information pertaining to each user's profile and roommate/housing preferences.
 - `DatabasePouchDB.js` creates the database and exports functions for CRUD operations.
-- `MockData.js` and `MockBackend.js` contain mock users and asynchronous operations, used until PouchDB works properly.
+- `MockData.js` contains mock users for the application.
 
 ### Views
 The application is mounted onto a single `root` element.
@@ -56,5 +49,6 @@ Install dependencies
 ```
 Start the server
 ```
-  npm run milestone-02
+  npm start
 ```
+Open http://localhost:3000 in your browser.

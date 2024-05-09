@@ -126,8 +126,8 @@ export class App {
         for (const user of users) {
             try {
                 await db.addUser(user);
-            } catch {
-                console.log(`Failed to add ${user._id} to DB.`);
+            } catch (error) {
+                console.log(`Error adding ${user._id} to DB: ${error.message}`);
             }
         }
     }

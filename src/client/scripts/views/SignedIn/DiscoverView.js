@@ -3,7 +3,6 @@
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/discoverHelper.js';
 import { Events } from '../../Events.js';
-import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'discover'
@@ -43,7 +42,7 @@ export class DiscoverView {
                 this.#curUser = await db.getUserById(userId);
                 this.#discoverViewElm.innerHTML = '';
             } catch (error) {
-                console.log(`Error fetching ${userId}: ${error}`);
+                console.log(`Error fetching ${userId}: ${error.message}`);
                 return this.#discoverViewElm;
             }
         }
@@ -89,22 +88,26 @@ export class DiscoverView {
         elm.id = 'discoverProfile'
         elm.classList.add('discoverView');
 
-        // user to display
-        const user = await getUserById(id);
+        try {
+            // user to display
+            const user = await db.getUserById(id);
 
-        // add HTML
-        const bioSection = this.#addBioSection();
-        const infoSection = user.hasHousing
-            ? this.#addInfoSectionWithHousing()
-            : this.#addInfoSectionWithoutHousing();
-        elm.appendChild(bioSection);
-        elm.appendChild(infoSection);
-        
-        // inject user's info into the HTML
-        this.#injectBio(bioSection, user)
-        user.hasHousing
-            ? this.#injectInfoWithHousing(infoSection, user)
-            : this.#injectInfoWithoutHousing(infoSection, user);
+            // add HTML
+            const bioSection = this.#addBioSection();
+            const infoSection = user.hasHousing
+                ? this.#addInfoSectionWithHousing()
+                : this.#addInfoSectionWithoutHousing();
+            elm.appendChild(bioSection);
+            elm.appendChild(infoSection);
+            
+            // inject user's info into the HTML
+            this.#injectBio(bioSection, user)
+            user.hasHousing
+                ? this.#injectInfoWithHousing(infoSection, user)
+                : this.#injectInfoWithoutHousing(infoSection, user);
+        } catch (error) {
+            console.log(`Failed to render ${id}'s profile: ${error.message}`);
+        }
 
         // send the profile to MatchesView
         this.#events.publish('sendProfile', {
@@ -118,19 +121,24 @@ export class DiscoverView {
      * @returns {User[]}
      */
     async #getUnseenUsers() {
-        const allUsers = await getAllUsers();
+        try {
+            const allUsers = await db.getAllUsers();
 
-        const fitsRequirements = (user) =>
-            // user is not curUser
-            user._id !== this.#curUser._id                &&
-            // user has housing if curUser doesn't, vice versa
-            this.#curUser.hasHousing !== user.hasHousing  &&
-            // curUser has not already liked, rejected, or matched with user
-            !this.#curUser.liked.includes(user._id)       &&
-            !this.#curUser.rejected.includes(user._id)    &&
-            !this.#curUser.matches.includes(user._id);
+            const fitsRequirements = (user) =>
+                // user is not curUser
+                user._id !== this.#curUser._id                &&
+                // user has housing if curUser doesn't, vice versa
+                this.#curUser.hasHousing !== user.hasHousing  &&
+                // curUser has not already liked, rejected, or matched with user
+                !this.#curUser.liked.includes(user._id)       &&
+                !this.#curUser.rejected.includes(user._id)    &&
+                !this.#curUser.matches.includes(user._id);
 
-        return allUsers.filter(fitsRequirements);
+            return allUsers.filter(fitsRequirements);
+        } catch (error) {
+            console.log(`Failed to get unseen users: ${error.message}`);
+            return [];
+        }
     }
 
     /**
