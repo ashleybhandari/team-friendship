@@ -4,6 +4,9 @@
  * ensure that only one instance exists throughout the application. Implemented
  * by Prof. Tim Richards.
  */
+
+import * as db from '../../../data/DatabasePouchDB.js';
+
 export class Events {
     /**
      * @private
