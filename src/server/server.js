@@ -6,13 +6,16 @@ const PORT = 3000;
 // app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // This is useful only if you're handling URL-encoded data in POST/PUT requests
 
-import LandingView from './routes/landing.js';
+// Import routes
+import landingRoute from './routes/landing.js';
 
-app.get('/', async (req, res) => {
-    const landingView = new LandingView();
-    const landingContainer = await landingView.render();
-    res.send(landingContainer.outerHTML);
+// Root route directly in server.js
+app.get('/', (req, res) => {
+    res.send('Hello World!');
 });
+
+// Use modular route for the landing page
+app.use('/landing', landingRoute);
 
 // 404 Not Found Middleware (after all routes)
 // It handles any requests that don't match the defined routes
