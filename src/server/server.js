@@ -9,13 +9,13 @@ app.use(express.urlencoded({ extended: true })); // This is useful only if you'r
 // Import routes
 import landingRoute from './routes/landing.js';
 
-// Root route directly in server.js
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-
 // Use modular route for the landing page
 app.use('/landing', landingRoute);
+
+// Redirect root URL to the landing page
+app.get('/', (req, res) => {
+    res.redirect('/landing');
+});
 
 // 404 Not Found Middleware (after all routes)
 // It handles any requests that don't match the defined routes
