@@ -4,7 +4,6 @@ import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/discoverHelper.js';
 import { Events } from '../../Events.js';
 import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
-import { users } from '../../../data/MockData.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'discover'
@@ -34,6 +33,7 @@ export class DiscoverView {
      */
     async render(userId = null) {
         if (!userId) {
+            // page is empty if user hasn't signed in
             this.#discoverViewElm = document.createElement('div');
             this.#discoverViewElm.classList.add('discoverView');
             return this.#discoverViewElm;
@@ -63,29 +63,9 @@ export class DiscoverView {
         this.#discoverViewElm.appendChild(infoSection);
 
         // like and reject buttons
-        const buttons = document.createElement('div');
-        buttons.classList.add('buttons');
-
-        const rejectBtn = await new DiscoverButton(false).render();
-        const likeBtn = await new DiscoverButton(true).render();
-
-        // handles "liking" or "rejecting" a profile
-        rejectBtn.addEventListener('click', () => {
-            // add to user's rejected list
-            this.#curUser.rejected.push(unseen[this.#unseenIndex]._id);
-            // view the next profile
-            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
-        });
-        likeBtn.addEventListener('click', () => {
-            // add to user's liked list
-            this.#curUser.liked.push(unseen[this.#unseenIndex]._id);
-            // view the next profile
-            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
-        });
-
-        buttons.appendChild(rejectBtn);
-        buttons.appendChild(likeBtn);
-        this.#discoverViewElm.appendChild(buttons);
+        this.#discoverViewElm.appendChild(
+            await this.#renderButtons(unseen, bioSection, infoSection)
+        );
 
         // inject user's information into the page
         this.#injectProfile(curProfile, bioSection, infoSection);
@@ -145,6 +125,42 @@ export class DiscoverView {
             !this.#curUser.matches.includes(user._id);
 
         return allUsers.filter(fitsRequirements);
+    }
+
+    /**
+     * Renders like and reject buttons.
+     * @param {User[]} unseen - array of unseen users
+     * @param {HTMLDivElement} bioSection - Skeleton for bio section
+     * @param {HTMLDivElement} infoSection - Skeleton for info section
+     * @returns {HTMLDivElement}
+     */
+    async #renderButtons(unseen, bioSection, infoSection) {
+        const elm = document.createElement('div');
+        elm.classList.add('buttons');
+
+        const rejectBtn = await new DiscoverButton(false).render();
+        const likeBtn = await new DiscoverButton(true).render();
+
+        const handler = async (userList) => {
+            // add profile to userList ('liked' or 'rejected')
+            try {
+                const user = await db.getUserById(this.#curUser._id);
+                user[userList].push(unseen[this.#unseenIndex]._id);
+                await db.updateUser(user);
+            } catch (error) {
+                console.log(`Failed to add user to ${userList}.`);
+            }
+            // view the next profile
+            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
+        }
+
+        rejectBtn.addEventListener('click', async () => handler('rejected'));
+        likeBtn.addEventListener('click', async () => handler('liked'));
+
+        elm.appendChild(rejectBtn);
+        elm.appendChild(likeBtn);
+
+        return elm;
     }
 
     /**
