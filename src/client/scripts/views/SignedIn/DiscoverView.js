@@ -162,7 +162,7 @@ export class DiscoverView {
  *
  * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
  */
-async #getUnseenUsersWithoutHousing() {
+const async #getUnseenUsersWithoutHousing() {
     const allUsers = await getAllUsers();
 
     const fitsRequirements = (user) =>
