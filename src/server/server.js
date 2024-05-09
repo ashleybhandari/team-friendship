@@ -10,7 +10,9 @@ app.use(express.urlencoded({ extended: true })); // This is useful only if you'r
 import landingRoute from './routes/landing.js';
 
 // Root route directly in server.js
-app.use('/landing', landingRoute);
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
 
 // Use modular route for the landing page
 app.use('/landing', landingRoute);
