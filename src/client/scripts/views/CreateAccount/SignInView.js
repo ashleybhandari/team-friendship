@@ -2,10 +2,7 @@
 
 import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
-// import { login } from '../../../data/LogIn.js'; // DB TODO: Uncomment when PouchDB works
-import { users } from '../../../data/MockData.js'; // TODO: delete
 import { Events } from '../../Events.js';
-//import { authenticateUser } from '../../../data/DatabasePouchDB.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
@@ -76,18 +73,12 @@ export class SignInView {
             e.preventDefault();
 
             try {
-                const user = await authenticateUser(emailInputElement.value, passwordInputElement.value);
-                this.#events.publish('authenticated', user.id);
+                const user = await db.authenticateUser(emailInputElement.value, passwordInputElement.value);
+                this.#events.publish('authenticated', user._id);
                 this.#events.publish('navigateTo', 'discover');
             } catch {
                  alert('Login failed. Double-check your credentials.');
             }
-            // login( // DB TODO: use??
-            //     emailInputElement.value,
-            //     passwordInputElement.value,
-            //     signInFns,
-            //     [() => alert('Login failed. Double-check your credentials.')]
-            // );
         });
 
         return signInContainer;  // Return the complete sign-in container element

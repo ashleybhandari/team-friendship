@@ -66,8 +66,8 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches(this.#user.id) // DB TODO: replace with below when PouchDB works
-        // const matches = await db.getMatches(this.#user.id);
+        const matches = await getMatches(this.#user._id) // DB TODO: replace with below when PouchDB works
+        // const matches = await db.getMatches(this.#user._id);
 
         // show message if user has no matches
         if (matches.length === 0) {
@@ -85,7 +85,7 @@ export class MatchesView {
             
             // match's entry in list
             const elm = document.createElement('div');
-            elm.id = `user${user.id}`;
+            elm.id = `user${user._id}`;
             elm.classList.add('user');
             
             // name, profile picture
@@ -120,7 +120,7 @@ export class MatchesView {
             // switch to profile view if match is clicked
             elm.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.#switchView(user.id);
+                this.#switchView(user._id);
             });
             this.#listViewElm.appendChild(elm);
         }
@@ -182,8 +182,8 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await removeMatch(this.#user.id, this.#openedMatchId); // DB TODO: replace with below when PouchDB works
-            // await db.removeMatch(this.#user.id, this.#openedMatchId) ;
+            await removeMatch(this.#user._id, this.#openedMatchId); // DB TODO: replace with below when PouchDB works
+            // await db.removeMatch(this.#user._id, this.#openedMatchId) ;
             await this.#renderList();
             this.#switchView();
         });
@@ -229,13 +229,13 @@ export class MatchesView {
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            history.replaceState(null, '', `/index.html/${this.#user.id}/matches/${matchId}`);
+            history.replaceState(null, '', `/${this.#user._id}/matches/${matchId}`);
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            history.replaceState(null, '', `/index.html/${this.#user.id}/matches`);
+            history.replaceState(null, '', `/${this.#user._id}/matches`);
         }
     }
 }

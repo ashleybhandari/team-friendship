@@ -59,17 +59,17 @@ export class SignedInContainer {
         if (view === 'discover') {      // DiscoverView
             this.#viewContainer.appendChild(this.#discoverViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "", `/index.html/${userId}/discover`);
+            history.replaceState(null, '', `/${userId}/discover`);
         }
         else if (view === 'matches') {  // MatchesView
             this.#viewContainer.appendChild(this.#matchesViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "", `/index.html/${userId}/matches`);
+            history.replaceState(null, '', `/${userId}/matches`);
         }
         else if (view === 'settings') { // SettingsView
             this.#viewContainer.appendChild(this.#settingsViewElm);
             this.#updateNavbar(view);
-            history.replaceState(null, "", `/index.html/${userId}/settings`);
+            history.replaceState(null, '', `/${userId}/settings`);
         }
         else {                          // invalid view name
             this.#viewContainer.innerHTML = '<h2>404 Page Not Found</h2>'

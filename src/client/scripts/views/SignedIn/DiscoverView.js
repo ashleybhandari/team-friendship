@@ -73,13 +73,13 @@ export class DiscoverView {
         // handles "liking" or "rejecting" a profile
         rejectBtn.addEventListener('click', () => {
             // add to user's rejected list
-            this.#curUser.rejected.push(unseen[this.#unseenIndex].id);
+            this.#curUser.rejected.push(unseen[this.#unseenIndex]._id);
             // view the next profile
             this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
         likeBtn.addEventListener('click', () => {
             // add to user's liked list
-            this.#curUser.liked.push(unseen[this.#unseenIndex].id);
+            this.#curUser.liked.push(unseen[this.#unseenIndex]._id);
             // view the next profile
             this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
         });
@@ -123,7 +123,7 @@ export class DiscoverView {
 
         // send the profile to MatchesView
         this.#events.publish('sendProfile', {
-            id: user.id, profile: elm
+            id: user._id, profile: elm
         });
     }
 
@@ -139,16 +139,16 @@ export class DiscoverView {
             // user has housing if curUser doesn't, vice versa
             this.#curUser.hasHousing !== user.hasHousing &&
             // user is not curUser
-            user.id !== this.#curUser.id                 &&
+            user._id !== this.#curUser._id                 &&
             // curUser has not already liked, rejected, or matched with user
-            !this.#curUser.liked.includes(user.id)       &&
-            !this.#curUser.rejected.includes(user.id)    &&
-            !this.#curUser.matches.includes(user.id);
+            !this.#curUser.liked.includes(user._id)       &&
+            !this.#curUser.rejected.includes(user._id)    &&
+            !this.#curUser.matches.includes(user._id);
 
         const fitsPreferences = (user) =>
             this.#curUser.hasHousing !== user.hasHousing &&
             !this.#curUser.hasHousing &&
-            user.id !== this.#curUser.id && 
+            user._id !== this.#curUser._id && 
             this.#curUser.preferences.cities.includes(user.housing.city) &&
             user.housing.rent <= this.#curUser.preferences.rent.max &&
             this.#curUser.preferences.gender[user.housing.gender] &&

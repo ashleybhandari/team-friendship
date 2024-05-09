@@ -37,14 +37,12 @@ export const getUserById = async (id) => {
  * Adds a new user to the database.
  *
  * @param {User} user - The user object to add.
- * @returns {Promise<{user: User, id: string}>} A promise that resolves with the updated user object and its id.
+ * @returns {Promise<User>} A promise that resolves with the added user.
  * @returns {string} - The id of the new user.
  */
 export const addUser = async (user) => {
-  const id = user.id || generateRandomId();
-
   const newUser = {
-    _id: id,
+    _id: user._id ? user._id : generateRandomId(),
     email: user.email,
     avatar: user.avatar,
     name: user.name,
@@ -62,7 +60,7 @@ export const addUser = async (user) => {
     matches: user.matches
   };
 
-  return { user: db.put(newUser), id };
+  return db.put(newUser);
 };
 
 /**

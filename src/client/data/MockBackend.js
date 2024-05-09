@@ -25,7 +25,7 @@ export async function getAllUsers() {
  */
 export async function getUserById(id) {
     for (const user of await getAllUsers()) {
-        if (user.id === id) {
+        if (user._id === id) {
             return user;
         }
     }
@@ -50,7 +50,7 @@ export async function getMatches(id) {
 export async function removeMatch(userId, matchId) {
     const curUser = await getUserById(userId);
     for (const user of await getAllUsers()) {
-        if (user.id === matchId) {
+        if (user._id === matchId) {
             const i = curUser.matches.indexOf(matchId);
             curUser.matches.splice(i, 1);
         }
