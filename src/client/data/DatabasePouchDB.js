@@ -1,4 +1,4 @@
-const db = new PouchDB("roommate-matching");
+const db = new PouchDB('roommate-matching');
 
 /**
  * Generates an id for a PouchDB doc.
@@ -7,6 +7,19 @@ const db = new PouchDB("roommate-matching");
  */
 function generateRandomId() {
   return 'user_' + Math.random().toString(36).substring(2, 10);
+}
+
+/**
+ * Clears all docs from DB.
+ */
+export const resetDB = async () => {
+  db.allDocs().then((result) =>
+    Promise.all(result.rows.map((row) =>
+      db.remove(row.id, row.value.rev)
+    ))
+  )
+    .then(() => console.log('DB successfully reset.'))
+    .catch((err) => console.log(err));
 }
 
 /**
