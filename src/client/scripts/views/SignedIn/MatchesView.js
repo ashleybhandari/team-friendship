@@ -1,9 +1,7 @@
 // created by Ashley Bhandari
 
-import { getUserById, getMatches, removeMatch } from '../../../data/MockBackend.js';
 import { Button } from '../../components/Button.js';
 import { Events } from '../../Events.js';
-import { users } from '../../../data/MockData.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'matches'
@@ -23,7 +21,7 @@ export class MatchesView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        // this.#events.subscribe('authenticated', (id) => this.render(id));
+        this.#events.subscribe('authenticated', (id) => this.render(id));
     }
 
     /**
@@ -33,14 +31,20 @@ export class MatchesView {
      * @returns {Promise<HTMLDivElement>}
      */
     async render(userId = null) {
-        // if user has not signed in, mock user is used for backdoor entry
         if (!userId) {
+            // page is empty if user hasn't signed in
             this.#matchesViewElm = document.createElement('div');
             this.#matchesViewElm.id = 'matchesView';
-            this.#user = users[0]; // TODO replace w pouchDB
+            return this.#matchesViewElm;
         } else {
-            this.#user = await db.getUserById(userId);
-            this.#matchesViewElm.innerHTML = '';
+            // get user if signed in
+            try {
+                this.#user = await db.getUserById(userId);
+                this.#matchesViewElm.innerHTML = '';
+            } catch (error) {
+                console.log(`Error fetching ${userId}: ${error.message}`);
+                return this.#matchesViewElm;
+            }
         }
 
         // matches list, profile container
@@ -66,63 +70,65 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await getMatches(this.#user.id) // DB TODO: replace with below when PouchDB works
-        // const matches = await db.getMatches(this.#user.id);
+        try {
+            const matches = await db.getMatches(this.#user._id);
 
-        // show message if user has no matches
-        if (matches.length === 0) {
-            const noMatches = document.createElement('div');
-            noMatches.id = 'noMatches';
-            noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
-            this.#matchesViewElm.appendChild(noMatches);
-            return;
-        }
-
-        // show list if user has matches
-        for (const id of matches) {
-            const user = await getUserById(id); // DB TODO: replace with below when PouchDB works
-            // const user = await db.getUserById(id);
-            
-            // match's entry in list
-            const elm = document.createElement('div');
-            elm.id = `user${user.id}`;
-            elm.classList.add('user');
-            
-            // name, profile picture
-            const name = user.name.nname
-                ? `${user.name.fname} (${user.name.nname})`
-                : user.name.fname;
-            
-            elm.innerHTML = `
-            <img src=${user.avatar} alt="${user.name.fname}'s profile picture">
-            <div class="bio">
-                <h2>${name}</h2>
-            </div>
-            `;
-
-            // location if match has housing
-            if (user.hasHousing) {
-                const housing = document.createElement('h3');
-                housing.innerText = `${user.housing.city} - `
-                    + `$${user.housing.rent.price}/${user.housing.rent.period}`;
-                elm.querySelector('.bio').appendChild(housing);
-            }
-            
-            // (truncated) description if match wrote one
-            if (user.description) {
-                const description = document.createElement('p');
-                description.innerText = user.description
-                    .replaceAll('\n', ' ')
-                    .slice(0, 120) + '...';
-                elm.querySelector('.bio').appendChild(description);
+            // show message if user has no matches
+            if (matches.length === 0) {
+                const noMatches = document.createElement('div');
+                noMatches.id = 'noMatches';
+                noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
+                this.#matchesViewElm.appendChild(noMatches);
+                return;
             }
 
-            // switch to profile view if match is clicked
-            elm.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.#switchView(user.id);
-            });
-            this.#listViewElm.appendChild(elm);
+            // show list if user has matches
+            for (const id of matches) {
+                const user = await db.getUserById(id);
+                
+                // match's entry in list
+                const elm = document.createElement('div');
+                elm.id = `user${user._id}`;
+                elm.classList.add('user');
+                
+                // name, profile picture
+                const name = user.name.nname
+                    ? `${user.name.fname} (${user.name.nname})`
+                    : user.name.fname;
+                
+                elm.innerHTML = `
+                <img src=${user.avatar} alt="${user.name.fname}'s profile picture">
+                <div class="bio">
+                    <h2>${name}</h2>
+                </div>
+                `;
+
+                // location if match has housing
+                if (user.hasHousing) {
+                    const housing = document.createElement('h3');
+                    housing.innerText = `${user.housing.city} - `
+                        + `$${user.housing.rent.price}/${user.housing.rent.period}`;
+                    elm.querySelector('.bio').appendChild(housing);
+                }
+                
+                // (truncated) description if match wrote one
+                if (user.description) {
+                    const description = document.createElement('p');
+                    description.innerText = user.description
+                        .replaceAll('\n', ' ')
+                        .slice(0, 120) + '...';
+                    elm.querySelector('.bio').appendChild(description);
+                }
+
+                // switch to profile view if match is clicked
+                elm.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.#switchView(user._id);
+                });
+                this.#listViewElm.appendChild(elm);
+            }   
+        } catch (error) {
+            console.log(`Error to rendering matches list: ${error.message}`);
         }
 
         this.#matchesViewElm.appendChild(this.#listViewElm);
@@ -182,10 +188,13 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await removeMatch(this.#user.id, this.#openedMatchId); // DB TODO: replace with below when PouchDB works
-            // await db.removeMatch(this.#user.id, this.#openedMatchId) ;
-            await this.#renderList();
-            this.#switchView();
+            try {
+                await db.removeMatch(this.#user._id, this.#openedMatchId) ;
+                await this.#renderList();
+                this.#switchView();
+            } catch (error) {
+                console.log(`Error unmatching ${this.#openedMatchId}: ${error.message}`);
+            }
         });
 
         elm.appendChild(toMatchesBtn);
@@ -199,12 +208,18 @@ export class MatchesView {
      * Injects the page with the selected match's Discover profile.
      * @param {Object} match - Discover page's publisher message
      * @param {number} match.id - Selected match's id
-     * @param {HTMLDivElement} match.id - Selected match's profile
+     * @param {HTMLDivElement} match.profile - Selected match's profile
      */
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
-        const email = (await getUserById(id)).email;
+        let email = '';
 
+        try {
+            email = (await db.getUserById(id)).email;
+        } catch (error) {
+            console.log(`Error fetching ${id}'s email: ${error.message}`);
+        }
+        
         this.#openedMatchId = id;
 
         // contact information
@@ -229,13 +244,13 @@ export class MatchesView {
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            history.replaceState(null, '', `/index.html/${this.#user.id}/matches/${matchId}`);
+            history.replaceState(null, '', `/${this.#user._id}/matches/${matchId}`);
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            history.replaceState(null, '', `/index.html/${this.#user.id}/matches`);
+            history.replaceState(null, '', `/${this.#user._id}/matches`);
         }
     }
 }

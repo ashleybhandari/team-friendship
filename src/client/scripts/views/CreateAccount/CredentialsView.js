@@ -80,7 +80,8 @@ export class CredentialsView {
             try {
                 // add to DB
                 const newUser = this.#createUser(email);
-                const userId = (await db.addUser(newUser)).id; 
+                const userId = (await db.addUser(newUser)).id;
+                
                 // publish user id to the other Create Account views
                 this.#events.publish('newUser', userId);
                 // navigate to next page

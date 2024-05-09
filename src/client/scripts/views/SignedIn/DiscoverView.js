@@ -3,8 +3,6 @@
 import { DiscoverButton } from '../../components/DiscoverButton.js';
 import { levelMap, characterMap, houseMap } from '../../helpers/discoverHelper.js';
 import { Events } from '../../Events.js';
-import { getAllUsers, getUserById } from '../../../data/MockBackend.js';
-import { users } from '../../../data/MockData.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 // view: 'discover'
@@ -20,7 +18,7 @@ export class DiscoverView {
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
-        // this.#events.subscribe('authenticated', (id) => this.render(id));
+        this.#events.subscribe('authenticated', (id) => this.render(id));
 
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
@@ -33,14 +31,20 @@ export class DiscoverView {
      * @returns {Promise<HTMLDivElement>}
      */
     async render(userId = null) {
-        // if user has not signed in, mock user is used for backdoor entry
         if (!userId) {
+            // page is empty if user hasn't signed in
             this.#discoverViewElm = document.createElement('div');
-            this.#discoverViewElm.classList.add('discoverView')
-            this.#curUser = users[0]; // TODO replace w pouchDB
+            this.#discoverViewElm.classList.add('discoverView');
+            return this.#discoverViewElm;
         } else {
-            this.#curUser = await db.getUserById(userId);
-            this.#discoverViewElm.innerHTML = '';
+            // get user if signed in
+            try {
+                this.#curUser = await db.getUserById(userId);
+                this.#discoverViewElm.innerHTML = '';
+            } catch (error) {
+                console.log(`Error fetching ${userId}: ${error.message}`);
+                return this.#discoverViewElm;
+            }
         }
 
         // get list of users to render on Discover
@@ -64,29 +68,9 @@ export class DiscoverView {
         this.#discoverViewElm.appendChild(infoSection);
 
         // like and reject buttons
-        const buttons = document.createElement('div');
-        buttons.classList.add('buttons');
-
-        const rejectBtn = await new DiscoverButton(false).render();
-        const likeBtn = await new DiscoverButton(true).render();
-
-        // handles "liking" or "rejecting" a profile
-        rejectBtn.addEventListener('click', () => {
-            // add to user's rejected list
-            this.#curUser.rejected.push(unseen[this.#unseenIndex].id);
-            // view the next profile
-            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
-        });
-        likeBtn.addEventListener('click', () => {
-            // add to user's liked list
-            this.#curUser.liked.push(unseen[this.#unseenIndex].id);
-            // view the next profile
-            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
-        });
-
-        buttons.appendChild(rejectBtn);
-        buttons.appendChild(likeBtn);
-        this.#discoverViewElm.appendChild(buttons);
+        this.#discoverViewElm.appendChild(
+            await this.#renderButtons(unseen, bioSection, infoSection)
+        );
 
         // inject user's information into the page
         this.#injectProfile(curProfile, bioSection, infoSection);
@@ -104,26 +88,30 @@ export class DiscoverView {
         elm.id = 'discoverProfile'
         elm.classList.add('discoverView');
 
-        // user to display
-        const user = await getUserById(id);
+        try {
+            // user to display
+            const user = await db.getUserById(id);
 
-        // add HTML
-        const bioSection = this.#addBioSection();
-        const infoSection = user.hasHousing
-            ? this.#addInfoSectionWithHousing()
-            : this.#addInfoSectionWithoutHousing();
-        elm.appendChild(bioSection);
-        elm.appendChild(infoSection);
-        
-        // inject user's info into the HTML
-        this.#injectBio(bioSection, user)
-        user.hasHousing
-            ? this.#injectInfoWithHousing(infoSection, user)
-            : this.#injectInfoWithoutHousing(infoSection, user);
+            // add HTML
+            const bioSection = this.#addBioSection();
+            const infoSection = user.hasHousing
+                ? this.#addInfoSectionWithHousing()
+                : this.#addInfoSectionWithoutHousing();
+            elm.appendChild(bioSection);
+            elm.appendChild(infoSection);
+            
+            // inject user's info into the HTML
+            this.#injectBio(bioSection, user)
+            user.hasHousing
+                ? this.#injectInfoWithHousing(infoSection, user)
+                : this.#injectInfoWithoutHousing(infoSection, user);
+        } catch (error) {
+            console.log(`Failed to render ${id}'s profile: ${error.message}`);
+        }
 
         // send the profile to MatchesView
         this.#events.publish('sendProfile', {
-            id: user.id, profile: elm
+            id, profile: elm
         });
     }
 
@@ -133,34 +121,61 @@ export class DiscoverView {
      * @returns {User[]}
      */
     async #getUnseenUsers() {
-        const allUsers = await getAllUsers();
+        try {
+            const allUsers = await db.getAllUsers();
 
-        const fitsRequirements = (user) =>
-            // user has housing if curUser doesn't, vice versa
-            this.#curUser.hasHousing !== user.hasHousing &&
-            // user is not curUser
-            user.id !== this.#curUser.id                 &&
-            // curUser has not already liked, rejected, or matched with user
-            !this.#curUser.liked.includes(user.id)       &&
-            !this.#curUser.rejected.includes(user.id)    &&
-            !this.#curUser.matches.includes(user.id);
+            const fitsRequirements = (user) =>
+                // user is not curUser
+                user._id !== this.#curUser._id                &&
+                // user has housing if curUser doesn't, vice versa
+                this.#curUser.hasHousing !== user.hasHousing  &&
+                // curUser has not already liked, rejected, or matched with user
+                !this.#curUser.liked.includes(user._id)       &&
+                !this.#curUser.rejected.includes(user._id)    &&
+                !this.#curUser.matches.includes(user._id);
 
-        const fitsPreferences = (user) =>
-            this.#curUser.hasHousing !== user.hasHousing &&
-            !this.#curUser.hasHousing &&
-            user.id !== this.#curUser.id && 
-            this.#curUser.preferences.cities.includes(user.housing.city) &&
-            user.housing.rent <= this.#curUser.preferences.rent.max &&
-            this.#curUser.preferences.gender[user.housing.gender] &&
-            this.#curUser.preferences.leaseLength[user.housing.leaseLength] &&
-            this.#curUser.preferences.leaseType[user.housing.leaseType] &&
-            this.#curUser.preferences.roomType[user.housing.roomType] &&
-            this.#curUser.preferences.buildingType[user.housing.buildingType] &&
-            this.#curUser.preferences.timeframe[user.housing.timeframe] &&
-             Object.keys(this.#curUser.preferences.amenities).some(
-            amenity => this.#curUser.preferences.amenities[amenity] && user.housing.amenities.includes(amenity)
-        );
-        return allUsers.filter(fitsRequirements).filter(fitsPreferences);
+            return allUsers.filter(fitsRequirements);
+        } catch (error) {
+            console.log(`Failed to get unseen users: ${error.message}`);
+            return [];
+        }
+    }
+
+    /**
+     * Renders like and reject buttons.
+     * @param {User[]} unseen - array of unseen users
+     * @param {HTMLDivElement} bioSection - Skeleton for bio section
+     * @param {HTMLDivElement} infoSection - Skeleton for info section
+     * @returns {HTMLDivElement}
+     */
+    async #renderButtons(unseen, bioSection, infoSection) {
+        const elm = document.createElement('div');
+        elm.classList.add('buttons');
+
+        const rejectBtn = await new DiscoverButton(false).render();
+        const likeBtn = await new DiscoverButton(true).render();
+
+        // add profile to liked/rejected and view next profile
+        const handler = async (userList) => {
+            // add current profile to user's 'liked' or 'rejected' list
+            try {
+                const user = await db.getUserById(this.#curUser._id);
+                user[userList].push(unseen[this.#unseenIndex]._id);
+                await db.updateUser(user);
+            } catch (error) {
+                console.log(`Error adding ${unseen[this.#unseenIndex]._id} to ${user._id}.${userList}.`);
+            }
+            // view the next profile
+            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
+        }
+
+        rejectBtn.addEventListener('click', async () => handler('rejected'));
+        likeBtn.addEventListener('click', async () => handler('liked'));
+
+        elm.appendChild(rejectBtn);
+        elm.appendChild(likeBtn);
+
+        return elm;
     }
 
     /**
@@ -181,9 +196,6 @@ export class DiscoverView {
             <p class="bio-level"></p>
             <p class="bio-school"></p>
         </div>
-        <div class="bio-description">
-            <div class="about"></div>
-        </div>
         <div class="bio-social-media">
             <div class="discover-instagram">
                 <div class="discover-instagram-text"></div>
@@ -191,6 +203,9 @@ export class DiscoverView {
             <div class="discover-facebook">
                 <div class="discover-facebook-text"></div>
             </div>
+        </div>
+        <div class="bio-description">
+            <div class="about"></div>
         </div>
         `;
 
@@ -320,19 +335,11 @@ export class DiscoverView {
         }
 
         // Adds user social media
-        if(user.socials.ig !== "") {
-            // Note: image tag is not working, so it's commented out for now.
-            // container.querySelector('.discover-instagram-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/instagram.png";
-            // container.querySelector('.discover-instagram-icon').style.width = "18px";
-            // container.querySelector('.discover-instagram-icon').style.height = "18px";
+        if (user.socials.ig) {
             container.querySelector('.discover-instagram-text').innerText = "Instagram: " + user.socials.ig;
         }
 
-        if(user.socials.fb !== "") {
-            // Note: image tag is not working, so it's commented out for now.
-            // container.querySelector('.discover-facebook-icon').src = "https://raw.githubusercontent.com/ashleybhandari/team-friendship/main/assets/facebook.png";
-            // container.querySelector('.discover-facebook-icon').style.width = "18px";
-            // container.querySelector('.discover-facebook-icon').style.height = "18px";
+        if (user.socials.fb) {
             container.querySelector('.discover-facebook-text').innerText = "Facebook: " + user.socials.fb;
         }
     }

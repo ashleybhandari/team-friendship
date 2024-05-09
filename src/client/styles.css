@@ -165,7 +165,7 @@ body {
     width: 60px;
     border-radius: 50%;
     border: 2px solid;
-    margin: 0 20px;
+    margin: 30px 20px 0;
     padding-top: 6px;
     cursor: pointer;
 }
@@ -994,7 +994,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 18px 0 26px;
+    margin-top: 18px;
 }
 
 .discoverView .discover-bio .bio-titles p {
@@ -1003,8 +1003,14 @@ body {
     margin: 4px 0;
 }
 
+.discoverView .discover-bio .bio-social-media {
+    text-align: center;
+    margin-top: 30px;
+}
+
 .discoverView .discover-bio .bio-description {
     text-align: center;
+    margin-top: 30px;
 }
 
 .discoverView .discover-info {
@@ -1238,8 +1244,4 @@ body {
 
 #settingsView #credentials-content .text-input {
     margin: 0 10px;
-}
-
-.bio-social-media {
-    margin-top: 1em;
 }

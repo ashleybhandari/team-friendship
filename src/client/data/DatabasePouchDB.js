@@ -1,14 +1,10 @@
+const db = new PouchDB('roommate-matching');
 
-// DB TODO: uncomment
-//import PouchDB from "pouchdb";
-//var PouchDB = require('pouchdb');
-//var db = new PouchDB('my_database');
-//import PouchDB from 'pouchdb';
-//import db from './index.js';
-
-//import PouchDB from "pouchdb";
-const db = new PouchDB("roommate-matching");
-
+/**
+ * Generates an id for a PouchDB doc.
+ * 
+ * @returns {string} - id
+ */
 function generateRandomId() {
   return 'user_' + Math.random().toString(36).substring(2, 10);
 }
@@ -37,14 +33,11 @@ export const getUserById = async (id) => {
  * Adds a new user to the database.
  *
  * @param {User} user - The user object to add.
- * @returns {Promise<{user: User, id: string}>} A promise that resolves with the updated user object and its id.
- * @returns {string} - The id of the new user.
+ * @returns {Promise<User>} A promise that resolves with the added user.
  */
 export const addUser = async (user) => {
-  const id = user.id || generateRandomId();
-
   const newUser = {
-    _id: id,
+    _id: user._id ? user._id : generateRandomId(),
     email: user.email,
     avatar: user.avatar,
     name: user.name,
@@ -62,7 +55,7 @@ export const addUser = async (user) => {
     matches: user.matches
   };
 
-  return { user: db.put(newUser), id };
+  return db.put(newUser);
 };
 
 /**
@@ -127,11 +120,14 @@ export const removeMatch = async (curUserId, matchId) => {
   const curUser = await getUserById(curUserId);
   const match = await getUserById(matchId);
 
-  const matchIndex = user.matches.indexOf(matchId);
+  // for both users, remove from matches and add to rejected
+  const matchIndex = curUser.matches.indexOf(matchId);
   curUser.matches.splice(matchIndex, 1);
+  curUser.rejected.push(matchId);
 
   const curUserIndex = match.matches.indexOf(curUserId);
   match.matches.splice(curUserIndex, 1);
+  match.rejected.push(curUserId);
 
   await updateUser(curUser);
   await updateUser(match);
@@ -162,62 +158,3 @@ export const authenticateUser = async (email, password) => {
     }
   }
 }
-
-// /**
-//  * Fetches all housings from the database.
-//  *
-//  * @returns {Promise} A promise that resolves with an array of housing objects.
-//  */
-// export const getAllHousings = async () => {
-//   return db.allDocs({ include_docs: true, startkey: 'housing_' })
-//     .then(result => result.rows.map(row => row.doc));
-// }
-
-// /**
-//  * Fetches a housing by its ID from the database.
-//  *
-//  * @param {string} id - The ID of the housing to fetch.
-//  * @returns {Promise} A promise that resolves with a housing object or null if the housing is not found.
-//  */
-// export const getHousingById = async (id) => {
-//   return db.get(`housing_${id}`);
-// }
-
-// /**
-//  * Adds a new housing to the database.
-//  *
-//  * @param {object} housing - The housing object to add.
-//  * @returns {Promise} A promise that resolves with the added housing object.
-//  */
-// export const updateHousing = async (housing) => {
-//   const updatedHousing = {
-//     _id: `housing_${housing.id}`,
-//     _rev: housing._rev, // Include the _rev property for updates
-//     city: housing.city,
-//     rent: housing.rent,
-//     beds: housing.beds,
-//     baths: housing.baths,
-//     gender: housing.gender,
-//     utilities: housing.utilities,
-//     leaseLength: housing.leaseLength,
-//     leaseType: housing.leaseType,
-//     roomType: housing.roomType,
-//     buildingType: housing.buildingType,
-//     timeframe: housing.timeframe,
-//     amenities: housing.amenities,
-//     pics: housing.pics,
-//     notes: housing.notes
-//   };
-
-//   return db.put(updatedHousing);
-// }
-
-// export const deleteHousing = async (id) => {
-//   return db.get(`housing_${id}`)
-//     .then(doc => db.remove(doc));
-// }
-
-// export async function loadAllUsers() {
-//   const result = await db.allDocs({ include_docs: true });
-//   return result.rows.map((row) => row.doc);
-// }
