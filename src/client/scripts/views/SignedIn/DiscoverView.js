@@ -155,22 +155,28 @@ export class DiscoverView {
         const rejectBtn = await new DiscoverButton(false).render();
         const likeBtn = await new DiscoverButton(true).render();
 
-        // add profile to liked/rejected and view next profile
-        const handler = async (userList) => {
-            // add current profile to user's 'liked' or 'rejected' list
+        rejectBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
             try {
-                const user = await db.getUserById(this.#curUser._id);
-                user[userList].push(unseen[this.#unseenIndex]._id);
-                await db.updateUser(user);
+                // add to rejected list
+                await db.addRejected(this.#curUser._id, unseen[this.#unseenIndex]._id);
+                // view the next profile
+                this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
             } catch (error) {
-                console.log(`Error adding ${unseen[this.#unseenIndex]._id} to ${user._id}.${userList}.`);
+                console.log(`Error adding ${unseen[this.#unseenIndex]._id} to rejected list.`);
             }
-            // view the next profile
-            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
-        }
-
-        rejectBtn.addEventListener('click', async () => handler('rejected'));
-        likeBtn.addEventListener('click', async () => handler('liked'));
+        });
+        likeBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                // add to liked or matches list
+                await db.addLiked(this.#curUser._id, unseen[this.#unseenIndex]._id);
+                // view the next profile
+                this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
+            } catch (error) {
+                console.log(`Error adding ${unseen[this.#unseenIndex]._id} to liked or matches list.`);
+            }
+        });
 
         elm.appendChild(rejectBtn);
         elm.appendChild(likeBtn);

@@ -100,14 +100,56 @@ export const deleteUser = async (id) => {
 }
 
 /**
- * Fetches all matches for a user.
- *
- * @param {string} id - The ID of the user.
- * @returns {Promise<number[]>} A promise that resolves with an array of match IDs.
+ * Adds a user to curUser's rejected list.
+ * 
+ * @param {string} curUserId - The ID of the current user.
+ * @param {string} rejectedId - The ID of the rejected user.
  */
-export const getMatches = async (id) => {
-  const user = await getUserById(id);
-  return user.matches;
+export const addRejected = async (curUserId, rejectedId) => {
+  const user = await getUserById(curUserId);
+  user.rejected.push(rejectedId);
+  await updateUser(user);
+}
+
+/**
+ * Adds a user to curUser's liked list (or matches if they've also been liked).
+ * 
+ * @param {string} curUserId - The ID of the current user.
+ * @param {string} likedId - The ID of the liked user.
+ */
+export const addLiked = async (curUserId, likedId) => {
+  const curUser = await getUserById(curUserId);
+  const likedUser = await getUserById(likedId);
+
+  if (likedUser.liked.includes(curUserId)) {
+    await addMatch(curUserId, likedId);
+  }
+  else {
+    curUser.liked.push(likedId);
+    await updateUser(curUser);
+  }
+}
+
+/**
+ * Adds a match between two users.
+ * 
+ * @param {string} curUserId - The ID of the current user.
+ * @param {string} matchId - The ID of the matched user.
+ */
+export const addMatch = async (curUserId, matchId) => {
+  const curUser = await getUserById(curUserId);
+  const match = await getUserById(matchId);
+
+  // remove from liked
+  const curUserIndex = match.liked.indexOf(curUserId);
+  match.liked.splice(curUserIndex, 1);
+
+  // add to matches
+  curUser.matches.push(matchId);
+  match.matches.push(curUserId);
+
+  await updateUser(curUser);
+  await updateUser(match);
 }
 
 /**
@@ -131,6 +173,17 @@ export const removeMatch = async (curUserId, matchId) => {
 
   await updateUser(curUser);
   await updateUser(match);
+}
+
+/**
+ * Fetches all matches for a user.
+ *
+ * @param {string} id - The ID of the user.
+ * @returns {Promise<number[]>} A promise that resolves with an array of match IDs.
+ */
+export const getMatches = async (id) => {
+  const user = await getUserById(id);
+  return user.matches;
 }
 
 /**
