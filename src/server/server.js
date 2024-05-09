@@ -14,8 +14,6 @@ app.get('/', (req, res) => {
    app.use('/landing', landingRoute);
 });
 
-// Use modular route for the landing page
-app.use('/landing', landingRoute);
 
 // 404 Not Found Middleware (after all routes)
 // It handles any requests that don't match the defined routes
