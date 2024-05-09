@@ -38,11 +38,15 @@ export class SettingsView {
             this.#settingsViewElm.id = 'settingsView';
             return this.#settingsViewElm;
         } else {
-            this.#user = await db.getUserById(userId);
-            this.#settingsViewElm.innerHTML = '';
+            // get user if signed in
+            try {
+                this.#user = await db.getUserById(userId);
+                this.#settingsViewElm.innerHTML = '';
+            } catch (error) {
+                console.log(`Error fetching ${userId}: ${error}`);
+                return this.#settingsViewElm;
+            }
         }
-
-        this.#user = await db.getUserById(userId);
 
         // page header
         this.#settingsViewElm.innerHTML = `

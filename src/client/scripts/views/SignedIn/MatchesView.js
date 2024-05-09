@@ -37,8 +37,14 @@ export class MatchesView {
             this.#matchesViewElm.id = 'matchesView';
             return this.#matchesViewElm;
         } else {
-            this.#user = await db.getUserById(userId);
-            this.#matchesViewElm.innerHTML = '';
+            // get user if signed in
+            try {
+                this.#user = await db.getUserById(userId);
+                this.#matchesViewElm.innerHTML = '';
+            } catch (error) {
+                console.log(`Error fetching ${userId}: ${error}`);
+                return this.#matchesViewElm;
+            }
         }
 
         // matches list, profile container
@@ -64,61 +70,65 @@ export class MatchesView {
         this.#listViewElm = document.createElement('div');
         this.#listViewElm.id = 'listView';
 
-        const matches = await db.getMatches(this.#user._id);
+        try {
+            const matches = await db.getMatches(this.#user._id);
 
-        // show message if user has no matches
-        if (matches.length === 0) {
-            const noMatches = document.createElement('div');
-            noMatches.id = 'noMatches';
-            noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
-            this.#matchesViewElm.appendChild(noMatches);
-            return;
-        }
-
-        // show list if user has matches
-        for (const id of matches) {
-            const user = await db.getUserById(id);
-            
-            // match's entry in list
-            const elm = document.createElement('div');
-            elm.id = `user${user._id}`;
-            elm.classList.add('user');
-            
-            // name, profile picture
-            const name = user.name.nname
-                ? `${user.name.fname} (${user.name.nname})`
-                : user.name.fname;
-            
-            elm.innerHTML = `
-            <img src=${user.avatar} alt="${user.name.fname}'s profile picture">
-            <div class="bio">
-                <h2>${name}</h2>
-            </div>
-            `;
-
-            // location if match has housing
-            if (user.hasHousing) {
-                const housing = document.createElement('h3');
-                housing.innerText = `${user.housing.city} - `
-                    + `$${user.housing.rent.price}/${user.housing.rent.period}`;
-                elm.querySelector('.bio').appendChild(housing);
-            }
-            
-            // (truncated) description if match wrote one
-            if (user.description) {
-                const description = document.createElement('p');
-                description.innerText = user.description
-                    .replaceAll('\n', ' ')
-                    .slice(0, 120) + '...';
-                elm.querySelector('.bio').appendChild(description);
+            // show message if user has no matches
+            if (matches.length === 0) {
+                const noMatches = document.createElement('div');
+                noMatches.id = 'noMatches';
+                noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
+                this.#matchesViewElm.appendChild(noMatches);
+                return;
             }
 
-            // switch to profile view if match is clicked
-            elm.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.#switchView(user._id);
-            });
-            this.#listViewElm.appendChild(elm);
+            // show list if user has matches
+            for (const id of matches) {
+                const user = await db.getUserById(id);
+                
+                // match's entry in list
+                const elm = document.createElement('div');
+                elm.id = `user${user._id}`;
+                elm.classList.add('user');
+                
+                // name, profile picture
+                const name = user.name.nname
+                    ? `${user.name.fname} (${user.name.nname})`
+                    : user.name.fname;
+                
+                elm.innerHTML = `
+                <img src=${user.avatar} alt="${user.name.fname}'s profile picture">
+                <div class="bio">
+                    <h2>${name}</h2>
+                </div>
+                `;
+
+                // location if match has housing
+                if (user.hasHousing) {
+                    const housing = document.createElement('h3');
+                    housing.innerText = `${user.housing.city} - `
+                        + `$${user.housing.rent.price}/${user.housing.rent.period}`;
+                    elm.querySelector('.bio').appendChild(housing);
+                }
+                
+                // (truncated) description if match wrote one
+                if (user.description) {
+                    const description = document.createElement('p');
+                    description.innerText = user.description
+                        .replaceAll('\n', ' ')
+                        .slice(0, 120) + '...';
+                    elm.querySelector('.bio').appendChild(description);
+                }
+
+                // switch to profile view if match is clicked
+                elm.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.#switchView(user._id);
+                });
+                this.#listViewElm.appendChild(elm);
+            }   
+        } catch (error) {
+            console.log(`Error to rendering matches list: ${error}`);
         }
 
         this.#matchesViewElm.appendChild(this.#listViewElm);
@@ -178,9 +188,13 @@ export class MatchesView {
         // unmatch and switch to matches list
         unmatchBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await db.removeMatch(this.#user._id, this.#openedMatchId) ;
-            await this.#renderList();
-            this.#switchView();
+            try {
+                await db.removeMatch(this.#user._id, this.#openedMatchId) ;
+                await this.#renderList();
+                this.#switchView();
+            } catch (error) {
+                console.log(`Error unmatching ${this.#openedMatchId}: ${error}`);
+            }
         });
 
         elm.appendChild(toMatchesBtn);
@@ -198,8 +212,14 @@ export class MatchesView {
      */
     async #injectProfile(match) {
         const [id, profile] = Object.values(match);
-        const email = (await db.getUserById(id)).email;
+        let email = '';
 
+        try {
+            email = (await db.getUserById(id)).email;
+        } catch (error) {
+            console.log(`Error fetching ${id}'s email: ${error}`);
+        }
+        
         this.#openedMatchId = id;
 
         // contact information

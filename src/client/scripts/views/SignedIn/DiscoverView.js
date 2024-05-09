@@ -38,8 +38,14 @@ export class DiscoverView {
             this.#discoverViewElm.classList.add('discoverView');
             return this.#discoverViewElm;
         } else {
-            this.#curUser = await db.getUserById(userId);
-            this.#discoverViewElm.innerHTML = '';
+            // get user if signed in
+            try {
+                this.#curUser = await db.getUserById(userId);
+                this.#discoverViewElm.innerHTML = '';
+            } catch (error) {
+                console.log(`Error fetching ${userId}: ${error}`);
+                return this.#discoverViewElm;
+            }
         }
 
         // get list of users to render on Discover
@@ -149,7 +155,7 @@ export class DiscoverView {
                 user[userList].push(unseen[this.#unseenIndex]._id);
                 await db.updateUser(user);
             } catch (error) {
-                console.log(`Failed to add user to ${userList}.`);
+                console.log(`Error adding ${unseen[this.#unseenIndex]._id} to ${user._id}.${userList}.`);
             }
             // view the next profile
             this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
