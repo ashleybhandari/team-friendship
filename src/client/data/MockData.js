@@ -18,14 +18,14 @@ const u0 = new User(
     46,
     { identity: 'man', pronouns: 'he/him' },
     { clean: 1, sleep: 2, noise: 2, guests: 1 },
-    { major: 'Culinary Arts', school: 'Umass Amherst', level: 'grad' },
-    { fb: 'fbobob', ig: 'bobig'},
+    { major: 'Culinary Arts', school: 'Umass Amherst' },
+    {},
     'Bob. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
     false, // hasHousing
     new Preferences(
         ['Amherst', 'Sunderland', 'Northampton'],
         { min: 600, max: 1000 },
-        { min: 1, max: 3 },
+        {},
         { female: false, male: true, mixed: true },
         { semester: true, year: true },
         { rent: true },
