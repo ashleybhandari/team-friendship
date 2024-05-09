@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 // Import the LandingView class
-import { LandingView } from '../views/landing/landingView.js';
+import { LandingView } from '../../client/views/LandingView.js';
 
 /**
  * Defines the routes for the Landing Page.
