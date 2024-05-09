@@ -5,8 +5,6 @@
  * by Prof. Tim Richards.
  */
 
-import * as db from '../../../data/DatabasePouchDB.js';
-
 export class Events {
     /**
      * @private
