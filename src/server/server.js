@@ -6,6 +6,8 @@ const PORT = 3000;
 // app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // This is useful only if you're handling URL-encoded data in POST/PUT requests
 
+import LandingView from './routes/landing.js';
+
 app.get('/', async (req, res) => {
     const landingView = new LandingView();
     const landingContainer = await landingView.render();
