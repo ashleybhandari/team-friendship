@@ -38,7 +38,6 @@ export const getUserById = async (id) => {
  *
  * @param {User} user - The user object to add.
  * @returns {Promise<User>} A promise that resolves with the added user.
- * @returns {string} - The id of the new user.
  */
 export const addUser = async (user) => {
   const newUser = {
