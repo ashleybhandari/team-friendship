@@ -5,7 +5,6 @@ import { CreateAccountContainer } from './views/CreateAccount/CreateAccountConta
 import { SignedInContainer } from './views/SignedIn/SignedInContainer.js';
 import { SignedOutContainer } from './views/SignedOut/SignedOutContainer.js';
 import { Events } from './Events.js';
-import { users } from '../data/MockData.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
@@ -40,7 +39,7 @@ export class App {
         this.#signedOutCntrElm = await new SignedOutContainer().render();
 
         // initializes DB
-        await this.#initDB();
+        await db.init();
 
         // initializes view
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
@@ -117,16 +116,5 @@ export class App {
         }
 
         return redirect;
-    }
-
-    /**
-     * Initializes DB with mock users.
-     */
-    async #initDB() {
-        for (const user of users) {
-            try {
-                await db.addUser(user);
-            } catch (error) {}
-        }
     }
 }

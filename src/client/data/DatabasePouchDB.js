@@ -1,3 +1,5 @@
+import { users } from '../data/MockData.js';
+
 const db = new PouchDB('roommate-matching');
 
 /**
@@ -7,6 +9,23 @@ const db = new PouchDB('roommate-matching');
  */
 function generateRandomId() {
   return 'user_' + Math.random().toString(36).substring(2, 10);
+}
+
+/**
+ * Initializes DB with mock users.
+ */
+export const init = async () => {
+  const info = await db.info();
+
+  if (info.doc_count === 0) {
+    for (const user of users) {
+      try {
+        await addUser(user);
+      } catch (error) {
+        console.log(`Failed to add ${user._id} to the DB: ${error.message}`);
+      }
+    }
+  }
 }
 
 /**
@@ -141,7 +160,7 @@ export const addLiked = async (curUserId, likedId) => {
  * @param {string} curUserId - The ID of the current user.
  * @param {string} matchId - The ID of the matched user.
  */
-export const addMatch = async (curUserId, matchId) => {
+const addMatch = async (curUserId, matchId) => {
   const curUser = await getUserById(curUserId);
   const match = await getUserById(matchId);
 

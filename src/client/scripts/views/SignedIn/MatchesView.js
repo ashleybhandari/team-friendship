@@ -143,7 +143,7 @@ export class MatchesView {
                 this.#listViewElm.appendChild(elm);
             }   
         } catch (error) {
-            console.log(`Error to rendering matches list: ${error.message}`);
+            console.log(`Error rendering matches list: ${error.message}`);
         }
     }
 
@@ -252,7 +252,7 @@ export class MatchesView {
      * @param {number} [matchId]
      */
     #switchView(matchId = null) {
-        if (matchId !== null) {
+        if (matchId) {
             // view match's profile
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
