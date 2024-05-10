@@ -22,6 +22,9 @@ export class MatchesView {
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
         this.#events.subscribe('authenticated', (id) => this.render(id));
+
+        // Published by DiscoverView when a new match occurs.
+        this.#events.subscribe('newMatch', (matchId) => this.#renderList())
     }
 
     /**
@@ -52,7 +55,7 @@ export class MatchesView {
         await this.#renderProfile();
 
         // initialize view with matches list
-        this.#switchView();
+        this.#switchView(null, false);
 
         // Published by DiscoverView. Injects the published element (a user
         // profile) into MatchView's profile view.
@@ -67,19 +70,31 @@ export class MatchesView {
      * description.
      */
     async #renderList() {
-        this.#listViewElm = document.createElement('div');
-        this.#listViewElm.id = 'listView';
+        if (!this.#listViewElm) {
+            this.#listViewElm = document.createElement('div');
+            this.#listViewElm.id = 'listView';
+
+            // message if user has no matches
+            const noMatchesMsg = document.createElement('div');
+            noMatchesMsg.id = 'noMatchesMsg';
+            noMatchesMsg.innerText = `No matches yet (don't worry, they'll come!)`;
+
+            this.#matchesViewElm.appendChild(noMatchesMsg);
+            this.#matchesViewElm.appendChild(this.#listViewElm);
+        } else {
+            this.#listViewElm.innerHTML = '';
+        }
 
         try {
             const matches = await db.getMatches(this.#user._id);
 
-            // show message if user has no matches
+            // only show "no matches" message if user has no matches
+            const noMatchesMsg = this.#matchesViewElm.querySelector('#noMatchesMsg');
             if (matches.length === 0) {
-                const noMatches = document.createElement('div');
-                noMatches.id = 'noMatches';
-                noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
-                this.#matchesViewElm.appendChild(noMatches);
-                return;
+                noMatchesMsg.classList.remove('hidden');
+                return; // do not render the matches list
+            } else {
+                noMatchesMsg.classList.add('hidden')
             }
 
             // show list if user has matches
@@ -128,10 +143,8 @@ export class MatchesView {
                 this.#listViewElm.appendChild(elm);
             }   
         } catch (error) {
-            console.log(`Error to rendering matches list: ${error.message}`);
+            console.log(`Error rendering matches list: ${error.message}`);
         }
-
-        this.#matchesViewElm.appendChild(this.#listViewElm);
     }
 
     /**
@@ -236,21 +249,26 @@ export class MatchesView {
 
     /**
      * Switches between viewing all matches and a selected match's profile
-     * @param {number} [matchId]
+     * @param {string} [matchId]
+     * @param {boolean} [replaceState = true] - whether the link should change
      */
-    #switchView(matchId = null) {
-        if (matchId !== null) {
+    #switchView(matchId = null, replaceState = true) {
+        let url;
+
+        if (matchId) {
             // view match's profile
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            history.replaceState(null, '', `/${this.#user._id}/matches/${matchId}`);
+            url = `/${this.#user._id}/matches/${matchId}`;
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            history.replaceState(null, '', `/${this.#user._id}/matches`);
+            url = `/${this.#user._id}/matches`;
         }
+
+        if (replaceState) history.replaceState(null, '', url);
     }
 }

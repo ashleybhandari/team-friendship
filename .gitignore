@@ -6220,3 +6220,15 @@ node_modules/leveldown/build/Release/obj.target/snappy/deps/snappy/snappy/snappy
 node_modules/leveldown/build/Release/obj.target/snappy/deps/snappy/snappy/snappy.o
 node_modules/leveldown/build/deps/leveldb/leveldb.target.mk
 node_modules/leveldown/build/deps/snappy/snappy.target.mk
+node_modules/level/node_modules/.bin/node-gyp-build-optional.cmd
+node_modules/level/node_modules/.bin/node-gyp-build-optional.ps1
+node_modules/level/node_modules/.bin/node-gyp-build-test.cmd
+node_modules/level/node_modules/.bin/node-gyp-build-test.ps1
+node_modules/level/node_modules/.bin/node-gyp-build.cmd
+node_modules/level/node_modules/.bin/node-gyp-build.ps1
+node_modules/pouchdb/node_modules/.bin/node-gyp-build-optional.cmd
+node_modules/pouchdb/node_modules/.bin/node-gyp-build-optional.ps1
+node_modules/pouchdb/node_modules/.bin/node-gyp-build-test.cmd
+node_modules/pouchdb/node_modules/.bin/node-gyp-build-test.ps1
+node_modules/pouchdb/node_modules/.bin/node-gyp-build.cmd
+node_modules/pouchdb/node_modules/.bin/node-gyp-build.ps1

@@ -13,14 +13,14 @@ export class Preferences {
      *   @param {number} [occupants.min]
      *   @param {number} [occupants.max]
      * @param {Object} gender - Gender-inclusivity of the accommodation (multi-select)
-     *   @param {boolean} [gender.female] - All-female
-     *   @param {boolean} [gender.male] - All-male
+     *   @param {boolean} [gender.allFemale] - All-female
+     *   @param {boolean} [gender.allMale] - All-male
      *   @param {boolean} [gender.mixed] - Mixed
      * @param {Object} leaseLength - Multi-select
-     *   @param {boolean} [leaseLength.semester]
-     *   @param {boolean} [leaseLength.month]
-     *   @param {boolean} [leaseLength.halfYear]
-     *   @param {boolean} [leaseLength.year]
+     *   @param {boolean} [leaseLength.perSemester]
+     *   @param {boolean} [leaseLength.monthly]
+     *   @param {boolean} [leaseLength.sixMonths]
+     *   @param {boolean} [leaseLength.yearly]
      * @param {Object} leaseType - Multi-select
      *   @param {boolean} [leaseType.rent]
      *   @param {boolean} [leaseType.sublet]
@@ -49,15 +49,15 @@ export class Preferences {
     constructor(cities, rent, occupants, gender, leaseLength, leaseType,
         roomType, buildingType, timeframe, amenities
     ) {
-        this.cities = cities;
-        this.rent = rent;
-        this.occupants = occupants;
-        this.gender = gender;
-        this.leaseLength = leaseLength;
-        this.leaseType = leaseType;
-        this.roomType = roomType;
-        this.buildingType = buildingType;
-        this.timeframe = timeframe;
-        this.amenities = amenities;
+        this.cities       = cities       ? cities       : [];
+        this.rent         = rent         ? rent         : {};
+        this.occupants    = occupants    ? occupants    : {};
+        this.gender       = gender       ? gender       : {};
+        this.leaseLength  = leaseLength  ? leaseLength  : {};
+        this.leaseType    = leaseType    ? leaseType    : {};
+        this.roomType     = roomType     ? roomType     : {};
+        this.buildingType = buildingType ? buildingType : {};
+        this.timeframe    = timeframe    ? timeframe    : {};
+        this.amenities    = amenities    ? amenities    : {};
     }
 }

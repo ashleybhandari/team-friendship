@@ -51,7 +51,7 @@ const characterMap = new Map([
 const houseMap = new Map([
     ['perSemester', 'Semester-long'],
     ['monthly', '1-month'],
-    ['halfYear', '6-month'],
+    ['sixMonths', '6-month'],
     ['yearly', '1-year'],
     ['allFemale', 'All-female'],
     ['allMale', 'All-male'],

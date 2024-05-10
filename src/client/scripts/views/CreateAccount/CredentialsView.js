@@ -5,8 +5,6 @@ import { Button } from '../../components/Button.js';
 import { TextInput } from '../../components/TextInput.js';
 import { Events } from '../../Events.js';
 import { User } from '../../../data/data_structures/User.js';
-import { Housing } from '../../../data/data_structures/Housing.js';
-import { Preferences } from '../../../data/data_structures/Preferences.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
@@ -79,8 +77,9 @@ export class CredentialsView {
                     
             try {
                 // add to DB
-                const newUser = this.#createUser(email);
-                const userId = (await db.addUser(newUser)).id;
+                const user = new User();
+                user.email = email;
+                const userId = (await db.addUser(user)).id;
                 
                 // publish user id to the other Create Account views
                 this.#events.publish('newUser', userId);
@@ -93,61 +92,5 @@ export class CredentialsView {
         });
 
         return credViewElm;
-    }
-
-    /**
-     * Creates a new User instance to be added to the DB.
-     * @param {string} [email] 
-     * @returns {User}
-     */
-    #createUser(email = null) {
-        const housing = new Housing(
-            null, // city
-            {}, // rent
-            null, // beds
-            null, // baths
-            null, // gender
-            {}, // utilities
-            null, // leaseLength
-            null, // leaseType
-            null, // roomType
-            null, // buildingType
-            null, // timeframe
-            {}, // amenities
-            [], // pics
-            null // notes
-        );
-
-        const prefs = new Preferences(
-            [], // cities
-            {}, // rent
-            {}, // occupants
-            {}, // gender
-            {}, // leaseLength
-            {}, // leaseType
-            {}, // roomType
-            {}, // buildingType
-            {}, // timeframe
-            {} // amenities
-        );
-        
-        return new User(
-            null,     // id
-            email,    // email
-            null,     // avatar
-            {},       // name
-            null,     // age
-            {},       // gender
-            {},       // character
-            {},       // education
-            {},       // socials
-            null,     // description
-            false,    // hasHousing
-            prefs,    // preferences
-            housing,  // housing
-            [],       // liked
-            [],       // rejected
-            []        // matches
-        );
     }
 }
