@@ -95,7 +95,7 @@ export class MatchesView {
                 return; // do not render the matches list
             } else {
                 noMatchesMsg.classList.add('hidden')
-            }            
+            }
 
             // show list if user has matches
             for (const id of matches) {
@@ -249,7 +249,8 @@ export class MatchesView {
 
     /**
      * Switches between viewing all matches and a selected match's profile
-     * @param {number} [matchId]
+     * @param {string} [matchId]
+     * @param {boolean} [replaceState = true] - whether the link should change
      */
     #switchView(matchId = null, replaceState = true) {
         let url;

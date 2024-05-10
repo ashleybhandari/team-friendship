@@ -13,14 +13,14 @@ export class Preferences {
      *   @param {number} [occupants.min]
      *   @param {number} [occupants.max]
      * @param {Object} gender - Gender-inclusivity of the accommodation (multi-select)
-     *   @param {boolean} [gender.female] - All-female
-     *   @param {boolean} [gender.male] - All-male
+     *   @param {boolean} [gender.allFemale] - All-female
+     *   @param {boolean} [gender.allMale] - All-male
      *   @param {boolean} [gender.mixed] - Mixed
      * @param {Object} leaseLength - Multi-select
-     *   @param {boolean} [leaseLength.semester]
-     *   @param {boolean} [leaseLength.month]
-     *   @param {boolean} [leaseLength.halfYear]
-     *   @param {boolean} [leaseLength.year]
+     *   @param {boolean} [leaseLength.perSemester]
+     *   @param {boolean} [leaseLength.monthly]
+     *   @param {boolean} [leaseLength.sixMonths]
+     *   @param {boolean} [leaseLength.yearly]
      * @param {Object} leaseType - Multi-select
      *   @param {boolean} [leaseType.rent]
      *   @param {boolean} [leaseType.sublet]
