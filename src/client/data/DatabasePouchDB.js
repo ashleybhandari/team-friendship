@@ -116,18 +116,23 @@ export const addRejected = async (curUserId, rejectedId) => {
  * 
  * @param {string} curUserId - The ID of the current user.
  * @param {string} likedId - The ID of the liked user.
+ * @returns {Promise<boolean>} Whether curUser matched with liked user
  */
 export const addLiked = async (curUserId, likedId) => {
   const curUser = await getUserById(curUserId);
   const likedUser = await getUserById(likedId);
+  let match = false;
 
   if (likedUser.liked.includes(curUserId)) {
     await addMatch(curUserId, likedId);
+    match = true;
   }
   else {
     curUser.liked.push(likedId);
     await updateUser(curUser);
   }
+
+  return match;
 }
 
 /**

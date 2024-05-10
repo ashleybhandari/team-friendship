@@ -22,6 +22,9 @@ export class MatchesView {
         // Loads the view according to the user's preferences and saved 
         // likes/rejects/matches
         this.#events.subscribe('authenticated', (id) => this.render(id));
+
+        // Published by DiscoverView when a new match occurs.
+        this.#events.subscribe('newMatch', (matchId) => this.#renderList())
     }
 
     /**
@@ -67,20 +70,32 @@ export class MatchesView {
      * description.
      */
     async #renderList() {
-        this.#listViewElm = document.createElement('div');
-        this.#listViewElm.id = 'listView';
+        if (!this.#listViewElm) {
+            this.#listViewElm = document.createElement('div');
+            this.#listViewElm.id = 'listView';
+
+            // message if user has no matches
+            const noMatchesMsg = document.createElement('div');
+            noMatchesMsg.id = 'noMatchesMsg';
+            noMatchesMsg.innerText = `No matches yet (don't worry, they'll come!)`;
+
+            this.#matchesViewElm.appendChild(noMatchesMsg);
+            this.#matchesViewElm.appendChild(this.#listViewElm);
+        } else {
+            this.#listViewElm.innerHTML = '';
+        }
 
         try {
             const matches = await db.getMatches(this.#user._id);
 
-            // show message if user has no matches
+            // only show "no matches" message if user has no matches
+            const noMatchesMsg = this.#matchesViewElm.querySelector('#noMatchesMsg');
             if (matches.length === 0) {
-                const noMatches = document.createElement('div');
-                noMatches.id = 'noMatches';
-                noMatches.innerText = `No matches yet (don't worry, they'll come!)`;
-                this.#matchesViewElm.appendChild(noMatches);
-                return;
-            }
+                noMatchesMsg.classList.remove('hidden');
+                return; // do not render the matches list
+            } else {
+                noMatchesMsg.classList.add('hidden')
+            }            
 
             // show list if user has matches
             for (const id of matches) {
@@ -130,8 +145,6 @@ export class MatchesView {
         } catch (error) {
             console.log(`Error to rendering matches list: ${error.message}`);
         }
-
-        this.#matchesViewElm.appendChild(this.#listViewElm);
     }
 
     /**
