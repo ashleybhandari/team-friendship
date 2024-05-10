@@ -55,7 +55,7 @@ export class MatchesView {
         await this.#renderProfile();
 
         // initialize view with matches list
-        this.#switchView();
+        this.#switchView(null, false);
 
         // Published by DiscoverView. Injects the published element (a user
         // profile) into MatchView's profile view.
@@ -251,19 +251,23 @@ export class MatchesView {
      * Switches between viewing all matches and a selected match's profile
      * @param {number} [matchId]
      */
-    #switchView(matchId = null) {
+    #switchView(matchId = null, replaceState = true) {
+        let url;
+
         if (matchId) {
             // view match's profile
             this.#events.publish('getProfile', matchId); // ask Discover page for profile
             this.#listViewElm.classList.add('hidden');
             this.#profileViewElm.classList.remove('hidden');
-            history.replaceState(null, '', `/${this.#user._id}/matches/${matchId}`);
+            url = `/${this.#user._id}/matches/${matchId}`;
         }
         else {
             // view matches list
             this.#listViewElm.classList.remove('hidden');
             this.#profileViewElm.classList.add('hidden');
-            history.replaceState(null, '', `/${this.#user._id}/matches`);
+            url = `/${this.#user._id}/matches`;
         }
+
+        if (replaceState) history.replaceState(null, '', url);
     }
 }
