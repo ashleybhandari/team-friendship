@@ -208,7 +208,7 @@ export function getPreferencesFields(page = null) {
         { id: 'privateBox',         prop1: 'roomType',     prop2: 'private'    },
         { id: 'sharedBox',          prop1: 'roomType',     prop2: 'shared'     },
         { id: 'dormBox',            prop1: 'buildingType', prop2: 'dorm'       },
-        { id: 'apartmentBox',       prop1: 'buildingType', prop2: 'apt'        },
+        { id: 'apartmentBox',       prop1: 'buildingType', prop2: 'apartment'  },
         { id: 'houseBox',           prop1: 'buildingType', prop2: 'house'      },
         { id: 'airConditioningBox', prop1: 'amenities',    prop2: 'aircon'     },
         { id: 'dishwasherBox',      prop1: 'amenities',    prop2: 'dishwasher' },
