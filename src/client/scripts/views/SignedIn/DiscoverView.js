@@ -17,12 +17,16 @@ export class DiscoverView {
 
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
-        // likes/rejects/matches
+        // likes/rejects/matches.
         this.#events.subscribe('authenticated', (id) => this.render(id));
 
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
         this.#events.subscribe('getProfile', async (id) => await this.#renderFromId(id));
+
+        // Published by SettingsView. When the user has been changed in
+        // Settings, loads the view according to the user's new configuration.
+        this.#events.subscribe('settingsUpdate', async (id) => this.render(id));
     }
 
     /**
@@ -136,11 +140,11 @@ export class DiscoverView {
                     !this.#curUser.matches.includes(user._id);
                 
                 // whether user is compatible with curUser
-                // const compatible = this.#curUser.hasHousing
-                //     ? this.#isCompatible(user.preferences, this.#curUser.housing)
-                //     : this.#isCompatible(this.#curUser.preferences, user.housing);
+                const compatible = this.#curUser.hasHousing
+                    ? this.#isCompatible(user.preferences, this.#curUser.housing)
+                    : this.#isCompatible(this.#curUser.preferences, user.housing);
                 
-                return unseen// && compatible
+                return unseen && compatible;
             }
 
             return allUsers.filter(fitsRequirements);
@@ -158,11 +162,36 @@ export class DiscoverView {
      * @returns {boolean} - whether prefs and housing are compatible
      */
     #isCompatible(prefs, housing) {
-        return prefs.cities.includes(housing.city) &&
-            prefs.gender[housing.gender] &&
-            prefs.leaseLength[housing.leaseLength];
+        let compatible = true;
+        const assert = (expr) => compatible = compatible && expr;
 
-        // rent, occupants
+        const cities = prefs.cities.filter((e) => e !== '');
+        if (cities.length > 0)         assert(cities.includes(housing.city));
+
+        const minRent = prefs.rent.min;
+        if (minRent && minRent !== '') assert(minRent <= housing.rent.price);
+
+        const maxRent = prefs.rent.max;
+        if (maxRent && maxRent !== '') assert(maxRent >= housing.rent.price);
+
+        const minOcc = prefs.occupants.min;
+        if (minOcc && minOcc !== '')   assert(minOcc <= housing.beds);
+
+        const maxOcc = prefs.occupants.max;
+        if (maxOcc && maxOcc !== '')   assert(maxOcc >= housing.beds);
+
+        assert(prefs.gender[housing.gender]);
+        assert(prefs.leaseLength[housing.leaseLength]);
+        assert(prefs.leaseType[housing.leaseType]);
+        assert(prefs.roomType[housing.roomType]);
+        assert(prefs.buildingType[housing.buildingType]);
+        assert(prefs.timeframe[housing.timeframe]);
+
+        assert(Object.entries(prefs.amenities).some(
+            ([key, value]) => value ? housing.amenities[key] : false
+        ));
+
+        return compatible;
     }
 
     

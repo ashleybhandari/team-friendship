@@ -165,6 +165,9 @@ export class SettingsView {
 
             // save new configuration
             await db.updateUser(user);
+
+            // publish to Discover
+            this.#events.publish('settingsUpdate', this.#user._id);
         } catch (error) {
             console.log(`Error updating settings: ${error.message}`);
         }

@@ -30,26 +30,11 @@ const u0 = new User(
         { semester: true, year: true },
         { rent: true },
         { private: true },
-        { apt: true, house: true },
+        { apartment: true, house: true },
         { fall: true },
         { laundry: true, parking: true }
     ),
-    new Housing(
-        'Amherst',
-        { price: 800, period: 'month' },
-        3,
-        1,
-        'allMale',
-        { water: true, sewer: true, snow: true },
-        'yearly',
-        'rent',
-        'shared',
-        'house',
-        'fall',
-        { dishwasher: true, laundry: true, parking: true },
-        [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
-        'Bob housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
-    ),
+    new Housing(),
     [], // liked
     [], // rejected
     ['user_1', 'user_3']  // matches
@@ -69,31 +54,20 @@ const u1 = new User(
     { fb: 'lindabelcher', ig: 'linlig' },
     'Linda. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
     true, // hasHousing
-    new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { allFemale: false, allMale: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
-    ),
+    new Preferences(),
     new Housing(
         'Amherst',
         { price: 800, period: 'month' },
-        3,
-        1,
-        'mixed',
+        4,
+        2,
+        'allFemale',
         { water: true, sewer: true, snow: true },
-        'yearly',
+        'perSemester',
         'rent',
-        'shared',
+        'private',
         'house',
-        'fall',
-        { dishwasher: true, laundry: true, parking: true },
+        'summer',
+        { dishwasher: true, hardwood: true, parking: true, bus: true },
         [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
         'Linda housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
@@ -124,26 +98,11 @@ const u2 = new User(
         { semester: true, year: true },
         { rent: true },
         { private: true },
-        { apt: true, house: true },
+        { apartment: true, house: true },
         { fall: true },
         { laundry: true, parking: true }
     ),
-    new Housing(
-        'Amherst',
-        { price: 800, period: 'month' },
-        3,
-        1,
-        'allMale',
-        { water: true, sewer: true, snow: true },
-        'yearly',
-        'rent',
-        'shared',
-        'house',
-        'fall',
-        { dishwasher: true, laundry: true, parking: true },
-        [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
-        'Tina housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
-    ),
+    new Housing(),
     ['user_5'], // liked
     [], // rejected
     []  // matches
@@ -163,31 +122,20 @@ const u3 = new User(
     { fb: 'geniefb', ig: 'genebelcher' },
     'Gene. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
     true, // hasHousing
-    new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { allFemale: false, allMale: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
-    ),
+    new Preferences(),
     new Housing(
         'Sunderland',
         { price: 700, period: 'month' },
-        4,
         2,
+        1,
         'mixed',
-        { electric: true, gas: false, water: true, trash: true, sewer: true, internet: false, snow: true },
+        { electric: true, water: true, trash: true },
         'yearly',
-        'rent',
-        'shared',
-        'house',
+        'sublet',
+        'private',
+        'apartment',
         'fall',
-        {},
+        { dishwasher: true, carpet: true, parking: true, bus: true },
         ['https://ew.com/thmb/sOFfYRph6EmGoA_O5qJ-QuvJifM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bobs-burgers1-db2ce51b2c0b4ad2b6b81dc2913227d9.jpg'],
         'Gene housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
@@ -218,26 +166,11 @@ const u4 = new User(
         { semester: true, year: true },
         { rent: true },
         { private: true },
-        { apt: true, house: true },
+        { apartment: true, house: true },
         { fall: true },
         { laundry: true, parking: true }
     ),
-    new Housing(
-        'Amherst',
-        { price: 800, period: 'month' },
-        3,
-        1,
-        'allFemale',
-        { electric: true, gas: false, water: true, trash: true, sewer: true, internet: false, snow: true },
-        'yearly',
-        'rent',
-        'private',
-        'apartment',
-        'fall',
-        {},
-        ['https://www.slashfilm.com/img/gallery/bobs-burgers-12-best-tina-belcher-episodes/l-intro-1683233064.jpg', 'https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/03/Bobs-Burgers-Tina-Boys.jpg'],
-        'Louise housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
-    ),
+    new Housing(),
     [], // liked
     ['user_1', 'user_3'], // rejected
     ['user_5']  // matches
@@ -257,31 +190,20 @@ const u5 = new User(
     { fb: 'jimmyjrpesto.fb', ig: 'jj_ig' },
     'Jimmy Jr. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
     true, // hasHousing
-    new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { allFemale: false, allMale: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
-    ),
+    new Preferences(),
     new Housing(
         'Amherst',
-        { price: 800, period: 'month' },
-        3,
+        { price: 950, period: 'month' },
+        2,
         1,
         'allMale',
-        { water: true, sewer: true, snow: true },
+        { water: true, trash: true, sewer: true, snow: true },
         'yearly',
         'rent',
         'shared',
-        'house',
+        'apartment',
         'fall',
-        { dishwasher: true, laundry: true, parking: true },
+        { aircon: true, hardwood: true, parking: true },
         [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
         'Jimmy Jr. housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
     ),
@@ -304,7 +226,18 @@ const u6 = new User(
     {},
     'Demo user - no housing',
     false, // hasHousing
-    new Preferences(),
+    new Preferences(
+        null,
+        null,
+        null,
+        { allFemale: true, allMale: true, mixed: true },
+        { perSemester: true, monthly: true, sixMonths: true, yearly: true },
+        { rent: true, sublet: true },
+        { private: true, shared: true },
+        { dorm: true, apartment: true, house: true },
+        { fall: true, winter: true, spring: true, summer: true },
+        { aircon: true, dishwasher: true, hardwood: true, carpet: true, laundry: true, parking: true, bus: true, pets: true }
+    ),
     new Housing(),
     [], // liked
     [], // rejected

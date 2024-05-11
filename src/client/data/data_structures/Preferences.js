@@ -29,7 +29,7 @@ export class Preferences {
      *   @param {boolean} [roomType.shared]
      * @param {Object} buildingType - Building type (multi-select)
      *   @param {boolean} [buildingType.dorm]
-     *   @param {boolean} [buildingType.apt]
+     *   @param {boolean} [buildingType.apartment]
      *   @param {boolean} [buildingType.house]
      * @param {Object} timeframe - Move-in period (multi-select)
      *   @param {boolean} [timeframe.fall]
