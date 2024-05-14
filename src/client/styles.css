@@ -1088,8 +1088,9 @@ body {
 }
 
 #matchesView #noMatchesMsg {
+    grid-column: 1 / 3;
+    margin-top: 20px;
     text-align: center;
-    margin-top: 75px;
 }
 
 #matchesView #listView {
