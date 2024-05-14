@@ -73,13 +73,6 @@ export class MatchesView {
         if (!this.#listViewElm) {
             this.#listViewElm = document.createElement('div');
             this.#listViewElm.id = 'listView';
-
-            // message if user has no matches
-            const noMatchesMsg = document.createElement('div');
-            noMatchesMsg.id = 'noMatchesMsg';
-            noMatchesMsg.innerText = `No matches yet (don't worry, they'll come!)`;
-
-            this.#matchesViewElm.appendChild(noMatchesMsg);
             this.#matchesViewElm.appendChild(this.#listViewElm);
         } else {
             this.#listViewElm.innerHTML = '';
@@ -88,13 +81,14 @@ export class MatchesView {
         try {
             const matches = await db.getMatches(this.#user._id);
 
-            // only show "no matches" message if user has no matches
-            const noMatchesMsg = this.#matchesViewElm.querySelector('#noMatchesMsg');
+            // message if user has no matches
             if (matches.length === 0) {
-                noMatchesMsg.classList.remove('hidden');
-                return; // do not render the matches list
-            } else {
-                noMatchesMsg.classList.add('hidden')
+                const noMatchesMsg = document.createElement('div');
+                noMatchesMsg.id = 'noMatchesMsg';
+                noMatchesMsg.innerText = `No matches yet (don't worry, they'll come!)`;
+                this.#listViewElm.appendChild(noMatchesMsg);
+                this.#matchesViewElm.appendChild(this.#listViewElm);
+                return; // don't render list
             }
 
             // show list if user has matches
