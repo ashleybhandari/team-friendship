@@ -58,4 +58,5 @@ The server.js file contains the following API routes:
 - `GET`: Renders the corresponding view
 - `api/housing`: Manages the data operations
 - `api/matches`: Handles match-related interactions
-- `api/users`:Handles all user-related API requests
+- `api/users`: Handles all user-related API requests
+- `router.use`: Error handling
