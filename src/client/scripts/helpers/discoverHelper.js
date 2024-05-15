@@ -38,24 +38,24 @@ const levelMap = new Map([
  * @type {Map<string, string[]>}
  */
 const characterMap = new Map([
-    ['clean', ['not clean', 'moderately clean', 'very clean']],
-    ['sleep', ['early bird', 'mixed sleeping habits', 'night owl']],
-    ['noise', ['very quiet', 'some noise', 'noise is okay']],
-    ['guests', ['never hosts', 'sometimes hosts', 'frequently hosts']]
+    ['clean',  ['not clean',   'moderately clean',      'very clean'      ]],
+    ['sleep',  ['early bird',  'mixed sleeping habits', 'night owl'       ]],
+    ['noise',  ['very quiet',  'some noise',            'noise is okay'   ]],
+    ['guests', ['never hosts', 'sometimes hosts',       'frequently hosts']]
 ]);
 
 /**
- * Maps User.housing properties to their proper names
+ * Maps User.housing properties to their reader-friendly names.
  * @type {Map<string, string>}
  */
 const houseMap = new Map([
     ['perSemester', 'Semester-long'],
-    ['monthly', '1-month'],
-    ['sixMonths', '6-month'],
-    ['yearly', '1-year'],
-    ['allFemale', 'All-female'],
-    ['allMale', 'All-male'],
-    ['mixed', 'Mixed gender'],
+    ['monthly',     '1-month'      ],
+    ['sixMonths',   '6-month'      ],
+    ['yearly',      '1-year'       ],
+    ['allFemale',   'All-female'   ],
+    ['allMale',     'All-male'     ],
+    ['mixed',       'Mixed gender' ],
     ...getIterable('timeframe'),
     ...getIterable('roomType'),
     ...getIterable('buildingType'),

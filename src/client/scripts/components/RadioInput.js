@@ -52,7 +52,7 @@ export class RadioInput {
                 elm.setAttribute('data_value', e);
             }
 
-            // creates span option - Gauri
+            // creates span option
             const span = document.createElement("span");
             span.classList.add("radio-checkmark");
 

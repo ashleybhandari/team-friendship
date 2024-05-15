@@ -39,6 +39,7 @@ export const init = async () => {
 
 /**
  * Sets cur_user to currently signed-in user.
+ * 
  * @param {string | null} userId - id of signed in user
  */
 export const setCurUser = async (userId) => {
@@ -53,6 +54,7 @@ export const setCurUser = async (userId) => {
 
 /**
  * Gets currently signed-in user.
+ * 
  * @returns {Promise<Object | null>}
  */
 export const getCurUser = async () => {
@@ -95,22 +97,22 @@ export const getUserById = async (id) => {
  */
 export const addUser = async (user) => {
   const newUser = {
-    _id: user._id ? user._id : generateRandomId(),
-    email: user.email,
-    avatar: user.avatar,
-    name: user.name,
-    age: user.age,
-    gender: user.gender,
-    character: user.character,
-    education: user.education,
-    socials: user.socials,
+    _id:         user._id ? user._id : generateRandomId(),
+    email:       user.email,
+    avatar:      user.avatar,
+    name:        user.name,
+    age:         user.age,
+    gender:      user.gender,
+    character:   user.character,
+    education:   user.education,
+    socials:     user.socials,
     description: user.description,
-    hasHousing: user.hasHousing,
+    hasHousing:  user.hasHousing,
     preferences: user.preferences,
-    housing: user.housing,
-    liked: user.liked,
-    rejected: user.rejected,
-    matches: user.matches
+    housing:     user.housing,
+    liked:       user.liked,
+    rejected:    user.rejected,
+    matches:     user.matches
   };
 
   return db.put(newUser);
@@ -124,36 +126,37 @@ export const addUser = async (user) => {
  */
 export const updateUser = async (user) => {
   const updatedUser = {
-    _id: user._id,
-    _rev: user._rev, // Include the _rev property for updates
-    email: user.email,
-    avatar: user.avatar,
-    name: user.name,
-    age: user.age,
-    gender: user.gender,
-    character: user.character,
-    education: user.education,
-    socials: user.socials,
+    _id:         user._id,
+    _rev:        user._rev, // Include the _rev property for updates
+    email:       user.email,
+    avatar:      user.avatar,
+    name:        user.name,
+    age:         user.age,
+    gender:      user.gender,
+    character:   user.character,
+    education:   user.education,
+    socials:     user.socials,
     description: user.description,
-    hasHousing: user.hasHousing,
+    hasHousing:  user.hasHousing,
     preferences: user.preferences,
-    housing: user.housing,
-    liked: user.liked,
-    rejected: user.rejected,
-    matches: user.matches
+    housing:     user.housing,
+    liked:       user.liked,
+    rejected:    user.rejected,
+    matches:     user.matches
   };
 
   return db.put(updatedUser);
 }
 
 /**
- * Deletes a user from the database by their ID.
+ * Deletes a doc from the database by its ID.
  *
- * @param {string} id - The ID of the user to delete.
- * @returns {Promise<User>} A promise that resolves with the deleted user object or null if the user is not found.
+ * @param {string} id - The ID of the doc to delete.
+ * @returns {Promise<Object>} A promise that resolves with the deleted doc or null if the doc was not found.
  */
-export const deleteUser = async (id) => {
-  return db.get(id)
+export const deleteItem = async (id) => {
+  return db
+    .get(id)
     .then(doc => db.remove(doc));
 }
 
@@ -174,7 +177,7 @@ export const addRejected = async (curUserId, rejectedId) => {
  * 
  * @param {string} curUserId - The ID of the current user.
  * @param {string} likedId - The ID of the liked user.
- * @returns {Promise<boolean>} Whether curUser matched with liked user
+ * @returns {Promise<boolean>} Whether curUser matched with liked user.
  */
 export const addLiked = async (curUserId, likedId) => {
   const curUser = await getUserById(curUserId);
