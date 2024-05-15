@@ -149,8 +149,6 @@ export const authenticateUser = async (email, password) => {
         reject(new Error('Invalid username or password'));
       } else {
         console.log('Login success');
-        // Optionally, you can dispatch the 'sync' action here
-        // dispatch('sync');
         resolve(response);
       }
     });
