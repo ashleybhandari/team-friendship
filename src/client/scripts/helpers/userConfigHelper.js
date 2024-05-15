@@ -1,4 +1,11 @@
 /**
+ * Created by Ashley Bhandari
+ * This file contains functions to get, fill, and save fields in UserProfile,
+ * UserHousing, and UserPreferences components. Used by UserDetailsView and
+ * SettingsView.
+ */
+
+/**
  * Removes non-numeric characters from a string, and returns the resulting int
  * @param {string} num 
  * @returns {number}
@@ -192,23 +199,23 @@ export function getPreferencesFields(page = null) {
         { id: 'maxRentInput',       prop1: 'rent',         prop2: 'max', save: saveFloat },
         { id: 'minOccupantsInput',  prop1: 'occupants',    prop2: 'min', save: saveInt   },
         { id: 'maxOccupantsInput',  prop1: 'occupants',    prop2: 'max', save: saveInt   },
-        { id: 'allFemaleBox',       prop1: 'gender',       prop2: 'female'     },
-        { id: 'allMaleBox',         prop1: 'gender',       prop2: 'male'       },
+        { id: 'allFemaleBox',       prop1: 'gender',       prop2: 'allFemale'     },
+        { id: 'allMaleBox',         prop1: 'gender',       prop2: 'allMale'       },
         { id: 'mixedBox',           prop1: 'gender',       prop2: 'mixed'      },
         { id: 'fallBox',            prop1: 'timeframe',    prop2: 'fall'       },
         { id: 'winterBox',          prop1: 'timeframe',    prop2: 'winter'     },
         { id: 'springBox',          prop1: 'timeframe',    prop2: 'spring'     },
         { id: 'summerBox',          prop1: 'timeframe',    prop2: 'summer'     },
-        { id: 'perSemesterBox',     prop1: 'leaseLength',  prop2: 'semester'   },
-        { id: 'monthlyBox',         prop1: 'leaseLength',  prop2: 'month'      },
-        { id: 'sixMonthsBox',       prop1: 'leaseLength',  prop2: 'halfYear'   },
-        { id: 'yearlyBox',          prop1: 'leaseLength',  prop2: 'year'       },
+        { id: 'perSemesterBox',     prop1: 'leaseLength',  prop2: 'perSemester'},
+        { id: 'monthlyBox',         prop1: 'leaseLength',  prop2: 'monthly'    },
+        { id: 'sixMonthsBox',       prop1: 'leaseLength',  prop2: 'sixMonths'  },
+        { id: 'yearlyBox',          prop1: 'leaseLength',  prop2: 'yearly'     },
         { id: 'rentBox',            prop1: 'leaseType',    prop2: 'rent'       },
         { id: 'subletBox',          prop1: 'leaseType',    prop2: 'sublet'     },
         { id: 'privateBox',         prop1: 'roomType',     prop2: 'private'    },
         { id: 'sharedBox',          prop1: 'roomType',     prop2: 'shared'     },
         { id: 'dormBox',            prop1: 'buildingType', prop2: 'dorm'       },
-        { id: 'apartmentBox',       prop1: 'buildingType', prop2: 'apt'        },
+        { id: 'apartmentBox',       prop1: 'buildingType', prop2: 'apartment'  },
         { id: 'houseBox',           prop1: 'buildingType', prop2: 'house'      },
         { id: 'airConditioningBox', prop1: 'amenities',    prop2: 'aircon'     },
         { id: 'dishwasherBox',      prop1: 'amenities',    prop2: 'dishwasher' },

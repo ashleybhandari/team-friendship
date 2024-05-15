@@ -17,12 +17,16 @@ export class DiscoverView {
 
         // Published by SignInView, HaveHousingView, and NeedHousing View.
         // Loads the view according to the user's preferences and saved 
-        // likes/rejects/matches
+        // likes/rejects/matches.
         this.#events.subscribe('authenticated', (id) => this.render(id));
 
         // Published by MatchesView. Creates a profile element of the user with
         // the published id, and sends it back to MatchesView.
         this.#events.subscribe('getProfile', async (id) => await this.#renderFromId(id));
+
+        // Published by SettingsView. When the user has been changed in
+        // Settings, loads the view according to the user's new configuration.
+        this.#events.subscribe('settingsUpdate', async (id) => this.render(id));
     }
 
     /**
@@ -120,7 +124,77 @@ export class DiscoverView {
      * with yet.
      * @returns {User[]}
      */
-  
+    async #getUnseenUsers() {
+        try {
+            const allUsers = await db.getAllUsers();
+
+            const fitsRequirements = (user) => {
+                const unseen =
+                    // user is not curUser
+                    user._id !== this.#curUser._id                &&
+                    // user has housing if curUser doesn't, vice versa
+                    this.#curUser.hasHousing !== user.hasHousing  &&
+                    // curUser has not already liked, rejected, or matched with user
+                    !this.#curUser.liked.includes(user._id)       &&
+                    !this.#curUser.rejected.includes(user._id)    &&
+                    !this.#curUser.matches.includes(user._id);
+                
+                // whether user is compatible with curUser
+                const compatible = this.#curUser.hasHousing
+                    ? this.#isCompatible(user.preferences, this.#curUser.housing)
+                    : this.#isCompatible(this.#curUser.preferences, user.housing);
+                
+                return unseen && compatible;
+            }
+
+            return allUsers.filter(fitsRequirements);
+        } catch (error) {
+            console.log(`Error fetching users: ${error.message}`);
+            return [];
+        }
+    }
+
+    /**
+     * Compares a Preferences instance with a Housing instance, and returns
+     * whether their respective users are  compatible.
+     * @param {Preferences} prefs 
+     * @param {Housing} housing 
+     * @returns {boolean} - whether prefs and housing are compatible
+     */
+    #isCompatible(prefs, housing) {
+        let compatible = true;
+        const assert = (expr) => compatible = compatible && expr;
+
+        const cities = prefs.cities.filter((e) => e !== '');
+        if (cities.length > 0)         assert(cities.includes(housing.city));
+
+        const minRent = prefs.rent.min;
+        if (minRent && minRent !== '') assert(minRent <= housing.rent.price);
+
+        const maxRent = prefs.rent.max;
+        if (maxRent && maxRent !== '') assert(maxRent >= housing.rent.price);
+
+        const minOcc = prefs.occupants.min;
+        if (minOcc && minOcc !== '')   assert(minOcc <= housing.beds);
+
+        const maxOcc = prefs.occupants.max;
+        if (maxOcc && maxOcc !== '')   assert(maxOcc >= housing.beds);
+
+        assert(prefs.gender[housing.gender]);
+        assert(prefs.leaseLength[housing.leaseLength]);
+        assert(prefs.leaseType[housing.leaseType]);
+        assert(prefs.roomType[housing.roomType]);
+        assert(prefs.buildingType[housing.buildingType]);
+        assert(prefs.timeframe[housing.timeframe]);
+
+        assert(Object.entries(prefs.amenities).some(
+            ([key, value]) => value ? housing.amenities[key] : false
+        ));
+
+        return compatible;
+    }
+
+    
     /**
      * Renders like and reject buttons.
      * @param {User[]} unseen - array of unseen users
@@ -135,119 +209,46 @@ export class DiscoverView {
         const rejectBtn = await new DiscoverButton(false).render();
         const likeBtn = await new DiscoverButton(true).render();
 
-        // add profile to liked/rejected and view next profile
-        const handler = async (userList) => {
-            // add current profile to user's 'liked' or 'rejected' list
+        rejectBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
             try {
-                const user = await db.getUserById(this.#curUser._id);
-                user[userList].push(unseen[this.#unseenIndex]._id);
-                await db.updateUser(user);
+                // add to rejected list
+                await db.addRejected(
+                    this.#curUser._id, unseen[this.#unseenIndex]._id
+                );
+                // view the next profile
+                this.#injectProfile(
+                    unseen[++this.#unseenIndex], bioSection, infoSection
+                );
             } catch (error) {
-                console.log(`Error adding ${unseen[this.#unseenIndex]._id} to ${user._id}.${userList}.`);
+                console.log(`Error adding ${unseen[this.#unseenIndex]._id} to rejected list.`);
             }
-            // view the next profile
-            this.#injectProfile(unseen[++this.#unseenIndex], bioSection, infoSection);
-        }
-
-        rejectBtn.addEventListener('click', async () => handler('rejected'));
-        likeBtn.addEventListener('click', async () => handler('liked'));
+        });
+        likeBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const likedId = unseen[this.#unseenIndex]._id;
+            try {
+                // add to liked or matches list
+                const matched = await db.addLiked(this.#curUser._id, likedId);
+                if (matched) {
+                    // alert user if a match occurred
+                    alert(`It's a match! View ${unseen[this.#unseenIndex].name.fname} in the Matches tab.`);
+                    this.#events.publish('newMatch', likedId);
+                }
+                // view the next profile
+                this.#injectProfile(
+                    unseen[++this.#unseenIndex], bioSection, infoSection
+                );
+            } catch (error) {
+                console.log(`Error adding ${likedId} to liked or matches list.`);
+            }
+        });
 
         elm.appendChild(rejectBtn);
         elm.appendChild(likeBtn);
 
         return elm;
     }
-  /**
- * Gets an array of users that the current user hasn't liked, rejected, or matched with yet,
- * and whose housing preferences match the current user's preferences.
- *
- * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
- */
-async #getUnseenUsersWithoutHousing() {
-    const allUsers = await getAllUsers();
-
-    const fitsRequirements = (user) =>
-        // user has housing if curUser doesn't, vice versa
-        this.#curUser.hasHousing !== user.hasHousing &&
-        // user is not curUser
-        user.id !== this.#curUser.id &&
-        // curUser has not already liked, rejected, or matched with user
-        !this.#curUser.liked.includes(user.id) &&
-        !this.#curUser.rejected.includes(user.id) &&
-        !this.#curUser.matches.includes(user.id);
-
-    const fitsPreferences = (user) =>
-        this.#curUser.hasHousing !== user.hasHousing &&
-        !this.#curUser.hasHousing &&
-        user.id !== this.#curUser.id &&
-        this.#curUser.preferences.cities.includes(user.housing.city) &&
-        user.housing.rent <= this.#curUser.preferences.rent.max &&
-        this.#curUser.preferences.gender[user.housing.gender] &&
-        this.#curUser.preferences.leaseLength[user.housing.leaseLength] &&
-        this.#curUser.preferences.leaseType[user.housing.leaseType] &&
-        this.#curUser.preferences.roomType[user.housing.roomType] &&
-        this.#curUser.preferences.buildingType[user.housing.buildingType] &&
-        this.#curUser.preferences.timeframe[user.housing.timeframe] &&
-        Object.keys(this.#curUser.preferences.amenities).some(
-            amenity => this.#curUser.preferences.amenities[amenity] && user.housing.amenities.includes(amenity)
-        );
-
-    return allUsers.filter(fitsRequirements).filter(fitsPreferences);
-}
-
-/**
- * Gets an array of users that the current user hasn't liked, rejected, or matched with yet,
- * and whose housing matches the current user's housing preferences.
- *
- * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
- */
-async #getUnseenUsersWithHousing() {
-    const allUsers = await getAllUsers();
-
-    const fitsRequirements = (user) =>
-        // user has housing if curUser doesn't, vice versa
-        this.#curUser.hasHousing !== user.hasHousing &&
-        // user is not curUser
-        user.id !== this.#curUser.id &&
-        // curUser has not already liked, rejected, or matched with user
-        !this.#curUser.liked.includes(user.id) &&
-        !this.#curUser.rejected.includes(user.id) &&
-        !this.#curUser.matches.includes(user.id);
-
-    const fitsPreferences = (user) =>
-        this.#curUser.hasHousing !== user.hasHousing &&
-        user.id !== this.#curUser.id &&
-        this.#curUser.preferences.cities.includes(user.housing.city) &&
-        user.housing.rent <= this.#curUser.preferences.rent.max &&
-        this.#curUser.preferences.gender[user.housing.gender] &&
-        this.#curUser.preferences.leaseLength[user.housing.leaseLength] &&
-        this.#curUser.preferences.leaseType[user.housing.leaseType] &&
-        this.#curUser.preferences.roomType[user.housing.roomType] &&
-        this.#curUser.preferences.buildingType[user.housing.buildingType] &&
-        this.#curUser.preferences.timeframe[user.housing.timeframe] &&
-        Object.keys(this.#curUser.preferences.amenities).some(
-            amenity => this.#curUser.preferences.amenities[amenity] && user.housing.amenities.includes(amenity)
-        ) &&
-        this.#curUser.housing.city === user.housing.city &&
-        this.#curUser.housing.rent <= user.housing.rent &&
-        this.#curUser.housing.gender === user.housing.gender;
-
-    return allUsers.filter(fitsRequirements).filter(fitsPreferences);
-}
-
-/**
- * Gets an array of users that the current user hasn't liked, rejected, or matched with yet,
- * and whose housing preferences match the current user's preferences.
- *
- * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
- */
-async #getUnseenUsers() {
-    if (this.#curUser.hasHousing) {
-        return this.#getUnseenUsersWithHousing();
-    } else {
-        return this.#getUnseenUsersWithoutHousing();
-    }
-}
 
     /**
      * Creates containers for the left side of the page, to be injected with

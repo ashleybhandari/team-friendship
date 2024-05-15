@@ -154,6 +154,8 @@ export class SettingsView {
             user.email = emailElm.value;
 
             // TODO: save password
+            const passwordElm = this.#settingsViewElm.querySelector('#settings_passwordInput');
+            passwordElm.value = '';
 
             // save Profile section
             configHelper.saveProfileFields(...args);
@@ -165,6 +167,9 @@ export class SettingsView {
 
             // save new configuration
             await db.updateUser(user);
+
+            // publish to Discover
+            this.#events.publish('settingsUpdate', this.#user._id);
         } catch (error) {
             console.log(`Error updating settings: ${error.message}`);
         }
@@ -208,7 +213,7 @@ export class SettingsView {
         section.appendChild(emailElm);
 
         // password field
-        const passwordElm = await new TextInput('Password').render();
+        const passwordElm = await new TextInput('Password', 'password').render();
         passwordElm.querySelector('label').htmlFor = 'settings_passwordInput';
         passwordElm.querySelector('input').id = 'settings_passwordInput';
         section.appendChild(passwordElm);

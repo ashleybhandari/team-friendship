@@ -5,7 +5,6 @@ import { CreateAccountContainer } from './views/CreateAccount/CreateAccountConta
 import { SignedInContainer } from './views/SignedIn/SignedInContainer.js';
 import { SignedOutContainer } from './views/SignedOut/SignedOutContainer.js';
 import { Events } from './Events.js';
-import { users } from '../data/MockData.js';
 import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
@@ -40,7 +39,7 @@ export class App {
         this.#signedOutCntrElm = await new SignedOutContainer().render();
 
         // initializes DB
-        await this.#initDB();
+        await db.init();
 
         // initializes view
         this.#events.subscribe('navigateTo', (view) => this.#navigateTo(view));
@@ -55,11 +54,11 @@ export class App {
      * SignedInContainer depending on what view it's called with.
      * @param {string} view
      */
-    #navigateTo(view) {
+    async #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
         // redirects user if necessary
-        if (this.#redirect(view)) return;
+        if (await this.#redirect(view)) return;
 
         switch (view) {
             case 'landing':    // SignedOut/LandingView
@@ -89,15 +88,15 @@ export class App {
      * @param {string} view 
      * @returns {boolean} - Whether the user was redirected
      */
-    #redirect(view) {
-        return false;
-
-        const signedIn = false; // DB TODO: use when PouchDB works
+    async #redirect(view) {
+        const userId = (await db.getCurUser()).userId;
+        const signedIn = userId !== null;
         let redirect = false;
 
         if (signedIn && view === 'sign-in') {
             // if signed in, the Sign in button redirects to Discover page
             redirect = true;
+            this.#events.publish('authenticated', userId);
             this.#events.publish('navigateTo', 'discover');
         }
 
@@ -110,6 +109,7 @@ export class App {
                 case 'settings': {
                     redirect = true;
                     this.#events.publish('navigateTo', 'sign-in');
+                    break;
                 }                    
                 default:
                     break;
@@ -117,18 +117,5 @@ export class App {
         }
 
         return redirect;
-    }
-
-    /**
-     * Initializes DB with mock users.
-     */
-    async #initDB() {
-        for (const user of users) {
-            try {
-                await db.addUser(user);
-            } catch (error) {
-                console.log(`Error adding ${user._id} to DB: ${error.message}`);
-            }
-        }
     }
 }

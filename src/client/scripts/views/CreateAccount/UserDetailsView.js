@@ -1,4 +1,4 @@
-// created by Isha Bang
+// created by Isha Bang and Ashley Bhandari
 
 import { ProgressBar } from '../../components/ProgressBar.js';
 import { UserPreferences } from '../../components/UserPreferences.js';

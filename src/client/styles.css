@@ -1087,7 +1087,9 @@ body {
     display: none !important;
 }
 
-#matchesView #noMatches {
+#matchesView #noMatchesMsg {
+    grid-column: 1 / 3;
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -1189,10 +1191,6 @@ body {
 
 #matchesView #unmatchBtn {
     height: 40px;
-}
-
-#matchesView #noMatches {
-    margin-top: 75px;
 }
 
 /* SettingsView.js */

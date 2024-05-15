@@ -1,6 +1,7 @@
 // created by Ashley Bhandari
 
 import { Events } from '../Events.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
  * UI component: Navbar for screens when the user is logged in. Only used in
@@ -85,8 +86,9 @@ export class Navbar2 {
         }
 
         // signs out
-        dropdown.querySelector('#nav-landing').addEventListener('click', () => {
-            localStorage.removeItem('authToken'); // DB TODO: switch to PouchDB when it works
+        dropdown.querySelector('#nav-landing').addEventListener('click', async () => {
+            localStorage.removeItem('authToken'); // TODO
+            await db.setCurUser(null);
         });
 
         container.querySelector('nav').appendChild(btn);

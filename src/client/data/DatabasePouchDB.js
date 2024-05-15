@@ -1,3 +1,5 @@
+import { users } from '../data/MockData.js';
+
 const db = new PouchDB('roommate-matching');
 
 /**
@@ -10,13 +12,71 @@ function generateRandomId() {
 }
 
 /**
+ * Initializes DB with mock users.
+ */
+export const init = async () => {
+  const info = await db.info();
+
+  // only initialize if DB is empty
+  if (info.doc_count > 0) return;
+
+  // add mock users
+  for (const user of users) {
+    try {
+      await addUser(user);
+    } catch (error) {
+      console.log(`Failed to add ${user._id} to the DB: ${error.message}`);
+    }
+  }
+
+  // add cur_user
+  try {
+    await db.put({ _id: 'cur_user', userId: null });
+  } catch (error) {
+    console.log('Failed to add cur_user to the DB.');
+  }
+}
+
+/**
+ * Sets cur_user to currently signed-in user.
+ * 
+ * @param {string | null} userId - id of signed in user
+ */
+export const setCurUser = async (userId) => {
+  try {
+    const doc = await db.get('cur_user');
+    doc.userId = userId;
+    await db.put(doc);
+  } catch (error) {
+    console.log(`Could not set cur_user to ${userId}: ${error.message}.`);
+  }
+}
+
+/**
+ * Gets currently signed-in user.
+ * 
+ * @returns {Promise<Object | null>}
+ */
+export const getCurUser = async () => {
+  try {
+    return await db.get('cur_user');
+  } catch (error) {
+    console.log(`Could not get cur_user: ${error.message}.`);
+    return null;
+  }
+}
+
+/**
  * Fetches all users from the database.
  *
  * @returns {Promise<User[]>} A promise that resolves with an array of user objects.
  */
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
-    .then(result => result.rows.map(row => row.doc));
+    .then(result => result.rows
+      .map(row => row.doc)
+      .filter((doc) => doc._id.startsWith('user_'))
+    );
 }
 
 /**
@@ -37,22 +97,23 @@ export const getUserById = async (id) => {
  */
 export const addUser = async (user) => {
   const newUser = {
-    _id: user._id ? user._id : generateRandomId(),
-    email: user.email,
-    avatar: user.avatar,
-    name: user.name,
-    age: user.age,
-    gender: user.gender,
-    character: user.character,
-    education: user.education,
-    socials: user.socials,
+    _id:         user._id ? user._id : generateRandomId(),
+    email:       user.email,
+    password:    user.password, // TODO: hash user.password
+    avatar:      user.avatar,
+    name:        user.name,
+    age:         user.age,
+    gender:      user.gender,
+    character:   user.character,
+    education:   user.education,
+    socials:     user.socials,
     description: user.description,
-    hasHousing: user.hasHousing,
+    hasHousing:  user.hasHousing,
     preferences: user.preferences,
-    housing: user.housing,
-    liked: user.liked,
-    rejected: user.rejected,
-    matches: user.matches
+    housing:     user.housing,
+    liked:       user.liked,
+    rejected:    user.rejected,
+    matches:     user.matches
   };
 
   return db.put(newUser);
@@ -66,48 +127,96 @@ export const addUser = async (user) => {
  */
 export const updateUser = async (user) => {
   const updatedUser = {
-    _id: user._id,
-    _rev: user._rev, // Include the _rev property for updates
-    email: user.email,
-    avatar: user.avatar,
-    name: user.name,
-    age: user.age,
-    gender: user.gender,
-    character: user.character,
-    education: user.education,
-    socials: user.socials,
+    _id:         user._id,
+    _rev:        user._rev, // Include the _rev property for updates
+    email:       user.email,
+    avatar:      user.avatar,
+    name:        user.name,
+    age:         user.age,
+    gender:      user.gender,
+    character:   user.character,
+    education:   user.education,
+    socials:     user.socials,
     description: user.description,
-    hasHousing: user.hasHousing,
+    hasHousing:  user.hasHousing,
     preferences: user.preferences,
-    housing: user.housing,
-    liked: user.liked,
-    rejected: user.rejected,
-    matches: user.matches
+    housing:     user.housing,
+    liked:       user.liked,
+    rejected:    user.rejected,
+    matches:     user.matches
   };
 
   return db.put(updatedUser);
 }
 
 /**
- * Deletes a user from the database by their ID.
+ * Deletes a doc from the database by its ID.
  *
- * @param {string} id - The ID of the user to delete.
- * @returns {Promise<User>} A promise that resolves with the deleted user object or null if the user is not found.
+ * @param {string} id - The ID of the doc to delete.
+ * @returns {Promise<Object>} A promise that resolves with the deleted doc or null if the doc was not found.
  */
-export const deleteUser = async (id) => {
-  return db.get(id)
+export const deleteItem = async (id) => {
+  return db
+    .get(id)
     .then(doc => db.remove(doc));
 }
 
 /**
- * Fetches all matches for a user.
- *
- * @param {string} id - The ID of the user.
- * @returns {Promise<number[]>} A promise that resolves with an array of match IDs.
+ * Adds a user to curUser's rejected list.
+ * 
+ * @param {string} curUserId - The ID of the current user.
+ * @param {string} rejectedId - The ID of the rejected user.
  */
-export const getMatches = async (id) => {
-  const user = await getUserById(id);
-  return user.matches;
+export const addRejected = async (curUserId, rejectedId) => {
+  const user = await getUserById(curUserId);
+  user.rejected.push(rejectedId);
+  await updateUser(user);
+}
+
+/**
+ * Adds a user to curUser's liked list (or matches if they've also been liked).
+ * 
+ * @param {string} curUserId - The ID of the current user.
+ * @param {string} likedId - The ID of the liked user.
+ * @returns {Promise<boolean>} Whether curUser matched with liked user.
+ */
+export const addLiked = async (curUserId, likedId) => {
+  const curUser = await getUserById(curUserId);
+  const likedUser = await getUserById(likedId);
+  let match = false;
+
+  if (likedUser.liked.includes(curUserId)) {
+    await addMatch(curUserId, likedId);
+    match = true;
+  }
+  else {
+    curUser.liked.push(likedId);
+    await updateUser(curUser);
+  }
+
+  return match;
+}
+
+/**
+ * Adds a match between two users.
+ * 
+ * @param {string} curUserId - The ID of the current user.
+ * @param {string} matchId - The ID of the matched user.
+ */
+const addMatch = async (curUserId, matchId) => {
+  const curUser = await getUserById(curUserId);
+  const match = await getUserById(matchId);
+
+  // remove from liked
+  const curUserIndex = match.liked.indexOf(curUserId);
+  match.liked.splice(curUserIndex, 1);
+
+  // add to matches
+  curUser.matches.push(matchId);
+  match.matches.push(curUserId);
+
+  await updateUser(curUser);
+  await updateUser(match);
 }
 
 /**
@@ -131,6 +240,17 @@ export const removeMatch = async (curUserId, matchId) => {
 
   await updateUser(curUser);
   await updateUser(match);
+}
+
+/**
+ * Fetches all matches for a user.
+ *
+ * @param {string} id - The ID of the user.
+ * @returns {Promise<number[]>} A promise that resolves with an array of match IDs.
+ */
+export const getMatches = async (id) => {
+  const user = await getUserById(id);
+  return user.matches;
 }
 
 /**

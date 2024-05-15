@@ -8,11 +8,12 @@ import { Housing } from './data_structures/Housing.js';
  * This file contains mock users until we implement backend functionality.
  */
 
-// Discover shows Jimmy (with housing)
+// Discover shows Jimmy
 // Matches show Linda, Gene
 const u0 = new User(
     'user_0',
     'bob@gmail.com',
+    'password_0',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHUpMwkylu5pmA8BUZIcvYlNFYF_uChkis9u9O-izKNA&s',
     { fname: 'Robert', nname: 'Bob' },
     46,
@@ -20,46 +21,32 @@ const u0 = new User(
     { clean: 1, sleep: 2, noise: 2, guests: 1 },
     { major: 'Culinary Arts', school: 'Umass Amherst' },
     {},
-    'Bob. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
+    `I am a third-generation restaurateur. I run Bob's Burgers with the help of my wife, Linda Belcher, and my three kids, Tina, Gene, and Louise Belcher. While poor with business management and cursed with an unlucky streak, my experience and skill in homemade cuisine have helped my restaurant stay afloat.`,
     false, // hasHousing
     new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        {},
-        { female: false, male: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
+        null,
+        null,
+        null,
+        { allFemale: true, allMale: true, mixed: true },
+        { perSemester: true, monthly: true, sixMonths: true, yearly: true },
+        { rent: true, sublet: true },
+        { private: true, shared: true },
+        { dorm: true, apartment: true, house: true },
+        { fall: true, winter: true, spring: true, summer: true },
+        { aircon: true, dishwasher: true, hardwood: true, carpet: true, laundry: true, parking: true, bus: true, pets: true }
     ),
-    new Housing(
-        'Amherst',
-        { price: 800, period: 'month' },
-        3,
-        1,
-        'allMale',
-        { water: true, sewer: true, snow: true },
-        'yearly',
-        'rent',
-        'shared',
-        'house',
-        'fall',
-        { dishwasher: true, laundry: true, parking: true },
-        [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
-        'Bob housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
-    ),
+    new Housing(),
     [], // liked
     [], // rejected
     ['user_1', 'user_3']  // matches
 );
 
-// Discover shows Tina, Louise (no housing)
+// Discover shows Tina, Louise
 // Matches show Bob
 const u1 = new User(
     'user_1',
     'linda@gmail.com',
+    'password_1',
     'https://external-preview.redd.it/aQ6RAxPRAgAXfejqdYUY9WojpdHS3QYk_pTJeo4Prc4.jpg?auto=webp&s=610291f0a836bac7cf280d67fdf776e023869347',
     { fname: 'Linda', nname: 'Lin' },
     44,
@@ -67,46 +54,36 @@ const u1 = new User(
     { clean: 2, sleep: 3, noise: 3, guests: 2 },
     { major: 'Music', school: 'Smith', level: 'grad' },
     { fb: 'lindabelcher', ig: 'linlig' },
-    'Linda. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
+    `I have a broad sense of humor, constantly joking with my family and friends. I am wise and kind to my family and love them very much. I co-own Bob's Burgers with my husband and help run the restaurant for him when he's busy or away.`,
     true, // hasHousing
-    new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { female: false, male: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
-    ),
+    new Preferences(),
     new Housing(
         'Amherst',
         { price: 800, period: 'month' },
-        3,
-        1,
-        'mixed',
+        4,
+        2,
+        'allFemale',
         { water: true, sewer: true, snow: true },
-        'yearly',
+        'perSemester',
         'rent',
-        'shared',
+        'private',
         'house',
-        'fall',
-        { dishwasher: true, laundry: true, parking: true },
+        'summer',
+        { dishwasher: true, hardwood: true, parking: true, bus: true },
         [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
-        'Linda housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
+        `Bob's Burgers is the restaurant owned by me and Bob Belcher, which is "conveniently located on Ocean Avenue" (Easy Com-mercial, Easy Go-mercial) in Seymour's Bay, New Jersey. It is located in a rental property that also contains my family's apartment.`
     ),
     [], // liked
     [], // rejected
     ['user_0']  // matches
 );
 
-// Discover shows Linda, Gene (with housing)
+// Discover shows Linda, Gene
 // Matches show nothing
 const u2 = new User(
     'user_2',
     'tina@gmail.com',
+    'password_2',
     'https://pbs.twimg.com/profile_images/2268200472/xg34b9qgfjmf1g6oyynl_400x400.png',
     { fname: 'Tina' },
     13,
@@ -114,46 +91,32 @@ const u2 = new User(
     { clean: 3, sleep: 1, noise: 1, guests: 3 },
     { major: 'Biology', school: 'Smith', level: 'undergrad' },
     { fb: 'tinytina', ig: 'tt_ig' },
-    'Tina. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
+    `I am a hopeless romantic yet easily influenced person with a powerful sex drive and minimal social skills. I like horses, butts, zombies, boys, and writing erotic fiction about movies and my life.`,
     false, // hasHousing
     new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { female: false, male: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
+        null,
+        null,
+        null,
+        { allFemale: true, allMale: true, mixed: true },
+        { perSemester: true, monthly: true, sixMonths: true, yearly: true },
+        { rent: true, sublet: true },
+        { private: true, shared: true },
+        { dorm: true, apartment: true, house: true },
+        { fall: true, winter: true, spring: true, summer: true },
+        { aircon: true, dishwasher: true, hardwood: true, carpet: true, laundry: true, parking: true, bus: true, pets: true }
     ),
-    new Housing(
-        'Amherst',
-        { price: 800, period: 'month' },
-        3,
-        1,
-        'allMale',
-        { water: true, sewer: true, snow: true },
-        'yearly',
-        'rent',
-        'shared',
-        'house',
-        'fall',
-        { dishwasher: true, laundry: true, parking: true },
-        [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
-        'Tina housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
-    ),
+    new Housing(),
     ['user_5'], // liked
     [], // rejected
     []  // matches
 );
 
-// Discover shows Tina (no housing)
+// Discover shows Tina
 // Matches show Bob
 const u3 = new User(
     'user_3',
     'gene@gmail.com',
+    'password_3',
     'https://openpsychometrics.org/tests/characters/test-resources/pics/BOBB/4.jpg',
     { fname: 'Eugene', nname: 'Gene' },
     11,
@@ -161,37 +124,26 @@ const u3 = new User(
     { clean: 3, sleep: 3, noise: 3, guests: 3 },
     { major: 'Music', school: 'Umass Amherst', level: 'undergrad' },
     { fb: 'geniefb', ig: 'genebelcher' },
-    'Gene. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
+    `I am an aspiring musician and a prankster. I maintain very close relationships with both of my parents and two sisters, Tina and Louise Belcher. Along with Tina, I am usually a pawn in schemes set up by Louise.`,
     true, // hasHousing
-    new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { female: false, male: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
-    ),
+    new Preferences(),
     new Housing(
         'Sunderland',
         { price: 700, period: 'month' },
-        4,
         2,
+        1,
         'mixed',
-        { electric: true, gas: false, water: true, trash: true, sewer: true, internet: false, snow: true },
+        { electric: true, water: true, trash: true },
         'yearly',
-        'rent',
-        'shared',
-        'house',
+        'sublet',
+        'private',
+        'apartment',
         'fall',
-        {},
+        { dishwasher: true, carpet: true, parking: true, bus: true },
         ['https://ew.com/thmb/sOFfYRph6EmGoA_O5qJ-QuvJifM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bobs-burgers1-db2ce51b2c0b4ad2b6b81dc2913227d9.jpg'],
-        'Gene housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
+        `Ocean Avenue Hi-Fi Emporium is a pawn shop that I frequent to play with a drum machine, much to the annoyance of the shop's owner, Dino. In "Drumforgiven" the above mentioned habit gets me banned from the store, causing Louise to seek revenge on Dino.`
     ),
-    [], // liked
+    ['user_demo'], // liked
     ['user_4'], // rejected
     ['user_0']  // matches
 );
@@ -201,6 +153,7 @@ const u3 = new User(
 const u4 = new User(
     'user_4',
     'louise@gmail.com',
+    'password_4',
     'https://pbs.twimg.com/profile_images/3637982405/d4433bb7717739e9a6d589e69f0fb7d8_400x400.jpeg',
     { fname: 'Louise' },
     9,
@@ -208,46 +161,32 @@ const u4 = new User(
     { clean: 3, sleep: 3, noise: 3, guests: 2 },
     { major: 'History', school: 'Amherst College', level: 'undergrad' },
     { fb: 'lulufb', ig: 'louisebelcher' },
-    'Louise. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
+    `I am a bright (in the brain), mischievous yet manipulative, and aggressive child. My off-balance sense of humor and hunger for conflict makes me somewhat of a liability in the kitchen and often gets my family both into and/or out of tricky situations.`,
     false, // hasHousing
     new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { female: false, male: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
+        null,
+        null,
+        null,
+        { allFemale: true, allMale: true, mixed: true },
+        { perSemester: true, monthly: true, sixMonths: true, yearly: true },
+        { rent: true, sublet: true },
+        { private: true, shared: true },
+        { dorm: true, apartment: true, house: true },
+        { fall: true, winter: true, spring: true, summer: true },
+        { aircon: true, dishwasher: true, hardwood: true, carpet: true, laundry: true, parking: true, bus: true, pets: true }
     ),
-    new Housing(
-        'Amherst',
-        { price: 800, period: 'month' },
-        3,
-        1,
-        'allFemale',
-        { electric: true, gas: false, water: true, trash: true, sewer: true, internet: false, snow: true },
-        'yearly',
-        'rent',
-        'private',
-        'apartment',
-        'fall',
-        {},
-        ['https://www.slashfilm.com/img/gallery/bobs-burgers-12-best-tina-belcher-episodes/l-intro-1683233064.jpg', 'https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/03/Bobs-Burgers-Tina-Boys.jpg'],
-        'Louise housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
-    ),
+    new Housing(),
     [], // liked
     ['user_1', 'user_3'], // rejected
     ['user_5']  // matches
 );
 
-// Discover shows Bob, Tina (no housing)
+// Discover shows Bob, Tina
 // Matches show Louise
 const u5 = new User(
     'user_5',
     'jimmy@gmail.com',
+    'password_5',
     'https://preview.redd.it/kz19pbh77fk61.jpg?auto=webp&s=8a533474d98b9d82c7ffda0902d98ee2c50c2677',
     { fname: 'Jimmy Jr.', nname: 'J-Ju' },
     13,
@@ -255,39 +194,61 @@ const u5 = new User(
     { clean: 1, sleep: 3, noise: 1, guests: 3 },
     { major: 'Dance', school: 'UMass Amherst', level: 'undergrad' },
     { fb: 'jimmyjrpesto.fb', ig: 'jj_ig' },
-    'Jimmy Jr. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.',
+    `I’m an eighth-grader at Wagstaff School in the same classes as Tina Belcher, who's had the longest crush on me since I made my first appearance in "Sheesh! Cab, Bob?," but unfortunately for her, I care more about dancing and my best friend, Zeke.`,
     true, // hasHousing
-    new Preferences(
-        ['Amherst', 'Sunderland', 'Northampton'],
-        { min: 600, max: 1000 },
-        { min: 1, max: 3 },
-        { female: false, male: true, mixed: true },
-        { semester: true, year: true },
-        { rent: true },
-        { private: true },
-        { apt: true, house: true },
-        { fall: true },
-        { laundry: true, parking: true }
-    ),
+    new Preferences(),
     new Housing(
         'Amherst',
-        { price: 800, period: 'month' },
-        3,
+        { price: 950, period: 'month' },
+        2,
         1,
         'allMale',
-        { water: true, sewer: true, snow: true },
+        { water: true, trash: true, sewer: true, snow: true },
         'yearly',
         'rent',
         'shared',
-        'house',
+        'apartment',
         'fall',
-        { dishwasher: true, laundry: true, parking: true },
+        { aircon: true, hardwood: true, parking: true },
         [ 'https://static.wikia.nocookie.net/bobsburgerpedia/images/3/31/Jimmypestospizza.jpg/revision/latest?cb=20110902183814', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3RIJfoiz3klpLTVdeLL77AT8rMqL1m1gpV8Aor-Pl4Q&s'],
-        'Jimmy Jr. housing notes. Vestibulum eu facilisis risus. Integer id arcu sodales, finibus nibh nec, consequat ante. Curabitur ut arcu sollicitudin, suscipit mauris id, molestie dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sit amet nisi fermentum, fringilla enim a, aliquam lacus.'
+        `Jimmy Pesto's Pizzeria is an Italian themed restaurant across the street from Bob's Burgers on Ocean Avenue. It is owned by Jimmy Pesto, who rents the property from Mr. Fischoeder. I work as a busboy. The décor consists primarily of Italian motifs, such as exposed brick, pictures and flags of Italy, grapes, etc., with one wall dedicated to Jimmy Pesto's "trophies." The menu features many Italian staples as well as "Pesto's Besto Burgers" and "Pesto Coladas."`
     ),
-    [], // liked
+    ['user_demo'], // liked
     [], // rejected
     ['user_4']  // matches
 );
 
-export const users = [ u0, u1, u2, u3, u4, u5 ];
+// Discover shows Linda, Gene (liked), Jimmy (liked)
+// Matches show nothing
+const u6 = new User(
+    'user_demo',
+    'ashley@gmail.com',
+    'password_demo',
+    null,
+    { fname: 'Ashley' },
+    22,
+    { identity: 'woman', pronouns: 'she/her' },
+    { clean: 3, sleep: 3, noise: 1, guests: 1 },
+    { major: 'CS', school: 'UMass Amherst' },
+    {},
+    'Demo user - no housing',
+    false, // hasHousing
+    new Preferences(
+        null,
+        null,
+        null,
+        { allFemale: true, allMale: true, mixed: true },
+        { perSemester: true, monthly: true, sixMonths: true, yearly: true },
+        { rent: true, sublet: true },
+        { private: true, shared: true },
+        { dorm: true, apartment: true, house: true },
+        { fall: true, winter: true, spring: true, summer: true },
+        { aircon: true, dishwasher: true, hardwood: true, carpet: true, laundry: true, parking: true, bus: true, pets: true }
+    ),
+    new Housing(),
+    [], // liked
+    [], // rejected
+    []  // matches
+);
+
+export const users = [ u0, u1, u2, u3, u4, u5, u6 ];

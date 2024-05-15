@@ -39,19 +39,19 @@ export class Housing {
     constructor(city, rent, beds, baths, gender, utilities, leaseLength,
         leaseType, roomType, buildingType, timeframe, amenities, pics, notes
     ) {
-        this.city = city;
-        this.rent = rent;
-        this.beds = beds;
-        this.baths = baths;
-        this.gender = gender;
-        this.utilities = utilities;
-        this.leaseLength = leaseLength;
-        this.leaseType = leaseType;
-        this.roomType = roomType;
+        this.city         = city;
+        this.rent         = rent      ? rent      : {};
+        this.beds         = beds;
+        this.baths        = baths;
+        this.gender       = gender;
+        this.utilities    = utilities ? utilities : {};
+        this.leaseLength  = leaseLength;
+        this.leaseType    = leaseType;
+        this.roomType     = roomType;
         this.buildingType = buildingType;
-        this.timeframe = timeframe;
-        this.amenities = amenities;
-        this.pics = pics;
-        this.notes = notes;
+        this.timeframe    = timeframe;
+        this.amenities    = amenities ? amenities : {};
+        this.pics         = pics      ? pics      : [];
+        this.notes        = notes;
     }
 }

@@ -1,11 +1,15 @@
 // created by Gauri Arvind and Ashley Bhandari
 
+import { Housing } from './Housing.js';
+import { Preferences } from './Preferences.js';
+
 export class User {
     /**
      * Data structure: A user's profile information. Parameters in brackets are
      * optional.
      * @param {string} _id
      * @param {string} email
+     * @param {string} password
      * @param {string} avatar - Picture
      * @param {Object} name
      *   @param {string} name.fname - First name
@@ -27,32 +31,33 @@ export class User {
      *   @param {string} [socials.fb] - Facebook
      *   @param {string} [socials.ig] - Instagram
      * @param {string} [description] - User-inputted description
-     * @param {boolean} hasHousing - Whether the use has housing
+     * @param {boolean} hasHousing - Whether the user has housing
      * @param {Preferences} [preferences] - If user does not have housing
      * @param {Housing} [housing] - If user has housing
-     * @param {number[]} liked - List of id's user has liked
-     * @param {number[]} rejected - List of id's user has rejected
-     * @param {number[]} matches - List of id's user has matched with
+     * @param {string[]} liked - List of id's user has liked
+     * @param {string[]} rejected - List of id's user has rejected
+     * @param {string[]} matches - List of id's user has matched with
      */
-    constructor(id, email, avatar, name, age, gender, character, education,
-        socials, description, hasHousing, preferences, housing, liked,
-        rejected, matches
+    constructor(id, email, password, avatar, name, age, gender, character,
+        education, socials, description, hasHousing, preferences, housing,
+        liked, rejected, matches
     ) {
-        this._id = id;
-        this.email = email;
-        this.avatar = avatar;
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-        this.character = character;
-        this.education = education;
-        this.socials = socials;
+        this._id         = id;
+        this.email       = email;
+        this.password    = password;
+        this.avatar      = avatar;
+        this.name        = name        ? name        : {};
+        this.age         = age;
+        this.gender      = gender      ? gender      : {};
+        this.character   = character   ? character   : {};
+        this.education   = education   ? education   : {};
+        this.socials     = socials     ? socials     : {};
         this.description = description;
-        this.hasHousing = hasHousing;
-        this.preferences = preferences;
-        this.housing = housing;
-        this.liked = liked;
-        this.rejected = rejected;
-        this.matches = matches;
+        this.hasHousing  = hasHousing;
+        this.preferences = preferences ? preferences : new Preferences();
+        this.housing     = housing     ? housing     : new Housing();
+        this.liked       = liked       ? liked       : [];
+        this.rejected    = rejected    ? rejected    : [];
+        this.matches     = matches     ? matches     : [];
     }
 }
