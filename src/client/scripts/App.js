@@ -54,11 +54,11 @@ export class App {
      * SignedInContainer depending on what view it's called with.
      * @param {string} view
      */
-    #navigateTo(view) {
+    async #navigateTo(view) {
         this.#viewContainer.innerHTML = '';
 
         // redirects user if necessary
-        if (this.#redirect(view)) return;
+        if (await this.#redirect(view)) return;
 
         switch (view) {
             case 'landing':    // SignedOut/LandingView
@@ -88,15 +88,15 @@ export class App {
      * @param {string} view 
      * @returns {boolean} - Whether the user was redirected
      */
-    #redirect(view) {
-        return false;
-
-        const signedIn = false; // DB TODO: use when PouchDB works
+    async #redirect(view) {
+        const userId = (await db.getCurUser()).userId;
+        const signedIn = userId !== null;
         let redirect = false;
 
         if (signedIn && view === 'sign-in') {
             // if signed in, the Sign in button redirects to Discover page
             redirect = true;
+            this.#events.publish('authenticated', userId);
             this.#events.publish('navigateTo', 'discover');
         }
 
