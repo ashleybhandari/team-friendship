@@ -95,10 +95,23 @@ export const getUserById = async (id) => {
  * @param {User} user - The user object to add.
  * @returns {Promise<User>} A promise that resolves with the added user.
  */
+
+const bcrypt = require('bcrypt');
+
+const updateUser = async (user) => {
+  const saltRounds = 10; 
+
+  let hashedPassword;
+  if (user.password) {
+    hashedPassword = await bcrypt.hash(user.password, saltRounds);
+  }
+
+  
 export const addUser = async (user) => {
   const newUser = {
     _id:         user._id ? user._id : generateRandomId(),
     email:       user.email,
+    password: hashedPassword || user.password,
     password:    user.password, // TODO: hash user.password
     avatar:      user.avatar,
     name:        user.name,
