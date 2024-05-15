@@ -29,18 +29,24 @@ The application's views are found in `src\client\scripts\views`. They can be div
 
 These containers may be injected with their associated views.
 - "Landing" and "About us" views can be injected into `SignedOutContainer`.
-- "Sign in" and "Create account" (`CredentialsView`, `ProfileView`, `HousingSituationView`, `NeedHousingView`, `HaveHousingView`) views can be injected into `CreateAccountContainer`.
+- "Sign in" and "Create account" (`CredentialsView`, `ProfileView`, `HousingSituationView`, `UserDetailsView`) views can be injected into `CreateAccountContainer`.
 - "Discover," "Matches," and "Settings" views can be injected into `SignedInContainer`.
 
 The publisher-subscriber pattern is used for communication between views. The class for this pattern was implemented by Prof. Tim Richards, found in `src\client\scripts\Events.js`.
 
 ## API routes
-The server.js file contains the following API routes:
-- `GET` renders the corresponding view.
-- `api/housing` manages data operations.
-- `api/matches` handles match-related interactions.
-- `api/users` handles all user-related API requests.
-- `router.use` handles errors.
+API routes can be found in `src\server\routes\landing.js`.
+- `GET /` renders the landing page (`LandingView`).
+- `GET /about` renders the "about us" page (`AboutView`).
+- `GET /sign-in` renders the sign in page (`SignInView`).
+- `GET /create-account/1` renders the credentials page during the "create account" process (`CredentialsView`).
+- `GET /create-account/2` renders the profile details page during the "create account" process (`ProfileView`).
+- `GET /create-account/3` renders the housing situation page during the "create account" process (`HousingSituationView`).
+- `GET /create-account/4` renders the preferences/housing details page during the "create account" process (`UserDetailsView`).
+- `GET /:userId/discover` renders the discover page (`DiscoverView`).
+- `GET /:userId/matches` renders the user's list of matches in the matches page (`MatchesView`).
+- `GET /:userId/matches/:matchId` renders a specified match's profile in the matches page (`MatchesView`).
+- `GET /:userId/settings` renders the settings page (`SettingsView`).
 
 ## Setup instructions
 Clone the project
@@ -57,6 +63,6 @@ Install dependencies
 ```
 Start the server
 ```
-  npm run start
+  npm start
 ```
 Open http://localhost:3000 in your browser.
