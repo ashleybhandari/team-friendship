@@ -17,14 +17,50 @@ function generateRandomId() {
 export const init = async () => {
   const info = await db.info();
 
-  if (info.doc_count === 0) {
-    for (const user of users) {
-      try {
-        await addUser(user);
-      } catch (error) {
-        console.log(`Failed to add ${user._id} to the DB: ${error.message}`);
-      }
+  // only initialize if DB is empty
+  if (info.doc_count > 0) return;
+
+  // add mock users
+  for (const user of users) {
+    try {
+      await addUser(user);
+    } catch (error) {
+      console.log(`Failed to add ${user._id} to the DB: ${error.message}`);
     }
+  }
+
+  // add cur_user
+  try {
+    await db.put({ _id: 'cur_user', userId: null });
+  } catch (error) {
+    console.log('Failed to add cur_user to the DB.');
+  }
+}
+
+/**
+ * Sets cur_user to currently signed-in user.
+ * @param {string | null} userId - id of signed in user
+ */
+export const setCurUser = async (userId) => {
+  try {
+    const doc = await db.get('cur_user');
+    doc.userId = userId;
+    await db.put(doc);
+  } catch (error) {
+    console.log(`Could not set cur_user to ${userId}: ${error.message}.`);
+  }
+}
+
+/**
+ * Gets currently signed-in user.
+ * @returns {Promise<Object | null>}
+ */
+export const getCurUser = async () => {
+  try {
+    return await db.get('cur_user');
+  } catch (error) {
+    console.log(`Could not get cur_user: ${error.message}.`);
+    return null;
   }
 }
 
@@ -35,7 +71,10 @@ export const init = async () => {
  */
 export const getAllUsers = async () => {
   return db.allDocs({ include_docs: true })
-    .then(result => result.rows.map(row => row.doc));
+    .then(result => result.rows
+      .map(row => row.doc)
+      .filter((doc) => doc._id.startsWith('user_'))
+    );
 }
 
 /**

@@ -73,12 +73,19 @@ export class SignInView {
             e.preventDefault();
 
             // TODO: delete once authentication works
-            this.#events.publish('authenticated', 'user_demo'); 
-            this.#events.publish('navigateTo', 'discover');
+            try {
+                const id = 'user_demo';
+                await db.setCurUser(id);
+                this.#events.publish('authenticated', id); 
+                this.#events.publish('navigateTo', 'discover');
+            } catch (error) {
+                console.log(`Could not sign in: ${error.message}`)
+            }
 
             // TODO: uncomment (temporarily commented out for access to signed in views)
             // try {
             //     const user = await db.authenticateUser(emailInputElement.value, passwordInputElement.value);
+            //     await db.setCurUser(user._id);
             //     this.#events.publish('authenticated', user._id);
             //     this.#events.publish('navigateTo', 'discover');
             // } catch {

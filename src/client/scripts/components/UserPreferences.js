@@ -143,7 +143,7 @@ export class UserPreferences {
      */
     async #renderAmenities() {
         const boxes = toMap(fields.amenities);
-        const elm = await new CheckboxGroup('Amenities', boxes, 4).render();
+        const elm = await new CheckboxGroup('Amenities (select at least one)', boxes, 4).render();
         elm.classList.add('amenities');
         return elm;
     }
