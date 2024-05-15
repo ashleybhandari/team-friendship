@@ -143,18 +143,11 @@ export const removeMatch = async (curUserId, matchId) => {
  */
 
 export const authenticateUser = async (email, password) => {
-  try {
-    const user = await db.get(`user_${email}`);
-    if (user.password === password) {
-      return user;
+  db.logIn(username, password, (error, response) => {
+    if (error) {
+        console.error('Login failure', error)
     } else {
-      throw new Error('Invalid username or password');
+        console.log('Login success');
+        dispatch('sync');
     }
-  } catch (error) {
-    if (error.status === 404) {
-      throw new Error('Invalid username or password');
-    } else {
-      throw error;
-    }
-  }
 }
