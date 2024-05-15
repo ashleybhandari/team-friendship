@@ -260,20 +260,16 @@ export const getMatches = async (id) => {
  * @returns {Promise<Object>} A promise that resolves with the authenticated user object.
  * @throws {Error} If the email or password is invalid.
  */
-
 export const authenticateUser = async (email, password) => {
-  try {
-    const user = await db.get(`user_${email}`);
-    if (user.password === password) {
-      return user;
-    } else {
-      throw new Error('Invalid username or password');
-    }
-  } catch (error) {
-    if (error.status === 404) {
-      throw new Error('Invalid username or password');
-    } else {
-      throw error;
-    }
-  }
+  return new Promise((resolve, reject) => {
+    db.logIn(email, password, (error, response) => {
+      if (error) {
+        console.error('Login failure', error);
+        reject(new Error('Invalid username or password'));
+      } else {
+        console.log('Login success');
+        resolve(response);
+      }
+    });
+  });
 }
