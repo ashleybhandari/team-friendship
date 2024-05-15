@@ -281,8 +281,17 @@ export const authenticateUser = async (email, password) => {
         console.error('Login failure', error);
         reject(new Error('Invalid username or password'));
       } else {
-        console.log('Login success');
-        resolve(response);
+         bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+              console.error('Error comparing passwords', err);
+              reject(new Error('Invalid email or password'));
+            } else if (!isMatch) {
+              reject(new Error('Invalid email or password'));
+            } else {
+              console.log('Login success');
+              resolve(user);
+            }
+          });
       }
     });
   });
