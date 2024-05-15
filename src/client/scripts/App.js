@@ -109,6 +109,7 @@ export class App {
                 case 'settings': {
                     redirect = true;
                     this.#events.publish('navigateTo', 'sign-in');
+                    break;
                 }                    
                 default:
                     break;

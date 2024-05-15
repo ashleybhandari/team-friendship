@@ -30,7 +30,7 @@ export class User {
      *   @param {string} [socials.fb] - Facebook
      *   @param {string} [socials.ig] - Instagram
      * @param {string} [description] - User-inputted description
-     * @param {boolean} hasHousing - Whether the use has housing
+     * @param {boolean} hasHousing - Whether the user has housing
      * @param {Preferences} [preferences] - If user does not have housing
      * @param {Housing} [housing] - If user has housing
      * @param {string[]} liked - List of id's user has liked

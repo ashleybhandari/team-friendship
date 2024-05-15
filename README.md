@@ -34,6 +34,14 @@ These containers may be injected with their associated views.
 
 The publisher-subscriber pattern is used for communication between views. The class for this pattern was implemented by Prof. Tim Richards, found in `src\client\scripts\Events.js`.
 
+## API routes
+The server.js file contains the following API routes:
+- `GET` renders the corresponding view.
+- `api/housing` manages data operations.
+- `api/matches` handles match-related interactions.
+- `api/users` handles all user-related API requests.
+- `router.use` handles errors.
+
 ## Setup instructions
 Clone the project
 ```
@@ -52,11 +60,3 @@ Start the server
   npm run start
 ```
 Open http://localhost:3000 in your browser.
-
-## API routes
-The server.js file contains the following API routes:
-- `GET`: Renders the corresponding view
-- `api/housing`: Manages the data operations
-- `api/matches`: Handles match-related interactions
-- `api/users`: Handles all user-related API requests
-- `router.use`: Error handling

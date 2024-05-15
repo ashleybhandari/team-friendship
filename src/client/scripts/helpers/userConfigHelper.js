@@ -1,4 +1,11 @@
 /**
+ * Created by Ashley Bhandari
+ * This file contains functions to get, fill, and save fields in UserProfile,
+ * UserHousing, and UserPreferences components. Used by UserDetailsView and
+ * SettingsView.
+ */
+
+/**
  * Removes non-numeric characters from a string, and returns the resulting int
  * @param {string} num 
  * @returns {number}
