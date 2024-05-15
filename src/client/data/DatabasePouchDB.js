@@ -99,6 +99,7 @@ export const addUser = async (user) => {
   const newUser = {
     _id:         user._id ? user._id : generateRandomId(),
     email:       user.email,
+    password:    user.password, // TODO: hash user.password
     avatar:      user.avatar,
     name:        user.name,
     age:         user.age,

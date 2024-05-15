@@ -13,6 +13,7 @@ import { Housing } from './data_structures/Housing.js';
 const u0 = new User(
     'user_0',
     'bob@gmail.com',
+    'password_0',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHUpMwkylu5pmA8BUZIcvYlNFYF_uChkis9u9O-izKNA&s',
     { fname: 'Robert', nname: 'Bob' },
     46,
@@ -45,6 +46,7 @@ const u0 = new User(
 const u1 = new User(
     'user_1',
     'linda@gmail.com',
+    'password_1',
     'https://external-preview.redd.it/aQ6RAxPRAgAXfejqdYUY9WojpdHS3QYk_pTJeo4Prc4.jpg?auto=webp&s=610291f0a836bac7cf280d67fdf776e023869347',
     { fname: 'Linda', nname: 'Lin' },
     44,
@@ -81,6 +83,7 @@ const u1 = new User(
 const u2 = new User(
     'user_2',
     'tina@gmail.com',
+    'password_2',
     'https://pbs.twimg.com/profile_images/2268200472/xg34b9qgfjmf1g6oyynl_400x400.png',
     { fname: 'Tina' },
     13,
@@ -113,6 +116,7 @@ const u2 = new User(
 const u3 = new User(
     'user_3',
     'gene@gmail.com',
+    'password_3',
     'https://openpsychometrics.org/tests/characters/test-resources/pics/BOBB/4.jpg',
     { fname: 'Eugene', nname: 'Gene' },
     11,
@@ -149,6 +153,7 @@ const u3 = new User(
 const u4 = new User(
     'user_4',
     'louise@gmail.com',
+    'password_4',
     'https://pbs.twimg.com/profile_images/3637982405/d4433bb7717739e9a6d589e69f0fb7d8_400x400.jpeg',
     { fname: 'Louise' },
     9,
@@ -181,6 +186,7 @@ const u4 = new User(
 const u5 = new User(
     'user_5',
     'jimmy@gmail.com',
+    'password_5',
     'https://preview.redd.it/kz19pbh77fk61.jpg?auto=webp&s=8a533474d98b9d82c7ffda0902d98ee2c50c2677',
     { fname: 'Jimmy Jr.', nname: 'J-Ju' },
     13,
@@ -217,6 +223,7 @@ const u5 = new User(
 const u6 = new User(
     'user_demo',
     'ashley@gmail.com',
+    'password_demo',
     null,
     { fname: 'Ashley' },
     22,

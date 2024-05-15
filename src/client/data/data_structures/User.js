@@ -9,6 +9,7 @@ export class User {
      * optional.
      * @param {string} _id
      * @param {string} email
+     * @param {string} password
      * @param {string} avatar - Picture
      * @param {Object} name
      *   @param {string} name.fname - First name
@@ -37,12 +38,13 @@ export class User {
      * @param {string[]} rejected - List of id's user has rejected
      * @param {string[]} matches - List of id's user has matched with
      */
-    constructor(id, email, avatar, name, age, gender, character, education,
-        socials, description, hasHousing, preferences, housing, liked,
-        rejected, matches
+    constructor(id, email, password, avatar, name, age, gender, character,
+        education, socials, description, hasHousing, preferences, housing,
+        liked, rejected, matches
     ) {
         this._id         = id;
         this.email       = email;
+        this.password    = password;
         this.avatar      = avatar;
         this.name        = name        ? name        : {};
         this.age         = age;
