@@ -87,7 +87,7 @@ export class Navbar2 {
 
         // signs out
         dropdown.querySelector('#nav-landing').addEventListener('click', async () => {
-            localStorage.removeItem('authToken'); // DB TODO: switch to PouchDB when it works
+            localStorage.removeItem('authToken'); // TODO
             await db.setCurUser(null);
         });
 

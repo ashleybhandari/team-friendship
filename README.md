@@ -49,6 +49,14 @@ Install dependencies
 ```
 Start the server
 ```
-  npm start
+  npm run start
 ```
 Open http://localhost:3000 in your browser.
+
+## API routes
+The server.js file contains the following API routes:
+- `GET`: Renders the corresponding view
+- `api/housing`: Manages the data operations
+- `api/matches`: Handles match-related interactions
+- `api/users`: Handles all user-related API requests
+- `router.use`: Error handling
