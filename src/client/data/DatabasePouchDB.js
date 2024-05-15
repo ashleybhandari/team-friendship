@@ -97,21 +97,15 @@ export const getUserById = async (id) => {
  */
 
 const bcrypt = require('bcrypt');
-
-const updateUser = async (user) => {
-  const saltRounds = 10; 
-
-  let hashedPassword;
-  if (user.password) {
-    hashedPassword = await bcrypt.hash(user.password, saltRounds);
-  }
-
   
 export const addUser = async (user) => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+
   const newUser = {
     _id:         user._id ? user._id : generateRandomId(),
     email:       user.email,
-    password: hashedPassword || user.password,
+    password:    hashedPassword,
     password:    user.password, // TODO: hash user.password
     avatar:      user.avatar,
     name:        user.name,
@@ -142,6 +136,7 @@ export const updateUser = async (user) => {
   const updatedUser = {
     _id:         user._id,
     _rev:        user._rev, // Include the _rev property for updates
+    password:    user.password,
     email:       user.email,
     avatar:      user.avatar,
     name:        user.name,
