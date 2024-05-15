@@ -141,13 +141,18 @@ export const removeMatch = async (curUserId, matchId) => {
  * @returns {Promise<Object>} A promise that resolves with the authenticated user object.
  * @throws {Error} If the email or password is invalid.
  */
-
 export const authenticateUser = async (email, password) => {
-  db.logIn(username, password, (error, response) => {
-    if (error) {
-        console.error('Login failure', error)
-    } else {
+  return new Promise((resolve, reject) => {
+    db.logIn(email, password, (error, response) => {
+      if (error) {
+        console.error('Login failure', error);
+        reject(new Error('Invalid username or password'));
+      } else {
         console.log('Login success');
-        dispatch('sync');
-    }
+        // Optionally, you can dispatch the 'sync' action here
+        // dispatch('sync');
+        resolve(response);
+      }
+    });
+  });
 }
