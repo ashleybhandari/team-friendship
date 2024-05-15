@@ -2,17 +2,17 @@
 import express from 'express';
 const router = express.Router();
 
-import { SignInView } from '../CreateAccount/SignInView.js';
-import { CredentialsView } from '../CreateAccount/CredentialsView.js';
-import { ProfileView } from '../CreateAccount/ProfileView.js';
-import { HousingSituationView } from '../CreateAccount/HousingSituationView.js';
-import { UserDetailsView } from '../CreateAccount/UserDetailsView.js';
-import { Events } from '../../Events.js';
+import { SignInView } from '../../client/scripts/views/CreateAccount/SignInView.js';
+import { CredentialsView } from '../../client/scripts/views/CreateAccount/CredentialsView.js';
+import { ProfileView } from '../../client/scripts/views/CreateAccount/ProfileView.js';
+import { HousingSituationView } from '../../client/scripts/views/CreateAccount/HousingSituationView.js';
+import { UserDetailsView } from '../../client/scripts/views/CreateAccount/UserDetailsView.js';
 import { DiscoverView } from '../../client/scripts/views/SignedIn/DiscoverView.js';
 import { MatchesView } from '../../client/scripts/views/SignedIn/MatchesView.js';
 import { SettingsView } from '../../client/scripts/views/SignedIn/SettingsView.js';
 import { AboutView } from '../../client/scripts/views/SignedOut/AboutView.js';
 import { LandingView } from '../../client/scripts/views/SignedOut/LandingView.js';
+import { Events } from '../../client/scripts/Events.js';
 
 const events = Events.events();
 
@@ -28,8 +28,8 @@ const aboutView = new AboutView();
 const landingView = new LandingView();
 
 // Initialized users (to be replaced with PouchDB)
-const user_id = 0;
-const match_id = 1;
+const user_id = 'user_0';
+const match_id = 'user_1';
 
 router.get('/sign-in', async (req, res) => {
     try {
@@ -88,7 +88,7 @@ router.get(`/${user_id}/discover`, async (req, res) => {
 });
 
 // General Matches (List)
-router.get('/:userId/discover', async (req, res) => {
+router.get(`/${user_id}/matches`, async (req, res) => {
     try {
         const matchesHtml = await matchesView.render();
         res.send(matchesHtml);
@@ -98,7 +98,7 @@ router.get('/:userId/discover', async (req, res) => {
 });
 
 // Matches and Specific User (Profile) - unsure if necessary
-router.get('/:userId/matches/:matchId', async (req, res) => {
+router.get(`/${user_id}/matches/${match_id}`, async (req, res) => {
     try {
         const matchesHtml = await matchesView.render();
         res.send(matchesHtml);
@@ -107,7 +107,7 @@ router.get('/:userId/matches/:matchId', async (req, res) => {
     }
 });
 
-router.get(`/:userId/settings`, async (req, res) => {
+router.get(`/${user_id}/settings`, async (req, res) => {
     try {
         const settingsHtml = await settingsView.render();
         res.send(settingsHtml);

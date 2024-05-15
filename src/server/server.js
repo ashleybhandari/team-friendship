@@ -1,9 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser'; // For parsing JSON data in POST/PUT requests
-import userRouter from './routes/users.js';
-import matchRouter from './routes/matches.js';
-import housingRouter from './routes/housing.js';
-import landingRouter from './routes/landing.js';
+import router from './routes/landing.js';
 
 const app = express();
 const PORT = 3000;
@@ -15,12 +12,7 @@ app.use(bodyParser.json()); // Use bodyParser to parse JSON-formatted request bo
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data with querystring library
 
 // Root route using the landing router
-app.use('/', landingRouter); // Use the landing router for the root route
-
-// Modular routes for different aspects of the application
-app.use('/api/users', userRouter);       // Handles all user-related API requests
-app.use('/api/matches', matchRouter);    // Handles match-related interactions
-app.use('/api/housing', housingRouter);  // Manages housing data operations
+app.use('/', router); // Use the landing router for the root route
 
 // 404 Not Found Middleware for requests that don't match any routes
 app.use((req, res) => {
