@@ -1,6 +1,7 @@
 // Created by Kshama Kolur
 
 import { Events } from '../Events.js';
+import * as db from '../../../data/DatabasePouchDB.js';
 
 /**
  * UI component: Logo + "KeyMate" centered at the top of the screen.
@@ -33,9 +34,7 @@ export class Header {
         // signed in) or the Landing page (if user is signed out)
         header.addEventListener('click', async (e) => {
             e.preventDefault();
-
-            // DB TODO: const view = signed in ? 'discover' : 'landing';
-            const view = 'landing';
+            const view = (await db.getCurUser()).userId ? 'discover' : 'landing';
             await this.#events.publish('navigateTo', view);
         });
 
