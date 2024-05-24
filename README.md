@@ -63,6 +63,5 @@ Install dependencies
 ```
 Start the server
 ```
-  npm start
+  npm run milestone-02
 ```
-Open http://localhost:3000 in your browser.
